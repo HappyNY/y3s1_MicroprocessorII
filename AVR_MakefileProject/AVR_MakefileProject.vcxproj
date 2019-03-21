@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugExec|Win32">
+      <Configuration>DebugExec</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugExec|x64">
+      <Configuration>DebugExec</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="WinCpp|Win32">
+      <Configuration>WinCpp</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="WinCpp|x64">
+      <Configuration>WinCpp</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{5D43F9CF-B8E7-4174-BAAC-716E71D36910}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>Project</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugExec|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugExec|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='WinCpp|Win32'">
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='WinCpp|x64'">
+    <PlatformToolset>v141</PlatformToolset>
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugExec|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugExec|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
+move *.s Intermediate\</NMakeBuildCommandLine>
+    <NMakeOutput>program.out</NMakeOutput>
+    <NMakePreprocessorDefinitions>INTELLISENSE;WIN32;_DEBUG;$(NMakePreprocessorDefinitions);int=__int16</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
+move *.s Intermediate\</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugExec|Win32'">
+    <NMakeBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
+C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
+move *.s Intermediate\</NMakeBuildCommandLine>
+    <NMakeOutput>program.out</NMakeOutput>
+    <NMakePreprocessorDefinitions>INTELLISENSE;WIN32;_DEBUG;$(NMakePreprocessorDefinitions);int=__int16</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:/MinGW/bin/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
+C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
+move *.s Intermediate\</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NMakeBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
+move *.s Intermediate\</NMakeBuildCommandLine>
+    <NMakeOutput>program.out</NMakeOutput>
+    <NMakePreprocessorDefinitions>INTELLISENSE;_DEBUG;$(NMakePreprocessorDefinitions);</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
+move *.s Intermediate\</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugExec|x64'">
+    <NMakeBuildCommandLine>C:\MinGW\bin\g++ *.cpp *.c -o program.exe -O1 -D _DEBUG -D _EXEC -I C:\MinGW\avrgcc\avr\include -std=c++14</NMakeBuildCommandLine>
+    <NMakeOutput>program.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions>INTELLISENSE;_DEBUG;$(NMakePreprocessorDefinitions);_EXEC</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O3
+move *.s Intermediate\</NMakeBuildCommandLine>
+    <NMakeOutput>program.out</NMakeOutput>
+    <NMakeCleanCommandLine>C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O2</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>INTELLISENSE;WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NMakeBuildCommandLine>if exist intermediate (
+rmdir /S /Q intermediate
+)
+mkdir intermediate
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O3
+move *.s Intermediate\</NMakeBuildCommandLine>
+    <NMakeOutput>program.out</NMakeOutput>
+    <NMakeCleanCommandLine>
+    </NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>INTELLISENSE;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="array.c" />
+    <ClCompile Include="ArrayTest.cpp" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="memory128.c" />
+    <ClCompile Include="MemoryTest.cpp" />
+    <ClCompile Include="Serial.c" />
+    <ClCompile Include="__TestMain.cpp" />
+    <ClCompile Include="__TMain.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="assertion.h" />
+    <ClInclude Include="array.h" />
+    <ClInclude Include="core.h" />
+    <ClInclude Include="assertion.c" />
+    <ClInclude Include="macros.h" />
+    <ClInclude Include="memory128.h" />
+    <ClInclude Include="Serial.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="__TestMain.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="program.out" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
