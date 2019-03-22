@@ -19,7 +19,7 @@ DEFINE_TEST( FArrayTest )
 	}
 
 	for ( int i = 0; i < LOOP_CNT; ++i )
-	{ 
+	{
 		ENSURE_EQUAL( *(int*) TArray_At( &arr, i ), i, "ensure condition failed" );
 	}
 

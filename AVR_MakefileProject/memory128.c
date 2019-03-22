@@ -11,13 +11,13 @@ typedef uint16 memblock_t;
 #define isAvailableMarker(Marker) (((Marker)&EDM_MaskAvailableBit)!=0)
 
 // First element is always a marker.
-memblock_t MEMORY[HEAP_MAX_BLOCK] = { 
+memblock_t __MEMORY[HEAP_MAX_BLOCK] = { 
 	( EDM_MaskAvailableBit | ( EDM_MaskMemOfst & ( HEAP_MAX_BLOCK - 1/*marker*/ ) ) ),
 	0
 };
-const memblock_t* MEMEND = MEMORY + ( HEAP_MAX_BLOCK );
+memblock_t* MEMORY = __MEMORY;
 // which enables allocating small memory blocks much faster.
-memblock_t* pMarkerCache = MEMORY;
+memblock_t* pMarkerCache = __MEMORY;
 
 inline void stepMarkerForwardUnchecked( memblock_t** pMarker )
 {
@@ -27,7 +27,7 @@ inline void stepMarkerForwardUnchecked( memblock_t** pMarker )
 inline void stepMarkerForward( memblock_t** pMarker )
 { 
 	*pMarker += GetMarkerSize( **pMarker ) + 1;
-	if ( *pMarker >= MEMEND ) {
+	if ( *pMarker >= MEMORY + HEAP_MAX_BLOCK ) {
 		*pMarker = NULL;
 	} 
 }

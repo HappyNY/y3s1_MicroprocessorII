@@ -11,169 +11,133 @@ __zero_reg__ = 1
  ;  GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
  ;  options passed:  -imultilib avr51
  ;  -iprefix c:\mingw\avrgcc\bin\../lib/gcc/avr/8.3.0/ -D__AVR_ATmega128__
- ;  -D__AVR_DEVICE_NAME__=atmega128 -D _DEBUG array.c -mn-flash=2
- ;  -mno-skip-bug -mmcu=avr51 -O1 -fverbose-asm
+ ;  -D__AVR_DEVICE_NAME__=atmega128 array.c -mn-flash=2 -mno-skip-bug
+ ;  -mmcu=avr51 -O3 -fverbose-asm
  ;  options enabled:  -Wmisspelled-isr -faggressive-loop-optimizations
+ ;  -falign-functions -falign-jumps -falign-labels -falign-loops
  ;  -fauto-inc-dec -fbranch-count-reg -fchkp-check-incomplete-type
  ;  -fchkp-check-read -fchkp-check-write -fchkp-instrument-calls
  ;  -fchkp-narrow-bounds -fchkp-optimize -fchkp-store-bounds
  ;  -fchkp-use-static-bounds -fchkp-use-static-const-bounds
- ;  -fchkp-use-wrappers -fcombine-stack-adjustments -fcommon -fcompare-elim
- ;  -fcprop-registers -fdefer-pop -fdwarf2-cfi-asm -fearly-inlining
- ;  -feliminate-unused-debug-types -fforward-propagate
- ;  -ffp-int-builtin-inexact -ffunction-cse -fgcse-lm -fgnu-runtime
- ;  -fgnu-unique -fguess-branch-probability -fident -fif-conversion
- ;  -fif-conversion2 -finline -finline-atomics
- ;  -finline-functions-called-once -fipa-profile -fipa-pure-const
- ;  -fipa-reference -fira-hoist-pressure -fira-share-save-slots
- ;  -fira-share-spill-slots -fivopts -fkeep-static-consts
- ;  -fleading-underscore -flifetime-dse -flto-odr-type-merging -fmath-errno
+ ;  -fchkp-use-wrappers -fcode-hoisting -fcombine-stack-adjustments
+ ;  -fcommon -fcompare-elim -fcprop-registers -fcrossjumping
+ ;  -fcse-follow-jumps -fdefer-pop -fdevirtualize
+ ;  -fdevirtualize-speculatively -fdwarf2-cfi-asm -fearly-inlining
+ ;  -feliminate-unused-debug-types -fexpensive-optimizations
+ ;  -fforward-propagate -ffp-int-builtin-inexact -ffunction-cse -fgcse
+ ;  -fgcse-after-reload -fgcse-lm -fgnu-runtime -fgnu-unique
+ ;  -fguess-branch-probability -fhoist-adjacent-loads -fident
+ ;  -fif-conversion -fif-conversion2 -findirect-inlining -finline
+ ;  -finline-atomics -finline-functions -finline-functions-called-once
+ ;  -finline-small-functions -fipa-bit-cp -fipa-cp -fipa-cp-clone -fipa-icf
+ ;  -fipa-icf-functions -fipa-icf-variables -fipa-profile -fipa-pure-const
+ ;  -fipa-ra -fipa-reference -fipa-sra -fipa-vrp -fira-hoist-pressure
+ ;  -fira-share-save-slots -fira-share-spill-slots
+ ;  -fisolate-erroneous-paths-dereference -fivopts -fkeep-static-consts
+ ;  -fleading-underscore -flifetime-dse -floop-interchange
+ ;  -floop-unroll-and-jam -flra-remat -flto-odr-type-merging -fmath-errno
  ;  -fmerge-constants -fmerge-debug-strings -fmove-loop-invariants
- ;  -fomit-frame-pointer -fpeephole -fplt -fprefetch-loop-arrays
- ;  -freg-struct-return -freorder-blocks -fsched-critical-path-heuristic
- ;  -fsched-dep-count-heuristic -fsched-group-heuristic -fsched-interblock
- ;  -fsched-last-insn-heuristic -fsched-rank-heuristic -fsched-spec
- ;  -fsched-spec-insn-heuristic -fsched-stalled-insns-dep -fschedule-fusion
- ;  -fsemantic-interposition -fshow-column -fshrink-wrap
- ;  -fshrink-wrap-separate -fsigned-zeros -fsplit-ivs-in-unroller
- ;  -fsplit-wide-types -fssa-backprop -fssa-phiopt -fstdarg-opt
- ;  -fstrict-volatile-bitfields -fsync-libcalls -ftoplevel-reorder
- ;  -ftrapping-math -ftree-bit-ccp -ftree-builtin-call-dce -ftree-ccp
- ;  -ftree-ch -ftree-coalesce-vars -ftree-copy-prop -ftree-dce
- ;  -ftree-dominator-opts -ftree-dse -ftree-forwprop -ftree-fre
- ;  -ftree-loop-if-convert -ftree-loop-im -ftree-loop-ivcanon
- ;  -ftree-loop-optimize -ftree-parallelize-loops= -ftree-phiprop
- ;  -ftree-pta -ftree-reassoc -ftree-scev-cprop -ftree-sink -ftree-slsr
- ;  -ftree-sra -ftree-ter -funit-at-a-time -fverbose-asm
- ;  -fzero-initialized-in-bss -mgas-isr-prologues -mmain-is-OS_task
+ ;  -fomit-frame-pointer -foptimize-sibling-calls -foptimize-strlen
+ ;  -fpartial-inlining -fpeel-loops -fpeephole -fpeephole2 -fplt
+ ;  -fpredictive-commoning -fprefetch-loop-arrays -freg-struct-return
+ ;  -freorder-blocks -freorder-functions -frerun-cse-after-loop
+ ;  -fsched-critical-path-heuristic -fsched-dep-count-heuristic
+ ;  -fsched-group-heuristic -fsched-interblock -fsched-last-insn-heuristic
+ ;  -fsched-rank-heuristic -fsched-spec -fsched-spec-insn-heuristic
+ ;  -fsched-stalled-insns-dep -fschedule-fusion -fsemantic-interposition
+ ;  -fshow-column -fshrink-wrap -fshrink-wrap-separate -fsigned-zeros
+ ;  -fsplit-ivs-in-unroller -fsplit-loops -fsplit-paths -fsplit-wide-types
+ ;  -fssa-backprop -fssa-phiopt -fstdarg-opt -fstore-merging
+ ;  -fstrict-aliasing -fstrict-volatile-bitfields -fsync-libcalls
+ ;  -fthread-jumps -ftoplevel-reorder -ftrapping-math -ftree-bit-ccp
+ ;  -ftree-builtin-call-dce -ftree-ccp -ftree-ch -ftree-coalesce-vars
+ ;  -ftree-copy-prop -ftree-dce -ftree-dominator-opts -ftree-dse
+ ;  -ftree-forwprop -ftree-fre -ftree-loop-distribute-patterns
+ ;  -ftree-loop-distribution -ftree-loop-if-convert -ftree-loop-im
+ ;  -ftree-loop-ivcanon -ftree-loop-optimize -ftree-loop-vectorize
+ ;  -ftree-parallelize-loops= -ftree-partial-pre -ftree-phiprop -ftree-pre
+ ;  -ftree-pta -ftree-reassoc -ftree-scev-cprop -ftree-sink
+ ;  -ftree-slp-vectorize -ftree-slsr -ftree-sra -ftree-switch-conversion
+ ;  -ftree-tail-merge -ftree-ter -ftree-vrp -funit-at-a-time
+ ;  -funswitch-loops -fverbose-asm -fzero-initialized-in-bss
+ ;  -mgas-isr-prologues -mmain-is-OS_task
 
-	.text
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"Array capacity overflow."
-.LC1:
-	.string	"array.c"
 	.text
 .global	TArray_AddLast
 	.type	TArray_AddLast, @function
 TArray_AddLast:
-	push r12		 ; 
-	push r13		 ; 
 	push r14		 ; 
 	push r15		 ; 
 	push r16		 ; 
 	push r17		 ; 
 	push r28		 ; 
 	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	dec r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 256 */
-/* stack size = 264 */
-.L__stack_usage = 264
-	movw r16,r24	 ;  pArray, pArray
-	movw r12,r22	 ;  Element, Element
+/* frame size = 0 */
+/* stack size = 6 */
+.L__stack_usage = 6
+	movw r28,r24	 ;  pArray, pArray
+	movw r14,r22	 ;  Element, Element
  ;  array.c:6: 	uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	movw r30,r24	 ; , pArray
-	ldd r24,Z+3	 ;  _1, pArray_12(D)->_data
-	ldd r25,Z+4	 ;  _1, pArray_12(D)->_data
+	ldd r24,Y+3	 ;  _1, pArray_12(D)->_data
+	ldd r25,Y+4	 ;  _1, pArray_12(D)->_data
  ;  array.c:6: 	uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	ldd r20,Z+2	 ;  pArray_12(D)->_ofst, pArray_12(D)->_ofst
+	ldd r20,Y+2	 ;  pArray_12(D)->_ofst, pArray_12(D)->_ofst
  ;  array.c:6: 	uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	ld r18,Z	 ;  pArray_12(D)->_count, pArray_12(D)->_count
-	ldd r19,Z+1	 ;  pArray_12(D)->_count, pArray_12(D)->_count
+	ld r18,Y	 ;  pArray_12(D)->_count, pArray_12(D)->_count
+	ldd r19,Y+1	 ;  pArray_12(D)->_count, pArray_12(D)->_count
 	mul r20,r18	 ;  pArray_12(D)->_ofst, pArray_12(D)->_count
-	movw r14,r0	 ;  tmp57
+	movw r16,r0	 ;  tmp57
 	mul r20,r19	 ;  pArray_12(D)->_ofst, pArray_12(D)->_count
-	add r15,r0	 ;  tmp57
+	add r17,r0	 ;  tmp57
 	clr __zero_reg__
  ;  array.c:6: 	uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	add r14,r24	 ;  pCursor, _1
-	adc r15,r25	 ;  pCursor, _1
+	add r16,r24	 ;  pCursor, _1
+	adc r17,r25	 ;  pCursor, _1
  ;  array.c:8: 	if ( (void*) pCursor < GetMemoryBound( pArray->_data ) ) {
 	call GetMemoryBound	 ; 
  ;  array.c:8: 	if ( (void*) pCursor < GetMemoryBound( pArray->_data ) ) {
-	cp r14,r24	 ;  pCursor,
-	cpc r15,r25	 ;  pCursor,
-	brlo .L3		 ; ,
- ;  array.c:13: 		assertf( false, "Array capacity overflow." );
-	ldi r24,lo8(25)	 ;  tmp69,
-	ldi r30,lo8(.LC0)	 ; ,
-	ldi r31,hi8(.LC0)	 ; ,
-	movw r26,r28	 ; ,
-	adiw r26,1	 ; ,
-	0:	
-	ld r0,Z+		 ; 
-	st X+,r0		 ; 
-	dec r24		 ;  tmp69
-	brne 0b	
-	movw r20,r28	 ; ,
-	subi r20,-1	 ; ,
-	sbci r21,-1	 ; ,
-	ldi r22,lo8(13)	 ; ,
-	ldi r23,0		 ; 
-	ldi r24,lo8(.LC1)	 ; ,
-	ldi r25,hi8(.LC1)	 ; ,
-	call internal_assertion_failed	 ; 
-.L1:
+	cp r16,r24	 ;  pCursor,
+	cpc r17,r25	 ;  pCursor,
+	brlo .L4		 ; ,
 /* epilogue start */
  ;  array.c:15: }
-	inc r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 	pop r29		 ; 
 	pop r28		 ; 
 	pop r17		 ; 
 	pop r16		 ; 
 	pop r15		 ; 
 	pop r14		 ; 
-	pop r13		 ; 
-	pop r12		 ; 
 	ret	
-.L3:
+.L4:
  ;  array.c:9: 		memcpy( pCursor, Element, pArray->_ofst );
-	movw r30,r16	 ; , pArray
-	ldd r20,Z+2	 ;  pArray_12(D)->_ofst, pArray_12(D)->_ofst
+	ldd r20,Y+2	 ;  pArray_12(D)->_ofst, pArray_12(D)->_ofst
 	ldi r21,0		 ;  pArray_12(D)->_ofst
-	movw r22,r12	 ; , Element
-	movw r24,r14	 ; , pCursor
+	movw r22,r14	 ; , Element
+	movw r24,r16	 ; , pCursor
 	call memcpy	 ; 
  ;  array.c:10: 		return pArray->_count++;
-	movw r30,r16	 ; , pArray
-	ld r24,Z	 ;  <retval>, pArray_12(D)->_count
-	ldd r25,Z+1	 ;  <retval>, pArray_12(D)->_count
+	ld r24,Y	 ;  <retval>, pArray_12(D)->_count
+	ldd r25,Y+1	 ;  <retval>, pArray_12(D)->_count
  ;  array.c:10: 		return pArray->_count++;
 	movw r18,r24	 ;  tmp66, <retval>
 	subi r18,-1	 ;  tmp66,
 	sbci r19,-1	 ; ,
-	std Z+1,r19	 ;  pArray_12(D)->_count, tmp66
-	st Z,r18	 ;  pArray_12(D)->_count, tmp66
-	rjmp .L1		 ; 
+	std Y+1,r19	 ;  pArray_12(D)->_count, tmp66
+	st Y,r18	 ;  pArray_12(D)->_count, tmp66
+/* epilogue start */
+ ;  array.c:15: }
+	pop r29		 ; 
+	pop r28		 ; 
+	pop r17		 ; 
+	pop r16		 ; 
+	pop r15		 ; 
+	pop r14		 ; 
+	ret	
 	.size	TArray_AddLast, .-TArray_AddLast
-	.section	.rodata.str1.1
-.LC2:
-	.string	"Invalid memory access!"
-.LC3:
-	.string	"array.h"
-.LC4:
-	.string	"Invalid initialization point has delievered"
-	.text
 .global	TArray_RemoveElement
 	.type	TArray_RemoveElement, @function
 TArray_RemoveElement:
-	push r8		 ; 
-	push r9		 ; 
-	push r10		 ; 
-	push r11		 ; 
 	push r12		 ; 
 	push r13		 ; 
 	push r14		 ; 
@@ -182,96 +146,74 @@ TArray_RemoveElement:
 	push r17		 ; 
 	push r28		 ; 
 	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	dec r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 256 */
-/* stack size = 268 */
-.L__stack_usage = 268
-	movw r10,r24	 ;  pArray, pArray
- ;  array.h:33: 	uint8* pCursor = pArray->_data + Index * pArray->_ofst;									 
+/* frame size = 0 */
+/* stack size = 8 */
+.L__stack_usage = 8
+	movw r14,r24	 ;  pArray, pArray
+ ;  array.c:19: 	uint8* pWrite = (uint8*) TArray_At( pArray, Index );
 	movw r30,r24	 ; , pArray
-	ldd r24,Z+3	 ;  _29, pArray_13(D)->_data
-	ldd r25,Z+4	 ;  _29, pArray_13(D)->_data
+	ldd r20,Z+2	 ;  pretmp_6, MEM[(unsigned char *)pArray_10(D) + 2B]
+	ldd r16,Z+3	 ;  _19, MEM[(uint8 * *)pArray_10(D) + 3B]
+	ldd r17,Z+4	 ;  _19, MEM[(uint8 * *)pArray_10(D) + 3B]
  ;  array.h:33: 	uint8* pCursor = pArray->_data + Index * pArray->_ofst;									 
-	ldd r18,Z+2	 ;  pArray_13(D)->_ofst, pArray_13(D)->_ofst
+	ldi r21,0		 ;  pretmp_6
  ;  array.h:33: 	uint8* pCursor = pArray->_data + Index * pArray->_ofst;									 
-	mul r18,r22	 ;  pArray_13(D)->_ofst, Index
-	movw r16,r0	 ;  tmp64
-	mul r18,r23	 ;  pArray_13(D)->_ofst, Index
-	add r17,r0	 ;  tmp64
-	clr __zero_reg__
+	mul r22,r20	 ;  Index, pretmp_6
+	movw r24,r0	 ;  tmp56
+	mul r22,r21	 ;  Index, pretmp_6
+	add r25,r0	 ;  tmp56
+	mul r23,r20	 ;  Index, pretmp_6
+	add r25,r0	 ;  tmp56
+	clr r1
  ;  array.h:33: 	uint8* pCursor = pArray->_data + Index * pArray->_ofst;									 
-	add r16,r24	 ;  pCursor, _29
-	adc r17,r25	 ;  pCursor, _29
- ;  array.h:34: 	assertf( (void*) pCursor < GetMemoryBound( pArray->_data ), "Invalid memory access!" );
-	call GetMemoryBound	 ; 
-	cp r16,r24	 ;  pCursor,
-	cpc r17,r25	 ;  pCursor,
-	brsh .L10		 ; ,
-.L5:
+	add r24,r16	 ;  pCursor, _19
+	adc r25,r17	 ;  pCursor, _19
  ;  array.c:20: 	uint8* pRead = pWrite + pArray->_ofst;
-	movw r30,r10	 ; , pArray
-	ldd r22,Z+2	 ;  pArray_13(D)->_ofst, pArray_13(D)->_ofst
- ;  array.c:20: 	uint8* pRead = pWrite + pArray->_ofst;
-	add r22,r16	 ;  pRead, pCursor
-	mov r23,r17	 ;  pRead, pCursor
-	adc r23,__zero_reg__	 ;  pRead
+	movw r22,r24	 ;  pRead, pCursor
+	add r22,r20	 ;  pRead, pretmp_6
+	adc r23,r21	 ;  pRead, pretmp_6
  ;  array.c:21: 	uint8* const pEnd = pArray->_data + pArray->_count;
-	ldd r8,Z+3	 ;  pArray_13(D)->_data, pArray_13(D)->_data
-	ldd r9,Z+4	 ;  pArray_13(D)->_data, pArray_13(D)->_data
-	ld r24,Z	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	ldd r25,Z+1	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	add r8,r24	 ;  pEnd, pArray_13(D)->_count
-	adc r9,r25	 ;  pEnd, pArray_13(D)->_count
- ;  array.c:23: 	assertf( pRead < pEnd, "Invalid initialization point has delievered" );
-	cp r22,r8	 ;  pRead, pEnd
-	cpc r23,r9	 ;  pRead, pEnd
-	brlo .+2	 ; 
-	rjmp .L11	 ; 
-.L6:
- ;  array.c:26: 		memcpy( pWrite++, pRead++, pArray->_ofst );
-	movw r14,r22	 ;  pRead, pRead
-	ldi r31,-1	 ; ,
-	sub r14,r31	 ;  pRead,
-	sbc r15,r31	 ;  pRead,
-	movw r12,r16	 ;  pWrite, pCursor
-	ldi r24,-1	 ; ,
-	sub r12,r24	 ;  pWrite,
-	sbc r13,r24	 ;  pWrite,
-	movw r30,r10	 ; , pArray
-	ldd r20,Z+2	 ;  pArray_13(D)->_ofst, pArray_13(D)->_ofst
-	ldi r21,0		 ;  pArray_13(D)->_ofst
-	movw r24,r16	 ; , pCursor
-	call memcpy	 ; 
-	movw r16,r12	 ;  pCursor, pWrite
-	movw r22,r14	 ;  pRead, pRead
+	ld r18,Z	 ;  pretmp_31, pArray_10(D)->_count
+	ldd r19,Z+1	 ;  pretmp_31, pArray_10(D)->_count
+ ;  array.c:21: 	uint8* const pEnd = pArray->_data + pArray->_count;
+	add r16,r18	 ;  pEnd, pretmp_31
+	adc r17,r19	 ;  pEnd, pretmp_31
  ;  array.c:24: 	while ( pRead < pEnd )
-	cp r8,r14	 ;  pEnd, pRead
-	cpc r9,r15	 ;  pEnd, pRead
-	brne .L6		 ; ,
+	cp r22,r16	 ;  pRead, pEnd
+	cpc r23,r17	 ;  pRead, pEnd
+	brlo .L8		 ; ,
+	rjmp .L6		 ; 
 .L7:
+	ldd r20,Z+2	 ;  pretmp_6, pArray_10(D)->_ofst
+ ;  array.c:26: 		memcpy( pWrite++, pRead++, pArray->_ofst );
+	movw r24,r28	 ;  pCursor, pWrite
+	movw r22,r12	 ;  pRead, pRead
+	ldi r21,0		 ;  pretmp_6
+.L8:
+	movw r12,r22	 ;  pRead, pRead
+	ldi r31,-1	 ; ,
+	sub r12,r31	 ;  pRead,
+	sbc r13,r31	 ;  pRead,
+	movw r28,r24	 ;  pWrite, pCursor
+	adiw r28,1	 ;  pWrite,
+	call memcpy	 ; 
+	movw r30,r14	 ; , pArray
+ ;  array.c:24: 	while ( pRead < pEnd )
+	cp r16,r12	 ;  pEnd, pRead
+	cpc r17,r13	 ;  pEnd, pRead
+	brne .L7		 ; ,
+	ld r18,Z	 ;  pretmp_31, pArray_10(D)->_count
+	ldd r19,Z+1	 ;  pretmp_31, pArray_10(D)->_count
+.L6:
  ;  array.c:28: 	pArray->_count--;
-	movw r30,r10	 ; , pArray
-	ld r24,Z	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	ldd r25,Z+1	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	sbiw r24,1	 ;  tmp80,
-	std Z+1,r25	 ;  pArray_13(D)->_count, tmp80
-	st Z,r24	 ;  pArray_13(D)->_count, tmp80
+	subi r18,1	 ;  tmp63,
+	sbc r19,__zero_reg__	 ; 
+	movw r30,r14	 ; , pArray
+	std Z+1,r19	 ;  pArray_10(D)->_count, tmp63
+	st Z,r18	 ;  pArray_10(D)->_count, tmp63
 /* epilogue start */
  ;  array.c:29: }
-	inc r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 	pop r29		 ; 
 	pop r28		 ; 
 	pop r17		 ; 
@@ -280,53 +222,6 @@ TArray_RemoveElement:
 	pop r14		 ; 
 	pop r13		 ; 
 	pop r12		 ; 
-	pop r11		 ; 
-	pop r10		 ; 
-	pop r9		 ; 
-	pop r8		 ; 
 	ret	
-.L10:
- ;  array.h:34: 	assertf( (void*) pCursor < GetMemoryBound( pArray->_data ), "Invalid memory access!" );
-	ldi r24,lo8(23)	 ;  tmp66,
-	ldi r30,lo8(.LC2)	 ; ,
-	ldi r31,hi8(.LC2)	 ; ,
-	movw r26,r28	 ; ,
-	adiw r26,1	 ; ,
-	0:	
-	ld r0,Z+		 ; 
-	st X+,r0		 ; 
-	dec r24		 ;  tmp66
-	brne 0b	
-	movw r20,r28	 ; ,
-	subi r20,-1	 ; ,
-	sbci r21,-1	 ; ,
-	ldi r22,lo8(34)	 ; ,
-	ldi r23,0		 ; 
-	ldi r24,lo8(.LC3)	 ; ,
-	ldi r25,hi8(.LC3)	 ; ,
-	call internal_assertion_failed	 ; 
-	rjmp .L5		 ; 
-.L11:
- ;  array.c:23: 	assertf( pRead < pEnd, "Invalid initialization point has delievered" );
-	ldi r24,lo8(44)	 ;  tmp72,
-	ldi r30,lo8(.LC4)	 ; ,
-	ldi r31,hi8(.LC4)	 ; ,
-	movw r26,r28	 ; ,
-	adiw r26,1	 ; ,
-	0:	
-	ld r0,Z+		 ; 
-	st X+,r0		 ; 
-	dec r24		 ;  tmp72
-	brne 0b	
-	movw r20,r28	 ; ,
-	subi r20,-1	 ; ,
-	sbci r21,-1	 ; ,
-	ldi r22,lo8(23)	 ; ,
-	ldi r23,0		 ; 
-	ldi r24,lo8(.LC1)	 ; ,
-	ldi r25,hi8(.LC1)	 ; ,
-	call internal_assertion_failed	 ; 
-	rjmp .L7		 ; 
 	.size	TArray_RemoveElement, .-TArray_RemoveElement
 	.ident	"GCC: (GNU) 8.3.0"
-.global __do_copy_data
