@@ -1,8 +1,9 @@
 #include "memory128.h" 
 #include "assertion.h"
 
-#define HEAP_MAX_BYTE 2048
+#define HEAP_MAX_BYTE 0x8000
 #define HEAP_MAX_BLOCK (HEAP_MAX_BYTE>>1)
+#define HEAP_LOCATION ((memblock_t*)0x8000)
 
 typedef uint16 memblock_t;
 #define	EDM_MaskAvailableBit ((uint16)0x8000u)
@@ -10,14 +11,9 @@ typedef uint16 memblock_t;
 #define GetMarkerSize(Marker) ((Marker)&EDM_MaskMemOfst)
 #define isAvailableMarker(Marker) (((Marker)&EDM_MaskAvailableBit)!=0)
 
-// First element is always a marker.
-memblock_t __MEMORY[HEAP_MAX_BLOCK] = { 
-	( EDM_MaskAvailableBit | ( EDM_MaskMemOfst & ( HEAP_MAX_BLOCK - 1/*marker*/ ) ) ),
-	0
-};
-memblock_t* MEMORY = __MEMORY;
+memblock_t* MEMORY = HEAP_LOCATION;
 // which enables allocating small memory blocks much faster.
-memblock_t* pMarkerCache = __MEMORY;
+memblock_t* pMarkerCache = HEAP_LOCATION;
 
 inline void stepMarkerForwardUnchecked( memblock_t** pMarker )
 {
@@ -100,6 +96,11 @@ inline memblock_t* mergeAndFindAvailableMarker( size_type SizeInBlocks )
 
 	// error...
 	return NULL/*== pHead*/;
+}
+
+void InitMemory()
+{
+	MEMORY[0] = ( EDM_MaskAvailableBit | ( EDM_MaskMemOfst & ( HEAP_MAX_BLOCK - 1/*marker*/ ) ) );
 }
 
 void * Malloc( uint16 SizeInByte ) // noexcept

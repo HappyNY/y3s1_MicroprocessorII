@@ -178,6 +178,7 @@ move *.s Intermediate\</NMakeBuildCommandLine>
     <NMakeCleanCommandLine>C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O2</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>INTELLISENSE;WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <AdditionalOptions>-std=c11</AdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <NMakeBuildCommandLine>if exist intermediate (
@@ -192,6 +193,7 @@ move *.s Intermediate\</NMakeBuildCommandLine>
     </NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>INTELLISENSE;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <AdditionalOptions>-std=c11</AdditionalOptions>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
@@ -201,6 +203,7 @@ move *.s Intermediate\</NMakeBuildCommandLine>
     <ClCompile Include="main.c" />
     <ClCompile Include="memory128.c" />
     <ClCompile Include="MemoryTest.cpp" />
+    <ClCompile Include="Display.c" />
     <ClCompile Include="Serial.c" />
     <ClCompile Include="__TestMain.cpp" />
     <ClCompile Include="__TMain.c" />
@@ -211,8 +214,11 @@ move *.s Intermediate\</NMakeBuildCommandLine>
     <ClInclude Include="core.h" />
     <ClInclude Include="assertion.c" />
     <ClInclude Include="macros.h" />
+    <ClInclude Include="math.h" />
     <ClInclude Include="memory128.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="Serial.h" />
+    <ClInclude Include="Session.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="__TestMain.h" />
   </ItemGroup>

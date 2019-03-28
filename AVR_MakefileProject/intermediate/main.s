@@ -181,24 +181,24 @@ __vector_6:
 	reti	
 	__gcc_isr 0,r0
 	.size	__vector_6, .-__vector_6
-.global	rdinp
-	.type	rdinp, @function
-rdinp:
+.global	TrigInterrupt
+	.type	TrigInterrupt, @function
+TrigInterrupt:
 /* prologue: function */
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:241: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
+ ;  main.c:239: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
 	in r24,0x1	 ;  _3, MEM[(volatile uint8_t *)33B]
 	com r24		 ;  tmp46
- ;  main.c:241: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
+ ;  main.c:239: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
 	andi r24,lo8(-16)	 ;  CurrentSwitchState,
  ;  main.c:138: 	EIFR = flg;
 	out 0x38,r24	 ;  MEM[(volatile uint8_t *)88B], CurrentSwitchState
 /* epilogue start */
  ;  main.c:139: }
 	ret	
-	.size	rdinp, .-rdinp
+	.size	TrigInterrupt, .-TrigInterrupt
 .global	update
 	.type	update, @function
 update:
@@ -288,30 +288,30 @@ UpdateLight:
  ;  main.c:130: 		num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
 	ldi r25,lo8(10)	 ; ,
 	mov r9,r25	 ;  tmp98,
- ;  main.c:172: 	N100 = buf / 100;               // 100자리 추출
+ ;  main.c:171: 	N100 = buf / 100;               // 100자리 추출
 	ldi r18,lo8(100)	 ; ,
 	mov r14,r18	 ;  tmp122,
 	mov r15,__zero_reg__	 ; 
- ;  main.c:175: 	N10 = buf / 10;                 // 10자리 추출
+ ;  main.c:174: 	N10 = buf / 10;                 // 10자리 추출
 	ldi r16,lo8(10)	 ;  tmp135,
 	ldi r17,0		 ; 
- ;  main.c:179: 		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
+ ;  main.c:178: 		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
 	ldi r19,lo8(-32)	 ; ,
 	mov r10,r19	 ;  tmp148,
- ;  main.c:184: 		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
+ ;  main.c:182: 		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
 	ldi r20,lo8(-48)	 ; ,
 	mov r11,r20	 ;  tmp155,
- ;  main.c:188: 		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
+ ;  main.c:186: 		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
 	ldi r21,lo8(-80)	 ; ,
 	mov r12,r21	 ;  tmp162,
- ;  main.c:192: 		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
+ ;  main.c:190: 		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
 	ldi r22,lo8(112)	 ; ,
 	mov r13,r22	 ;  tmp169,
 .L20:
- ;  main.c:241: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
+ ;  main.c:239: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
 	in r24,0x1	 ;  _22, MEM[(volatile uint8_t *)33B]
 	com r24		 ;  tmp85
- ;  main.c:241: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
+ ;  main.c:239: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
 	andi r24,lo8(-16)	 ;  CurrentSwitchState,
  ;  main.c:138: 	EIFR = flg;
 	out 0x38,r24	 ;  MEM[(volatile uint8_t *)88B], CurrentSwitchState
@@ -348,32 +348,32 @@ UpdateLight:
 	lds r18,N1	 ;  N1, N1
 	add r24,r18	 ;  _15, N1
 	adc r25,__zero_reg__	 ;  _15
- ;  main.c:169: 	N1000 = num / 1000;             // 1000자리 추출
+ ;  main.c:168: 	N1000 = num / 1000;             // 1000자리 추출
 	movw r22,r28	 ; , tmp91
 	call __divmodhi4
- ;  main.c:169: 	N1000 = num / 1000;             // 1000자리 추출
+ ;  main.c:168: 	N1000 = num / 1000;             // 1000자리 추출
 	sts N1000,r22	 ;  N1000, tmp175
- ;  main.c:172: 	N100 = buf / 100;               // 100자리 추출
+ ;  main.c:171: 	N100 = buf / 100;               // 100자리 추출
 	movw r22,r14	 ; , tmp122
 	call __divmodhi4
- ;  main.c:172: 	N100 = buf / 100;               // 100자리 추출
+ ;  main.c:171: 	N100 = buf / 100;               // 100자리 추출
 	sts N100,r22	 ;  N100, tmp177
- ;  main.c:175: 	N10 = buf / 10;                 // 10자리 추출
+ ;  main.c:174: 	N10 = buf / 10;                 // 10자리 추출
 	movw r22,r16	 ; , tmp135
 	call __divmodhi4
- ;  main.c:175: 	N10 = buf / 10;                 // 10자리 추출
+ ;  main.c:174: 	N10 = buf / 10;                 // 10자리 추출
 	sts N10,r22	 ;  N10, tmp179
- ;  main.c:176: 	N1 = buf % 10;                  // 1자리 추출    
+ ;  main.c:175: 	N1 = buf % 10;                  // 1자리 추출    
 	sts N1,r24	 ;  N1, tmp181
- ;  main.c:179: 		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
+ ;  main.c:178: 		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
 	sts 98,r10	 ;  MEM[(volatile uint8_t *)98B], tmp148
- ;  main.c:180: 		PORTB = seg_pat[N1];        // 1자리 표시  
+ ;  main.c:179: 		PORTB = seg_pat[N1];        // 1자리 표시  
 	lds r30,N1	 ;  N1, N1
 	ldi r31,0		 ;  N1
 	subi r30,lo8(-(seg_pat))	 ;  tmp152,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp152,
 	ld r24,Z		 ;  _39, seg_pat
- ;  main.c:180: 		PORTB = seg_pat[N1];        // 1자리 표시  
+ ;  main.c:179: 		PORTB = seg_pat[N1];        // 1자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _39
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(7999)	 ; ,
@@ -382,15 +382,15 @@ UpdateLight:
 	brne 1b
 	rjmp .	
 	nop	
- ;  main.c:184: 		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
+ ;  main.c:182: 		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
 	sts 98,r11	 ;  MEM[(volatile uint8_t *)98B], tmp155
- ;  main.c:185: 		PORTB = seg_pat[N10];       // 10자리 표시  
+ ;  main.c:183: 		PORTB = seg_pat[N10];       // 10자리 표시  
 	lds r30,N10	 ;  N10, N10
 	ldi r31,0		 ;  N10
 	subi r30,lo8(-(seg_pat))	 ;  tmp159,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp159,
 	ld r24,Z		 ;  _43, seg_pat
- ;  main.c:185: 		PORTB = seg_pat[N10];       // 10자리 표시  
+ ;  main.c:183: 		PORTB = seg_pat[N10];       // 10자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _43
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(7999)	 ; ,
@@ -399,15 +399,15 @@ UpdateLight:
 	brne 1b
 	rjmp .	
 	nop	
- ;  main.c:188: 		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
+ ;  main.c:186: 		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
 	sts 98,r12	 ;  MEM[(volatile uint8_t *)98B], tmp162
- ;  main.c:189: 		PORTB = seg_pat[N100];      // 100자리 표시  
+ ;  main.c:187: 		PORTB = seg_pat[N100];      // 100자리 표시  
 	lds r30,N100	 ;  N100, N100
 	ldi r31,0		 ;  N100
 	subi r30,lo8(-(seg_pat))	 ;  tmp166,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp166,
 	ld r24,Z		 ;  _47, seg_pat
- ;  main.c:189: 		PORTB = seg_pat[N100];      // 100자리 표시  
+ ;  main.c:187: 		PORTB = seg_pat[N100];      // 100자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _47
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(11999)	 ; ,
@@ -416,15 +416,15 @@ UpdateLight:
 	brne 1b
 	rjmp .	
 	nop	
- ;  main.c:192: 		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
+ ;  main.c:190: 		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
 	sts 98,r13	 ;  MEM[(volatile uint8_t *)98B], tmp169
- ;  main.c:193: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
+ ;  main.c:191: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
 	lds r30,N1000	 ;  N1000, N1000
 	ldi r31,0		 ;  N1000
 	subi r30,lo8(-(seg_pat))	 ;  tmp173,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp173,
 	ld r24,Z		 ;  _51, seg_pat
- ;  main.c:193: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
+ ;  main.c:191: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _51
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(11999)	 ; ,
@@ -476,38 +476,38 @@ Seg4_out:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:169: 	N1000 = num / 1000;             // 1000자리 추출
+ ;  main.c:168: 	N1000 = num / 1000;             // 1000자리 추출
 	ldi r22,lo8(-24)	 ; ,
 	ldi r23,lo8(3)	 ; ,
 	call __divmodhi4
- ;  main.c:169: 	N1000 = num / 1000;             // 1000자리 추출
+ ;  main.c:168: 	N1000 = num / 1000;             // 1000자리 추출
 	sts N1000,r22	 ;  N1000, tmp119
- ;  main.c:172: 	N100 = buf / 100;               // 100자리 추출
+ ;  main.c:171: 	N100 = buf / 100;               // 100자리 추출
 	ldi r22,lo8(100)	 ; ,
 	ldi r23,0		 ; 
 	call __divmodhi4
- ;  main.c:172: 	N100 = buf / 100;               // 100자리 추출
+ ;  main.c:171: 	N100 = buf / 100;               // 100자리 추출
 	sts N100,r22	 ;  N100, tmp121
- ;  main.c:175: 	N10 = buf / 10;                 // 10자리 추출
+ ;  main.c:174: 	N10 = buf / 10;                 // 10자리 추출
 	ldi r22,lo8(10)	 ; ,
 	ldi r23,0		 ; 
 	call __divmodhi4
- ;  main.c:175: 	N10 = buf / 10;                 // 10자리 추출
+ ;  main.c:174: 	N10 = buf / 10;                 // 10자리 추출
 	sts N10,r22	 ;  N10, tmp123
- ;  main.c:176: 	N1 = buf % 10;                  // 1자리 추출    
+ ;  main.c:175: 	N1 = buf % 10;                  // 1자리 추출    
 	sts N1,r24	 ;  N1, tmp125
- ;  main.c:179: 		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
+ ;  main.c:178: 		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
 	ldi r26,lo8(98)	 ;  tmp91,
 	ldi r27,0		 ; 
 	ldi r24,lo8(-32)	 ;  tmp92,
 	st X,r24		 ;  MEM[(volatile uint8_t *)98B], tmp92
- ;  main.c:180: 		PORTB = seg_pat[N1];        // 1자리 표시  
+ ;  main.c:179: 		PORTB = seg_pat[N1];        // 1자리 표시  
 	lds r30,N1	 ;  N1, N1
 	ldi r31,0		 ;  N1
 	subi r30,lo8(-(seg_pat))	 ;  tmp96,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp96,
 	ld r24,Z		 ;  _21, seg_pat
- ;  main.c:180: 		PORTB = seg_pat[N1];        // 1자리 표시  
+ ;  main.c:179: 		PORTB = seg_pat[N1];        // 1자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _21
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(7999)	 ; ,
@@ -516,16 +516,16 @@ Seg4_out:
 	brne 1b
 	rjmp .	
 	nop	
- ;  main.c:184: 		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
+ ;  main.c:182: 		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
 	ldi r24,lo8(-48)	 ;  tmp99,
 	st X,r24		 ;  MEM[(volatile uint8_t *)98B], tmp99
- ;  main.c:185: 		PORTB = seg_pat[N10];       // 10자리 표시  
+ ;  main.c:183: 		PORTB = seg_pat[N10];       // 10자리 표시  
 	lds r30,N10	 ;  N10, N10
 	ldi r31,0		 ;  N10
 	subi r30,lo8(-(seg_pat))	 ;  tmp103,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp103,
 	ld r24,Z		 ;  _25, seg_pat
- ;  main.c:185: 		PORTB = seg_pat[N10];       // 10자리 표시  
+ ;  main.c:183: 		PORTB = seg_pat[N10];       // 10자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _25
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(7999)	 ; ,
@@ -534,16 +534,16 @@ Seg4_out:
 	brne 1b
 	rjmp .	
 	nop	
- ;  main.c:188: 		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
+ ;  main.c:186: 		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
 	ldi r24,lo8(-80)	 ;  tmp106,
 	st X,r24		 ;  MEM[(volatile uint8_t *)98B], tmp106
- ;  main.c:189: 		PORTB = seg_pat[N100];      // 100자리 표시  
+ ;  main.c:187: 		PORTB = seg_pat[N100];      // 100자리 표시  
 	lds r30,N100	 ;  N100, N100
 	ldi r31,0		 ;  N100
 	subi r30,lo8(-(seg_pat))	 ;  tmp110,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp110,
 	ld r24,Z		 ;  _29, seg_pat
- ;  main.c:189: 		PORTB = seg_pat[N100];      // 100자리 표시  
+ ;  main.c:187: 		PORTB = seg_pat[N100];      // 100자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _29
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(11999)	 ; ,
@@ -552,16 +552,16 @@ Seg4_out:
 	brne 1b
 	rjmp .	
 	nop	
- ;  main.c:192: 		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
+ ;  main.c:190: 		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
 	ldi r24,lo8(112)	 ;  tmp113,
 	st X,r24		 ;  MEM[(volatile uint8_t *)98B], tmp113
- ;  main.c:193: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
+ ;  main.c:191: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
 	lds r30,N1000	 ;  N1000, N1000
 	ldi r31,0		 ;  N1000
 	subi r30,lo8(-(seg_pat))	 ;  tmp117,
 	sbci r31,hi8(-(seg_pat))	 ;  tmp117,
 	ld r24,Z		 ;  _33, seg_pat
- ;  main.c:193: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
+ ;  main.c:191: 		PORTB = seg_pat[N1000];     // 1000자리 표시  
 	out 0x18,r24	 ;  MEM[(volatile uint8_t *)56B], _33
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r24,lo8(11999)	 ; ,
@@ -571,7 +571,7 @@ Seg4_out:
 	rjmp .	
 	nop	
 /* epilogue start */
- ;  main.c:196: }
+ ;  main.c:194: }
 	ret	
 	.size	Seg4_out, .-Seg4_out
 .global	ReadSwitchInput
@@ -581,10 +581,10 @@ ReadSwitchInput:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:241: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
+ ;  main.c:239: 	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
 	in r24,0x1	 ;  _1, MEM[(volatile uint8_t *)33B]
 	com r24		 ;  tmp47
- ;  main.c:245: }
+ ;  main.c:243: }
 	andi r24,lo8(-16)	 ; ,
 /* epilogue start */
 	ret	

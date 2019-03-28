@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{40c88078-7819-44ec-9b53-45714dd18a5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Device">
+      <UniqueIdentifier>{f17d8b72-20cd-4111-a681-30399bbfed4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{4d298c14-cf96-445b-b946-f92da2d8f141}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -52,6 +58,9 @@
       <Filter>Source Files\Test</Filter>
     </ClCompile>
     <ClCompile Include="array.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Display.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +90,15 @@
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="array.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Display.h">
+      <Filter>Header Files\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="math.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>

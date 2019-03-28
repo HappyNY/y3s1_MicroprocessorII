@@ -162,8 +162,7 @@ const char seg_pat[16] = {
 };
 
 void Seg4_out( int num )
-{
-
+{ 
 	int i, buf;
 
 	N1000 = num / 1000;             // 1000자리 추출
@@ -179,8 +178,7 @@ void Seg4_out( int num )
 		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
 		PORTB = seg_pat[N1];        // 1자리 표시  
 		_delay_ms( 2 );
-
-
+		 
 		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
 		PORTB = seg_pat[N10];       // 10자리 표시  
 		_delay_ms( 2 );

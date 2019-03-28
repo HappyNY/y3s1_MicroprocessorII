@@ -12,7 +12,7 @@ DEFINE_TEST( FArrayTest )
 	ENSURE_TRUE( GetMemoryOccupation( arr._data ) >= OFST*COUNT, "lhs: %d, rhs: %d", GetMemoryOccupation(arr._data), OFST*COUNT );
 
 	const int LOOP_CNT = 5;
-	for(int i = 0; i < LOOP_CNT; ++i)
+	for ( int i = 0; i < LOOP_CNT; ++i )
 	{
 		size_type AssignedIndex = TArray_AddLast( &arr, &i );
 		ENSURE_TRUE( AssignedIndex == i, "actual: %d != %d", AssignedIndex, i );
