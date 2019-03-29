@@ -11,12 +11,17 @@ byte* LCDBuffer;
 
 void LCDDevice__Initialize()
 {
+	// Software initialization
 	LCDBuffer = Malloc( LCD_BUFFER_LENGTH );
+
+	// Hardware associated functionality.
+
 }
 
 
 void LCDDevice__Render()
 {
+	// @todo. Hardware associated functionality.
 }
 
 void DrawLine( byte x0, byte y0, byte x1, byte y1 )

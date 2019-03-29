@@ -34,9 +34,28 @@ typedef uint8 FActiveSwitchList;
 FActiveSwitchList ReadSwitchInput();
 void UpdateLight();
 
-ISR( TIMER0_COMP_vect )
+ISR( TIMER0_COMP_vect/*TIMER0_OVF_vect */)
 {
-	// PORTC = ~PORTC; 
+	// static byte led = 0xfe;
+	static byte led = 0xff;
+	static byte cnt = 0;
+
+	++cnt;
+	if ( cnt == 50 )
+	{
+		cnt = 0;
+		led = ~led;
+		PORTC = led;
+	}
+	//TCNT0 = 0;
+
+	//led <<= 1;
+	//led |= 0x01;
+	//if ( led == 0xff )
+	//{
+	//	led = 0xfe;
+	//}
+	//PORTC = led; 
 }
 
 void InitializeEnvironment()
@@ -49,10 +68,17 @@ void InitializeEnvironment()
 
 	// Timer 0
 	ASSR = 0;
-	TCCR0 = mask( CS02, CS01, CS00 );
+	TCCR0 = mask( WGM01, CS02, CS01, CS00 );
 	TIMSK &= ~mask( OCIE0, TOIE0 );
-	TIMSK |= mask( OCIE0 );
-	OCR0 = 0x80;
+	TIMSK |= mask( OCIE0/*TOIE0*/ );
+	OCR0 = 155;
+	
+	// Timer 1
+	TCCR1A = 0b00001011;
+	TCCR1B = 0x05;
+	TCCR1C = 0x0;
+	TCNT1 = 0x0;
+	OCR1C = 0x200;
 
 	// EXT interrupt 
 	EIMSK = mask( INT4, INT5 );
@@ -72,7 +98,7 @@ int main( void )
 
 	while ( 1 )
 	{
-		UpdateLight();
+		// UpdateLight();
 	}
 
 	return 0;
@@ -81,35 +107,24 @@ int main( void )
 byte pos = 0;
 byte N1000 = 0, N100 = 0, N10 = 0, N1 = 0;
 bool bUpdate = 0;
+int16 pwm = 0x200;
 
 ISR( INT4_vect )
-{ 
+{
 	bUpdate = !bUpdate;
 
-	/*static bool flag_ff = 0;
-	const int SW1 = mask( PE4 ), SW2 = mask( PE5 );
-	const int inp = ReadSwitchInput();
-
-	if ( is_true( inp ) && !flag_ff )
-	{
-		flag_ff = true;
-		if ( SW1 & inp )
-		{
-		}
-		if ( SW2 & inp )
-		{
-			N1000 = N100 = N10 = N1 = 0;
-		}
-	}
-	else if ( !is_true( inp ) )
-	{
-		flag_ff = false;
-	}*/
+	pwm += 0x40;
+	pwm = pwm > 0x3b0 ? 0x3b0 : pwm;
+	OCR1C = pwm;
 } 
 
 ISR( INT5_vect )
 {
 	N1000 = N100 = N10 = N1 = 0;
+
+	pwm -= 0x40;
+	pwm = pwm < 0x040 ? 0x040 : pwm;
+	OCR1C = pwm;
 }
 
 void UpdateLight()

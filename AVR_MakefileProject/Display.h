@@ -12,7 +12,6 @@
 
 #define LCD_BUFFER_LENGTH (LCD_WIDTH * LCD_HEGIHT / PIXELS_PER_BYTE)
 
-
 extern byte* LCDBuffer;
 
 void LCDDevice__Initialize();
@@ -20,6 +19,8 @@ void LCDDevice__Render();
 
 inline void Clear()
 {
+	TCNT3 = 0x2222;
+	TCNT1 = 0x5555;
 	byte* pHead = LCDBuffer;
 	const byte* pEnd = LCDBuffer + LCD_BUFFER_LENGTH;
 
