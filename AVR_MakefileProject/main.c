@@ -34,30 +34,6 @@ typedef uint8 FActiveSwitchList;
 FActiveSwitchList ReadSwitchInput();
 void UpdateLight();
 
-ISR( TIMER0_COMP_vect/*TIMER0_OVF_vect */)
-{
-	// static byte led = 0xfe;
-	static byte led = 0xff;
-	static byte cnt = 0;
-
-	++cnt;
-	if ( cnt == 50 )
-	{
-		cnt = 0;
-		led = ~led;
-		PORTC = led;
-	}
-	//TCNT0 = 0;
-
-	//led <<= 1;
-	//led |= 0x01;
-	//if ( led == 0xff )
-	//{
-	//	led = 0xfe;
-	//}
-	//PORTC = led; 
-}
-
 void InitializeEnvironment()
 {
 	// Port RW
@@ -73,12 +49,14 @@ void InitializeEnvironment()
 	TIMSK |= mask( OCIE0/*TOIE0*/ );
 	OCR0 = 155;
 	
-	// Timer 1
-	TCCR1A = 0b00001011;
-	TCCR1B = 0x05;
+	// Timer 
+	TCCR1A = 0; // mask();
+	TCCR1B = mask( CS11, CS10 );
 	TCCR1C = 0x0;
-	TCNT1 = 0x0;
-	OCR1C = 0x200;
+	TCNT1 = 0x0; 
+	TIMSK |= mask( TOIE1 );
+
+	
 
 	// EXT interrupt 
 	EIMSK = mask( INT4, INT5 );
@@ -98,7 +76,7 @@ int main( void )
 
 	while ( 1 )
 	{
-		// UpdateLight();
+		UpdateLight();
 	}
 
 	return 0;
@@ -106,25 +84,50 @@ int main( void )
 
 byte pos = 0;
 byte N1000 = 0, N100 = 0, N10 = 0, N1 = 0;
-bool bUpdate = 0;
-int16 pwm = 0x200;
+// bool bUpdate = 0; 
+
+ISR( TIMER1_OVF_vect )
+{
+	TCNT1 = 0xffff - 2499;
+	void update();
+	//if ( bUpdate )
+	{
+		update();
+	}
+}
 
 ISR( INT4_vect )
 {
-	bUpdate = !bUpdate;
-
-	pwm += 0x40;
-	pwm = pwm > 0x3b0 ? 0x3b0 : pwm;
-	OCR1C = pwm;
+	// bUpdate = !bUpdate; 
+	TCCR1B ^= 0b11;
 } 
 
 ISR( INT5_vect )
 {
 	N1000 = N100 = N10 = N1 = 0;
+}
 
-	pwm -= 0x40;
-	pwm = pwm < 0x040 ? 0x040 : pwm;
-	OCR1C = pwm;
+ISR( TIMER0_COMP_vect/*TIMER0_OVF_vect */ )
+{
+	// static byte led = 0xfe; 
+	int16 num;
+	void Seg4_out( int num );
+	int16 out = num >> 4;
+	PORTC = out & 0xff;
+	num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
+	out = ( out << 4 );
+
+	
+	Seg4_out( num );
+	//TCNT0 = 0;
+
+	//led <<= 1;
+	//led |= 0x01;
+	//if ( led == 0xff )
+	//{
+	//	led = 0xfe;
+	//}
+	//PORTC = led; 
 }
 
 void UpdateLight()
@@ -137,13 +140,9 @@ void UpdateLight()
 
 	while ( 1 )
 	{
-		TrigInterrupt();
-		if ( bUpdate )
-		{
-			update();
-		}
-		num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
-		Seg4_out( num );
+		TrigInterrupt(); 
+		// num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
+		// Seg4_out( num );
 	}
 }
 
