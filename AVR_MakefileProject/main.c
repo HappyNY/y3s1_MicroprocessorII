@@ -44,19 +44,21 @@ void InitializeEnvironment()
 
 	// Timer 0
 	ASSR = 0;
-	TCCR0 = mask( WGM01, CS02, CS01, CS00 );
-	TIMSK &= ~mask( OCIE0, TOIE0 );
+	TCCR0 = mask( WGM01, CS02, CS01, CS00 ); 
 	TIMSK |= mask( OCIE0/*TOIE0*/ );
 	OCR0 = 155;
 	
-	// Timer 
+	// Timer 1
 	TCCR1A = 0; // mask();
-	TCCR1B = mask( CS11, CS10 );
-	TCCR1C = 0x0;
+	TCCR1B = 0;
+	TCCR1C = 0;
 	TCNT1 = 0x0; 
 	TIMSK |= mask( TOIE1 );
 
-	
+	// Timer 2
+	TCCR2 = mask( WGM21, CS22, CS20 );
+	TIMSK |= mask( OCIE2 );
+	OCR2 = 16;
 
 	// EXT interrupt 
 	EIMSK = mask( INT4, INT5 );
@@ -67,7 +69,7 @@ void InitializeEnvironment()
 
 	// enable interrupt
 	SREG = 0x80;
-}
+} 
 
 int main( void )
 {  
@@ -90,10 +92,20 @@ ISR( TIMER1_OVF_vect )
 {
 	TCNT1 = 0xffff - 2499;
 	void update();
-	//if ( bUpdate )
-	{
-		update();
-	}
+	update();
+}
+
+ISR( TIMER2_COMP_vect )
+{
+	const byte nums[] = { N1, N10, N100, N1000 };
+	static byte idx = 0;
+	const byte max_idx = 4;
+
+	void SegOut( byte, byte );
+	SegOut( idx, nums[idx] );
+
+	++idx;
+	idx = idx < max_idx ? idx : 0;
 }
 
 ISR( INT4_vect )
@@ -110,39 +122,24 @@ ISR( INT5_vect )
 ISR( TIMER0_COMP_vect/*TIMER0_OVF_vect */ )
 {
 	// static byte led = 0xfe; 
-	int16 num;
-	void Seg4_out( int num );
-	int16 out = num >> 4;
-	PORTC = out & 0xff;
+	int16 num; 
+	int16 out;
 	num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
-	out = ( out << 4 );
+	out = num >> 4;
+	out = (~( out << 4 ) & 0xf0) + ( out & 0xf );
 
-	
-	Seg4_out( num );
-	//TCNT0 = 0;
-
-	//led <<= 1;
-	//led |= 0x01;
-	//if ( led == 0xff )
-	//{
-	//	led = 0xfe;
-	//}
-	//PORTC = led; 
+	PORTC = out;
 }
 
 void UpdateLight()
 {
 	void update( void );
 	void TrigInterrupt( void );
-	static int num = 0;
-	void Seg4_out( int num );
-	void Seg2_out( int );
+	static int num = 0; 
 
 	while ( 1 )
 	{
-		TrigInterrupt(); 
-		// num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
-		// Seg4_out( num );
+		TrigInterrupt();   
 	}
 }
 
@@ -175,37 +172,12 @@ const char seg_pat[16] = {
 	0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71 
 };
 
-void Seg4_out( int num )
-{ 
-	int i, buf;
-
-	N1000 = num / 1000;             // 1000자리 추출
-	buf = num % 1000;
-
-	N100 = buf / 100;               // 100자리 추출
-	buf = buf % 100;
-
-	N10 = buf / 10;                 // 10자리 추출
-	N1 = buf % 10;                  // 1자리 추출    
-
-	for ( i = 0; i < 1; i++ ) {
-		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
-		PORTB = seg_pat[N1];        // 1자리 표시  
-		_delay_ms( 2 );
-		 
-		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
-		PORTB = seg_pat[N10];       // 10자리 표시  
-		_delay_ms( 2 );
-
-		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
-		PORTB = seg_pat[N100];      // 100자리 표시  
-		_delay_ms( 3 );
-
-		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
-		PORTB = seg_pat[N1000];     // 1000자리 표시  
-		_delay_ms( 3 );
-	}
+void SegOut( byte idx, byte digit )
+{
+	PORTF = 0xff ^ ( 0x01 << ( 4 + idx ) );
+	PORTB = seg_pat[digit];
 }
+
 /*
 void UpdateLight_1()
 {
@@ -246,6 +218,7 @@ void UpdateLight_0()
 	PORTC = LightState;
 }
 */
+
 FActiveSwitchList ReadSwitchInput()
 {
 	const int SWITCH_PIN_MASK = 0xf0;
