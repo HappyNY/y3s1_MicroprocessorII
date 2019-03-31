@@ -22,6 +22,7 @@ void main( void )
 #else // !_DEVELOP == ON TEST
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include "math.h"
 
 enum {
 	ESWITCH_MASK_0 = 0x10, 
@@ -61,8 +62,8 @@ void InitializeEnvironment()
 	OCR2 = 16;
 
 	// EXT interrupt 
-	EIMSK = mask( INT4, INT5 );
-	EICRB = mask( 1, 3 );
+	EIMSK = mask( INT4, INT5, INT6, INT7 );
+	EICRB = mask( 1, 3, 5, 7 );
 
 	// Port init
 	PORTC = mask( 0, 1, 2, 3, 4 );
@@ -85,33 +86,110 @@ int main( void )
 }
 
 byte pos = 0;
-byte N1000 = 0, N100 = 0, N10 = 0, N1 = 0;
-// bool bUpdate = 0; 
+byte N1000 = 0, N100 = 0, N10 = 0, N1 = 0; 
+uint16 Records[8];
+byte RecordIdx = 0;
+byte MaxRecord = 0;
+byte StopwatchBrowseCursor = 0;
+
+typedef enum {
+	ESDM_Stopwatch,
+	ESDM_BrowseRecord
+} EStopwatchDisplayMode;
+
+EStopwatchDisplayMode StopwatchDisplayMode = ESDM_Stopwatch;
+
+void Record( byte s10, byte s1, byte ms100, byte ms10 )
+{ 
+	const uint16 EncodedRecord 
+		= ( ( s10 & 0xf ) << 12 )
+		| ( ( s1 & 0xf ) << 8 )
+		| ( ( ms100 & 0xf ) << 4 )
+		| ( ms10 & 0xf );
+	
+	Records[RecordIdx] = EncodedRecord;
+	++RecordIdx;
+	MaxRecord = max16( MaxRecord, RecordIdx );
+	if ( RecordIdx == ARRAYCOUNT( Records ) )
+	{
+		RecordIdx = 0;
+	}
+}
+
+bool IsStopwatchRunning()
+{
+	return is_true( TCCR1B & 0b11 );
+}
+
+ISR( INT6_vect )
+{
+	if ( IsStopwatchRunning() )
+	{
+		Record( N1000, N100, N10, N1 );
+	}
+}
+
+ISR( INT7_vect )
+{
+	// Stopwatch browser
+	if ( StopwatchDisplayMode == ESDM_Stopwatch
+		 && MaxRecord > 0 )
+	{
+		StopwatchDisplayMode = ESDM_BrowseRecord;
+
+		StopwatchBrowseCursor = RecordIdx; 
+	}
+	else
+	{
+		++StopwatchBrowseCursor;
+
+		if ( StopwatchBrowseCursor == RecordIdx 
+			 || ( StopwatchBrowseCursor == MaxRecord && RecordIdx == 0 ) )
+		{
+			StopwatchDisplayMode = ESDM_Stopwatch;
+		}
+
+	}
+
+	StopwatchBrowseCursor = StopwatchBrowseCursor < MaxRecord ? StopwatchBrowseCursor : 0;
+}
 
 ISR( TIMER1_OVF_vect )
 {
-	TCNT1 = 0xffff - 2499;
+	// Update count. per 10ms.
 	void update();
+
+	TCNT1 = 0xffff - 2499;
 	update();
 }
 
 ISR( TIMER2_COMP_vect )
 {
-	const byte nums[] = { N1, N10, N100, N1000 };
+	void SegOut( byte, byte );
 	static byte idx = 0;
 	const byte max_idx = 4;
+	byte HexToDisplay = 15; 
 
-	void SegOut( byte, byte );
-	SegOut( idx, nums[idx] );
+	// Performs segment output
+	if ( StopwatchDisplayMode == ESDM_Stopwatch )
+	{
+		const static byte* nums[] = { &N1, &N10, &N100, &N1000 };
+		HexToDisplay = *nums[idx];
+	}
+	else
+	{
+		uint16 BrowsingRecord = Records[StopwatchBrowseCursor];
+		HexToDisplay = BrowsingRecord >> ( 4 * idx );
+	}
 
-	++idx;
-	idx = idx < max_idx ? idx : 0;
+	SegOut( idx, HexToDisplay );
+
+	idx = ++idx < max_idx ? idx : 0;
 }
 
 ISR( INT4_vect )
 {
-	// bUpdate = !bUpdate; 
-	TCCR1B ^= 0b11;
+	TCCR1B ^= 0b11; 
 } 
 
 ISR( INT5_vect )
@@ -121,14 +199,34 @@ ISR( INT5_vect )
 
 ISR( TIMER0_COMP_vect/*TIMER0_OVF_vect */ )
 {
-	// static byte led = 0xfe; 
-	int16 num; 
-	int16 out;
-	num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
-	out = num >> 4;
-	out = (~( out << 4 ) & 0xf0) + ( out & 0xf );
+	// Output record status
+	const byte MAX_FLICKER_COUNT = 15;
+	static byte FlickerCount = 0;
+	static bool bUnlitFocusedIndex = false;
 
-	PORTC = out;
+	byte LedOutput = 0xff;
+
+	LedOutput >>= MaxRecord;
+
+	if ( ++FlickerCount > MAX_FLICKER_COUNT )
+	{
+		FlickerCount = 0;
+		bUnlitFocusedIndex = !bUnlitFocusedIndex;
+	}
+
+	if ( bUnlitFocusedIndex )
+	{
+		if ( StopwatchDisplayMode == ESDM_BrowseRecord )
+		{
+			LedOutput |= ( 0x80u >> StopwatchBrowseCursor );
+		}
+		else
+		{
+			LedOutput |= ( 0x80u >> RecordIdx );
+		}
+	}
+
+	PORTC = LedOutput;
 }
 
 void UpdateLight()
@@ -175,7 +273,7 @@ const char seg_pat[16] = {
 void SegOut( byte idx, byte digit )
 {
 	PORTF = 0xff ^ ( 0x01 << ( 4 + idx ) );
-	PORTB = seg_pat[digit];
+	PORTB = seg_pat[digit & 0xf];
 }
 
 /*
