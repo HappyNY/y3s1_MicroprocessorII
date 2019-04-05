@@ -1,0 +1,77 @@
+(ExpressProject "Design1"
+  (ProjectVersion "19981106")
+  (ProjectType "PCB")
+  (Folder "Design Resources"
+    (Folder "Library"
+      (File ".\lib.olb"
+        (Type "Schematic Library")))
+    (NoModify)
+    (File ".\main.dsn"
+      (Type "Schematic Design")
+      (DisplayName ".\main.DSN"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x"))
+  (Folder "Outputs")
+  (Folder "Referenced Projects")
+  (PartMRUSelector
+    (GND
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (VCC
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (74FCT2573
+      (FullPartName "74FCT2573.Normal")
+      (LibraryName
+         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
+      (DeviceIndex "0"))
+    (74ACT825
+      (FullPartName "74ACT825.Normal")
+      (LibraryName
+         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
+      (DeviceIndex "0"))
+    (74ACT16373/SO
+      (FullPartName "74ACT16373/SO.Normal")
+      (LibraryName
+         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
+      (DeviceIndex "0"))
+    (74AHC16373/SO
+      (FullPartName "74AHC16373/SO.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\LATCH.OLB")
+      (DeviceIndex "0"))
+    (IS62C256AL_45ULI
+      (FullPartName "IS62C256AL_45ULI.Normal")
+      (LibraryName
+         "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\IS62C256AL_45ULI.OLB")
+      (DeviceIndex "0"))
+    (ATmega128
+      (FullPartName "ATmega128.Normal")
+      (LibraryName "D:\ONEDRIVE\EDU\COMMON\AVR.OLB")
+      (DeviceIndex "0")))
+  (LastUsedLibraryBrowseDirectory
+     "D:\Onedrive\Edu\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs")
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" ".\main.dsn")
+      (Path "Design Resources" ".\main.dsn" "SCHEMATIC1")
+      (Path "Design Resources" ".\main.dsn" "Design Cache")
+      (Path "Design Resources" "Library")
+      (Path "Design Resources" "Library" ".\lib.olb"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 0 200 0 579"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -31 52 1540 52 670")
+        (Scroll "0 59")
+        (Zoom "72")
+        (Occurrence "/"))
+      (Path
+         "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\MAIN.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "PAGE1"))))
