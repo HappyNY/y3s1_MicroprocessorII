@@ -198,8 +198,9 @@ move *.s Intermediate\</NMakeBuildCommandLine>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="array.c" />
+    <ClCompile Include="container.c" />
     <ClCompile Include="ArrayTest.cpp" />
+    <ClCompile Include="CGROM.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="memory128.c" />
     <ClCompile Include="MemoryTest.cpp" />
@@ -210,7 +211,7 @@ move *.s Intermediate\</NMakeBuildCommandLine>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assertion.h" />
-    <ClInclude Include="array.h" />
+    <ClInclude Include="container.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="assertion.c" />
     <ClInclude Include="Graphics.h" />

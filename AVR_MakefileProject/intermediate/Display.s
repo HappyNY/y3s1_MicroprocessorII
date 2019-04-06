@@ -71,8 +71,8 @@ LCDDevice__Initialize:
 /* stack size = 0 */
 .L__stack_usage = 0
  ;  Display.c:15: 	LCDBuffer = Malloc( LCD_BUFFER_LENGTH );
-	ldi r24,0		 ; 
-	ldi r25,lo8(15)	 ; ,
+	ldi r24,lo8(-64)	 ; ,
+	ldi r25,lo8(3)	 ; ,
 	call Malloc	 ; 
  ;  Display.c:15: 	LCDBuffer = Malloc( LCD_BUFFER_LENGTH );
 	sts LCDBuffer+1,r25	 ;  LCDBuffer,
@@ -95,9 +95,6 @@ LCDDevice__Render:
 .global	DrawLine
 	.type	DrawLine, @function
 DrawLine:
-	push r7		 ; 
-	push r8		 ; 
-	push r9		 ; 
 	push r10		 ; 
 	push r11		 ; 
 	push r12		 ; 
@@ -110,137 +107,144 @@ DrawLine:
 	push r29		 ; 
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 13 */
-.L__stack_usage = 13
- ;  Display.c:29: 	int16 dx = abs8( x1 - x0 );
-	mov r16,r20	 ;  tmp75, x1
-	sub r16,r24	 ;  tmp75, x0
- ;  math.h:7: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
-	mov __tmp_reg__,r16	 ; 
+/* stack size = 10 */
+.L__stack_usage = 10
+ ;  Display.c:31: 	int16 dx = abs8( x1 - x0 );
+	mov r28,r20	 ;  tmp75, x1
+	sub r28,r24	 ;  tmp75, x0
+ ;  math.h:10: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
+	mov __tmp_reg__,r28	 ; 
 	lsl r0		 ; 
-	sbc r17,r17	 ; 
-	sbrs r17,7	 ;  tmp77,
+	sbc r29,r29	 ; 
+	sbrs r29,7	 ;  tmp77,
 	rjmp .L5		 ; 
-	neg r17	 ;  tmp77
-	neg r16	 ;  tmp77
-	sbc r17,__zero_reg__	 ;  tmp77
+	neg r29	 ;  tmp77
+	neg r28	 ;  tmp77
+	sbc r29,__zero_reg__	 ;  tmp77
 .L5:
- ;  Display.c:29: 	int16 dx = abs8( x1 - x0 );
-	mov __tmp_reg__,r16	 ; 
+ ;  Display.c:31: 	int16 dx = abs8( x1 - x0 );
+	mov __tmp_reg__,r28	 ; 
 	lsl r0		 ; 
-	sbc r17,r17	 ; 
- ;  Display.c:30: 	int8 sx = x0 < x1 ? 1 : -1;
-	ldi r21,lo8(-1)	 ;  prephitmp_91,
+	sbc r29,r29	 ; 
+ ;  Display.c:32: 	int8 sx = x0 < x1 ? 1 : -1;
+	ldi r19,lo8(-1)	 ;  prephitmp_28,
 	cp r24,r20		 ;  x0, x1
 	brsh .L6		 ; ,
-	ldi r21,lo8(1)	 ;  prephitmp_91,
+	ldi r19,lo8(1)	 ;  prephitmp_28,
 .L6:
- ;  math.h:7: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
-	mov r8,r18	 ;  y1, y1
+ ;  math.h:10: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
+	mov r14,r18	 ;  y1, y1
 	mov __tmp_reg__,r18	 ; 
 	lsl r0		 ; 
-	sbc r9,r9	 ; 
-	sbrs r9,7	 ;  y1,
+	sbc r15,r15	 ; 
+	sbrs r15,7	 ;  y1,
 	rjmp .L7		 ; 
-	neg r9	 ;  y1
-	neg r8	 ;  y1
-	sbc r9,__zero_reg__	 ;  y1
+	neg r15	 ;  y1
+	neg r14	 ;  y1
+	sbc r15,__zero_reg__	 ;  y1
 .L7:
- ;  Display.c:31: 	int16 dy = -abs8( y1 - 0 );
-	mov __tmp_reg__,r8	 ; 
+ ;  Display.c:33: 	int16 dy = -abs8( y1 - 0 );
+	mov __tmp_reg__,r14	 ; 
 	lsl r0		 ; 
-	sbc r9,r9	 ; 
- ;  Display.c:31: 	int16 dy = -abs8( y1 - 0 );
-	clr r10	 ;  dy
-	clr r11	 ;  dy
-	sub r10,r8	 ;  dy, _5
-	sbc r11,r9	 ;  dy, _5
- ;  Display.c:32: 	int8 sy = y0 < y1 ? 1 : -1;
-	ldi r23,lo8(-1)	 ;  prephitmp_92,
+	sbc r15,r15	 ; 
+ ;  Display.c:33: 	int16 dy = -abs8( y1 - 0 );
+	clr r16	 ;  dy
+	clr r17	 ;  dy
+	sub r16,r14	 ;  dy, _5
+	sbc r17,r15	 ;  dy, _5
+ ;  Display.c:34: 	int8 sy = y0 < y1 ? 1 : -1;
+	ldi r21,lo8(-1)	 ;  prephitmp_65,
 	cp r22,r18		 ;  y0, y1
 	brsh .L8		 ; ,
-	ldi r23,lo8(1)	 ;  prephitmp_92,
+	ldi r21,lo8(1)	 ;  prephitmp_65,
 .L8:
-	movw r28,r16	 ;  err, dx
-	sub r28,r8	 ;  err, _5
-	sbc r29,r9	 ;  err, _5
-	ldi r25,lo8(30)	 ; ,
-	mul r22,r25	 ;  y0,
-	movw r14,r0	 ;  tmp93
-	clr __zero_reg__
-	mov r19,r24	 ;  Page, x0
-	lsr r19	 ;  Page
-	lsr r19	 ;  Page
-	lsr r19	 ;  Page
-	mov r25,r24	 ;  Idx, x0
-	andi r25,lo8(7)	 ;  Idx,
- ;  Display.h:39: 	const byte Mask = mask( Idx );
-	clr r12		 ;  tmp89
-	inc r12		 ;  tmp89
+	movw r30,r28	 ;  err, dx
+	sub r30,r14	 ;  err, _5
+	sbc r31,r15	 ;  err, _5
+ ;  Display.h:41:         const uint16 Block = LCD_PAGE * y + Page;
+	ldi r23,lo8(15)	 ;  tmp94,
+ ;  Display.h:42:         const byte Mask = mask( Idx );
+	clr r12		 ;  tmp95
+	inc r12		 ;  tmp95
 	mov r13,__zero_reg__	 ; 
 .L9:
- ;  Display.h:40: 	LCDBuffer[Block] |= Mask;
-	lds r30,LCDBuffer	 ;  LCDBuffer, LCDBuffer
-	lds r31,LCDBuffer+1	 ;  LCDBuffer, LCDBuffer
-	movw r26,r14	 ;  Block, tmp93
-	add r26,r19	 ;  Block, Page
-	adc r27,__zero_reg__	 ;  Block
-	add r26,r30	 ;  _47, LCDBuffer
-	adc r27,r31	 ;  _47, LCDBuffer
-	ld r7,X		 ;  *_47, *_47
-	movw r30,r12	 ;  tmp88, tmp89
-	mov r0,r25	 ; , Idx
-	rjmp 2f	
-	1:	
-	lsl r30		 ;  tmp88
-	2:	
-	dec r0		 ; 
-	brpl 1b	
-	or r30,r7		 ;  tmp90, *_47
-	st X,r30		 ;  *_47, tmp90
- ;  Display.c:37: 		if ( x0 == x1 && y0 == y1 ) break;
-	cp r24,r20		 ;  x0, x1
-	breq .L16		 ; ,
-.L10:
- ;  Display.c:38: 		e2 = 2 * err;
-	movw r30,r28	 ;  e2, err
-	lsl r30	 ;  e2
-	rol r31	 ;  e2
- ;  Display.c:39: 		if ( e2 >= dy ) {
-	cp r30,r10	 ;  e2, dy
-	cpc r31,r11	 ;  e2, dy
-	brlt .L12		 ; ,
-	sub r28,r8	 ;  err, _5
-	sbc r29,r9	 ;  err, _5
- ;  Display.c:41: 			x0 += sx;
-	add r24,r21	 ;  x0, prephitmp_91
-	mov r19,r24	 ;  Page, x0
-	lsr r19	 ;  Page
-	lsr r19	 ;  Page
-	lsr r19	 ;  Page
+ ;  Display.h:36:     if( 0 <= x && x < LCD_WIDTH
+	cpi r24,lo8(120)	 ;  x0,
+	brsh .L10		 ; ,
+.L19:
+ ;  Display.h:37:         && 0 <= y && y < LCD_HEGIHT )
+	cpi r22,lo8(64)	 ;  y0,
+	brsh .L10		 ; ,
+ ;  Display.h:39:         const byte Page = x >> 3;
+	mov r26,r24	 ;  Page, x0
+	lsr r26	 ;  Page
+	lsr r26	 ;  Page
+	lsr r26	 ;  Page
+ ;  Display.h:41:         const uint16 Block = LCD_PAGE * y + Page;
+	ldi r27,0		 ;  Page
+	mul r22,r23	 ;  y0, tmp94
+	add r26,r0	 ;  Block
+	adc r27,r1	 ;  Block
+	clr __zero_reg__
+ ;  Display.h:43:         LCDBuffer[Block] |= Mask;
+	lds r10,LCDBuffer	 ;  LCDBuffer, LCDBuffer
+	lds r11,LCDBuffer+1	 ;  LCDBuffer, LCDBuffer
+	add r26,r10	 ;  _50, LCDBuffer
+	adc r27,r11	 ;  _50, LCDBuffer
+ ;  Display.h:40:         const byte Idx = x & 0b111;
 	mov r25,r24	 ;  Idx, x0
 	andi r25,lo8(7)	 ;  Idx,
-.L12:
- ;  Display.c:43: 		if ( e2 <= dx ) {
-	cp r16,r30	 ;  dx, e2
-	cpc r17,r31	 ;  dx, e2
+ ;  Display.h:42:         const byte Mask = mask( Idx );
+	movw r10,r12	 ;  tmp88, tmp95
+	rjmp 2f	
+	1:	
+	lsl r10		 ;  tmp88
+	2:	
+	dec r25		 ;  Idx
+	brpl 1b	
+ ;  Display.h:43:         LCDBuffer[Block] |= Mask;
+	ld r25,X		 ;  *_50, *_50
+	or r25,r10		 ;  tmp90, tmp88
+	st X,r25		 ;  *_50, tmp90
+.L10:
+ ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
+	cp r24,r20		 ;  x0, x1
+	breq .L18		 ; ,
+.L11:
+ ;  Display.c:40: 		e2 = 2 * err;
+	movw r26,r30	 ;  e2, err
+	lsl r26	 ;  e2
+	rol r27	 ;  e2
+ ;  Display.c:41: 		if ( e2 >= dy ) {
+	cp r26,r16	 ;  e2, dy
+	cpc r27,r17	 ;  e2, dy
+	brlt .L13		 ; ,
+	sub r30,r14	 ;  err, _5
+	sbc r31,r15	 ;  err, _5
+ ;  Display.c:43: 			x0 += sx;
+	add r24,r19	 ;  x0, prephitmp_28
+.L13:
+ ;  Display.c:45: 		if ( e2 <= dx ) {
+	cp r28,r26	 ;  dx, e2
+	cpc r29,r27	 ;  dx, e2
 	brlt .L9		 ; ,
- ;  Display.c:44: 			err += dx;
-	add r28,r16	 ;  err, dx
-	adc r29,r17	 ;  err, dx
- ;  Display.c:45: 			y0 += sy;
-	add r22,r23	 ;  y0, prephitmp_92
-	ldi r30,lo8(30)	 ; ,
-	mul r22,r30	 ;  y0,
-	movw r14,r0	 ;  tmp93
-	clr __zero_reg__
-	rjmp .L9		 ; 
-.L16:
- ;  Display.c:37: 		if ( x0 == x1 && y0 == y1 ) break;
+ ;  Display.c:46: 			err += dx;
+	add r30,r28	 ;  err, dx
+	adc r31,r29	 ;  err, dx
+ ;  Display.c:47: 			y0 += sy;
+	add r22,r21	 ;  y0, prephitmp_65
+ ;  Display.h:36:     if( 0 <= x && x < LCD_WIDTH
+	cpi r24,lo8(120)	 ;  x0,
+	brlo .L19		 ; ,
+ ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
+	cpse r24,r20	 ;  x0, x1
+	rjmp .L11	 ; 
+.L18:
+ ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
 	cpse r22,r18	 ;  y0, y1
-	rjmp .L10	 ; 
+	rjmp .L11	 ; 
 /* epilogue start */
- ;  Display.c:48: }
+ ;  Display.c:50: }
 	pop r29		 ; 
 	pop r28		 ; 
 	pop r17		 ; 
@@ -251,9 +255,6 @@ DrawLine:
 	pop r12		 ; 
 	pop r11		 ; 
 	pop r10		 ; 
-	pop r9		 ; 
-	pop r8		 ; 
-	pop r7		 ; 
 	ret	
 	.size	DrawLine, .-DrawLine
 	.comm	LCDBuffer,2,1

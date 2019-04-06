@@ -13,3 +13,16 @@
 #define mask(...) _MASK_GETMACRO(__VA_ARGS__, _MASK_SETBIT7, _MASK_SETBIT6, _MASK_SETBIT5, _MASK_SETBIT4, _MASK_SETBIT3, _MASK_SETBIT2, _MASK_SETBIT1, _MASK_SETBIT0)(__VA_ARGS__)
 
 #define ARRAYCOUNT(Array) (sizeof(Array)/sizeof(*Array))
+
+extern byte INTERRUPT_LOCK_MUTEX;
+
+#define DISABLE_INTERRUPT { SREG = 0x00; ++INTERRUPT_LOCK_MUTEX; }
+#define ENABLE_INTERRUPT if(--INTERRUPT_LOCK_MUTEX == 0) { SREG = 0x80; }
+
+
+#define portc_dbgout(val) PORTC = val
+
+#define _DEBUG
+
+#define LOG_VERBOSE 1
+#define ENABLE_HEAP_CACHE 1

@@ -57,10 +57,13 @@
     <ClCompile Include="ArrayTest.cpp">
       <Filter>Source Files\Test</Filter>
     </ClCompile>
-    <ClCompile Include="array.c">
+    <ClCompile Include="Display.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Display.c">
+    <ClCompile Include="CGROM.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="container.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,9 +92,6 @@
     <ClInclude Include="macros.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="array.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Session.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -106,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="Program.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="container.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -26,6 +26,8 @@ void LCDDevice__Render()
 
 void DrawLine( byte x0, byte y0, byte x1, byte y1 )
 {
+    // @todo. Line validation.
+
 	int16 dx = abs8( x1 - x0 );
 	int8 sx = x0 < x1 ? 1 : -1;
 	int16 dy = -abs8( y1 - 0 );
