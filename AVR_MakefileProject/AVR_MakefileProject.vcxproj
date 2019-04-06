@@ -213,10 +213,12 @@ move *.s Intermediate\</NMakeBuildCommandLine>
     <ClInclude Include="array.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="assertion.c" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="macros.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="memory128.h" />
     <ClInclude Include="Display.h" />
+    <ClInclude Include="Program.h" />
     <ClInclude Include="Serial.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="types.h" />

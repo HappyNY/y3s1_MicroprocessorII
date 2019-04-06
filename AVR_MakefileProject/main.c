@@ -1,6 +1,5 @@
 #include "core.h"
-#include "array.h"
-
+#include "array.h" 
 #define _DEVELOP 0
 
 #ifdef _EXEC // For logic tests ... windoes execution files.

@@ -115,7 +115,7 @@ DrawLine:
  ;  Display.c:29: 	int16 dx = abs8( x1 - x0 );
 	mov r16,r20	 ;  tmp75, x1
 	sub r16,r24	 ;  tmp75, x0
- ;  math.h:4: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
+ ;  math.h:7: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
 	mov __tmp_reg__,r16	 ; 
 	lsl r0		 ; 
 	sbc r17,r17	 ; 
@@ -135,7 +135,7 @@ DrawLine:
 	brsh .L6		 ; ,
 	ldi r21,lo8(1)	 ;  prephitmp_91,
 .L6:
- ;  math.h:4: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
+ ;  math.h:7: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
 	mov r8,r18	 ;  y1, y1
 	mov __tmp_reg__,r18	 ; 
 	lsl r0		 ; 
