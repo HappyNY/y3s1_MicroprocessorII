@@ -13,6 +13,7 @@
 #define assertf(...)
 #define verifyf(expr, ...) if(!is_true(expr)) { while(1); }
 #define log_verbose(...)
+#define log_display(...)
 #else // defined _DEBUG
 #if LOG_VERBOSE
 #define log_verbose(...) log_display(__VA_ARGS__)

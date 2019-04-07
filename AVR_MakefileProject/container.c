@@ -6,15 +6,16 @@ size_type TArray_AddLast( TArray * const pArray, void const * const Element )
     uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
     const uint8 ofst = pArray->_ofst;
 
-    if ( (void*) ( pCursor + ofst ) >= GetMemoryBound( pArray->_data ) ) {
+    if ( pArray->_count == pArray->_capacity ) {
         // Extend array
         void* OldData = pArray->_data;
-        const uint16 OldSize = GetMemoryOccupation( OldData );
+        const uint16 OldSize = pArray->_capacity * ofst;
         const uint16 NewSize = OldSize << 1;
 
         pArray->_data = Malloc( NewSize );
         memcpy( pArray->_data, OldData, OldSize );
         Free( OldData );
+        pArray->_capacity <<= 1; // twice the current.
     }
     memcpy( pCursor, Element, ofst );
     return pArray->_count++;
@@ -27,8 +28,7 @@ void FString_Initialize( FString * const pString, const char * InitData )
     TArray_Initialize( pString, sizeof( char ), length + 1 );
     strcpy( pString->_data, InitData );
     pString->_count = length + 1;
-
-    // log_verbose( "Initialized string %s", pString->_data );
+    pString->_capacity = length + 1;
 }
 
 void TArray_RemoveElement( TArray * const pArray, size_type Index )

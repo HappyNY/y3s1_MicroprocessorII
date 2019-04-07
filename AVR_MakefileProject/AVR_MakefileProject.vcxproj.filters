@@ -113,5 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="program.out" />
+    <None Include="output.map" />
+    <None Include="dump.s" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 // N must be 8 * byte size 
 typedef struct TArray_DontModifyElems {
     uint16 _count;
+    uint16 _capacity;
     uint8 _ofst;
     uint8* _data;
 } TArray;

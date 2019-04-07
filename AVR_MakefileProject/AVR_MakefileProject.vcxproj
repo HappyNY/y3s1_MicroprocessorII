@@ -108,9 +108,11 @@
 rmdir /S /Q intermediate
 )
 mkdir intermediate
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
-move *.s Intermediate\</NMakeBuildCommandLine>
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -g -D _DEBUG -Xlinker -Map=output.map 
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -g -D _DEBUG
+move *.s Intermediate\
+
+avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <NMakeOutput>program.out</NMakeOutput>
     <NMakePreprocessorDefinitions>INTELLISENSE;WIN32;_DEBUG;$(NMakePreprocessorDefinitions);int=__int16</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
@@ -146,9 +148,11 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
 rmdir /S /Q intermediate
 )
 mkdir intermediate
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -D _DEBUG
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -D _DEBUG
-move *.s Intermediate\</NMakeBuildCommandLine>
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O1 -g -D _DEBUG -Xlinker -Map=output.map 
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O1 -g -D _DEBUG
+move *.s Intermediate\
+
+avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <NMakeOutput>program.out</NMakeOutput>
     <NMakePreprocessorDefinitions>INTELLISENSE;_DEBUG;$(NMakePreprocessorDefinitions);</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
@@ -171,9 +175,11 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
 rmdir /S /Q intermediate
 )
 mkdir intermediate
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O3
-move *.s Intermediate\</NMakeBuildCommandLine>
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3 -Xlinker -Map=output.map -fdata-sections -ffunction-sections -Wl,--gc-sections 
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -Os
+move *.s Intermediate\
+
+avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <NMakeOutput>program.out</NMakeOutput>
     <NMakeCleanCommandLine>C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O2</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>INTELLISENSE;WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
@@ -185,9 +191,11 @@ move *.s Intermediate\</NMakeBuildCommandLine>
 rmdir /S /Q intermediate
 )
 mkdir intermediate
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -O3
-move *.s Intermediate\</NMakeBuildCommandLine>
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3 -Xlinker -Map=output.map -fdata-sections -ffunction-sections -Wl,--gc-sections 
+C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -Os
+move *.s Intermediate\
+
+avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <NMakeOutput>program.out</NMakeOutput>
     <NMakeCleanCommandLine>
     </NMakeCleanCommandLine>
@@ -226,6 +234,8 @@ move *.s Intermediate\</NMakeBuildCommandLine>
     <ClInclude Include="__TestMain.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="dump.s" />
+    <None Include="output.map" />
     <None Include="program.out" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,13 +1,13 @@
-#include "memory128.h" 
-#include "assertion.h"
+#include "memory128.h"  
 
+#if !USE_STDLIB_MALLOC
 #if LOG_MEMORY
 #define log_memory log_verbose
 #else
 #define log_memory(...)
 #endif
 
-#define HEAP_MAX_BYTE 0x500
+#define HEAP_MAX_BYTE 0xa00
 #define HEAP_MAX_BLOCK (HEAP_MAX_BYTE>>1)
 
 typedef uint16 memblock_t;
@@ -169,3 +169,4 @@ void * GetMemoryBound( void * Ptr )
     stepMarkerForwardUnchecked( &pMarker );
     return pMarker;
 }
+#endif

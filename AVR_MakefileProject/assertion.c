@@ -2,20 +2,21 @@
 #include <stdlib.h>
 #include "assertion.h"
 
+#ifdef _DEBUG
 void internal_assertion_failed( const char* FILE, int LINE, const char* msg )
 {
 #ifdef __DUMP_RS232_ON_ABORT__
     // @todo. dump memory
 #endif // __DUMP_RS232_ON_ABORT__
-    outputmsg_uart0( "\nASSERTION::-------->\non file \"" );
+    outputmsg_uart0( "\r\nASSERTION::-------->\non file \"" );
     outputmsg_uart0( FILE );
     outputmsg_uart0( "\" ... line: " );
     char buff[32];
     itoa( LINE, buff, 10 );
     outputmsg_uart0( buff );
-    outputmsg_uart0( "\n" );
+    outputmsg_uart0( "\r\n" );
     outputmsg_uart0( msg );
-    outputmsg_uart0( "\n<---------::ASSERTION\n" );
+    outputmsg_uart0( "\r\n<---------::ASSERTION\r\n" );
     while ( 1 );
 }
 
@@ -33,8 +34,9 @@ void internal_logslow( const char* FILE, int LINE, const char * msg )
     char buff[32];
     itoa( LINE, buff, 10 );
     outputmsg_uart0( buff );
-    outputmsg_uart0( "] \n" ); 
+    outputmsg_uart0( "] \r\n" ); 
 }
+#endif
 
 void outputmsg_uart0( const char* msg )
 { 

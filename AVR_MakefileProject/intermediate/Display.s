@@ -12,7 +12,7 @@ __zero_reg__ = 1
  ;  options passed:  -imultilib avr51
  ;  -iprefix c:\mingw\avrgcc\bin\../lib/gcc/avr/8.3.0/ -D__AVR_ATmega128__
  ;  -D__AVR_DEVICE_NAME__=atmega128 Display.c -mn-flash=2 -mno-skip-bug
- ;  -mmcu=avr51 -O3 -fverbose-asm
+ ;  -mmcu=avr51 -Os -fverbose-asm
  ;  options enabled:  -Wmisspelled-isr -faggressive-loop-optimizations
  ;  -falign-functions -falign-jumps -falign-labels -falign-loops
  ;  -fauto-inc-dec -fbranch-count-reg -fchkp-check-incomplete-type
@@ -25,42 +25,37 @@ __zero_reg__ = 1
  ;  -fdevirtualize-speculatively -fdwarf2-cfi-asm -fearly-inlining
  ;  -feliminate-unused-debug-types -fexpensive-optimizations
  ;  -fforward-propagate -ffp-int-builtin-inexact -ffunction-cse -fgcse
- ;  -fgcse-after-reload -fgcse-lm -fgnu-runtime -fgnu-unique
- ;  -fguess-branch-probability -fhoist-adjacent-loads -fident
- ;  -fif-conversion -fif-conversion2 -findirect-inlining -finline
- ;  -finline-atomics -finline-functions -finline-functions-called-once
- ;  -finline-small-functions -fipa-bit-cp -fipa-cp -fipa-cp-clone -fipa-icf
- ;  -fipa-icf-functions -fipa-icf-variables -fipa-profile -fipa-pure-const
- ;  -fipa-ra -fipa-reference -fipa-sra -fipa-vrp -fira-hoist-pressure
- ;  -fira-share-save-slots -fira-share-spill-slots
- ;  -fisolate-erroneous-paths-dereference -fivopts -fkeep-static-consts
- ;  -fleading-underscore -flifetime-dse -floop-interchange
- ;  -floop-unroll-and-jam -flra-remat -flto-odr-type-merging -fmath-errno
- ;  -fmerge-constants -fmerge-debug-strings -fmove-loop-invariants
- ;  -fomit-frame-pointer -foptimize-sibling-calls -foptimize-strlen
- ;  -fpartial-inlining -fpeel-loops -fpeephole -fpeephole2 -fplt
- ;  -fpredictive-commoning -fprefetch-loop-arrays -freg-struct-return
- ;  -freorder-blocks -freorder-functions -frerun-cse-after-loop
+ ;  -fgcse-lm -fgnu-runtime -fgnu-unique -fguess-branch-probability
+ ;  -fhoist-adjacent-loads -fident -fif-conversion -fif-conversion2
+ ;  -findirect-inlining -finline -finline-atomics -finline-functions
+ ;  -finline-functions-called-once -finline-small-functions -fipa-bit-cp
+ ;  -fipa-cp -fipa-icf -fipa-icf-functions -fipa-icf-variables
+ ;  -fipa-profile -fipa-pure-const -fipa-ra -fipa-reference -fipa-sra
+ ;  -fipa-vrp -fira-hoist-pressure -fira-share-save-slots
+ ;  -fira-share-spill-slots -fisolate-erroneous-paths-dereference -fivopts
+ ;  -fkeep-static-consts -fleading-underscore -flifetime-dse -flra-remat
+ ;  -flto-odr-type-merging -fmath-errno -fmerge-constants
+ ;  -fmerge-debug-strings -fmove-loop-invariants -fomit-frame-pointer
+ ;  -foptimize-sibling-calls -fpartial-inlining -fpeephole -fpeephole2
+ ;  -fplt -fprefetch-loop-arrays -freg-struct-return -freorder-blocks
+ ;  -freorder-functions -frerun-cse-after-loop
  ;  -fsched-critical-path-heuristic -fsched-dep-count-heuristic
  ;  -fsched-group-heuristic -fsched-interblock -fsched-last-insn-heuristic
  ;  -fsched-rank-heuristic -fsched-spec -fsched-spec-insn-heuristic
  ;  -fsched-stalled-insns-dep -fschedule-fusion -fsemantic-interposition
  ;  -fshow-column -fshrink-wrap -fshrink-wrap-separate -fsigned-zeros
- ;  -fsplit-ivs-in-unroller -fsplit-loops -fsplit-paths -fsplit-wide-types
- ;  -fssa-backprop -fssa-phiopt -fstdarg-opt -fstore-merging
- ;  -fstrict-aliasing -fstrict-volatile-bitfields -fsync-libcalls
- ;  -fthread-jumps -ftoplevel-reorder -ftrapping-math -ftree-bit-ccp
+ ;  -fsplit-ivs-in-unroller -fsplit-wide-types -fssa-backprop -fssa-phiopt
+ ;  -fstdarg-opt -fstore-merging -fstrict-aliasing
+ ;  -fstrict-volatile-bitfields -fsync-libcalls -fthread-jumps
+ ;  -ftoplevel-reorder -ftrapping-math -ftree-bit-ccp
  ;  -ftree-builtin-call-dce -ftree-ccp -ftree-ch -ftree-coalesce-vars
  ;  -ftree-copy-prop -ftree-dce -ftree-dominator-opts -ftree-dse
- ;  -ftree-forwprop -ftree-fre -ftree-loop-distribute-patterns
- ;  -ftree-loop-distribution -ftree-loop-if-convert -ftree-loop-im
- ;  -ftree-loop-ivcanon -ftree-loop-optimize -ftree-loop-vectorize
- ;  -ftree-parallelize-loops= -ftree-partial-pre -ftree-phiprop -ftree-pre
- ;  -ftree-pta -ftree-reassoc -ftree-scev-cprop -ftree-sink
- ;  -ftree-slp-vectorize -ftree-slsr -ftree-sra -ftree-switch-conversion
- ;  -ftree-tail-merge -ftree-ter -ftree-vrp -funit-at-a-time
- ;  -funswitch-loops -fverbose-asm -fzero-initialized-in-bss
- ;  -mgas-isr-prologues -mmain-is-OS_task
+ ;  -ftree-forwprop -ftree-fre -ftree-loop-if-convert -ftree-loop-im
+ ;  -ftree-loop-ivcanon -ftree-loop-optimize -ftree-parallelize-loops=
+ ;  -ftree-phiprop -ftree-pre -ftree-pta -ftree-reassoc -ftree-scev-cprop
+ ;  -ftree-sink -ftree-slsr -ftree-sra -ftree-switch-conversion
+ ;  -ftree-tail-merge -ftree-ter -ftree-vrp -funit-at-a-time -fverbose-asm
+ ;  -fzero-initialized-in-bss -mgas-isr-prologues -mmain-is-OS_task
 
 	.text
 .global	LCDDevice__Initialize
@@ -95,6 +90,10 @@ LCDDevice__Render:
 .global	DrawLine
 	.type	DrawLine, @function
 DrawLine:
+	push r6		 ; 
+	push r7		 ; 
+	push r8		 ; 
+	push r9		 ; 
 	push r10		 ; 
 	push r11		 ; 
 	push r12		 ; 
@@ -107,142 +106,105 @@ DrawLine:
 	push r29		 ; 
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 10 */
-.L__stack_usage = 10
+/* stack size = 14 */
+.L__stack_usage = 14
+	mov r28,r24	 ;  x0, x0
+	mov r29,r22	 ;  y0, y0
+	mov r9,r20	 ;  x1, x1
+	mov r8,r18	 ;  y1, y1
  ;  Display.c:31: 	int16 dx = abs8( x1 - x0 );
-	mov r28,r20	 ;  tmp75, x1
-	sub r28,r24	 ;  tmp75, x0
+	mov r24,r20	 ;  tmp64, x1
+	sub r24,r28	 ;  tmp64, x0
  ;  math.h:10: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
-	mov __tmp_reg__,r28	 ; 
+	mov __tmp_reg__,r24	 ; 
 	lsl r0		 ; 
-	sbc r29,r29	 ; 
-	sbrs r29,7	 ;  tmp77,
-	rjmp .L5		 ; 
-	neg r29	 ;  tmp77
-	neg r28	 ;  tmp77
-	sbc r29,__zero_reg__	 ;  tmp77
-.L5:
+	sbc r25,r25	 ; 
+	sbrs r25,7	 ;  tmp66,
+	rjmp .L4		 ; 
+	neg r25	 ;  tmp66
+	neg r24	 ;  tmp66
+	sbc r25,__zero_reg__	 ;  tmp66
+.L4:
  ;  Display.c:31: 	int16 dx = abs8( x1 - x0 );
-	mov __tmp_reg__,r28	 ; 
-	lsl r0		 ; 
-	sbc r29,r29	 ; 
+	mov r16,r24	 ;  dx, tmp66
+	lsl r24		 ; 
+	sbc r17,r17	 ; 
  ;  Display.c:32: 	int8 sx = x0 < x1 ? 1 : -1;
-	ldi r19,lo8(-1)	 ;  prephitmp_28,
-	cp r24,r20		 ;  x0, x1
-	brsh .L6		 ; ,
-	ldi r19,lo8(1)	 ;  prephitmp_28,
-.L6:
+	clr r6		 ;  iftmp.0_13
+	dec r6		 ;  iftmp.0_13
+	cp r28,r9		 ;  x0, x1
+	brsh .L5		 ; ,
+	clr r6		 ;  iftmp.0_13
+	inc r6		 ;  iftmp.0_13
+.L5:
  ;  math.h:10: inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
-	mov r14,r18	 ;  y1, y1
-	mov __tmp_reg__,r18	 ; 
+	mov r12,r8	 ;  y1, y1
+	mov __tmp_reg__,r8	 ; 
 	lsl r0		 ; 
-	sbc r15,r15	 ; 
-	sbrs r15,7	 ;  y1,
-	rjmp .L7		 ; 
-	neg r15	 ;  y1
-	neg r14	 ;  y1
-	sbc r15,__zero_reg__	 ;  y1
-.L7:
+	sbc r13,r13	 ; 
+	sbrs r13,7	 ;  y1,
+	rjmp .L6		 ; 
+	neg r13	 ;  y1
+	neg r12	 ;  y1
+	sbc r13,__zero_reg__	 ;  y1
+.L6:
  ;  Display.c:33: 	int16 dy = -abs8( y1 - 0 );
-	mov __tmp_reg__,r14	 ; 
+	mov __tmp_reg__,r12	 ; 
 	lsl r0		 ; 
-	sbc r15,r15	 ; 
+	sbc r13,r13	 ; 
  ;  Display.c:33: 	int16 dy = -abs8( y1 - 0 );
-	clr r16	 ;  dy
-	clr r17	 ;  dy
-	sub r16,r14	 ;  dy, _5
-	sbc r17,r15	 ;  dy, _5
+	clr r10	 ;  dy
+	clr r11	 ;  dy
+	sub r10,r12	 ;  dy, _5
+	sbc r11,r13	 ;  dy, _5
  ;  Display.c:34: 	int8 sy = y0 < y1 ? 1 : -1;
-	ldi r21,lo8(-1)	 ;  prephitmp_65,
-	cp r22,r18		 ;  y0, y1
-	brsh .L8		 ; ,
-	ldi r21,lo8(1)	 ;  prephitmp_65,
+	clr r7		 ;  iftmp.2_14
+	dec r7		 ;  iftmp.2_14
+	cp r29,r8		 ;  y0, y1
+	brsh .L7		 ; ,
+ ;  Display.c:34: 	int8 sy = y0 < y1 ? 1 : -1;
+	clr r7		 ;  iftmp.2_14
+	inc r7		 ;  iftmp.2_14
+.L7:
+	movw r14,r16	 ;  err, dx
+	sub r14,r12	 ;  err, _5
+	sbc r15,r13	 ;  err, _5
 .L8:
-	movw r30,r28	 ;  err, dx
-	sub r30,r14	 ;  err, _5
-	sbc r31,r15	 ;  err, _5
- ;  Display.h:41:         const uint16 Block = LCD_PAGE * y + Page;
-	ldi r23,lo8(15)	 ;  tmp94,
- ;  Display.h:42:         const byte Mask = mask( Idx );
-	clr r12		 ;  tmp95
-	inc r12		 ;  tmp95
-	mov r13,__zero_reg__	 ; 
+ ;  Display.c:38: 		DrawDot( x0, y0 );
+	mov r22,r29	 ; , y0
+	mov r24,r28	 ; , x0
+	call DrawDot	 ; 
+ ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
+	cpse r28,r9	 ;  x0, x1
+	rjmp .L9	 ; 
+ ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
+	cp r29,r8		 ;  y0, y1
+	breq .L3		 ; ,
 .L9:
- ;  Display.h:36:     if( 0 <= x && x < LCD_WIDTH
-	cpi r24,lo8(120)	 ;  x0,
-	brsh .L10		 ; ,
-.L19:
- ;  Display.h:37:         && 0 <= y && y < LCD_HEGIHT )
-	cpi r22,lo8(64)	 ;  y0,
-	brsh .L10		 ; ,
- ;  Display.h:39:         const byte Page = x >> 3;
-	mov r26,r24	 ;  Page, x0
-	lsr r26	 ;  Page
-	lsr r26	 ;  Page
-	lsr r26	 ;  Page
- ;  Display.h:41:         const uint16 Block = LCD_PAGE * y + Page;
-	ldi r27,0		 ;  Page
-	mul r22,r23	 ;  y0, tmp94
-	add r26,r0	 ;  Block
-	adc r27,r1	 ;  Block
-	clr __zero_reg__
- ;  Display.h:43:         LCDBuffer[Block] |= Mask;
-	lds r10,LCDBuffer	 ;  LCDBuffer, LCDBuffer
-	lds r11,LCDBuffer+1	 ;  LCDBuffer, LCDBuffer
-	add r26,r10	 ;  _50, LCDBuffer
-	adc r27,r11	 ;  _50, LCDBuffer
- ;  Display.h:40:         const byte Idx = x & 0b111;
-	mov r25,r24	 ;  Idx, x0
-	andi r25,lo8(7)	 ;  Idx,
- ;  Display.h:42:         const byte Mask = mask( Idx );
-	movw r10,r12	 ;  tmp88, tmp95
-	rjmp 2f	
-	1:	
-	lsl r10		 ;  tmp88
-	2:	
-	dec r25		 ;  Idx
-	brpl 1b	
- ;  Display.h:43:         LCDBuffer[Block] |= Mask;
-	ld r25,X		 ;  *_50, *_50
-	or r25,r10		 ;  tmp90, tmp88
-	st X,r25		 ;  *_50, tmp90
-.L10:
- ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
-	cp r24,r20		 ;  x0, x1
-	breq .L18		 ; ,
-.L11:
  ;  Display.c:40: 		e2 = 2 * err;
-	movw r26,r30	 ;  e2, err
-	lsl r26	 ;  e2
-	rol r27	 ;  e2
+	movw r24,r14	 ;  e2, err
+	lsl r24	 ;  e2
+	rol r25	 ;  e2
  ;  Display.c:41: 		if ( e2 >= dy ) {
-	cp r26,r16	 ;  e2, dy
-	cpc r27,r17	 ;  e2, dy
-	brlt .L13		 ; ,
-	sub r30,r14	 ;  err, _5
-	sbc r31,r15	 ;  err, _5
+	cp r24,r10	 ;  e2, dy
+	cpc r25,r11	 ;  e2, dy
+	brlt .L11		 ; ,
+	sub r14,r12	 ;  err, _5
+	sbc r15,r13	 ;  err, _5
  ;  Display.c:43: 			x0 += sx;
-	add r24,r19	 ;  x0, prephitmp_28
-.L13:
+	add r28,r6	 ;  x0, iftmp.0_13
+.L11:
  ;  Display.c:45: 		if ( e2 <= dx ) {
-	cp r28,r26	 ;  dx, e2
-	cpc r29,r27	 ;  dx, e2
-	brlt .L9		 ; ,
+	cp r16,r24	 ;  dx, e2
+	cpc r17,r25	 ;  dx, e2
+	brlt .L8		 ; ,
  ;  Display.c:46: 			err += dx;
-	add r30,r28	 ;  err, dx
-	adc r31,r29	 ;  err, dx
+	add r14,r16	 ;  err, dx
+	adc r15,r17	 ;  err, dx
  ;  Display.c:47: 			y0 += sy;
-	add r22,r21	 ;  y0, prephitmp_65
- ;  Display.h:36:     if( 0 <= x && x < LCD_WIDTH
-	cpi r24,lo8(120)	 ;  x0,
-	brlo .L19		 ; ,
- ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
-	cpse r24,r20	 ;  x0, x1
-	rjmp .L11	 ; 
-.L18:
- ;  Display.c:39: 		if ( x0 == x1 && y0 == y1 ) break;
-	cpse r22,r18	 ;  y0, y1
-	rjmp .L11	 ; 
+	add r29,r7	 ;  y0, iftmp.2_14
+	rjmp .L8		 ; 
+.L3:
 /* epilogue start */
  ;  Display.c:50: }
 	pop r29		 ; 
@@ -255,6 +217,10 @@ DrawLine:
 	pop r12		 ; 
 	pop r11		 ; 
 	pop r10		 ; 
+	pop r9		 ; 
+	pop r8		 ; 
+	pop r7		 ; 
+	pop r6		 ; 
 	ret	
 	.size	DrawLine, .-DrawLine
 	.comm	LCDBuffer,2,1

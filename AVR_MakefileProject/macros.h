@@ -22,7 +22,19 @@ extern byte INTERRUPT_LOCK_MUTEX;
 
 #define portc_dbgout(val) PORTC = val
 
-#define _DEBUG
+#define ENABLE_DEBUG 1
 
-#define LOG_VERBOSE 1
+#if ENABLE_DEBUG
+#define LOG_VERBOSE 1 
+#define LOG_MEMORY 0
+#endif
+
 #define ENABLE_HEAP_CACHE 1
+#define USE_STDLIB_MALLOC 1
+
+
+#if ENABLE_DEBUG
+#ifndef _DEBUG
+#define _DEBUG
+#endif
+#endif
