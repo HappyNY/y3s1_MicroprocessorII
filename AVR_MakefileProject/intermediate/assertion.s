@@ -66,30 +66,38 @@ outputmsg_uart0:
 /* stack size = 0 */
 .L__stack_usage = 0
  ;  assertion.c:43:     DISABLE_INTERRUPT;
-	out __SREG__,__zero_reg__	 ;  MEM[(volatile uint8_t *)95B],
-	lds r18,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r18,lo8(-(1))	 ;  tmp56,
-	sts INTERRUPT_LOCK_MUTEX,r18	 ;  INTERRUPT_LOCK_MUTEX, tmp56
-	movw r30,r24	 ;  ivtmp.8, msg
+/* #APP */
+ ;  43 "assertion.c" 1
+	cli	
+ ;  0 "" 2
+/* #NOAPP */
+	lds r18,__INTERRUPT_LOCK_MUTEX__	 ;  _2, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
+	subi r18,lo8(-(1))	 ;  _3,
+	sts __INTERRUPT_LOCK_MUTEX__,r18	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _3
+	movw r30,r24	 ; ,
 .L2:
  ;  assertion.c:46:     while ( *head != '\0' )
-	ld r25,Z+		 ;  _6, MEM[base: _25, offset: 0B]
+	ld r24,Z+		 ;  _6, MEM[base: _26, offset: 0B]
  ;  assertion.c:46:     while ( *head != '\0' )
-	cpse r25,__zero_reg__	 ;  _6,
+	cpse r24,__zero_reg__	 ;  _6,
 	rjmp .L3	 ; 
 .L4:
  ;  assertion.c:52:     while ( !( UCSR0A & 0x20 ) );
 	sbis 0xb,5	 ; ,
 	rjmp .L4		 ; 
  ;  assertion.c:53:     ENABLE_INTERRUPT;
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _8, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
 	subi r24,lo8(-(-1))	 ;  _9,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, _9
-	cpse r24,__zero_reg__	 ;  _9,
+	sts __INTERRUPT_LOCK_MUTEX__,r24	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _9
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _10, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
+	cpse r24,__zero_reg__	 ;  _10,
 	rjmp .L1	 ; 
  ;  assertion.c:53:     ENABLE_INTERRUPT;
-	ldi r24,lo8(-128)	 ;  tmp65,
-	out __SREG__,r24	 ;  MEM[(volatile uint8_t *)95B], tmp65
+/* #APP */
+ ;  53 "assertion.c" 1
+	sei	
+ ;  0 "" 2
+/* #NOAPP */
 .L1:
 /* epilogue start */
  ;  assertion.c:54: } 
@@ -99,18 +107,18 @@ outputmsg_uart0:
 	sbis 0xb,5	 ; ,
 	rjmp .L3		 ; 
  ;  assertion.c:49:         UDR0 = *( head++ );
-	out 0xc,r25	 ;  MEM[(volatile uint8_t *)44B], _6
+	out 0xc,r24	 ;  MEM[(volatile uint8_t *)44B], _6
 	rjmp .L2		 ; 
 	.size	outputmsg_uart0, .-outputmsg_uart0
 	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC0:
-	.string	"\nASSERTION::-------->\non file \""
+	.string	"\r\nASSERTION::-------->\non file \""
 .LC1:
 	.string	"\" ... line: "
 .LC2:
-	.string	"\n"
+	.string	"\r\n"
 .LC3:
-	.string	"\n<---------::ASSERTION\n"
+	.string	"\r\n<---------::ASSERTION\r\n"
 	.text
 .global	internal_assertion_failed
 	.type	internal_assertion_failed, @function
@@ -132,7 +140,7 @@ internal_assertion_failed:
 	movw r12,r24	 ;  FILE, FILE
 	movw r14,r22	 ;  LINE, LINE
 	movw r16,r20	 ;  msg, msg
- ;  assertion.c:11:     outputmsg_uart0( "\nASSERTION::-------->\non file \"" );
+ ;  assertion.c:11:     outputmsg_uart0( "\r\nASSERTION::-------->\non file \"" );
 	ldi r24,lo8(.LC0)	 ; ,
 	ldi r25,hi8(.LC0)	 ; ,
 	call outputmsg_uart0	 ; 
@@ -154,14 +162,14 @@ internal_assertion_failed:
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call outputmsg_uart0	 ; 
- ;  assertion.c:17:     outputmsg_uart0( "\n" );
+ ;  assertion.c:17:     outputmsg_uart0( "\r\n" );
 	ldi r24,lo8(.LC2)	 ; ,
 	ldi r25,hi8(.LC2)	 ; ,
 	call outputmsg_uart0	 ; 
  ;  assertion.c:18:     outputmsg_uart0( msg );
 	movw r24,r16	 ; , msg
 	call outputmsg_uart0	 ; 
- ;  assertion.c:19:     outputmsg_uart0( "\n<---------::ASSERTION\n" );
+ ;  assertion.c:19:     outputmsg_uart0( "\r\n<---------::ASSERTION\r\n" );
 	ldi r24,lo8(.LC3)	 ; ,
 	ldi r25,hi8(.LC3)	 ; ,
 	call outputmsg_uart0	 ; 
@@ -176,7 +184,7 @@ internal_assertion_failed:
 .LC6:
 	.string	" ... line: "
 .LC7:
-	.string	"] \n"
+	.string	"] \r\n"
 	.text
 .global	internal_logslow
 	.type	internal_logslow, @function
@@ -233,7 +241,7 @@ internal_logslow:
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call outputmsg_uart0	 ; 
- ;  assertion.c:37:     outputmsg_uart0( "] \n" ); 
+ ;  assertion.c:37:     outputmsg_uart0( "] \r\n" ); 
 	ldi r24,lo8(.LC7)	 ; ,
 	ldi r25,hi8(.LC7)	 ; ,
 	call outputmsg_uart0	 ; 

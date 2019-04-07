@@ -13,7 +13,7 @@
 #define assertf(...)
 #define verifyf(expr, ...) if(!is_true(expr)) { while(1); }
 #define log_verbose(...)
-#define log_display(...)
+#define log_display(...) { char __buff__[256]; sprintf(__buff__, __VA_ARGS__); outputmsg_uart0(__buff__); outputmsg_uart0("\r\n"); }
 #else // defined _DEBUG
 #if LOG_VERBOSE
 #define log_verbose(...) log_display(__VA_ARGS__)

@@ -1,34 +1,31 @@
 #include "memory128.h"  
+#include "math.h"
 
-#if !USE_STDLIB_MALLOC
-#if LOG_MEMORY
-#define log_memory log_verbose
+
+#if USE_STDLIB_MALLOC
+// NO CODE HERE 
 #else
-#define log_memory(...)
-#endif
 
 #define HEAP_MAX_BYTE 0xa00
 #define HEAP_MAX_BLOCK (HEAP_MAX_BYTE>>1)
 
 typedef uint16 memblock_t;
-memblock_t membuff[HEAP_MAX_BLOCK];
-
-#define HEAP_LOCATION membuff // ((memblock_t*)0x8000)
 
 #define	EDM_MaskAvailableBit ((uint16)0x8000u)
 #define EDM_MaskMemOfst ((uint16)0x7fffu)
 #define GetMarkerSize(Marker) ((Marker)&EDM_MaskMemOfst)
 #define isAvailableMarker(Marker) (((Marker)&EDM_MaskAvailableBit)!=0)
 
-memblock_t* MEMORY = HEAP_LOCATION;
+memblock_t* MEMORY; // = HEAP_LOCATION;
 #if ENABLE_HEAP_CACHE
 // which enables allocating small memory blocks much faster.
-memblock_t* pMarkerCache = HEAP_LOCATION;
+memblock_t* pMarkerHead; // = HEAP_LOCATION;
 #endif
 
 inline void stepMarkerForwardUnchecked( memblock_t** pMarker )
 {
     *pMarker += GetMarkerSize( **pMarker ) + 1;
+    assertf( *pMarker < MEMORY + HEAP_MAX_BLOCK, "Memory Allocation failed" );
 }
 
 inline void stepMarkerForward( memblock_t** pMarker )
@@ -41,8 +38,8 @@ inline void stepMarkerForward( memblock_t** pMarker )
 
 inline void markMemoryOccupied( memblock_t* pMarker, uint16 SizeInBlocks )
 {
-    uint16 SizeAvailableMemory = GetMarkerSize( *pMarker );
-    uint16 SizeNextMemory = SizeAvailableMemory - SizeInBlocks;
+    const uint16 SizeAvailableMemory = GetMarkerSize( *pMarker );
+    const uint16 SizeNextMemory = SizeAvailableMemory - SizeInBlocks;
     //.
     assertf( SizeInBlocks < HEAP_MAX_BYTE, "Too large memory allocation request" );
     assertf( isAvailableMarker( *pMarker ), "Marker on given location must be available" );
@@ -57,7 +54,10 @@ inline void markMemoryOccupied( memblock_t* pMarker, uint16 SizeInBlocks )
         *pMarker = EDM_MaskAvailableBit;
         *pMarker |= SizeNextMemory - 1/*marker*/;
 #if ENABLE_HEAP_CACHE
-        pMarkerCache = pMarker;
+        // if ( !isAvailableMarker( *pMarkerHead ) || pMarker < pMarkerHead )
+        // {
+            pMarkerHead = pMarker;
+        // }
 #endif
     }
 }
@@ -82,39 +82,60 @@ inline void mergeMarker( memblock_t* pMarker )
 inline memblock_t* mergeAndFindAvailableMarker( size_type SizeInBlocks )
 {
     // @now 
+#if !ENABLE_HEAP_CACHE
     memblock_t* pHead = MEMORY;
-#if ENABLE_HEAP_CACHE
-    if ( isAvailableMarker( *pMarkerCache ) )
+#else
+    memblock_t* pHead;
+    if ( isAvailableMarker( *pMarkerHead ) )
     {
-        mergeMarker( pMarkerCache );
-        if ( GetMarkerSize( *pMarkerCache ) >= SizeInBlocks )
+        // mergeMarker( pMarkerHead );
+        pHead = pMarkerHead;
+        if ( GetMarkerSize( *pMarkerHead ) >= SizeInBlocks )
         {
             log_memory( "Marker cache hit" );
-            pHead = pMarkerCache;
             return pHead;
         }
+    }
+    else
+    {
+        pHead = MEMORY;
     }
 #endif
 
     //.
-    while ( pHead != NULL )
-    {
-        if ( isAvailableMarker( *pHead ) )
-        {
+    while ( pHead != NULL ) {
+        if ( isAvailableMarker( *pHead ) ) {
             mergeMarker( pHead );
-            if ( GetMarkerSize( *pHead ) >= SizeInBlocks ) {
+            if ( GetMarkerSize( *pHead ) >= SizeInBlocks )
+            {
                 return pHead;
             }
         }
         stepMarkerForward( &pHead );
     }
 
+    pHead = MEMORY;
+    while ( 1 ) {
+        if ( isAvailableMarker( *pHead ) ) {
+            mergeMarker( pHead );
+            if ( GetMarkerSize( *pHead ) >= SizeInBlocks ) {
+                return pHead;
+            }
+        }
+        stepMarkerForwardUnchecked( &pHead );
+    }
+
     // error...
-    return NULL/*== pHead*/;
+    // return NULL/*== pHead*/;
 }
 
-void InitMemory()
+void InitMemory( void* MemLocation )
 {
+    if ( MemLocation )
+    {
+        MEMORY = MemLocation;
+        pMarkerHead = MEMORY;
+    }
     MEMORY[0] = ( EDM_MaskAvailableBit | ( EDM_MaskMemOfst & ( HEAP_MAX_BLOCK - 1/*marker*/ ) ) );
 }
 
@@ -145,15 +166,19 @@ void Free( void * Ptr )
 {
     DISABLE_INTERRUPT;
 
-    assertf( Ptr != NULL, "Null pointer has delievered "  );
+    verifyf( Ptr != NULL, "Null pointer has delievered "  );
+
     memblock_t* pMarker = (memblock_t*) Ptr - 1;
 
     //. 
     freeMarker( pMarker );
     mergeMarker( pMarker );
 
-    log_memory( "Set free memory on %p, marker[%d-%8d]", Ptr, isAvailableMarker( *pMarker ), GetMarkerSize( *pMarker ) );
+#if ENABLE_HEAP_CACHE
+    pMarkerHead = math_min( pMarkerHead, pMarker );
+#endif
 
+    log_memory( "Free memory on %p, marker[%d-%8d]", Ptr, isAvailableMarker( *pMarker ), GetMarkerSize( *pMarker ) );
     ENABLE_INTERRUPT;
 }
 

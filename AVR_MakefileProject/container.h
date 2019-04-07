@@ -1,27 +1,27 @@
 #pragma once
+#include "Intellisense.h"
 #include "types.h"
-#include "memory128.h"
 #include "assertion.h"
 #include <string.h>
+#include "memory128.h"
 
 /** Dynamic array. All struct elements are read only. */
 // N must be 8 * byte size 
-typedef struct TArray_DontModifyElems {
+typedef struct TArray {
     uint16 _count;
-    uint16 _capacity;
     uint8 _ofst;
     uint8* _data;
 } TArray;
 
 typedef TArray FString;
 
-typedef struct TListNode_DontModifyElems {
-    struct TListNode_DontModifyElems* Prev;
-    struct TListNode_DontModifyElems* Next;
+typedef struct TListNode {
+    struct TListNode* Prev;
+    struct TListNode* Next;
     void* Element;
 } TListNode;
 
-typedef struct TList_DontModifyElems {
+typedef struct TList {
     uint8 _ofst; 
     // CAUTION: READ ONLY!
     TListNode* Head;

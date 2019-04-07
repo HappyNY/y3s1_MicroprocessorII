@@ -6,16 +6,15 @@ size_type TArray_AddLast( TArray * const pArray, void const * const Element )
     uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
     const uint8 ofst = pArray->_ofst;
 
-    if ( pArray->_count == pArray->_capacity ) {
+    if ( (void*) ( pCursor + ofst ) >= GetMemoryBound( pArray->_data ) ) {
         // Extend array
         void* OldData = pArray->_data;
-        const uint16 OldSize = pArray->_capacity * ofst;
+        const uint16 OldSize = GetMemoryOccupation( OldData );
         const uint16 NewSize = OldSize << 1;
 
         pArray->_data = Malloc( NewSize );
         memcpy( pArray->_data, OldData, OldSize );
         Free( OldData );
-        pArray->_capacity <<= 1; // twice the current.
     }
     memcpy( pCursor, Element, ofst );
     return pArray->_count++;
@@ -28,7 +27,8 @@ void FString_Initialize( FString * const pString, const char * InitData )
     TArray_Initialize( pString, sizeof( char ), length + 1 );
     strcpy( pString->_data, InitData );
     pString->_count = length + 1;
-    pString->_capacity = length + 1;
+
+    // log_verbose( "Initialized string %s", pString->_data );
 }
 
 void TArray_RemoveElement( TArray * const pArray, size_type Index )
@@ -52,7 +52,7 @@ void TList_Dispose( TList * const pList )
     }
 }
 
-inline TListNode* TListNode_New( const void* const Element, size_type ElementSize ) 
+TListNode* TListNode_New( const void* const Element, size_type ElementSize ) 
 {
     TListNode* node = Malloc( sizeof( TListNode ) );
     node->Element = Malloc( ElementSize );
@@ -61,7 +61,7 @@ inline TListNode* TListNode_New( const void* const Element, size_type ElementSiz
     return node;
 }
 
-inline void TListNode_Delete( TListNode* const Node )
+void TListNode_Delete( TListNode* const Node )
 {
     Free( Node->Element );
     Free( Node );
@@ -69,8 +69,6 @@ inline void TListNode_Delete( TListNode* const Node )
 
 void TList_PushFront( TList * const pList, const void * const Element )
 {
-    DISABLE_INTERRUPT;
-
     TListNode* NewNode = TListNode_New( Element, pList->_ofst );
     if ( pList->Head == NULL ) 
     {
@@ -83,14 +81,10 @@ void TList_PushFront( TList * const pList, const void * const Element )
         pList->Head->Prev = NewNode;
         pList->Head = NewNode;
     }
-
-    ENABLE_INTERRUPT;
 }
 
 void TList_PushBack( TList * const pList, const void * const Element )
 {
-    DISABLE_INTERRUPT;
-
     TListNode* NewNode = TListNode_New( Element, pList->_ofst );
     portc_dbgout( 0xcc );
     if ( pList->Tail == NULL )
@@ -104,13 +98,10 @@ void TList_PushBack( TList * const pList, const void * const Element )
         pList->Tail->Next = NewNode;
         pList->Tail = NewNode;
     }
-
-    ENABLE_INTERRUPT;
 }
 
 void TList_PopFront( TList * const pList )
 {
-    DISABLE_INTERRUPT;
     assertf( pList->Head != NULL, "Access violation" );
     {
         TListNode* PrevHead = pList->Head;
@@ -125,12 +116,10 @@ void TList_PopFront( TList * const pList )
         }
         TListNode_Delete( PrevHead );
     }
-    ENABLE_INTERRUPT;
 }
 
 void TList_PopBack( TList * const pList )
 {
-    DISABLE_INTERRUPT;
     assertf( pList->Tail != NULL, "Access violation" );
     {
         TListNode* PrevTail = pList->Tail;
@@ -145,12 +134,10 @@ void TList_PopBack( TList * const pList )
         }
         TListNode_Delete( PrevTail );
     }
-    ENABLE_INTERRUPT;
 }
 
 void TListNode_Remove( TListNode * const pNode )
 {
-    DISABLE_INTERRUPT;
     if ( pNode->Next )
     {
         pNode->Next->Prev = pNode->Prev;
@@ -160,6 +147,5 @@ void TListNode_Remove( TListNode * const pNode )
         pNode->Prev->Next = pNode->Next;
     }
     TListNode_Delete( pNode );
-    ENABLE_INTERRUPT;
 }
 

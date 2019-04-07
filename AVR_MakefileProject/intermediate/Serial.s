@@ -65,20 +65,20 @@ InitializeTX0SerialOutput:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  Serial.c:25:     UCSR0A = 0;
+ ;  Serial.c:28:     UCSR0A = 0;
 	out 0xb,__zero_reg__	 ;  MEM[(volatile uint8_t *)43B],
- ;  Serial.c:26:     UCSR0B |= mask( TXEN0 );
+ ;  Serial.c:29:     UCSR0B |= mask( TXEN0 );
 	sbi 0xa,3	 ; ,
- ;  Serial.c:27:     UCSR0C = mask( UCSZ01, UCSZ00 );
+ ;  Serial.c:30:     UCSR0C = mask( UCSZ01, UCSZ00 );
 	ldi r24,lo8(6)	 ;  tmp48,
 	sts 149,r24	 ;  MEM[(volatile uint8_t *)149B], tmp48
- ;  Serial.c:28:     UBRR0H = 0;
+ ;  Serial.c:31:     UBRR0H = 0;
 	sts 144,__zero_reg__	 ;  MEM[(volatile uint8_t *)144B],
- ;  Serial.c:29:     UBRR0L = 103; // BAUD = 9600
+ ;  Serial.c:32:     UBRR0L = 103; // BAUD = 9600
 	ldi r24,lo8(103)	 ;  tmp51,
 	out 0x9,r24	 ;  MEM[(volatile uint8_t *)41B], tmp51
 /* epilogue start */
- ;  Serial.c:30: }
+ ;  Serial.c:33: }
 	ret	
 	.size	InitializeTX0SerialOutput, .-InitializeTX0SerialOutput
 .global	CSerialSender_Initialize
@@ -89,20 +89,20 @@ CSerialSender_Initialize:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24	 ;  Sender, Sender
- ;  container.h:66:     pList->_ofst = ElementSize;
+ ;  container.h:67:     pList->_ofst = ElementSize;
 	ldi r24,lo8(5)	 ;  tmp43,
 	st Z,r24		 ;  MEM[(struct TList *)Sender_1(D)]._ofst, tmp43
- ;  container.h:67:     pList->Head = pList->Tail = NULL;
+ ;  container.h:68:     pList->Head = pList->Tail = NULL;
 	std Z+4,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Tail,
 	std Z+3,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Tail,
- ;  container.h:67:     pList->Head = pList->Tail = NULL;
+ ;  container.h:68:     pList->Head = pList->Tail = NULL;
 	std Z+2,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Head,
 	std Z+1,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Head,
- ;  Serial.c:35:     Sender->SendingCharacterIndex = 0;
+ ;  Serial.c:38:     Sender->SendingCharacterIndex = 0;
 	std Z+6,__zero_reg__	 ;  Sender_1(D)->SendingCharacterIndex,
 	std Z+5,__zero_reg__	 ;  Sender_1(D)->SendingCharacterIndex,
 /* epilogue start */
- ;  Serial.c:36: }
+ ;  Serial.c:39: }
 	ret	
 	.size	CSerialSender_Initialize, .-CSerialSender_Initialize
 .global	CSerialSender_QueueOutputString
@@ -123,44 +123,52 @@ CSerialSender_QueueOutputString:
 /* stack size = 9 */
 .L__stack_usage = 9
 	movw r16,r24	 ;  Sender, Sender
- ;  Serial.c:40:     DISABLE_INTERRUPT;
-	out __SREG__,__zero_reg__	 ;  MEM[(volatile uint8_t *)95B],
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(1))	 ;  tmp53,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, tmp53
- ;  Serial.c:44:     FString_Initialize( &ToPut, String );
+ ;  Serial.c:43:     DISABLE_INTERRUPT;
+/* #APP */
+ ;  43 "Serial.c" 1
+	cli	
+ ;  0 "" 2
+/* #NOAPP */
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _1, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
+	subi r24,lo8(-(1))	 ;  _2,
+	sts __INTERRUPT_LOCK_MUTEX__,r24	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _2
+ ;  Serial.c:48:     FString_Initialize( &ToPut, String );
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call FString_Initialize	 ; 
- ;  Serial.c:45:     TList_PushBack( &Sender->StringQueue, &ToPut );
+ ;  Serial.c:49:     TList_PushBack( &Sender->StringQueue, &ToPut );
 	movw r22,r28	 ; ,
 	subi r22,-1	 ; ,
 	sbci r23,-1	 ; ,
 	movw r24,r16	 ; , Sender
 	call TList_PushBack	 ; 
- ;  Serial.c:46:     UCSR0B |= mask( TXCIE0 ); 
-	sbi 0xa,6	 ; ,
- ;  Serial.c:47:     if ( IsUART0TxEnabled() )
+ ;  Serial.c:50:     if ( IsUART0TxEnabled() ) {
 	call IsUART0TxEnabled	 ; 
- ;  Serial.c:47:     if ( IsUART0TxEnabled() )
+ ;  Serial.c:50:     if ( IsUART0TxEnabled() ) {
 	or r24,r25	 ; 
 	breq .L4		 ; ,
- ;  Serial.c:49:         UDR0 = 27;
-	ldi r24,lo8(27)	 ;  tmp58,
-	out 0xc,r24	 ;  MEM[(volatile uint8_t *)44B], tmp58
+ ;  Serial.c:51:         UDR0 = 27;
+	ldi r24,lo8(27)	 ;  tmp56,
+	out 0xc,r24	 ;  MEM[(volatile uint8_t *)44B], tmp56
 .L4:
- ;  Serial.c:51:     ENABLE_INTERRUPT;
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
+ ;  Serial.c:53:     UCSR0B |= mask( TXCIE0 ); 
+	sbi 0xa,6	 ; ,
+ ;  Serial.c:55:     ENABLE_INTERRUPT;
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _7, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
 	subi r24,lo8(-(-1))	 ;  _8,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, _8
-	cpse r24,__zero_reg__	 ;  _8,
+	sts __INTERRUPT_LOCK_MUTEX__,r24	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _8
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _9, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
+	cpse r24,__zero_reg__	 ;  _9,
 	rjmp .L3	 ; 
- ;  Serial.c:51:     ENABLE_INTERRUPT;
-	ldi r24,lo8(-128)	 ;  tmp61,
-	out __SREG__,r24	 ;  MEM[(volatile uint8_t *)95B], tmp61
+ ;  Serial.c:55:     ENABLE_INTERRUPT;
+/* #APP */
+ ;  55 "Serial.c" 1
+	sei	
+ ;  0 "" 2
+/* #NOAPP */
 .L3:
 /* epilogue start */
- ;  Serial.c:52: }
+ ;  Serial.c:56: }
 	 ; SP += 5	 ; 
 	pop __tmp_reg__
 	pop __tmp_reg__
@@ -173,67 +181,113 @@ CSerialSender_QueueOutputString:
 	pop r16		 ; 
 	ret	
 	.size	CSerialSender_QueueOutputString, .-CSerialSender_QueueOutputString
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC0:
+	.string	"Output head is null... output serial buffer empty.\n"
+.LC1:
+	.string	"Serial.c"
+	.text
 .global	CSerialSender_ConsumeOutputCharacter
 	.type	CSerialSender_ConsumeOutputCharacter, @function
 CSerialSender_ConsumeOutputCharacter:
+	push r16		 ; 
+	push r17		 ; 
 	push r28		 ; 
 	push r29		 ; 
+	in r28,__SP_L__	 ; 
+	in r29,__SP_H__	 ; 
+	dec r29		 ; 
+	in __tmp_reg__,__SREG__
+	cli
+	out __SP_H__,r29	 ; ,
+	out __SREG__,__tmp_reg__
+	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 0 */
-/* stack size = 2 */
-.L__stack_usage = 2
-	movw r28,r24	 ;  Sender, Sender
-.L12:
- ;  Serial.c:61:         if ( Sender->StringQueue.Head == NULL )
-	ldd r30,Y+1	 ;  _1, Sender_13(D)->StringQueue.Head
-	ldd r31,Y+2	 ;  _1, Sender_13(D)->StringQueue.Head
- ;  Serial.c:61:         if ( Sender->StringQueue.Head == NULL )
+/* frame size = 256 */
+/* stack size = 260 */
+.L__stack_usage = 260
+	movw r16,r24	 ;  Sender, Sender
+.L13:
+ ;  Serial.c:65:         if ( Sender->StringQueue.Head == NULL )
+	movw r26,r16	 ; , Sender
+	adiw r26,1	 ;  Sender_14(D)->StringQueue.Head
+	ld r30,X+	 ;  _1
+	ld r31,X	 ;  _1
+	sbiw r26,1+1	 ;  Sender_14(D)->StringQueue.Head
+ ;  Serial.c:65:         if ( Sender->StringQueue.Head == NULL )
 	sbiw r30,0	 ;  _1,
-	breq .L13		 ; ,
- ;  Serial.c:67:         char* String = (char*) ((FString*)Sender->StringQueue.Head->Element)->_data;
+	brne .L10		 ; ,
+ ;  Serial.c:67:             log_verbose( "Output head is null... output serial buffer empty.\n" );
+	ldi r22,lo8(.LC0)	 ; ,
+	ldi r23,hi8(.LC0)	 ; ,
+	movw r24,r28	 ; ,
+	adiw r24,1	 ; ,
+	call strcpy	 ; 
+	movw r20,r28	 ; ,
+	subi r20,-1	 ; ,
+	sbci r21,-1	 ; ,
+	ldi r22,lo8(67)	 ; ,
+	ldi r23,0		 ; 
+	ldi r24,lo8(.LC1)	 ; ,
+	ldi r25,hi8(.LC1)	 ; ,
+	call internal_logslow	 ; 
+ ;  Serial.c:68:             break;
+	ldi r24,0		 ;  <retval>
+.L9:
+/* epilogue start */
+ ;  Serial.c:86: }
+	inc r29		 ; 
+	in __tmp_reg__,__SREG__
+	cli
+	out __SP_H__,r29	 ; ,
+	out __SREG__,__tmp_reg__
+	out __SP_L__,r28	 ; ,
+	pop r29		 ; 
+	pop r28		 ; 
+	pop r17		 ; 
+	pop r16		 ; 
+	ret	
+.L10:
+ ;  Serial.c:71:         char* String = (char*) ((FString*)Sender->StringQueue.Head->Element)->_data;
 	ldd __tmp_reg__,Z+4	 ;  _1->Element
 	ldd r31,Z+5	 ;  _1->Element, _1->Element
 	mov r30,__tmp_reg__	 ;  _1->Element
 	ldd r20,Z+3	 ;  String, MEM[(struct FString *)_3]._data
 	ldd r21,Z+4	 ;  String, MEM[(struct FString *)_3]._data
- ;  Serial.c:68:         ChToPut = String[*ReadingIndex];
-	ldd r18,Y+5	 ;  _4, MEM[(uint16 *)Sender_13(D) + 5B]
-	ldd r19,Y+6	 ;  _4, MEM[(uint16 *)Sender_13(D) + 5B]
- ;  Serial.c:68:         ChToPut = String[*ReadingIndex];
+ ;  Serial.c:72:         ChToPut = String[*ReadingIndex];
+	movw r30,r16	 ; , Sender
+	ldd r18,Z+5	 ;  _4, MEM[(uint16 *)Sender_14(D) + 5B]
+	ldd r19,Z+6	 ;  _4, MEM[(uint16 *)Sender_14(D) + 5B]
+ ;  Serial.c:72:         ChToPut = String[*ReadingIndex];
 	movw r30,r20	 ;  tmp52, String
 	add r30,r18	 ;  tmp52, _4
 	adc r31,r19	 ; , _4
 	ld r24,Z		 ;  <retval>, *_5
- ;  Serial.c:70:         if ( ChToPut != '\0' )
+ ;  Serial.c:74:         if ( ChToPut != '\0' )
 	tst r24		 ;  <retval>
-	breq .L11		 ; ,
- ;  Serial.c:72:             ++( *ReadingIndex );
+	breq .L12		 ; ,
+ ;  Serial.c:76:             ++( *ReadingIndex );
 	subi r18,-1	 ;  tmp53,
 	sbci r19,-1	 ; ,
-	std Y+6,r19	 ;  MEM[(uint16 *)Sender_13(D) + 5B], tmp53
-	std Y+5,r18	 ;  MEM[(uint16 *)Sender_13(D) + 5B], tmp53
-.L9:
-/* epilogue start */
- ;  Serial.c:82: }
-	pop r29		 ; 
-	pop r28		 ; 
-	ret	
-.L11:
- ;  Serial.c:77:         *ReadingIndex = 0;
-	std Y+6,__zero_reg__	 ;  MEM[(uint16 *)Sender_13(D) + 5B],
-	std Y+5,__zero_reg__	 ;  MEM[(uint16 *)Sender_13(D) + 5B],
- ;  container.h:72:     Free( pArray->_data );
+	adiw r26,5+1	 ;  MEM[(uint16 *)Sender_14(D) + 5B]
+	st X,r19	 ;  tmp53
+	st -X,r18	 ;  tmp53
+	sbiw r26,5	 ;  MEM[(uint16 *)Sender_14(D) + 5B]
+ ;  Serial.c:77:             break;
+	rjmp .L9		 ; 
+.L12:
+ ;  Serial.c:81:         *ReadingIndex = 0;
+	movw r30,r16	 ; , Sender
+	std Z+6,__zero_reg__	 ;  MEM[(uint16 *)Sender_14(D) + 5B],
+	std Z+5,__zero_reg__	 ;  MEM[(uint16 *)Sender_14(D) + 5B],
+ ;  container.h:73:     Free( pArray->_data );
 	movw r24,r20	 ; , String
 	call Free	 ; 
- ;  Serial.c:79:         TList_PopFront( &Sender->StringQueue );
-	movw r24,r28	 ; , Sender
+ ;  Serial.c:83:         TList_PopFront( &Sender->StringQueue );
+	movw r24,r16	 ; , Sender
 	call TList_PopFront	 ; 
- ;  Serial.c:60:     {
-	rjmp .L12		 ; 
-.L13:
-	ldi r24,0		 ;  <retval>
- ;  Serial.c:81:     return ChToPut;
-	rjmp .L9		 ; 
+ ;  Serial.c:64:     {
+	rjmp .L13		 ; 
 	.size	CSerialSender_ConsumeOutputCharacter, .-CSerialSender_ConsumeOutputCharacter
 .global	__vector_20
 	.type	__vector_20, @function
@@ -261,21 +315,18 @@ __vector_20:
 /* frame size = 0 */
 /* stack size = 16 */
 .L__stack_usage = 16
- ;  Serial.c:9:     char SendingCharacter = CSerialSender_ConsumeOutputCharacter( &UART0Sender );
+ ;  Serial.c:12:     char SendingCharacter = CSerialSender_ConsumeOutputCharacter( &UART0Sender );
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_ConsumeOutputCharacter	 ; 
- ;  Serial.c:10:     if ( SendingCharacter == '\0' )
+ ;  Serial.c:13:     if ( SendingCharacter == '\0' )
 	cpse r24,__zero_reg__	 ;  SendingCharacter,
 	rjmp .L15	 ; 
- ;  Serial.c:13:         UCSR0B &= ~mask( TXCIE0 );
+ ;  Serial.c:16:         UCSR0B &= ~mask( TXCIE0 );
 	cbi 0xa,6	 ; ,
-.L16:
- ;  Serial.c:19:     portc_dbgout( 0xef );
-	ldi r24,lo8(-17)	 ;  tmp50,
-	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], tmp50
+.L14:
 /* epilogue start */
- ;  Serial.c:20: }
+ ;  Serial.c:23: }
 	pop r31		 ; 
 	pop r30		 ; 
 	pop r27		 ; 
@@ -296,10 +347,15 @@ __vector_20:
 	pop r1		 ; 
 	reti	
 .L15:
- ;  Serial.c:17:         UDR0 = SendingCharacter;
+ ;  Serial.c:20:         while ( !( UCSR0A & 0x20 ) );
+	sbis 0xb,5	 ; ,
+	rjmp .L15		 ; 
+ ;  Serial.c:21:         UDR0 = SendingCharacter;
 	out 0xc,r24	 ;  MEM[(volatile uint8_t *)44B], SendingCharacter
-	rjmp .L16		 ; 
+ ;  Serial.c:23: }
+	rjmp .L14		 ; 
 	.size	__vector_20, .-__vector_20
 	.comm	UART0Sender,7,1
 	.ident	"GCC: (GNU) 8.3.0"
+.global __do_copy_data
 .global __do_clear_bss

@@ -209,6 +209,7 @@ avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <ClCompile Include="container.c" />
     <ClCompile Include="ArrayTest.cpp" />
     <ClCompile Include="CGROM.c" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.c" />
     <ClCompile Include="memory128.c" />
     <ClCompile Include="MemoryTest.cpp" />
@@ -223,6 +224,7 @@ avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <ClInclude Include="core.h" />
     <ClInclude Include="assertion.c" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Intellisense.h" />
     <ClInclude Include="macros.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="memory128.h" />

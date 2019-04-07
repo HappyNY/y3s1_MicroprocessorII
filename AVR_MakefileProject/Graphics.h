@@ -1,6 +1,6 @@
 #pragma once
 #include "core.h"
-#include "container.h"
+#include "container.h" 
 #include "math.h"
 
 typedef struct {
@@ -22,12 +22,17 @@ typedef struct __FMonocolorBufferDesc {
     uint8 Width;
     uint8 Height;
     byte* Buffer;
-} FMonocolorBufferDesc;
+} CMonocolorBuffer;
 
 typedef TArray CLineVector_FLineInfoArray;
-typedef struct {
+typedef struct cLineVector{
     CLineVector_FLineInfoArray args;
-    FMonocolorBufferDesc BufferDesc;
+    FPoint16 Position;
 } CLineVector;
 
-void CLineSet_RenderOnMonocolorBuffer( CLineVector* Vector );
+typedef struct {
+    FPoint16 Position;
+    fixedpt DirectionRadian;
+} FCameraTransform;
+
+void CLineVector_DrawOnDisplayBuffer( const CLineVector* Vector, const FCameraTransform* Camera );

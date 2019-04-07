@@ -1,33 +1,58 @@
 #pragma once
-#include "core.h"
+#include "macros.h"
+#include "types.h"
+#include "Intellisense.h"
 #include "assertion.h"
-
-#if USE_STDLIB_MALLOC
 #include <stdlib.h>
 
-inline void InitMemory() {}
-inline void* Malloc( uint16 SizeInByte );
-inline void Free( void* Ptr );
-inline size_type GetMemoryOccupation( void* Ptr ) { return 0x7fff; }
-inline void* GetMemoryBound( void* Ptr ) { return (void*)0xffff; }
+#if LOG_MEMORY
+#define log_memory log_display
+#else
+#define log_memory(...)
+#endif
 
-inline void Free( void* Ptr )
+#if USE_STDLIB_MALLOC
+
+inline size_type GetMemoryOccupation( void* Ptr )
 {
-    assertf( Ptr != NULL, "Null pointer has delievered for free()" );
-    free( Ptr );
+    return *( (uint16*) Ptr - 1 );
 }
+
+inline void InitMemory( void* InitialLocation ) {}
 
 inline void* Malloc( uint16 SizeInByte )
 {
-    void* ret = malloc( SizeInByte ); 
-    assertf( ret != NULL, "Null pointer returned from malloc()" ); 
-    return ret; 
+    DISABLE_INTERRUPT;
+
+    void* ret = malloc( SizeInByte );
+    assertf( ret != NULL, "Null pointer returned from malloc()" );
+    log_memory( "Allocated memory on location %p, ofst [req: %4x actual: %4x]", ret, SizeInByte, GetMemoryOccupation( ret ) );
+    assertf( SizeInByte <= GetMemoryOccupation( ret ), "Requested memory size and actual occupation are different, req[%d] act[%d], On Interrupt mutex depth : %d", SizeInByte, GetMemoryOccupation( ret ), INTERRUPT_LOCK_MUTEX );
+
+    ENABLE_INTERRUPT;
+    return ret;
+}
+
+inline void Free( void* Ptr )
+{
+    DISABLE_INTERRUPT;
+
+    assertf( Ptr != NULL, "Null pointer has delievered for free()" );    
+    free( Ptr );
+    log_memory( "Free memory on %p" );                                   
+
+    ENABLE_INTERRUPT;
+}
+
+inline void* GetMemoryBound( void* Ptr )
+{
+    return (byte*) Ptr + GetMemoryOccupation( Ptr );
 }
 
 #else
 // Dynamically allocates memory.
-void InitMemory();
-void* Malloc( uint16 SizeInByte ); 
+void InitMemory( void* InitialLocation );
+void* Malloc( uint16 SizeInByte );
 void Free( void* Ptr );
 size_type GetMemoryOccupation( void* Ptr );
 void* GetMemoryBound( void* Ptr );

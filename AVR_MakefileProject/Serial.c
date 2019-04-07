@@ -1,3 +1,4 @@
+#include "core.h"
 #include "Serial.h"
 #include "memory128.h"
 #include <avr/interrupt.h> 
@@ -5,7 +6,9 @@
 CSerialSender UART0Sender;
 
 ISR( USART0_TX_vect )
-{ 
+{
+    // log_verbose( "Entered interrupt sequence, on lock mutex %d", __INTERRUPT_LOCK_MUTEX__ );
+    // log_verbose( "Is interrupt enabled ? %s", SREG & 0x80 ? "true" : "false" );
     char SendingCharacter = CSerialSender_ConsumeOutputCharacter( &UART0Sender );
     if ( SendingCharacter == '\0' )
     { 
@@ -14,9 +17,9 @@ ISR( USART0_TX_vect )
     }
     else
     {
+        while ( !( UCSR0A & 0x20 ) );
         UDR0 = SendingCharacter;
     }
-    portc_dbgout( 0xef );
 }
 
 void InitializeTX0SerialOutput()
@@ -38,16 +41,17 @@ void CSerialSender_Initialize( CSerialSender * const Sender )
 void CSerialSender_QueueOutputString( CSerialSender * const Sender, const char * String )
 {
     DISABLE_INTERRUPT;
+
     volatile uint8 OrderFence;
 
     FString ToPut;
     FString_Initialize( &ToPut, String );
     TList_PushBack( &Sender->StringQueue, &ToPut );
-    UCSR0B |= mask( TXCIE0 ); 
-    if ( IsUART0TxEnabled() )
-    {
+    if ( IsUART0TxEnabled() ) {
         UDR0 = 27;
     }
+    UCSR0B |= mask( TXCIE0 ); 
+
     ENABLE_INTERRUPT;
 }
 
@@ -60,7 +64,7 @@ char CSerialSender_ConsumeOutputCharacter( CSerialSender * const Sender )
     {
         if ( Sender->StringQueue.Head == NULL )
         {
-            // outputmsg_uart0( "Output head is null... break sequence.\n" );
+            log_verbose( "Output head is null... output serial buffer empty.\n" );
             break;
         }
 
@@ -73,7 +77,7 @@ char CSerialSender_ConsumeOutputCharacter( CSerialSender * const Sender )
             break;
         }
 
-        // log_display( "Reading index was: %d", *ReadingIndex );
+        // log_verbose( "Reading index was: %d", *ReadingIndex );
         *ReadingIndex = 0;
         TArray_Dispose( Sender->StringQueue.Head->Element );
         TList_PopFront( &Sender->StringQueue );

@@ -1,12 +1,6 @@
 #pragma once
 
-#ifdef INTELLISENSE
-#define __inline__ inline
-// #define __DOXYGEN__
-#define __extension__ 
-#define __attribute__(...) 
-#define __asm__ __asm
-#endif
+#include "Intellisense.h"
 
 #ifndef __AVR_ATmega128__
 #define __AVR_ATmega128__

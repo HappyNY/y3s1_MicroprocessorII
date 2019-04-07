@@ -80,70 +80,71 @@ TArray_AddLast:
 	movw r28,r24	 ;  pArray, pArray
 	movw r10,r22	 ;  Element, Element
  ;  container.c:6:     uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	ldd r24,Y+3	 ;  _1, pArray_13(D)->_data
-	ldd r25,Y+4	 ;  _1, pArray_13(D)->_data
+	ldd r14,Y+3	 ;  _1, pArray_12(D)->_data
+	ldd r15,Y+4	 ;  _1, pArray_12(D)->_data
  ;  container.c:6:     uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	ldd r16,Y+2	 ;  pArray_13(D)->_ofst, pArray_13(D)->_ofst
+	ldd r16,Y+2	 ;  pArray_12(D)->_ofst, pArray_12(D)->_ofst
 	ldi r17,0		 ;  _4
  ;  container.c:6:     uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	ld r18,Y	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	ldd r19,Y+1	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	mul r16,r18	 ;  _4, pArray_13(D)->_count
-	movw r14,r0	 ;  tmp59
-	mul r16,r19	 ;  _4, pArray_13(D)->_count
-	add r15,r0	 ;  tmp59
-	mul r17,r18	 ;  _4, pArray_13(D)->_count
-	add r15,r0	 ;  tmp59
+	ld r24,Y	 ;  pArray_12(D)->_count, pArray_12(D)->_count
+	ldd r25,Y+1	 ;  pArray_12(D)->_count, pArray_12(D)->_count
+	mul r16,r24	 ;  _4, pArray_12(D)->_count
+	movw r12,r0	 ;  tmp58
+	mul r16,r25	 ;  _4, pArray_12(D)->_count
+	add r13,r0	 ;  tmp58
+	mul r17,r24	 ;  _4, pArray_12(D)->_count
+	add r13,r0	 ;  tmp58
 	clr r1
  ;  container.c:6:     uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
-	add r14,r24	 ;  pCursor, _1
-	adc r15,r25	 ;  pCursor, _1
+	add r12,r14	 ;  pCursor, _1
+	adc r13,r15	 ;  pCursor, _1
+ ;  memory128.h:18:     return *( (uint16*) Ptr - 1 );
+	movw r30,r14	 ;  tmp61, _1
+	sbiw r30,2	 ;  tmp61,
+	ld r8,Z	 ;  _15, MEM[(uint16 *)_1 + 65534B]
+	ldd r9,Z+1	 ;  _15, MEM[(uint16 *)_1 + 65534B]
  ;  container.c:9:     if ( (void*) ( pCursor + ofst ) >= GetMemoryBound( pArray->_data ) ) {
-	movw r12,r14	 ;  _6, pCursor
-	add r12,r16	 ;  _6, _4
-	adc r13,r17	 ;  _6, _4
+	movw r18,r12	 ;  tmp62, pCursor
+	add r18,r16	 ;  tmp62, _4
+	adc r19,r17	 ; , _4
+ ;  memory128.h:49:     return (byte*) Ptr + GetMemoryOccupation( Ptr );
+	movw r24,r14	 ;  tmp63, _1
+	add r24,r8	 ;  tmp63, _15
+	adc r25,r9	 ; , _15
  ;  container.c:9:     if ( (void*) ( pCursor + ofst ) >= GetMemoryBound( pArray->_data ) ) {
-	call GetMemoryBound	 ; 
- ;  container.c:9:     if ( (void*) ( pCursor + ofst ) >= GetMemoryBound( pArray->_data ) ) {
-	cp r12,r24	 ;  _6,
-	cpc r13,r25	 ;  _6,
+	cp r18,r24	 ;  tmp62, tmp63
+	cpc r19,r25	 ;  tmp62, tmp63
 	brlo .L2		 ; ,
- ;  container.c:11:         void* OldData = pArray->_data;
-	ldd r12,Y+3	 ;  OldData, pArray_13(D)->_data
-	ldd r13,Y+4	 ;  OldData, pArray_13(D)->_data
- ;  container.c:12:         const uint16 OldSize = GetMemoryOccupation( OldData );
-	movw r24,r12	 ; , OldData
-	call GetMemoryOccupation	 ; 
-	movw r8,r24	 ;  OldSize,
  ;  container.c:15:         pArray->_data = Malloc( NewSize );
+	movw r24,r8	 ; , _15
 	lsl r24	 ; 
 	rol r25	 ; 
 	call Malloc	 ; 
  ;  container.c:15:         pArray->_data = Malloc( NewSize );
-	std Y+4,r25	 ;  pArray_13(D)->_data, _8
-	std Y+3,r24	 ;  pArray_13(D)->_data, _8
+	std Y+4,r25	 ;  pArray_12(D)->_data, tmp65
+	std Y+3,r24	 ;  pArray_12(D)->_data, tmp65
  ;  container.c:16:         memcpy( pArray->_data, OldData, OldSize );
-	movw r20,r8	 ; , OldSize
-	movw r22,r12	 ; , OldData
+	movw r20,r8	 ; , _15
+	movw r22,r14	 ; , _1
 	call memcpy	 ; 
  ;  container.c:17:         Free( OldData );
-	movw r24,r12	 ; , OldData
+	movw r24,r14	 ; , _1
 	call Free	 ; 
 .L2:
  ;  container.c:19:     memcpy( pCursor, Element, ofst );
 	movw r20,r16	 ; , _4
 	movw r22,r10	 ; , Element
-	movw r24,r14	 ; , pCursor
+	movw r24,r12	 ; , pCursor
 	call memcpy	 ; 
  ;  container.c:20:     return pArray->_count++;
-	ld r24,Y	 ;  <retval>, pArray_13(D)->_count
-	ldd r25,Y+1	 ;  <retval>, pArray_13(D)->_count
+	ld r24,Y	 ;  <retval>, pArray_12(D)->_count
+	ldd r25,Y+1	 ;  <retval>, pArray_12(D)->_count
  ;  container.c:20:     return pArray->_count++;
-	movw r18,r24	 ;  tmp72, <retval>
-	subi r18,-1	 ;  tmp72,
+	movw r18,r24	 ;  tmp76, <retval>
+	subi r18,-1	 ;  tmp76,
 	sbci r19,-1	 ; ,
-	std Y+1,r19	 ;  pArray_13(D)->_count, tmp72
-	st Y,r18	 ;  pArray_13(D)->_count, tmp72
+	std Y+1,r19	 ;  pArray_12(D)->_count, tmp76
+	st Y,r18	 ;  pArray_12(D)->_count, tmp76
 /* epilogue start */
  ;  container.c:21: }
 	pop r29		 ; 
@@ -208,17 +209,9 @@ FString_Initialize:
 	pop r14		 ; 
 	ret	
 	.size	FString_Initialize, .-FString_Initialize
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"Invalid index argument detected"
-.LC1:
-	.string	"container.c"
-	.text
 .global	TArray_RemoveElement
 	.type	TArray_RemoveElement, @function
 TArray_RemoveElement:
-	push r10		 ; 
-	push r11		 ; 
 	push r12		 ; 
 	push r13		 ; 
 	push r14		 ; 
@@ -227,69 +220,50 @@ TArray_RemoveElement:
 	push r17		 ; 
 	push r28		 ; 
 	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	dec r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 256 */
-/* stack size = 266 */
-.L__stack_usage = 266
-	movw r16,r24	 ;  pArray, pArray
- ;  container.c:36: 	uint8* pWrite = (uint8*) TArray_At( pArray, Index );
-	call TArray_At	 ; 
+/* frame size = 0 */
+/* stack size = 8 */
+.L__stack_usage = 8
+	movw r28,r24	 ;  pArray, pArray
+ ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+	ldd r16,Y+3	 ;  _12, pArray_10(D)->_data
+	ldd r17,Y+4	 ;  _12, pArray_10(D)->_data
+ ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+	ldd r18,Y+2	 ;  pArray_10(D)->_ofst, pArray_10(D)->_ofst
+	ldi r19,0		 ;  _20
+ ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+	mul r22,r18	 ;  Index, _20
+	movw r24,r0	 ;  tmp59
+	mul r22,r19	 ;  Index, _20
+	add r25,r0	 ;  tmp59
+	mul r23,r18	 ;  Index, _20
+	add r25,r0	 ;  tmp59
+	clr r1
+ ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+	add r24,r16	 ;  pCursor, _12
+	adc r25,r17	 ;  pCursor, _12
  ;  container.c:37: 	uint8* pRead = pWrite + pArray->_ofst;
-	movw r30,r16	 ; , pArray
-	ldd r22,Z+2	 ;  pArray_13(D)->_ofst, pArray_13(D)->_ofst
- ;  container.c:37: 	uint8* pRead = pWrite + pArray->_ofst;
-	add r22,r24	 ;  pRead, pWrite
-	mov r23,r25	 ;  pRead, pWrite
-	adc r23,__zero_reg__	 ;  pRead
+	movw r22,r24	 ;  pRead, pCursor
+	add r22,r18	 ;  pRead, _20
+	adc r23,r19	 ;  pRead, _20
  ;  container.c:38: 	uint8* const pEnd = pArray->_data + pArray->_count;
-	ldd r14,Z+3	 ;  pArray_13(D)->_data, pArray_13(D)->_data
-	ldd r15,Z+4	 ;  pArray_13(D)->_data, pArray_13(D)->_data
-	ld r18,Z	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	ldd r19,Z+1	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	add r14,r18	 ;  pEnd, pArray_13(D)->_count
-	adc r15,r19	 ;  pEnd, pArray_13(D)->_count
- ;  container.c:40: 	assertf( pRead < pEnd, "Invalid index argument detected" );
-	cp r22,r14	 ;  pRead, pEnd
-	cpc r23,r15	 ;  pRead, pEnd
-	brlo .L5		 ; ,
- ;  container.c:40: 	assertf( pRead < pEnd, "Invalid index argument detected" );
-	ldi r22,lo8(.LC0)	 ; ,
-	ldi r23,hi8(.LC0)	 ; ,
-	movw r24,r28	 ; ,
-	adiw r24,1	 ; ,
-	call strcpy	 ; 
-	movw r20,r28	 ; ,
-	subi r20,-1	 ; ,
-	sbci r21,-1	 ; ,
-	ldi r22,lo8(40)	 ; ,
-	ldi r23,0		 ; 
-	ldi r24,lo8(.LC1)	 ; ,
-	ldi r25,hi8(.LC1)	 ; ,
-	call internal_assertion_failed	 ; 
-.L6:
+	ld r18,Y	 ;  pArray_10(D)->_count, pArray_10(D)->_count
+	ldd r19,Y+1	 ;  pArray_10(D)->_count, pArray_10(D)->_count
+	add r16,r18	 ;  pEnd, pArray_10(D)->_count
+	adc r17,r19	 ;  pEnd, pArray_10(D)->_count
+.L5:
+ ;  container.c:41: 	while ( pRead < pEnd )
+	cp r22,r16	 ;  pRead, pEnd
+	cpc r23,r17	 ;  pRead, pEnd
+	brlo .L6		 ; ,
  ;  container.c:45: 	pArray->_count--;
-	movw r30,r16	 ; , pArray
-	ld r24,Z	 ;  pArray_13(D)->_count, pArray_13(D)->_count
-	ldd r25,Z+1	 ;  pArray_13(D)->_count, pArray_13(D)->_count
+	ld r24,Y	 ;  pArray_10(D)->_count, pArray_10(D)->_count
+	ldd r25,Y+1	 ;  pArray_10(D)->_count, pArray_10(D)->_count
 	sbiw r24,1	 ;  tmp68,
-	std Z+1,r25	 ;  pArray_13(D)->_count, tmp68
-	st Z,r24	 ;  pArray_13(D)->_count, tmp68
+	std Y+1,r25	 ;  pArray_10(D)->_count, tmp68
+	st Y,r24	 ;  pArray_10(D)->_count, tmp68
 /* epilogue start */
  ;  container.c:46: }
-	inc r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 	pop r29		 ; 
 	pop r28		 ; 
 	pop r17		 ; 
@@ -298,31 +272,94 @@ TArray_RemoveElement:
 	pop r14		 ; 
 	pop r13		 ; 
 	pop r12		 ; 
-	pop r11		 ; 
-	pop r10		 ; 
 	ret	
-.L5:
+.L6:
  ;  container.c:43: 		memcpy( pWrite++, pRead++, pArray->_ofst );
 	movw r12,r22	 ;  pRead, pRead
-	ldi r31,-1	 ; ,
-	sub r12,r31	 ;  pRead,
-	sbc r13,r31	 ;  pRead,
-	movw r10,r24	 ;  pWrite, pWrite
 	ldi r18,-1	 ; ,
-	sub r10,r18	 ;  pWrite,
-	sbc r11,r18	 ;  pWrite,
-	movw r30,r16	 ; , pArray
-	ldd r20,Z+2	 ;  pArray_13(D)->_ofst, pArray_13(D)->_ofst
-	ldi r21,0		 ;  pArray_13(D)->_ofst
+	sub r12,r18	 ;  pRead,
+	sbc r13,r18	 ;  pRead,
+	movw r14,r24	 ;  pWrite, pCursor
+	ldi r18,-1	 ; ,
+	sub r14,r18	 ;  pWrite,
+	sbc r15,r18	 ;  pWrite,
+	ldd r20,Y+2	 ;  pArray_10(D)->_ofst, pArray_10(D)->_ofst
+	ldi r21,0		 ;  pArray_10(D)->_ofst
 	call memcpy	 ; 
-	movw r24,r10	 ;  pWrite, pWrite
 	movw r22,r12	 ;  pRead, pRead
- ;  container.c:41: 	while ( pRead < pEnd )
-	cp r14,r12	 ;  pEnd, pRead
-	cpc r15,r13	 ;  pEnd, pRead
-	brne .L5		 ; ,
-	rjmp .L6		 ; 
+	movw r24,r14	 ;  pCursor, pWrite
+	rjmp .L5		 ; 
 	.size	TArray_RemoveElement, .-TArray_RemoveElement
+.global	TListNode_New
+	.type	TListNode_New, @function
+TListNode_New:
+	push r14		 ; 
+	push r15		 ; 
+	push r16		 ; 
+	push r17		 ; 
+	push r28		 ; 
+	push r29		 ; 
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 6 */
+.L__stack_usage = 6
+	movw r14,r24	 ;  Element, Element
+	movw r16,r22	 ;  ElementSize, ElementSize
+ ;  container.c:57:     TListNode* node = Malloc( sizeof( TListNode ) );
+	ldi r24,lo8(6)	 ; ,
+	ldi r25,0		 ; 
+	call Malloc	 ; 
+	movw r28,r24	 ;  tmp46,
+ ;  container.c:58:     node->Element = Malloc( ElementSize );
+	movw r24,r16	 ; , ElementSize
+	call Malloc	 ; 
+ ;  container.c:58:     node->Element = Malloc( ElementSize );
+	std Y+5,r25	 ;  node_4->Element, tmp47
+	std Y+4,r24	 ;  node_4->Element, tmp47
+ ;  container.c:59:     memcpy( node->Element, Element, ElementSize );
+	movw r20,r16	 ; , ElementSize
+	movw r22,r14	 ; , Element
+	call memcpy	 ; 
+ ;  container.c:60:     node->Prev = node->Next = NULL;
+	std Y+3,__zero_reg__	 ;  node_4->Next,
+	std Y+2,__zero_reg__	 ;  node_4->Next,
+ ;  container.c:60:     node->Prev = node->Next = NULL;
+	std Y+1,__zero_reg__	 ;  node_4->Prev,
+	st Y,__zero_reg__	 ;  node_4->Prev,
+ ;  container.c:62: }
+	movw r24,r28	 ; , tmp46
+/* epilogue start */
+	pop r29		 ; 
+	pop r28		 ; 
+	pop r17		 ; 
+	pop r16		 ; 
+	pop r15		 ; 
+	pop r14		 ; 
+	ret	
+	.size	TListNode_New, .-TListNode_New
+.global	TListNode_Delete
+	.type	TListNode_Delete, @function
+TListNode_Delete:
+	push r28		 ; 
+	push r29		 ; 
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 2 */
+.L__stack_usage = 2
+	movw r28,r24	 ;  Node, Node
+ ;  container.c:66:     Free( Node->Element );
+	ldd r24,Y+4	 ; , Node_3(D)->Element
+	ldd r25,Y+5	 ; , Node_3(D)->Element
+	call Free	 ; 
+ ;  container.c:67:     Free( Node );
+	movw r24,r28	 ; , Node
+/* epilogue start */
+ ;  container.c:68: }
+	pop r29		 ; 
+	pop r28		 ; 
+ ;  container.c:67:     Free( Node );
+	jmp Free	 ; 
+	.size	TListNode_Delete, .-TListNode_Delete
 .global	TList_PushFront
 	.type	TList_PushFront, @function
 TList_PushFront:
@@ -333,59 +370,44 @@ TList_PushFront:
 /* stack size = 2 */
 .L__stack_usage = 2
 	movw r28,r24	 ;  pList, pList
-	movw r18,r22	 ;  Element, Element
- ;  container.c:72:     DISABLE_INTERRUPT;
-	out __SREG__,__zero_reg__	 ;  MEM[(volatile uint8_t *)95B],
-	lds r25,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r25,lo8(-(1))	 ;  tmp53,
-	sts INTERRUPT_LOCK_MUTEX,r25	 ;  INTERRUPT_LOCK_MUTEX, tmp53
- ;  container.c:74:     TListNode* NewNode = TListNode_New( Element, pList->_ofst );
-	ld r22,Y		 ;  pList_13(D)->_ofst, pList_13(D)->_ofst
-	ldi r23,0		 ;  pList_13(D)->_ofst
-	movw r24,r18	 ; , Element
+	movw r24,r22	 ;  Element, Element
+ ;  container.c:72:     TListNode* NewNode = TListNode_New( Element, pList->_ofst );
+	ld r22,Y		 ;  pList_6(D)->_ofst, pList_6(D)->_ofst
+	ldi r23,0		 ;  pList_6(D)->_ofst
 	call TListNode_New	 ; 
- ;  container.c:75:     if ( pList->Head == NULL ) 
-	ldd r30,Y+1	 ;  _5, pList_13(D)->Head
-	ldd r31,Y+2	 ;  _5, pList_13(D)->Head
- ;  container.c:75:     if ( pList->Head == NULL ) 
-	sbiw r30,0	 ;  _5,
+ ;  container.c:73:     if ( pList->Head == NULL ) 
+	ldd r30,Y+1	 ;  _3, pList_6(D)->Head
+	ldd r31,Y+2	 ;  _3, pList_6(D)->Head
+ ;  container.c:73:     if ( pList->Head == NULL ) 
+	sbiw r30,0	 ;  _3,
 	brne .L10		 ; ,
- ;  container.c:77:         pList->Head = NewNode;
-	std Y+2,r25	 ;  pList_13(D)->Head, NewNode
-	std Y+1,r24	 ;  pList_13(D)->Head, NewNode
- ;  container.c:78:         pList->Tail = NewNode;
-	std Y+4,r25	 ;  pList_13(D)->Tail, NewNode
-	std Y+3,r24	 ;  pList_13(D)->Tail, NewNode
-.L11:
- ;  container.c:87:     ENABLE_INTERRUPT;
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(-1))	 ;  _7,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, _7
-	cpse r24,__zero_reg__	 ;  _7,
-	rjmp .L9	 ; 
- ;  container.c:87:     ENABLE_INTERRUPT;
-	ldi r24,lo8(-128)	 ;  tmp59,
-	out __SREG__,r24	 ;  MEM[(volatile uint8_t *)95B], tmp59
+ ;  container.c:75:         pList->Head = NewNode;
+	std Y+2,r25	 ;  pList_6(D)->Head, NewNode
+	std Y+1,r24	 ;  pList_6(D)->Head, NewNode
+ ;  container.c:76:         pList->Tail = NewNode;
+	std Y+4,r25	 ;  pList_6(D)->Tail, NewNode
+	std Y+3,r24	 ;  pList_6(D)->Tail, NewNode
 .L9:
 /* epilogue start */
- ;  container.c:88: }
+ ;  container.c:84: }
 	pop r29		 ; 
 	pop r28		 ; 
 	ret	
 .L10:
- ;  container.c:82:         NewNode->Next = pList->Head;
+ ;  container.c:80:         NewNode->Next = pList->Head;
 	movw r26,r24	 ; , NewNode
-	adiw r26,2+1	 ;  NewNode_16->Next
-	st X,r31	 ;  _5
-	st -X,r30	 ;  _5
-	sbiw r26,2	 ;  NewNode_16->Next
- ;  container.c:83:         pList->Head->Prev = NewNode;
-	std Z+1,r25	 ;  _5->Prev, NewNode
-	st Z,r24	 ;  _5->Prev, NewNode
- ;  container.c:84:         pList->Head = NewNode;
-	std Y+2,r25	 ;  pList_13(D)->Head, NewNode
-	std Y+1,r24	 ;  pList_13(D)->Head, NewNode
-	rjmp .L11		 ; 
+	adiw r26,2+1	 ;  NewNode_9->Next
+	st X,r31	 ;  _3
+	st -X,r30	 ;  _3
+	sbiw r26,2	 ;  NewNode_9->Next
+ ;  container.c:81:         pList->Head->Prev = NewNode;
+	std Z+1,r25	 ;  _3->Prev, NewNode
+	st Z,r24	 ;  _3->Prev, NewNode
+ ;  container.c:82:         pList->Head = NewNode;
+	std Y+2,r25	 ;  pList_6(D)->Head, NewNode
+	std Y+1,r24	 ;  pList_6(D)->Head, NewNode
+ ;  container.c:84: }
+	rjmp .L9		 ; 
 	.size	TList_PushFront, .-TList_PushFront
 .global	TList_PushBack
 	.type	TList_PushBack, @function
@@ -397,162 +419,80 @@ TList_PushBack:
 /* stack size = 2 */
 .L__stack_usage = 2
 	movw r28,r24	 ;  pList, pList
-	movw r18,r22	 ;  Element, Element
- ;  container.c:92:     DISABLE_INTERRUPT;
-	out __SREG__,__zero_reg__	 ;  MEM[(volatile uint8_t *)95B],
-	lds r25,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r25,lo8(-(1))	 ;  tmp53,
-	sts INTERRUPT_LOCK_MUTEX,r25	 ;  INTERRUPT_LOCK_MUTEX, tmp53
- ;  container.c:94:     TListNode* NewNode = TListNode_New( Element, pList->_ofst );
-	ld r22,Y		 ;  pList_13(D)->_ofst, pList_13(D)->_ofst
-	ldi r23,0		 ;  pList_13(D)->_ofst
-	movw r24,r18	 ; , Element
+	movw r24,r22	 ;  Element, Element
+ ;  container.c:88:     TListNode* NewNode = TListNode_New( Element, pList->_ofst );
+	ld r22,Y		 ;  pList_6(D)->_ofst, pList_6(D)->_ofst
+	ldi r23,0		 ;  pList_6(D)->_ofst
 	call TListNode_New	 ; 
- ;  container.c:95:     portc_dbgout( 0xcc );
-	ldi r18,lo8(-52)	 ;  tmp58,
-	out 0x15,r18	 ;  MEM[(volatile uint8_t *)53B], tmp58
- ;  container.c:96:     if ( pList->Tail == NULL )
-	ldd r30,Y+3	 ;  _5, pList_13(D)->Tail
-	ldd r31,Y+4	 ;  _5, pList_13(D)->Tail
- ;  container.c:96:     if ( pList->Tail == NULL )
-	sbiw r30,0	 ;  _5,
-	brne .L14		 ; ,
- ;  container.c:98:         pList->Head = NewNode;
-	std Y+2,r25	 ;  pList_13(D)->Head, NewNode
-	std Y+1,r24	 ;  pList_13(D)->Head, NewNode
-.L17:
- ;  container.c:105:         pList->Tail = NewNode;
-	std Y+4,r25	 ;  pList_13(D)->Tail, NewNode
-	std Y+3,r24	 ;  pList_13(D)->Tail, NewNode
- ;  container.c:108:     ENABLE_INTERRUPT;
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(-1))	 ;  _7,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, _7
-	cpse r24,__zero_reg__	 ;  _7,
-	rjmp .L13	 ; 
- ;  container.c:108:     ENABLE_INTERRUPT;
-	ldi r24,lo8(-128)	 ;  tmp61,
-	out __SREG__,r24	 ;  MEM[(volatile uint8_t *)95B], tmp61
-.L13:
+ ;  container.c:89:     portc_dbgout( 0xcc );
+	ldi r18,lo8(-52)	 ;  tmp51,
+	out 0x15,r18	 ;  MEM[(volatile uint8_t *)53B], tmp51
+ ;  container.c:90:     if ( pList->Tail == NULL )
+	ldd r30,Y+3	 ;  _3, pList_6(D)->Tail
+	ldd r31,Y+4	 ;  _3, pList_6(D)->Tail
+ ;  container.c:90:     if ( pList->Tail == NULL )
+	sbiw r30,0	 ;  _3,
+	brne .L13		 ; ,
+ ;  container.c:92:         pList->Head = NewNode;
+	std Y+2,r25	 ;  pList_6(D)->Head, NewNode
+	std Y+1,r24	 ;  pList_6(D)->Head, NewNode
+.L15:
+ ;  container.c:99:         pList->Tail = NewNode;
+	std Y+4,r25	 ;  pList_6(D)->Tail, NewNode
+	std Y+3,r24	 ;  pList_6(D)->Tail, NewNode
 /* epilogue start */
- ;  container.c:109: }
+ ;  container.c:101: }
 	pop r29		 ; 
 	pop r28		 ; 
 	ret	
-.L14:
- ;  container.c:103:         NewNode->Prev = pList->Tail;
+.L13:
+ ;  container.c:97:         NewNode->Prev = pList->Tail;
 	movw r26,r24	 ; , NewNode
-	st X+,r30	 ;  _5
-	st X,r31	 ;  _5
- ;  container.c:104:         pList->Tail->Next = NewNode;
-	std Z+3,r25	 ;  _5->Next, NewNode
-	std Z+2,r24	 ;  _5->Next, NewNode
-	rjmp .L17		 ; 
+	st X+,r30	 ;  _3
+	st X,r31	 ;  _3
+ ;  container.c:98:         pList->Tail->Next = NewNode;
+	std Z+3,r25	 ;  _3->Next, NewNode
+	std Z+2,r24	 ;  _3->Next, NewNode
+	rjmp .L15		 ; 
 	.size	TList_PushBack, .-TList_PushBack
-	.section	.rodata.str1.1
-.LC2:
-	.string	"Access violation"
-	.text
 .global	TList_PopFront
 	.type	TList_PopFront, @function
 TList_PopFront:
-	push r16		 ; 
-	push r17		 ; 
 	push r28		 ; 
 	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	dec r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 256 */
-/* stack size = 260 */
-.L__stack_usage = 260
-	movw r16,r24	 ;  pList, pList
- ;  container.c:113:     DISABLE_INTERRUPT;
-	out __SREG__,__zero_reg__	 ;  MEM[(volatile uint8_t *)95B],
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(1))	 ;  tmp51,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, tmp51
- ;  container.c:114:     assertf( pList->Head != NULL, "Access violation" );
-	movw r26,r16	 ; , pList
-	adiw r26,1	 ;  pList_13(D)->Head
-	ld r24,X+	 ;  pList_13(D)->Head
-	ld r25,X	 ;  pList_13(D)->Head
-	or r24,r25	 ;  pList_13(D)->Head
-	brne .L19		 ; ,
- ;  container.c:114:     assertf( pList->Head != NULL, "Access violation" );
-	ldi r22,lo8(.LC2)	 ; ,
-	ldi r23,hi8(.LC2)	 ; ,
-	movw r24,r28	 ; ,
-	adiw r24,1	 ; ,
-	call strcpy	 ; 
-	movw r20,r28	 ; ,
-	subi r20,-1	 ; ,
-	sbci r21,-1	 ; ,
-	ldi r22,lo8(114)	 ; ,
-	ldi r23,0		 ; 
-	ldi r24,lo8(.LC1)	 ; ,
-	ldi r25,hi8(.LC1)	 ; ,
-	call internal_assertion_failed	 ; 
-.L19:
- ;  container.c:116:         TListNode* PrevHead = pList->Head;
-	movw r30,r16	 ; , pList
-	ldd r24,Z+1	 ;  PrevHead, pList_13(D)->Head
-	ldd r25,Z+2	 ;  PrevHead, pList_13(D)->Head
- ;  container.c:117:         pList->Head = pList->Head->Next;
-	movw r26,r24	 ; , PrevHead
-	adiw r26,2	 ;  PrevHead_17->Next
-	ld r30,X+	 ;  _4
-	ld r31,X	 ;  _4
- ;  container.c:117:         pList->Head = pList->Head->Next;
-	movw r26,r16	 ; , pList
-	adiw r26,1+1	 ;  pList_13(D)->Head
-	st X,r31	 ;  _4
-	st -X,r30	 ;  _4
-	sbiw r26,1	 ;  pList_13(D)->Head
- ;  container.c:118:         if ( pList->Head ) 
-	sbiw r30,0	 ;  _4,
-	breq .L20		 ; ,
- ;  container.c:120:             pList->Head->Prev = NULL;
-	std Z+1,__zero_reg__	 ;  MEM[(struct TListNode *)_4].Prev,
-	st Z,__zero_reg__	 ;  MEM[(struct TListNode *)_4].Prev,
-.L21:
- ;  container.c:126:         TListNode_Delete( PrevHead );
-	call TListNode_Delete	 ; 
- ;  container.c:128:     ENABLE_INTERRUPT;
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(-1))	 ;  _6,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, _6
-	cpse r24,__zero_reg__	 ;  _6,
-	rjmp .L18	 ; 
- ;  container.c:128:     ENABLE_INTERRUPT;
-	ldi r24,lo8(-128)	 ;  tmp56,
-	out __SREG__,r24	 ;  MEM[(volatile uint8_t *)95B], tmp56
+/* frame size = 0 */
+/* stack size = 2 */
+.L__stack_usage = 2
+	movw r30,r24	 ;  pList, pList
+ ;  container.c:107:         TListNode* PrevHead = pList->Head;
+	ldd r24,Z+1	 ;  PrevHead, pList_4(D)->Head
+	ldd r25,Z+2	 ;  PrevHead, pList_4(D)->Head
+ ;  container.c:108:         pList->Head = pList->Head->Next;
+	movw r28,r24	 ; , PrevHead
+	ldd r26,Y+2	 ;  _1, PrevHead_5->Next
+	ldd r27,Y+3	 ;  _1, PrevHead_5->Next
+ ;  container.c:108:         pList->Head = pList->Head->Next;
+	std Z+2,r27	 ;  pList_4(D)->Head, _1
+	std Z+1,r26	 ;  pList_4(D)->Head, _1
+ ;  container.c:109:         if ( pList->Head ) 
+	sbiw r26,0	 ;  _1,
+	breq .L17		 ; ,
+ ;  container.c:111:             pList->Head->Prev = NULL;
+	st X+,__zero_reg__	 ; 
+	st X,__zero_reg__	 ; 
 .L18:
 /* epilogue start */
- ;  container.c:129: }
-	inc r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
+ ;  container.c:119: }
 	pop r29		 ; 
 	pop r28		 ; 
-	pop r17		 ; 
-	pop r16		 ; 
-	ret	
-.L20:
- ;  container.c:124:             pList->Tail = NULL;
-	movw r30,r16	 ; , pList
-	std Z+4,__zero_reg__	 ;  pList_13(D)->Tail,
-	std Z+3,__zero_reg__	 ;  pList_13(D)->Tail,
-	rjmp .L21		 ; 
+ ;  container.c:117:         TListNode_Delete( PrevHead );
+	jmp TListNode_Delete	 ; 
+.L17:
+ ;  container.c:115:             pList->Tail = NULL;
+	std Z+4,__zero_reg__	 ;  pList_4(D)->Tail,
+	std Z+3,__zero_reg__	 ;  pList_4(D)->Tail,
+	rjmp .L18		 ; 
 	.size	TList_PopFront, .-TList_PopFront
 .global	TList_Dispose
 	.type	TList_Dispose, @function
@@ -564,122 +504,63 @@ TList_Dispose:
 /* stack size = 2 */
 .L__stack_usage = 2
 	movw r28,r24	 ;  pList, pList
-.L24:
+.L20:
  ;  container.c:50:     while ( pList->Head != NULL ) {
 	ldd r24,Y+1	 ;  pList_4(D)->Head, pList_4(D)->Head
 	ldd r25,Y+2	 ;  pList_4(D)->Head, pList_4(D)->Head
 	or r24,r25	 ;  pList_4(D)->Head
-	brne .L25		 ; ,
+	brne .L21		 ; ,
 /* epilogue start */
  ;  container.c:53: }
 	pop r29		 ; 
 	pop r28		 ; 
 	ret	
-.L25:
+.L21:
  ;  container.c:51:         TList_PopFront( pList );
 	movw r24,r28	 ; , pList
 	call TList_PopFront	 ; 
-	rjmp .L24		 ; 
+	rjmp .L20		 ; 
 	.size	TList_Dispose, .-TList_Dispose
 .global	TList_PopBack
 	.type	TList_PopBack, @function
 TList_PopBack:
-	push r16		 ; 
-	push r17		 ; 
 	push r28		 ; 
 	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	dec r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 256 */
-/* stack size = 260 */
-.L__stack_usage = 260
-	movw r16,r24	 ;  pList, pList
- ;  container.c:133:     DISABLE_INTERRUPT;
-	out __SREG__,__zero_reg__	 ;  MEM[(volatile uint8_t *)95B],
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(1))	 ;  tmp51,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, tmp51
- ;  container.c:134:     assertf( pList->Tail != NULL, "Access violation" );
-	movw r26,r16	 ; , pList
-	adiw r26,3	 ;  pList_13(D)->Tail
-	ld r24,X+	 ;  pList_13(D)->Tail
-	ld r25,X	 ;  pList_13(D)->Tail
-	or r24,r25	 ;  pList_13(D)->Tail
-	brne .L27		 ; ,
- ;  container.c:134:     assertf( pList->Tail != NULL, "Access violation" );
-	ldi r22,lo8(.LC2)	 ; ,
-	ldi r23,hi8(.LC2)	 ; ,
-	movw r24,r28	 ; ,
-	adiw r24,1	 ; ,
-	call strcpy	 ; 
-	movw r20,r28	 ; ,
-	subi r20,-1	 ; ,
-	sbci r21,-1	 ; ,
-	ldi r22,lo8(-122)	 ; ,
-	ldi r23,0		 ; 
-	ldi r24,lo8(.LC1)	 ; ,
-	ldi r25,hi8(.LC1)	 ; ,
-	call internal_assertion_failed	 ; 
-.L27:
- ;  container.c:136:         TListNode* PrevTail = pList->Tail;
-	movw r30,r16	 ; , pList
-	ldd r24,Z+3	 ;  PrevTail, pList_13(D)->Tail
-	ldd r25,Z+4	 ;  PrevTail, pList_13(D)->Tail
- ;  container.c:137:         pList->Tail = pList->Tail->Prev;
-	movw r26,r24	 ; , PrevTail
-	ld r30,X+	 ;  _4
-	ld r31,X	 ;  _4
- ;  container.c:137:         pList->Tail = pList->Tail->Prev;
-	movw r26,r16	 ; , pList
-	adiw r26,3+1	 ;  pList_13(D)->Tail
-	st X,r31	 ;  _4
-	st -X,r30	 ;  _4
-	sbiw r26,3	 ;  pList_13(D)->Tail
- ;  container.c:138:         if ( pList->Tail )
-	sbiw r30,0	 ;  _4,
-	breq .L28		 ; ,
- ;  container.c:140:             pList->Tail->Next = NULL;
-	std Z+3,__zero_reg__	 ;  MEM[(struct TListNode *)_4].Next,
-	std Z+2,__zero_reg__	 ;  MEM[(struct TListNode *)_4].Next,
-.L29:
- ;  container.c:146:         TListNode_Delete( PrevTail );
-	call TListNode_Delete	 ; 
- ;  container.c:148:     ENABLE_INTERRUPT;
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(-1))	 ;  _6,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, _6
-	cpse r24,__zero_reg__	 ;  _6,
-	rjmp .L26	 ; 
- ;  container.c:148:     ENABLE_INTERRUPT;
-	ldi r24,lo8(-128)	 ;  tmp56,
-	out __SREG__,r24	 ;  MEM[(volatile uint8_t *)95B], tmp56
-.L26:
+/* frame size = 0 */
+/* stack size = 2 */
+.L__stack_usage = 2
+	movw r30,r24	 ;  pList, pList
+ ;  container.c:125:         TListNode* PrevTail = pList->Tail;
+	ldd r24,Z+3	 ;  PrevTail, pList_4(D)->Tail
+	ldd r25,Z+4	 ;  PrevTail, pList_4(D)->Tail
+ ;  container.c:126:         pList->Tail = pList->Tail->Prev;
+	movw r28,r24	 ; , PrevTail
+	ld r26,Y	 ;  _1, PrevTail_5->Prev
+	ldd r27,Y+1	 ;  _1, PrevTail_5->Prev
+ ;  container.c:126:         pList->Tail = pList->Tail->Prev;
+	std Z+4,r27	 ;  pList_4(D)->Tail, _1
+	std Z+3,r26	 ;  pList_4(D)->Tail, _1
+ ;  container.c:127:         if ( pList->Tail )
+	sbiw r26,0	 ;  _1,
+	breq .L23		 ; ,
+ ;  container.c:129:             pList->Tail->Next = NULL;
+	adiw r26,2+1	 ;  MEM[(struct TListNode *)_1].Next
+	st X,__zero_reg__	 ; 
+	st -X,__zero_reg__	 ; 
+	sbiw r26,2	 ;  MEM[(struct TListNode *)_1].Next
+.L24:
 /* epilogue start */
- ;  container.c:149: }
-	inc r29		 ; 
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
+ ;  container.c:137: }
 	pop r29		 ; 
 	pop r28		 ; 
-	pop r17		 ; 
-	pop r16		 ; 
-	ret	
-.L28:
- ;  container.c:144:             pList->Head = NULL;
-	movw r30,r16	 ; , pList
-	std Z+2,__zero_reg__	 ;  pList_13(D)->Head,
-	std Z+1,__zero_reg__	 ;  pList_13(D)->Head,
-	rjmp .L29		 ; 
+ ;  container.c:135:         TListNode_Delete( PrevTail );
+	jmp TListNode_Delete	 ; 
+.L23:
+ ;  container.c:133:             pList->Head = NULL;
+	std Z+2,__zero_reg__	 ;  pList_4(D)->Head,
+	std Z+1,__zero_reg__	 ;  pList_4(D)->Head,
+	rjmp .L24		 ; 
 	.size	TList_PopBack, .-TList_PopBack
 .global	TListNode_Remove
 	.type	TListNode_Remove, @function
@@ -690,57 +571,39 @@ TListNode_Remove:
 /* frame size = 0 */
 /* stack size = 2 */
 .L__stack_usage = 2
- ;  container.c:153:     DISABLE_INTERRUPT;
-	out __SREG__,__zero_reg__	 ;  MEM[(volatile uint8_t *)95B],
-	lds r18,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r18,lo8(-(1))	 ;  tmp51,
-	sts INTERRUPT_LOCK_MUTEX,r18	 ;  INTERRUPT_LOCK_MUTEX, tmp51
- ;  container.c:154:     if ( pNode->Next )
+ ;  container.c:141:     if ( pNode->Next )
 	movw r26,r24	 ; , pNode
-	adiw r26,2	 ;  pNode_14(D)->Next
-	ld r30,X+	 ;  _3
-	ld r31,X	 ;  _3
-	sbiw r26,2+1	 ;  pNode_14(D)->Next
- ;  container.c:154:     if ( pNode->Next )
-	sbiw r30,0	 ;  _3,
-	breq .L32		 ; ,
- ;  container.c:156:         pNode->Next->Prev = pNode->Prev;
-	ld r18,X+	 ;  _4
-	ld r19,X	 ;  _4
- ;  container.c:156:         pNode->Next->Prev = pNode->Prev;
-	std Z+1,r19	 ;  _3->Prev, _4
-	st Z,r18	 ;  _3->Prev, _4
-.L32:
- ;  container.c:158:     if ( pNode->Prev )
+	adiw r26,2	 ;  pNode_7(D)->Next
+	ld r30,X+	 ;  _1
+	ld r31,X	 ;  _1
+	sbiw r26,2+1	 ;  pNode_7(D)->Next
+ ;  container.c:141:     if ( pNode->Next )
+	sbiw r30,0	 ;  _1,
+	breq .L26		 ; ,
+	ld r18,X+	 ;  pretmp_13
+	ld r19,X	 ;  pretmp_13
+ ;  container.c:143:         pNode->Next->Prev = pNode->Prev;
+	std Z+1,r19	 ;  _1->Prev, pretmp_13
+	st Z,r18	 ;  _1->Prev, pretmp_13
+.L26:
+ ;  container.c:145:     if ( pNode->Prev )
 	movw r28,r24	 ; , pNode
-	ld r26,Y	 ;  _5, pNode_14(D)->Prev
-	ldd r27,Y+1	 ;  _5, pNode_14(D)->Prev
- ;  container.c:158:     if ( pNode->Prev )
-	sbiw r26,0	 ;  _5,
-	breq .L33		 ; ,
- ;  container.c:160:         pNode->Prev->Next = pNode->Next;
-	adiw r26,2+1	 ;  _5->Next
-	st X,r31	 ;  _3
-	st -X,r30	 ;  _3
-	sbiw r26,2	 ;  _5->Next
-.L33:
- ;  container.c:162:     TListNode_Delete( pNode );
-	call TListNode_Delete	 ; 
- ;  container.c:163:     ENABLE_INTERRUPT;
-	lds r24,INTERRUPT_LOCK_MUTEX	 ;  INTERRUPT_LOCK_MUTEX, INTERRUPT_LOCK_MUTEX
-	subi r24,lo8(-(-1))	 ;  _7,
-	sts INTERRUPT_LOCK_MUTEX,r24	 ;  INTERRUPT_LOCK_MUTEX, _7
-	cpse r24,__zero_reg__	 ;  _7,
-	rjmp .L31	 ; 
- ;  container.c:163:     ENABLE_INTERRUPT;
-	ldi r24,lo8(-128)	 ;  tmp55,
-	out __SREG__,r24	 ;  MEM[(volatile uint8_t *)95B], tmp55
-.L31:
+	ld r26,Y	 ;  _3, pNode_7(D)->Prev
+	ldd r27,Y+1	 ;  _3, pNode_7(D)->Prev
+ ;  container.c:145:     if ( pNode->Prev )
+	sbiw r26,0	 ;  _3,
+	breq .L27		 ; ,
+ ;  container.c:147:         pNode->Prev->Next = pNode->Next;
+	adiw r26,2+1	 ;  _3->Next
+	st X,r31	 ;  _1
+	st -X,r30	 ;  _1
+	sbiw r26,2	 ;  _3->Next
+.L27:
 /* epilogue start */
- ;  container.c:164: }
+ ;  container.c:150: }
 	pop r29		 ; 
 	pop r28		 ; 
-	ret	
+ ;  container.c:149:     TListNode_Delete( pNode );
+	jmp TListNode_Delete	 ; 
 	.size	TListNode_Remove, .-TListNode_Remove
 	.ident	"GCC: (GNU) 8.3.0"
-.global __do_copy_data
