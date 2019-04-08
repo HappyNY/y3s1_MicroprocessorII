@@ -98,7 +98,7 @@ TArray_AddLast:
  ;  container.c:6:     uint8* pCursor = pArray->_data + pArray->_count * pArray->_ofst;
 	add r12,r14	 ;  pCursor, _1
 	adc r13,r15	 ;  pCursor, _1
- ;  memory128.h:18:     return *( (uint16*) Ptr - 1 );
+ ;  memory128.h:17:     return *( (uint16*) Ptr - 1 );
 	movw r30,r14	 ;  tmp61, _1
 	sbiw r30,2	 ;  tmp61,
 	ld r8,Z	 ;  _15, MEM[(uint16 *)_1 + 65534B]
@@ -107,7 +107,7 @@ TArray_AddLast:
 	movw r18,r12	 ;  tmp62, pCursor
 	add r18,r16	 ;  tmp62, _4
 	adc r19,r17	 ; , _4
- ;  memory128.h:49:     return (byte*) Ptr + GetMemoryOccupation( Ptr );
+ ;  memory128.h:51:     return (byte*) Ptr + GetMemoryOccupation( Ptr );
 	movw r24,r14	 ;  tmp63, _1
 	add r24,r8	 ;  tmp63, _15
 	adc r25,r9	 ; , _15
@@ -424,33 +424,30 @@ TList_PushBack:
 	ld r22,Y		 ;  pList_6(D)->_ofst, pList_6(D)->_ofst
 	ldi r23,0		 ;  pList_6(D)->_ofst
 	call TListNode_New	 ; 
- ;  container.c:89:     portc_dbgout( 0xcc );
-	ldi r18,lo8(-52)	 ;  tmp51,
-	out 0x15,r18	 ;  MEM[(volatile uint8_t *)53B], tmp51
- ;  container.c:90:     if ( pList->Tail == NULL )
+ ;  container.c:89:     if ( pList->Tail == NULL )
 	ldd r30,Y+3	 ;  _3, pList_6(D)->Tail
 	ldd r31,Y+4	 ;  _3, pList_6(D)->Tail
- ;  container.c:90:     if ( pList->Tail == NULL )
+ ;  container.c:89:     if ( pList->Tail == NULL )
 	sbiw r30,0	 ;  _3,
 	brne .L13		 ; ,
- ;  container.c:92:         pList->Head = NewNode;
+ ;  container.c:91:         pList->Head = NewNode;
 	std Y+2,r25	 ;  pList_6(D)->Head, NewNode
 	std Y+1,r24	 ;  pList_6(D)->Head, NewNode
 .L15:
- ;  container.c:99:         pList->Tail = NewNode;
+ ;  container.c:98:         pList->Tail = NewNode;
 	std Y+4,r25	 ;  pList_6(D)->Tail, NewNode
 	std Y+3,r24	 ;  pList_6(D)->Tail, NewNode
 /* epilogue start */
- ;  container.c:101: }
+ ;  container.c:100: }
 	pop r29		 ; 
 	pop r28		 ; 
 	ret	
 .L13:
- ;  container.c:97:         NewNode->Prev = pList->Tail;
+ ;  container.c:96:         NewNode->Prev = pList->Tail;
 	movw r26,r24	 ; , NewNode
 	st X+,r30	 ;  _3
 	st X,r31	 ;  _3
- ;  container.c:98:         pList->Tail->Next = NewNode;
+ ;  container.c:97:         pList->Tail->Next = NewNode;
 	std Z+3,r25	 ;  _3->Next, NewNode
 	std Z+2,r24	 ;  _3->Next, NewNode
 	rjmp .L15		 ; 
@@ -465,31 +462,31 @@ TList_PopFront:
 /* stack size = 2 */
 .L__stack_usage = 2
 	movw r30,r24	 ;  pList, pList
- ;  container.c:107:         TListNode* PrevHead = pList->Head;
+ ;  container.c:106:         TListNode* PrevHead = pList->Head;
 	ldd r24,Z+1	 ;  PrevHead, pList_4(D)->Head
 	ldd r25,Z+2	 ;  PrevHead, pList_4(D)->Head
- ;  container.c:108:         pList->Head = pList->Head->Next;
+ ;  container.c:107:         pList->Head = pList->Head->Next;
 	movw r28,r24	 ; , PrevHead
 	ldd r26,Y+2	 ;  _1, PrevHead_5->Next
 	ldd r27,Y+3	 ;  _1, PrevHead_5->Next
- ;  container.c:108:         pList->Head = pList->Head->Next;
+ ;  container.c:107:         pList->Head = pList->Head->Next;
 	std Z+2,r27	 ;  pList_4(D)->Head, _1
 	std Z+1,r26	 ;  pList_4(D)->Head, _1
- ;  container.c:109:         if ( pList->Head ) 
+ ;  container.c:108:         if ( pList->Head ) 
 	sbiw r26,0	 ;  _1,
 	breq .L17		 ; ,
- ;  container.c:111:             pList->Head->Prev = NULL;
+ ;  container.c:110:             pList->Head->Prev = NULL;
 	st X+,__zero_reg__	 ; 
 	st X,__zero_reg__	 ; 
 .L18:
 /* epilogue start */
- ;  container.c:119: }
+ ;  container.c:118: }
 	pop r29		 ; 
 	pop r28		 ; 
- ;  container.c:117:         TListNode_Delete( PrevHead );
+ ;  container.c:116:         TListNode_Delete( PrevHead );
 	jmp TListNode_Delete	 ; 
 .L17:
- ;  container.c:115:             pList->Tail = NULL;
+ ;  container.c:114:             pList->Tail = NULL;
 	std Z+4,__zero_reg__	 ;  pList_4(D)->Tail,
 	std Z+3,__zero_reg__	 ;  pList_4(D)->Tail,
 	rjmp .L18		 ; 
@@ -531,33 +528,33 @@ TList_PopBack:
 /* stack size = 2 */
 .L__stack_usage = 2
 	movw r30,r24	 ;  pList, pList
- ;  container.c:125:         TListNode* PrevTail = pList->Tail;
+ ;  container.c:124:         TListNode* PrevTail = pList->Tail;
 	ldd r24,Z+3	 ;  PrevTail, pList_4(D)->Tail
 	ldd r25,Z+4	 ;  PrevTail, pList_4(D)->Tail
- ;  container.c:126:         pList->Tail = pList->Tail->Prev;
+ ;  container.c:125:         pList->Tail = pList->Tail->Prev;
 	movw r28,r24	 ; , PrevTail
 	ld r26,Y	 ;  _1, PrevTail_5->Prev
 	ldd r27,Y+1	 ;  _1, PrevTail_5->Prev
- ;  container.c:126:         pList->Tail = pList->Tail->Prev;
+ ;  container.c:125:         pList->Tail = pList->Tail->Prev;
 	std Z+4,r27	 ;  pList_4(D)->Tail, _1
 	std Z+3,r26	 ;  pList_4(D)->Tail, _1
- ;  container.c:127:         if ( pList->Tail )
+ ;  container.c:126:         if ( pList->Tail )
 	sbiw r26,0	 ;  _1,
 	breq .L23		 ; ,
- ;  container.c:129:             pList->Tail->Next = NULL;
+ ;  container.c:128:             pList->Tail->Next = NULL;
 	adiw r26,2+1	 ;  MEM[(struct TListNode *)_1].Next
 	st X,__zero_reg__	 ; 
 	st -X,__zero_reg__	 ; 
 	sbiw r26,2	 ;  MEM[(struct TListNode *)_1].Next
 .L24:
 /* epilogue start */
- ;  container.c:137: }
+ ;  container.c:136: }
 	pop r29		 ; 
 	pop r28		 ; 
- ;  container.c:135:         TListNode_Delete( PrevTail );
+ ;  container.c:134:         TListNode_Delete( PrevTail );
 	jmp TListNode_Delete	 ; 
 .L23:
- ;  container.c:133:             pList->Head = NULL;
+ ;  container.c:132:             pList->Head = NULL;
 	std Z+2,__zero_reg__	 ;  pList_4(D)->Head,
 	std Z+1,__zero_reg__	 ;  pList_4(D)->Head,
 	rjmp .L24		 ; 
@@ -571,39 +568,39 @@ TListNode_Remove:
 /* frame size = 0 */
 /* stack size = 2 */
 .L__stack_usage = 2
- ;  container.c:141:     if ( pNode->Next )
+ ;  container.c:140:     if ( pNode->Next )
 	movw r26,r24	 ; , pNode
 	adiw r26,2	 ;  pNode_7(D)->Next
 	ld r30,X+	 ;  _1
 	ld r31,X	 ;  _1
 	sbiw r26,2+1	 ;  pNode_7(D)->Next
- ;  container.c:141:     if ( pNode->Next )
+ ;  container.c:140:     if ( pNode->Next )
 	sbiw r30,0	 ;  _1,
 	breq .L26		 ; ,
 	ld r18,X+	 ;  pretmp_13
 	ld r19,X	 ;  pretmp_13
- ;  container.c:143:         pNode->Next->Prev = pNode->Prev;
+ ;  container.c:142:         pNode->Next->Prev = pNode->Prev;
 	std Z+1,r19	 ;  _1->Prev, pretmp_13
 	st Z,r18	 ;  _1->Prev, pretmp_13
 .L26:
- ;  container.c:145:     if ( pNode->Prev )
+ ;  container.c:144:     if ( pNode->Prev )
 	movw r28,r24	 ; , pNode
 	ld r26,Y	 ;  _3, pNode_7(D)->Prev
 	ldd r27,Y+1	 ;  _3, pNode_7(D)->Prev
- ;  container.c:145:     if ( pNode->Prev )
+ ;  container.c:144:     if ( pNode->Prev )
 	sbiw r26,0	 ;  _3,
 	breq .L27		 ; ,
- ;  container.c:147:         pNode->Prev->Next = pNode->Next;
+ ;  container.c:146:         pNode->Prev->Next = pNode->Next;
 	adiw r26,2+1	 ;  _3->Next
 	st X,r31	 ;  _1
 	st -X,r30	 ;  _1
 	sbiw r26,2	 ;  _3->Next
 .L27:
 /* epilogue start */
- ;  container.c:150: }
+ ;  container.c:149: }
 	pop r29		 ; 
 	pop r28		 ; 
- ;  container.c:149:     TListNode_Delete( pNode );
+ ;  container.c:148:     TListNode_Delete( pNode );
 	jmp TListNode_Delete	 ; 
 	.size	TListNode_Remove, .-TListNode_Remove
 	.ident	"GCC: (GNU) 8.3.0"

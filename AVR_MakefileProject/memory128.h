@@ -1,9 +1,8 @@
 #pragma once
+#include "Intellisense.h"
 #include "macros.h"
 #include "types.h"
-#include "Intellisense.h"
-#include "assertion.h"
-#include <stdlib.h>
+#include "assertion.h" 
 
 #if LOG_MEMORY
 #define log_memory log_display
@@ -20,6 +19,9 @@ inline size_type GetMemoryOccupation( void* Ptr )
 
 inline void InitMemory( void* InitialLocation ) {}
 
+void* malloc();
+void free(void *);
+
 inline void* Malloc( uint16 SizeInByte )
 {
     DISABLE_INTERRUPT;
@@ -31,7 +33,7 @@ inline void* Malloc( uint16 SizeInByte )
 
     ENABLE_INTERRUPT;
     return ret;
-}
+} 
 
 inline void Free( void* Ptr )
 {

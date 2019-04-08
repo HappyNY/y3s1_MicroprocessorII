@@ -3,6 +3,7 @@
 #include "memory128.h"
 #include <avr/interrupt.h> 
 
+#if USE_SERIAL_COMMUNICATION
 CSerialSender UART0Sender;
 
 ISR( USART0_TX_vect )
@@ -26,10 +27,10 @@ void InitializeTX0SerialOutput()
 {
     // Enable tx0
     UCSR0A = 0;
-    UCSR0B |= mask( TXEN0 );
+    UCSR0B |= mask( RXEN0, TXEN0 );
     UCSR0C = mask( UCSZ01, UCSZ00 );
     UBRR0H = 0;
-    UBRR0L = 103; // BAUD = 9600
+    UBRR0L = 51; // BAUD = 9600
 }
 
 void CSerialSender_Initialize( CSerialSender * const Sender )
@@ -85,4 +86,16 @@ char CSerialSender_ConsumeOutputCharacter( CSerialSender * const Sender )
     return ChToPut;
 }
 
+bool CSerialSender_IsQueueEmpty( CSerialSender const * const Sender )
+{
+    return Sender->StringQueue.Head == NULL;
+}
 
+char UART0_WaitAnyKey()
+{
+    char consume = UDR0;
+    while ( !( UCSR0A & 0x80 ) );
+    return UDR0;
+}
+
+#endif

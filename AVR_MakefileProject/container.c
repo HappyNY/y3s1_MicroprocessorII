@@ -86,7 +86,6 @@ void TList_PushFront( TList * const pList, const void * const Element )
 void TList_PushBack( TList * const pList, const void * const Element )
 {
     TListNode* NewNode = TListNode_New( Element, pList->_ofst );
-    portc_dbgout( 0xcc );
     if ( pList->Tail == NULL )
     {
         pList->Head = NewNode;

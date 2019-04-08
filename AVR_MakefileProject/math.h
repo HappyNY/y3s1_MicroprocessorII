@@ -8,6 +8,7 @@
 #define math_clamp(val, min, max) (val) < (min) ? (min) : (val) > (max) ? (max) : (val);
 
 inline int8 abs8( int8 val ) { return val > 0 ? val : -val; }
+inline int16 abs16( int16 val ) { return val > 0 ? val : -val; }
 inline int16 max16( int16 a, int16 b ) { return a > b ? a : b; }
 inline int16 min16( int16 a, int16 b ) { return a < b ? a : b; }
 

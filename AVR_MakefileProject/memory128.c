@@ -3,7 +3,7 @@
 
 
 #if USE_STDLIB_MALLOC
-// NO CODE HERE 
+// NO CODE HERE  
 #else
 
 #define HEAP_MAX_BYTE 0xa00

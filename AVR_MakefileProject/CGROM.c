@@ -1,6 +1,6 @@
 // Character generation rom. 
-const unsigned char CGROM[2048]
-;/*=
+const char CGROM[2048]
+// ;/*=
 = {
 0b00000000,
 0b00000000,

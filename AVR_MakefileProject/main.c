@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "Display.h"
 
+extern inline void VBuffer_Clear();
+
 /* DEVICE CONTROLLER STATICS */ 
 volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
 
@@ -16,18 +18,46 @@ void main(void)
     InitializeDevice();
     CSerialSender_Initialize( &UART0Sender ); 
 
+    outputmsg_uart0( "Program start, press any key. \r\n" );
+    UART0_WaitAnyKey();
+    CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
     {
-        byte i = 0, j = 0;
-        while ( 1 )
-        {
-            VBuffer_DrawLine( i, j, i + 25, j + 35 );
-            _delay_ms( 300 );
-            LCDDevice__Render();
-            VBuffer_Clear();
-
+        VBuffer_Clear();
+        byte i = 0, j = 0, cnt = 11;
+        while ( cnt-- )
+        { 
+            VBuffer_DrawLine( i, j, i + 5, j + 7 ); 
             ++i;
             ++j;
+            LCDDevice__Render();
+            VBuffer_Clear();
         }
+        byte xidx = 0, yidx = 0;
+        VBuffer_DrawString( &xidx, &yidx, "hello,", false );
+        VBuffer_DrawString( &xidx, &yidx, "world!", true );
+
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
+
+        VBuffer_Clear();
+
+        VBuffer_DrawDot( 0, 0 );
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
+
+        VBuffer_DrawDot( 5, 5 );
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
+
+        VBuffer_DrawDot( 10, 10 );
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
+
+        VBuffer_DrawDot( 15, 15 );
+        LCDDevice__Render(); 
+        UART0_WaitAnyKey();  
+
+        while ( 1 );
     }
 
 /*/
@@ -128,10 +158,14 @@ void InitializeDevice()
 {
     InitMemory( NULL );
 
+    LCDDevice__Initialize();
+ 
     DDRC = 0xff;
     PORTC = 0xff;
-
     InitializeTX0SerialOutput();
-    SREG = 0x80;
+    
+    // Timer monitor
+    
+    sei();
 }
 
