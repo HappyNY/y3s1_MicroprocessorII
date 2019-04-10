@@ -76,8 +76,8 @@ InitializeTX0SerialOutput:
 	sts 149,r24	 ;  MEM[(volatile uint8_t *)149B], tmp48
  ;  Serial.c:32:     UBRR0H = 0;
 	sts 144,__zero_reg__	 ;  MEM[(volatile uint8_t *)144B],
- ;  Serial.c:33:     UBRR0L = 51; // BAUD = 9600
-	ldi r24,lo8(51)	 ;  tmp51,
+ ;  Serial.c:33:     UBRR0L = 25; // BAUD = 38.4k
+	ldi r24,lo8(25)	 ;  tmp51,
 	out 0x9,r24	 ;  MEM[(volatile uint8_t *)41B], tmp51
 /* epilogue start */
  ;  Serial.c:34: }

@@ -26,13 +26,15 @@ void LCDDevice__Render()
 {
 	// @todo. Hardware associated functionality.
     // @. temporary code.
+
+#if 1 // SERIAL_DEBUG_OUTPUT
     int i, k, ofst = 0;
     char buff[LCD_WIDTH + 3];
     
     CSerialSender_QueueOutputString( &UART0Sender, "\033[H" );
     for ( i = 0; i < LCD_HEGIHT; ++i ) {
         for ( k = 0; k < LCD_LINE_BYTE; ++k ) {
-#define pew(idx) buff[k * PIXELS_PER_BYTE + idx] = (*( LCDBuffer + ofst + k ) & ( 1 << ((PIXELS_PER_BYTE - 1) - idx) )) ? '*' : '-';
+#define pew(idx) buff[k * PIXELS_PER_BYTE + idx] = (*( LCDBuffer + ofst + k ) & ( 1 << ((PIXELS_PER_BYTE - 1) - idx) )) ? '@' : '-';
             pew( 0 );
             pew( 1 );
             pew( 2 );
@@ -52,9 +54,10 @@ void LCDDevice__Render()
         CSerialSender_QueueOutputString( &UART0Sender, "::" );
         CSerialSender_QueueOutputString( &UART0Sender, buff );
     }
+#endif
 }
 
-void VBuffer_DrawLine( uint8 x0, uint8 y0, const uint8 x1, const uint8 y1 )
+void VBuffer_DrawLine( int16 x0, int16 y0, const int16 x1, const int16 y1 )
 {
     // @todo. line verification 
     int16 dx = math_abs( x1 - x0 );

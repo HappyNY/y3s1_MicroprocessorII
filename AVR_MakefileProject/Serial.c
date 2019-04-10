@@ -30,7 +30,7 @@ void InitializeTX0SerialOutput()
     UCSR0B |= mask( RXEN0, TXEN0 );
     UCSR0C = mask( UCSZ01, UCSZ00 );
     UBRR0H = 0;
-    UBRR0L = 51; // BAUD = 9600
+    UBRR0L = 25; // BAUD = 38.4k
 }
 
 void CSerialSender_Initialize( CSerialSender * const Sender )

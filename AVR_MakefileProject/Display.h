@@ -35,7 +35,7 @@ inline void VBuffer_Clear()
 	} 
 }
 
-inline void VBuffer_DrawDot( byte x, byte y )
+inline void VBuffer_DrawDot( int16 x, int16 y )
 {
     if( 0 <= x && x < LCD_WIDTH
         && 0 <= y && y < LCD_HEGIHT )
@@ -57,7 +57,7 @@ inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed 
     for ( i = 0; i < CGROM_DISPLAY_HEIGHT; ++i )
     {
         if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
-        LCDBuffer[BuffIdx] = bInversed ? ~( *ascii_head ) : *( ascii_head );
+        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
         ++ascii_head;
         BuffIdx += LCD_LINE_BYTE;
     }
@@ -84,4 +84,4 @@ inline void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bI
     }
 }
 
-void VBuffer_DrawLine( uint8 xbeg, uint8 ybeg, const uint8 xend, const uint8 yend ); 
+void VBuffer_DrawLine( int16 xbeg, int16 ybeg, const int16 xend, const int16 yend );

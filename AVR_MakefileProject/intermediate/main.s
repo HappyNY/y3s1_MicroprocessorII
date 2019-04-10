@@ -92,166 +92,173 @@ InitializeDevice:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:161:     LCDDevice__Initialize();
+ ;  main.c:88:     LCDDevice__Initialize();
 	call LCDDevice__Initialize	 ; 
- ;  main.c:163:     DDRC = 0xff;
+ ;  main.c:90:     DDRC = 0xff;
 	ldi r24,lo8(-1)	 ;  tmp43,
 	out 0x14,r24	 ;  MEM[(volatile uint8_t *)52B], tmp43
- ;  main.c:164:     PORTC = 0xff;
+ ;  main.c:91:     PORTC = 0xff;
 	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], tmp43
- ;  main.c:165:     InitializeTX0SerialOutput();
+ ;  main.c:92:     InitializeTX0SerialOutput();
 	call InitializeTX0SerialOutput	 ; 
- ;  main.c:169:     sei();
+ ;  main.c:96:     sei();
 /* #APP */
- ;  169 "main.c" 1
+ ;  96 "main.c" 1
 	sei	
  ;  0 "" 2
 /* #NOAPP */
 /* epilogue start */
- ;  main.c:170: }
+ ;  main.c:97: }
 	ret	
 	.size	InitializeDevice, .-InitializeDevice
 	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"Program start, press any key. \r\n"
-.LC1:
+.LC8:
+	.string	"Program start, press any key. \033[H \r\n"
+.LC9:
 	.string	"Begin\r\n"
+.LC0:
+	.string	"Hello, world!"
+.LC1:
+	.string	"good Morning!"
 .LC2:
-	.string	"hello,"
+	.string	"What's up, my boy?"
 .LC3:
-	.string	"world!"
+	.string	"I'm here, with you"
+.LC4:
+	.string	"Oh, no, no!z"
+.LC5:
+	.string	"Pl-ease."
+.LC6:
+	.string	"Heck the wao!"
+	.section	.rodata
+.LC10:
+	.word	.LC0
+	.word	.LC1
+	.word	.LC2
+	.word	.LC3
+	.word	.LC4
+	.word	.LC5
+	.word	.LC6
 	.section	.text.startup,"ax",@progbits
 .global	main
 	.type	main, @function
 main:
 	push r28		 ; 
 	push r29		 ; 
-	 ; SP -= 2	 ; 
-	rcall .	
 	in r28,__SP_L__	 ; 
 	in r29,__SP_H__	 ; 
+	sbiw r28,16	 ; ,
+	in __tmp_reg__,__SREG__
+	cli
+	out __SP_H__,r29	 ; ,
+	out __SREG__,__tmp_reg__
+	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 2 */
-/* stack size = 4 */
-.L__stack_usage = 4
+/* frame size = 16 */
+/* stack size = 18 */
+.L__stack_usage = 18
  ;  main.c:18:     InitializeDevice();
 	call InitializeDevice	 ; 
  ;  main.c:19:     CSerialSender_Initialize( &UART0Sender ); 
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_Initialize	 ; 
- ;  main.c:21:     outputmsg_uart0( "Program start, press any key. \r\n" );
-	ldi r24,lo8(.LC0)	 ; ,
-	ldi r25,hi8(.LC0)	 ; ,
+ ;  main.c:21:     outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
+	ldi r24,lo8(.LC8)	 ; ,
+	ldi r25,hi8(.LC8)	 ; ,
 	call outputmsg_uart0	 ; 
  ;  main.c:22:     UART0_WaitAnyKey();
 	call UART0_WaitAnyKey	 ; 
  ;  main.c:23:     CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
-	ldi r22,lo8(.LC1)	 ; ,
-	ldi r23,hi8(.LC1)	 ; ,
+	ldi r22,lo8(.LC9)	 ; ,
+	ldi r23,hi8(.LC9)	 ; ,
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_QueueOutputString	 ; 
  ;  main.c:25:         VBuffer_Clear();
 	call VBuffer_Clear	 ; 
- ;  main.c:26:         byte i = 0, j = 0, cnt = 11;
-	ldi r17,0		 ;  i
+	ldi r16,lo8(5)	 ;  ivtmp.38,
+	ldi r17,0		 ;  ivtmp.38
 .L6:
+	movw r24,r16	 ;  _36, ivtmp.38
+	sbiw r24,5	 ;  _36,
  ;  main.c:29:             VBuffer_DrawLine( i, j, i + 5, j + 7 ); 
-	ldi r18,lo8(7)	 ;  tmp57,
-	add r18,r17	 ;  tmp57, i
-	ldi r20,lo8(5)	 ;  tmp58,
-	add r20,r17	 ;  tmp58, i
-	mov r22,r17	 ; , i
-	mov r24,r17	 ; , i
+	movw r18,r16	 ;  tmp50, ivtmp.38
+	subi r18,-2	 ;  tmp50,
+	sbci r19,-1	 ; ,
+	movw r20,r16	 ; , ivtmp.38
+	movw r22,r24	 ; , _36
 	call VBuffer_DrawLine	 ; 
- ;  main.c:30:             ++i;
-	subi r17,lo8(-(1))	 ;  i,
  ;  main.c:32:             LCDDevice__Render();
 	call LCDDevice__Render	 ; 
  ;  main.c:33:             VBuffer_Clear();
 	call VBuffer_Clear	 ; 
+	subi r16,-1	 ;  ivtmp.38,
+	sbci r17,-1	 ;  ivtmp.38,
  ;  main.c:27:         while ( cnt-- )
-	cpi r17,lo8(11)	 ;  i,
+	cpi r16,16	 ;  ivtmp.38,
+	cpc r17,__zero_reg__	 ;  ivtmp.38
 	brne .L6		 ; ,
- ;  main.c:35:         byte xidx = 0, yidx = 0;
-	std Y+2,__zero_reg__	 ;  xidx,
- ;  main.c:35:         byte xidx = 0, yidx = 0;
-	std Y+1,__zero_reg__	 ;  yidx,
- ;  main.c:36:         VBuffer_DrawString( &xidx, &yidx, "hello,", false );
+ ;  main.c:36:         const char* str[] =
+	ldi r24,lo8(14)	 ;  tmp51,
+	ldi r30,lo8(.LC10)	 ; ,
+	ldi r31,hi8(.LC10)	 ; ,
+	movw r26,r28	 ; ,
+	adiw r26,1	 ; ,
+	0:	
+	ld r0,Z+		 ; 
+	st X+,r0		 ; 
+	dec r24		 ;  tmp51
+	brne 0b	
+ ;  main.c:46:         const char** pp = str;
+	movw r16,r28	 ;  pp,
+	subi r16,-1	 ;  pp,
+	sbci r17,-1	 ;  pp,
+ ;  main.c:51:             VBuffer_DrawString( &xidx, &yidx, *pp, false );
+	movw r14,r28	 ;  tmp53,
+	ldi r18,15	 ; ,
+	add r14,r18	 ;  tmp53,
+	adc r15,__zero_reg__	 ; 
+.L8:
+ ;  main.c:50:             xidx = yidx = 0;
+	std Y+15,__zero_reg__	 ;  yidx,
+ ;  main.c:50:             xidx = yidx = 0;
+	std Y+16,__zero_reg__	 ;  xidx,
+ ;  main.c:51:             VBuffer_DrawString( &xidx, &yidx, *pp, false );
+	movw r30,r16	 ; , pp
+	ld r20,Z+	 ;  *pp_7, *pp_7
+	ld r21,Z+	 ;  *pp_7, *pp_7
+	movw r16,r30	 ;  pp,
 	ldi r19,0		 ; 
 	ldi r18,0		 ; 
-	ldi r20,lo8(.LC2)	 ; ,
-	ldi r21,hi8(.LC2)	 ; ,
-	movw r22,r28	 ; ,
-	subi r22,-1	 ; ,
-	sbci r23,-1	 ; ,
+	movw r22,r14	 ; , tmp53
 	movw r24,r28	 ; ,
-	adiw r24,2	 ; ,
+	adiw r24,16	 ; ,
 	call VBuffer_DrawString	 ; 
- ;  main.c:37:         VBuffer_DrawString( &xidx, &yidx, "world!", true );
-	ldi r18,lo8(1)	 ; ,
-	ldi r19,0		 ; 
-	ldi r20,lo8(.LC3)	 ; ,
-	ldi r21,hi8(.LC3)	 ; ,
-	movw r22,r28	 ; ,
-	subi r22,-1	 ; ,
-	sbci r23,-1	 ; ,
-	movw r24,r28	 ; ,
-	adiw r24,2	 ; ,
-	call VBuffer_DrawString	 ; 
- ;  main.c:39:         LCDDevice__Render();
+ ;  main.c:52:             LCDDevice__Render();
 	call LCDDevice__Render	 ; 
- ;  main.c:40:         UART0_WaitAnyKey();
-	call UART0_WaitAnyKey	 ; 
- ;  main.c:42:         VBuffer_Clear();
+ ;  main.c:53:             VBuffer_Clear();
 	call VBuffer_Clear	 ; 
- ;  Display.h:47:         LCDBuffer[Block] |= Mask;
-	lds r30,LCDBuffer	 ;  LCDBuffer.6_93, LCDBuffer
-	lds r31,LCDBuffer+1	 ;  LCDBuffer.6_93, LCDBuffer
-	ld r24,Z		 ;  *LCDBuffer.6_93, *LCDBuffer.6_93
-	ori r24,lo8(-128)	 ;  tmp61,
-	st Z,r24		 ;  *LCDBuffer.6_93, tmp61
- ;  main.c:45:         LCDDevice__Render();
-	call LCDDevice__Render	 ; 
- ;  main.c:46:         UART0_WaitAnyKey();
-	call UART0_WaitAnyKey	 ; 
- ;  Display.h:47:         LCDBuffer[Block] |= Mask;
-	lds r30,LCDBuffer	 ;  LCDBuffer.6_78, LCDBuffer
-	lds r31,LCDBuffer+1	 ;  LCDBuffer.6_78, LCDBuffer
-	ldd r24,Z+45	 ;  MEM[(byte *)LCDBuffer.6_78 + 45B], MEM[(byte *)LCDBuffer.6_78 + 45B]
-	ori r24,lo8(4)	 ;  tmp63,
-	std Z+45,r24	 ;  MEM[(byte *)LCDBuffer.6_78 + 45B], tmp63
- ;  main.c:49:         LCDDevice__Render();
-	call LCDDevice__Render	 ; 
- ;  main.c:50:         UART0_WaitAnyKey();
-	call UART0_WaitAnyKey	 ; 
- ;  Display.h:47:         LCDBuffer[Block] |= Mask;
-	lds r30,LCDBuffer	 ;  LCDBuffer.6_63, LCDBuffer
-	lds r31,LCDBuffer+1	 ;  LCDBuffer.6_63, LCDBuffer
-	subi r30,-91	 ;  tmp65,
-	sbci r31,-1	 ; ,
-	ld r24,Z		 ;  MEM[(byte *)LCDBuffer.6_63 + 91B], MEM[(byte *)LCDBuffer.6_63 + 91B]
-	ori r24,lo8(32)	 ;  tmp67,
-	st Z,r24		 ;  MEM[(byte *)LCDBuffer.6_63 + 91B], tmp67
- ;  main.c:53:         LCDDevice__Render();
-	call LCDDevice__Render	 ; 
- ;  main.c:54:         UART0_WaitAnyKey();
-	call UART0_WaitAnyKey	 ; 
- ;  Display.h:47:         LCDBuffer[Block] |= Mask;
-	lds r30,LCDBuffer	 ;  LCDBuffer.6_48, LCDBuffer
-	lds r31,LCDBuffer+1	 ;  LCDBuffer.6_48, LCDBuffer
-	subi r30,120	 ;  tmp69,
-	sbci r31,-1	 ; ,
-	ld r24,Z		 ;  MEM[(byte *)LCDBuffer.6_48 + 136B], MEM[(byte *)LCDBuffer.6_48 + 136B]
-	ori r24,lo8(1)	 ;  tmp71,
-	st Z,r24		 ;  MEM[(byte *)LCDBuffer.6_48 + 136B], tmp71
- ;  main.c:57:         LCDDevice__Render(); 
-	call LCDDevice__Render	 ; 
- ;  main.c:58:         UART0_WaitAnyKey();  
-	call UART0_WaitAnyKey	 ; 
+ ;  main.c:55:             if ( pp == pp_end ) pp = str;
+	cp r16,r14	 ;  pp, tmp53
+	cpc r17,r15	 ;  pp, tmp53
+	brne .L7		 ; ,
+ ;  main.c:55:             if ( pp == pp_end ) pp = str;
+	movw r16,r28	 ;  pp,
+	subi r16,-1	 ;  pp,
+	sbci r17,-1	 ;  pp,
 .L7:
-	rjmp .L7		 ; 
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r31,lo8(1599999)	 ; ,
+	ldi r18,hi8(1599999)	 ; ,
+	ldi r24,hlo8(1599999)	 ; ,
+1:	subi r31,1	 ; 
+	sbci r18,0	 ; 
+	sbci r24,0	 ; 
+	brne 1b
+	rjmp .	
+	nop	
+	rjmp .L8		 ; 
 	.size	main, .-main
 .global	__INTERRUPT_LOCK_MUTEX__
 	.section .bss

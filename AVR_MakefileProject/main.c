@@ -18,7 +18,7 @@ void main(void)
     InitializeDevice();
     CSerialSender_Initialize( &UART0Sender ); 
 
-    outputmsg_uart0( "Program start, press any key. \r\n" );
+    outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
     UART0_WaitAnyKey();
     CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
     {
@@ -33,8 +33,28 @@ void main(void)
             VBuffer_Clear();
         }
         byte xidx = 0, yidx = 0;
-        VBuffer_DrawString( &xidx, &yidx, "hello,", false );
-        VBuffer_DrawString( &xidx, &yidx, "world!", true );
+        const char* str[] =
+        { 
+            "Hello, world!"
+            , "good Morning!"
+            , "What's up, my boy?"
+            , "I'm here, with you"
+            , "Oh, no, no!z"
+            , "Pl-ease."
+            , "Heck the wao!"
+        };
+        const char** pp = str;
+        const char** pp_end = str + ARRAYCOUNT( str );
+        while ( 1 )
+        {
+            xidx = yidx = 0;
+            VBuffer_DrawString( &xidx, &yidx, *pp, false );
+            LCDDevice__Render();
+            VBuffer_Clear();
+            ++pp;
+            if ( pp == pp_end ) pp = str;
+            _delay_ms( 500 );
+        }
 
         LCDDevice__Render();
         UART0_WaitAnyKey();
@@ -59,8 +79,26 @@ void main(void)
 
         while ( 1 );
     }
+}
 
-/*/
+void InitializeDevice()
+{
+    InitMemory( NULL );
+
+    LCDDevice__Initialize();
+ 
+    DDRC = 0xff;
+    PORTC = 0xff;
+    InitializeTX0SerialOutput();
+    
+    // Timer monitor
+    
+    sei();
+}
+
+/* // Append '/' on front of this comment placeholder to uncommentize this.
+void TestMalloc()
+{ 
     while ( 1 )
     {
         CSerialSender_QueueOutputString( &UART0Sender, "\n" );
@@ -151,21 +189,5 @@ void main(void)
         log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
         while ( 1 );
     }
-// */
 }
-
-void InitializeDevice()
-{
-    InitMemory( NULL );
-
-    LCDDevice__Initialize();
- 
-    DDRC = 0xff;
-    PORTC = 0xff;
-    InitializeTX0SerialOutput();
-    
-    // Timer monitor
-    
-    sei();
-}
-
+//*/

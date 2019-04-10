@@ -210,36 +210,38 @@ VBuffer_DrawChar:
  ;  Display.h:55:     const char* ascii_head = &CGROM[ASCII_IDX * CGROM_CHARACTER_BYTE_SIZE + CGROM_TRUNC_BEGIN ];
 	ldi r18,lo8(16)	 ; ,
 	muls r20,r18	 ;  ASCII_IDX,
-	movw r30,r0	 ;  tmp68
+	movw r30,r0	 ;  tmp71
 	clr __zero_reg__
  ;  Display.h:55:     const char* ascii_head = &CGROM[ASCII_IDX * CGROM_CHARACTER_BYTE_SIZE + CGROM_TRUNC_BEGIN ];
-	subi r30,lo8(-(CGROM+1))	 ;  ivtmp.57,
-	sbci r31,hi8(-(CGROM+1))	 ;  ivtmp.57,
+	subi r30,lo8(-(CGROM+1))	 ;  ivtmp.58,
+	sbci r31,hi8(-(CGROM+1))	 ;  ivtmp.58,
  ;  Display.h:57:     for ( i = 0; i < CGROM_DISPLAY_HEIGHT; ++i )
-	ldi r20,lo8(12)	 ;  tmp74,
-	add r20,r30	 ;  tmp74, ivtmp.57
+	ldi r18,lo8(12)	 ;  tmp76,
+	add r18,r30	 ;  tmp76, ivtmp.58
 .L8:
  ;  Display.h:59:         if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
 	cpi r24,-49	 ;  BuffIdx,
 	cpc r25,__zero_reg__	 ;  BuffIdx
 	brge .L5		 ; ,
-	ld r19,Z+		 ;  _13, MEM[base: _42, offset: 0B]
- ;  Display.h:60:         LCDBuffer[BuffIdx] = bInversed ? ~( *ascii_head ) : *( ascii_head );
-	sbiw r28,0	 ;  bInversed,
-	breq .L7		 ; ,
- ;  Display.h:60:         LCDBuffer[BuffIdx] = bInversed ? ~( *ascii_head ) : *( ascii_head );
-	com r19		 ;  _13
-.L7:
- ;  Display.h:60:         LCDBuffer[BuffIdx] = bInversed ? ~( *ascii_head ) : *( ascii_head );
+ ;  Display.h:60:         LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
 	lds r26,LCDBuffer	 ;  LCDBuffer, LCDBuffer
 	lds r27,LCDBuffer+1	 ;  LCDBuffer, LCDBuffer
-	add r26,r24	 ;  tmp71, BuffIdx
-	adc r27,r25	 ; , BuffIdx
-	st X,r19		 ;  *_12, _13
+	add r26,r24	 ;  _9, BuffIdx
+	adc r27,r25	 ;  _9, BuffIdx
+	ld r19,X		 ;  _11, *_9
+	ld r20,Z+		 ;  iftmp.6_18, MEM[base: _45, offset: 0B]
+	sbiw r28,0	 ;  bInversed,
+	breq .L7		 ; ,
+ ;  Display.h:60:         LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
+	com r20		 ;  iftmp.6_18
+.L7:
+ ;  Display.h:60:         LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
+	or r19,r20		 ;  tmp74, iftmp.6_18
+	st X,r19		 ;  *_9, tmp74
  ;  Display.h:62:         BuffIdx += LCD_LINE_BYTE;
 	adiw r24,9	 ;  BuffIdx,
  ;  Display.h:57:     for ( i = 0; i < CGROM_DISPLAY_HEIGHT; ++i )
-	cpse r20,r30	 ;  tmp74, ivtmp.57
+	cpse r18,r30	 ;  tmp76, ivtmp.58
 	rjmp .L8	 ; 
 .L5:
 /* epilogue start */
@@ -310,9 +312,9 @@ VBuffer_DrawString:
 	movw r14,r8	 ; ,
 .L17:
  ;  Display.h:69:     while ( *String != '\0' )
-	movw r30,r14	 ; , ivtmp.62
+	movw r30,r14	 ; , ivtmp.63
 	ld r20,Z+		 ;  _7, MEM[base: _30, offset: 0B]
-	movw r14,r30	 ;  ivtmp.62,
+	movw r14,r30	 ;  ivtmp.63,
  ;  Display.h:69:     while ( *String != '\0' )
 	cpse r20,__zero_reg__	 ;  _7,
 	rjmp .L20	 ; 
@@ -416,162 +418,162 @@ LCDDevice__Render:
 /* frame size = 75 */
 /* stack size = 85 */
 .L__stack_usage = 85
- ;  Display.c:32:     CSerialSender_QueueOutputString( &UART0Sender, "\033[H" );
+ ;  Display.c:34:     CSerialSender_QueueOutputString( &UART0Sender, "\033[H" );
 	ldi r22,lo8(.LC5)	 ; ,
 	ldi r23,hi8(.LC5)	 ; ,
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_QueueOutputString	 ; 
- ;  Display.c:29:     int i, k, ofst = 0;
+ ;  Display.c:31:     int i, k, ofst = 0;
 	ldi r17,0		 ;  ofst
 	ldi r16,0		 ;  ofst
 	movw r14,r28	 ;  _94,
 	ldi r24,73	 ; ,
 	add r14,r24	 ;  _94,
 	adc r15,__zero_reg__	 ;  _94
- ;  Display.c:46:         buff[LCD_WIDTH+0] = '\n';
+ ;  Display.c:48:         buff[LCD_WIDTH+0] = '\n';
 	ldi r24,lo8(10)	 ; ,
 	mov r11,r24	 ;  tmp92,
- ;  Display.c:47:         buff[LCD_WIDTH+1] = '\r';
+ ;  Display.c:49:         buff[LCD_WIDTH+1] = '\r';
 	ldi r25,lo8(13)	 ; ,
 	mov r10,r25	 ;  tmp94,
 .L26:
 	lds r26,LCDBuffer	 ;  LCDBuffer, LCDBuffer
 	lds r27,LCDBuffer+1	 ;  LCDBuffer, LCDBuffer
-	movw r20,r26	 ;  ivtmp.69, LCDBuffer
-	add r20,r16	 ;  ivtmp.69, ofst
-	adc r21,r17	 ;  ivtmp.69, ofst
-	movw r30,r28	 ;  ivtmp.70,
-	adiw r30,1	 ;  ivtmp.70,
+	movw r20,r26	 ;  ivtmp.70, LCDBuffer
+	add r20,r16	 ;  ivtmp.70, ofst
+	adc r21,r17	 ;  ivtmp.70, ofst
+	movw r30,r28	 ;  ivtmp.71,
+	adiw r30,1	 ;  ivtmp.71,
 	movw r12,r30	 ; ,
 .L35:
-	movw r18,r20	 ;  _84, ivtmp.69
- ;  Display.c:36:             pew( 0 );
-	movw r26,r20	 ; , ivtmp.69
+	movw r18,r20	 ;  _84, ivtmp.70
+ ;  Display.c:38:             pew( 0 );
+	movw r26,r20	 ; , ivtmp.70
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,7	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L38		 ; 
-	ldi r24,lo8(45)	 ;  iftmp.8_27,
+	ldi r24,lo8(45)	 ;  iftmp.10_27,
 .L27:
- ;  Display.c:36:             pew( 0 );
-	st Z,r24		 ;  MEM[base: _85, offset: 0B], iftmp.8_27
- ;  Display.c:37:             pew( 1 );
-	movw r26,r20	 ; , ivtmp.69
+ ;  Display.c:38:             pew( 0 );
+	st Z,r24		 ;  MEM[base: _85, offset: 0B], iftmp.10_27
+ ;  Display.c:39:             pew( 1 );
+	movw r26,r20	 ; , ivtmp.70
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,6	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L39		 ; 
- ;  Display.c:37:             pew( 1 );
-	ldi r24,lo8(45)	 ;  iftmp.12_28,
+ ;  Display.c:39:             pew( 1 );
+	ldi r24,lo8(45)	 ;  iftmp.14_28,
 .L28:
- ;  Display.c:37:             pew( 1 );
-	std Z+1,r24	 ;  MEM[base: _85, offset: 1B], iftmp.12_28
- ;  Display.c:38:             pew( 2 );
-	movw r26,r20	 ; , ivtmp.69
+ ;  Display.c:39:             pew( 1 );
+	std Z+1,r24	 ;  MEM[base: _85, offset: 1B], iftmp.14_28
+ ;  Display.c:40:             pew( 2 );
+	movw r26,r20	 ; , ivtmp.70
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,5	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L40		 ; 
- ;  Display.c:38:             pew( 2 );
-	ldi r24,lo8(45)	 ;  iftmp.16_29,
+ ;  Display.c:40:             pew( 2 );
+	ldi r24,lo8(45)	 ;  iftmp.18_29,
 .L29:
- ;  Display.c:38:             pew( 2 );
-	std Z+2,r24	 ;  MEM[base: _85, offset: 2B], iftmp.16_29
- ;  Display.c:39:             pew( 3 );
-	movw r26,r20	 ; , ivtmp.69
+ ;  Display.c:40:             pew( 2 );
+	std Z+2,r24	 ;  MEM[base: _85, offset: 2B], iftmp.18_29
+ ;  Display.c:41:             pew( 3 );
+	movw r26,r20	 ; , ivtmp.70
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,4	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L41		 ; 
- ;  Display.c:39:             pew( 3 );
-	ldi r24,lo8(45)	 ;  iftmp.20_30,
+ ;  Display.c:41:             pew( 3 );
+	ldi r24,lo8(45)	 ;  iftmp.22_30,
 .L30:
- ;  Display.c:39:             pew( 3 );
-	std Z+3,r24	 ;  MEM[base: _85, offset: 3B], iftmp.20_30
- ;  Display.c:40:             pew( 4 );
-	movw r26,r20	 ; , ivtmp.69
+ ;  Display.c:41:             pew( 3 );
+	std Z+3,r24	 ;  MEM[base: _85, offset: 3B], iftmp.22_30
+ ;  Display.c:42:             pew( 4 );
+	movw r26,r20	 ; , ivtmp.70
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,3	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L42		 ; 
- ;  Display.c:40:             pew( 4 );
-	ldi r24,lo8(45)	 ;  iftmp.24_31,
+ ;  Display.c:42:             pew( 4 );
+	ldi r24,lo8(45)	 ;  iftmp.26_31,
 .L31:
- ;  Display.c:40:             pew( 4 );
-	std Z+4,r24	 ;  MEM[base: _85, offset: 4B], iftmp.24_31
- ;  Display.c:41:             pew( 5 );
-	movw r26,r20	 ; , ivtmp.69
+ ;  Display.c:42:             pew( 4 );
+	std Z+4,r24	 ;  MEM[base: _85, offset: 4B], iftmp.26_31
+ ;  Display.c:43:             pew( 5 );
+	movw r26,r20	 ; , ivtmp.70
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,2	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L43		 ; 
- ;  Display.c:41:             pew( 5 );
-	ldi r24,lo8(45)	 ;  iftmp.28_32,
+ ;  Display.c:43:             pew( 5 );
+	ldi r24,lo8(45)	 ;  iftmp.30_32,
 .L32:
- ;  Display.c:41:             pew( 5 );
-	std Z+5,r24	 ;  MEM[base: _85, offset: 5B], iftmp.28_32
- ;  Display.c:42:             pew( 6 );
-	movw r26,r20	 ; , ivtmp.69
+ ;  Display.c:43:             pew( 5 );
+	std Z+5,r24	 ;  MEM[base: _85, offset: 5B], iftmp.30_32
+ ;  Display.c:44:             pew( 6 );
+	movw r26,r20	 ; , ivtmp.70
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,1	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L44		 ; 
- ;  Display.c:42:             pew( 6 );
-	ldi r24,lo8(45)	 ;  iftmp.32_33,
+ ;  Display.c:44:             pew( 6 );
+	ldi r24,lo8(45)	 ;  iftmp.34_33,
 .L33:
- ;  Display.c:42:             pew( 6 );
-	std Z+6,r24	 ;  MEM[base: _85, offset: 6B], iftmp.32_33
-	subi r20,-1	 ;  ivtmp.69,
-	sbci r21,-1	 ;  ivtmp.69,
- ;  Display.c:43:             pew( 7 );
+ ;  Display.c:44:             pew( 6 );
+	std Z+6,r24	 ;  MEM[base: _85, offset: 6B], iftmp.34_33
+	subi r20,-1	 ;  ivtmp.70,
+	sbci r21,-1	 ;  ivtmp.70,
+ ;  Display.c:45:             pew( 7 );
 	movw r26,r18	 ; , _84
 	ld r24,X		 ;  MEM[base: _84, offset: 0B], MEM[base: _84, offset: 0B]
 	sbrc r24,0	 ;  MEM[base: _84, offset: 0B],
 	rjmp .L45		 ; 
- ;  Display.c:43:             pew( 7 );
-	ldi r24,lo8(45)	 ;  iftmp.36_34,
+ ;  Display.c:45:             pew( 7 );
+	ldi r24,lo8(45)	 ;  iftmp.38_34,
 .L34:
- ;  Display.c:43:             pew( 7 );
-	std Z+7,r24	 ;  MEM[base: _85, offset: 7B], iftmp.36_34
-	adiw r30,8	 ;  ivtmp.70,
- ;  Display.c:34:         for ( k = 0; k < LCD_LINE_BYTE; ++k ) {
-	cp r30,r14	 ;  ivtmp.70, _94
-	cpc r31,r15	 ;  ivtmp.70, _94
+ ;  Display.c:45:             pew( 7 );
+	std Z+7,r24	 ;  MEM[base: _85, offset: 7B], iftmp.38_34
+	adiw r30,8	 ;  ivtmp.71,
+ ;  Display.c:36:         for ( k = 0; k < LCD_LINE_BYTE; ++k ) {
+	cp r30,r14	 ;  ivtmp.71, _94
+	cpc r31,r15	 ;  ivtmp.71, _94
 	brne .L35		 ; ,
- ;  Display.c:46:         buff[LCD_WIDTH+0] = '\n';
+ ;  Display.c:48:         buff[LCD_WIDTH+0] = '\n';
 	movw r30,r14	 ; , _94
 	st Z,r11		 ;  buff, tmp92
- ;  Display.c:47:         buff[LCD_WIDTH+1] = '\r';
+ ;  Display.c:49:         buff[LCD_WIDTH+1] = '\r';
 	adiw r28,74-63	 ;  buff
 	std Y+63,r10	 ;  tmp94
 	sbiw r28,74-63	 ;  buff
- ;  Display.c:48:         buff[LCD_WIDTH+2] = '\0';
+ ;  Display.c:50:         buff[LCD_WIDTH+2] = '\0';
 	adiw r28,75-63	 ;  buff
 	std Y+63,__zero_reg__	 ; 
 	sbiw r28,75-63	 ;  buff
- ;  Display.c:49:         ofst += LCD_LINE_BYTE;
+ ;  Display.c:51:         ofst += LCD_LINE_BYTE;
 	subi r16,-9	 ;  ofst,
 	sbci r17,-1	 ;  ofst,
 .L36:
- ;  Display.c:51:         while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
+ ;  Display.c:53:         while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_IsQueueEmpty	 ; 
- ;  Display.c:51:         while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
+ ;  Display.c:53:         while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
 	or r24,r25	 ; 
 	breq .L36		 ; ,
- ;  Display.c:52:         CSerialSender_QueueOutputString( &UART0Sender, "::" );
+ ;  Display.c:54:         CSerialSender_QueueOutputString( &UART0Sender, "::" );
 	ldi r22,lo8(.LC6)	 ; ,
 	ldi r23,hi8(.LC6)	 ; ,
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_QueueOutputString	 ; 
- ;  Display.c:53:         CSerialSender_QueueOutputString( &UART0Sender, buff );
+ ;  Display.c:55:         CSerialSender_QueueOutputString( &UART0Sender, buff );
 	movw r22,r12	 ; ,
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_QueueOutputString	 ; 
- ;  Display.c:33:     for ( i = 0; i < LCD_HEGIHT; ++i ) {
+ ;  Display.c:35:     for ( i = 0; i < LCD_HEGIHT; ++i ) {
 	cpi r16,-49	 ;  ofst,
 	cpc r17,__zero_reg__	 ;  ofst
 	breq .+2	 ; 
 	rjmp .L26	 ; 
 /* epilogue start */
- ;  Display.c:55: }
+ ;  Display.c:58: }
 	subi r28,-75	 ; ,
 	sbci r29,-1	 ; ,
 	in __tmp_reg__,__SREG__
@@ -591,36 +593,36 @@ LCDDevice__Render:
 	pop r10		 ; 
 	ret	
 .L38:
- ;  Display.c:36:             pew( 0 );
-	ldi r24,lo8(42)	 ;  iftmp.8_27,
+ ;  Display.c:38:             pew( 0 );
+	ldi r24,lo8(64)	 ;  iftmp.10_27,
 	rjmp .L27		 ; 
 .L39:
- ;  Display.c:37:             pew( 1 );
-	ldi r24,lo8(42)	 ;  iftmp.12_28,
+ ;  Display.c:39:             pew( 1 );
+	ldi r24,lo8(64)	 ;  iftmp.14_28,
 	rjmp .L28		 ; 
 .L40:
- ;  Display.c:38:             pew( 2 );
-	ldi r24,lo8(42)	 ;  iftmp.16_29,
+ ;  Display.c:40:             pew( 2 );
+	ldi r24,lo8(64)	 ;  iftmp.18_29,
 	rjmp .L29		 ; 
 .L41:
- ;  Display.c:39:             pew( 3 );
-	ldi r24,lo8(42)	 ;  iftmp.20_30,
+ ;  Display.c:41:             pew( 3 );
+	ldi r24,lo8(64)	 ;  iftmp.22_30,
 	rjmp .L30		 ; 
 .L42:
- ;  Display.c:40:             pew( 4 );
-	ldi r24,lo8(42)	 ;  iftmp.24_31,
+ ;  Display.c:42:             pew( 4 );
+	ldi r24,lo8(64)	 ;  iftmp.26_31,
 	rjmp .L31		 ; 
 .L43:
- ;  Display.c:41:             pew( 5 );
-	ldi r24,lo8(42)	 ;  iftmp.28_32,
+ ;  Display.c:43:             pew( 5 );
+	ldi r24,lo8(64)	 ;  iftmp.30_32,
 	rjmp .L32		 ; 
 .L44:
- ;  Display.c:42:             pew( 6 );
-	ldi r24,lo8(42)	 ;  iftmp.32_33,
+ ;  Display.c:44:             pew( 6 );
+	ldi r24,lo8(64)	 ;  iftmp.34_33,
 	rjmp .L33		 ; 
 .L45:
- ;  Display.c:43:             pew( 7 );
-	ldi r24,lo8(42)	 ;  iftmp.36_34,
+ ;  Display.c:45:             pew( 7 );
+	ldi r24,lo8(64)	 ;  iftmp.38_34,
 	rjmp .L34		 ; 
 	.size	LCDDevice__Render, .-LCDDevice__Render
 .global	VBuffer_DrawLine
@@ -644,126 +646,175 @@ VBuffer_DrawLine:
 	push r17		 ; 
 	push r28		 ; 
 	push r29		 ; 
+	in r28,__SP_L__	 ; 
+	in r29,__SP_H__	 ; 
+	sbiw r28,8	 ; ,
+	in __tmp_reg__,__SREG__
+	cli
+	out __SP_H__,r29	 ; ,
+	out __SREG__,__tmp_reg__
+	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 0 */
-/* stack size = 18 */
-.L__stack_usage = 18
-	mov r29,r24	 ;  x0, x0
-	mov r28,r22	 ;  y0, y0
-	mov r17,r20	 ;  x1, x1
-	mov r16,r18	 ;  y1, y1
- ;  Display.c:60:     int16 dx = math_abs( x1 - x0 );
-	mov r18,r20	 ; , x1
-	sub r18,r24	 ; , x0
-	sbc r19,r19	 ; 
-	movw r12,r18	 ;  tmp67,
-	sbrs r19,7	 ;  tmp67,
+/* frame size = 8 */
+/* stack size = 26 */
+.L__stack_usage = 26
+	movw r16,r24	 ;  x0, x0
+	std Y+8,r23	 ;  %sfp, y0
+	std Y+7,r22	 ;  %sfp, y0
+	movw r2,r20	 ;  x1, x1
+	movw r8,r18	 ;  y1, y1
+ ;  Display.c:63:     int16 dx = math_abs( x1 - x0 );
+	movw r24,r20	 ;  tmp61, x1
+	sub r24,r16	 ;  tmp61, x0
+	sbc r25,r17	 ; , x0
+	sbrs r25,7	 ;  tmp61,
 	rjmp .L50		 ; 
-	neg r13	 ;  tmp67
-	neg r12	 ;  tmp67
-	sbc r13,__zero_reg__	 ;  tmp67
+	neg r25	 ;  tmp61
+	neg r24	 ;  tmp61
+	sbc r25,__zero_reg__	 ;  tmp61
 .L50:
- ;  Display.c:61:     int16 dy = -math_abs( y1 - y0 );
-	mov r18,r28	 ; , y0
-	sub r18,r16	 ; , y1
-	sbc r19,r19	 ; 
-	movw r24,r18	 ;  tmp71,
-	sbrs r19,7	 ;  tmp71,
+ ;  Display.c:64:     int16 dy = -math_abs( y1 - y0 );
+	ldd r18,Y+7	 ;  tmp63, %sfp
+	ldd r19,Y+8	 ;  tmp63, %sfp
+	sub r18,r8	 ;  tmp63, y1
+	sbc r19,r9	 ; , y1
+	sbrs r19,7	 ;  tmp63,
 	rjmp .L51		 ; 
-	neg r25	 ;  tmp71
-	neg r24	 ;  tmp71
-	sbc r25,__zero_reg__	 ;  tmp71
+	neg r19	 ;  tmp63
+	neg r18	 ;  tmp63
+	sbc r19,__zero_reg__	 ;  tmp63
 .L51:
- ;  Display.c:61:     int16 dy = -math_abs( y1 - y0 );
+ ;  Display.c:64:     int16 dy = -math_abs( y1 - y0 );
 	clr r4	 ;  dy
 	clr r5	 ;  dy
-	sub r4,r24	 ;  dy, tmp71
-	sbc r5,r25	 ;  dy, tmp71
- ;  Display.c:62:     int8 sx = x1 > x0 ? 1 : -1;
-	clr r2		 ;  iftmp.40_19
-	dec r2		 ;  iftmp.40_19
-	cp r29,r17		 ;  x0, x1
-	brsh .L52		 ; ,
-	clr r2		 ;  iftmp.40_19
-	inc r2		 ;  iftmp.40_19
+	sub r4,r18	 ;  dy, tmp63
+	sbc r5,r19	 ;  dy, tmp63
+ ;  Display.c:65:     int8 sx = x1 > x0 ? 1 : -1;
+	ldi r21,lo8(-1)	 ;  iftmp.42_15,
+	cp r16,r2	 ;  x0, x1
+	cpc r17,r3	 ;  x0, x1
+	brge .L52		 ; ,
+	ldi r21,lo8(1)	 ;  iftmp.42_15,
 .L52:
- ;  Display.c:63:     int8 sy = y1 > y0 ? 1 : -1;
-	clr r3		 ;  iftmp.41_20
-	dec r3		 ;  iftmp.41_20
-	cp r28,r16		 ;  y0, y1
-	brsh .L53		 ; ,
- ;  Display.c:63:     int8 sy = y1 > y0 ? 1 : -1;
-	clr r3		 ;  iftmp.41_20
-	inc r3		 ;  iftmp.41_20
+ ;  Display.c:66:     int8 sy = y1 > y0 ? 1 : -1;
+	ldd r22,Y+7	 ; , %sfp
+	ldd r23,Y+8	 ; , %sfp
+	cp r22,r8	 ; , y1
+	cpc r23,r9	 ; , y1
+	brge .+2	 ; 
+	rjmp .L60	 ; 
+ ;  Display.c:66:     int8 sy = y1 > y0 ? 1 : -1;
+	ldi r22,lo8(-1)	 ;  iftmp.43_16,
 .L53:
- ;  Display.c:64:     int32 err = dx + dy, e2;
-	movw r8,r12	 ;  tmp72, tmp67
-	sub r8,r24	 ;  tmp72, tmp71
-	sbc r9,r25	 ; ,
-	mov __tmp_reg__,r9	 ; 
-	lsl r0		 ; 
-	sbc r10,r10	 ; 
-	sbc r11,r11	 ; 
- ;  Display.c:71:         if ( e2 >= dy )
-	mov __tmp_reg__,r5	 ; 
-	lsl r0		 ; 
-	sbc r6,r6	 ; 
-	sbc r7,r7	 ; 
- ;  Display.c:76:         if ( e2 <= dx )
+ ;  Display.c:67:     int32 err = dx + dy, e2;
+	movw r12,r24	 ;  tmp64, tmp61
+	sub r12,r18	 ;  tmp64, tmp63
+	sbc r13,r19	 ; ,
 	mov __tmp_reg__,r13	 ; 
 	lsl r0		 ; 
 	sbc r14,r14	 ; 
 	sbc r15,r15	 ; 
+ ;  Display.c:74:         if ( e2 >= dy )
+	mov __tmp_reg__,r5	 ; 
+	lsl r0		 ; 
+	sbc r6,r6	 ; 
+	sbc r7,r7	 ; 
+ ;  Display.c:77:             x0 += sx;
+	mov r26,r21	 ; , iftmp.42_15
+	lsl r21		 ; 
+	sbc r27,r27	 ; 
+	std Y+6,r27	 ;  %sfp,
+	std Y+5,r26	 ;  %sfp,
+ ;  Display.c:79:         if ( e2 <= dx )
+	movw r18,r24	 ; , tmp61
+	lsl r25		 ; 
+	sbc r20,r20	 ; 
+	sbc r21,r21	 ; 
+	std Y+1,r18	 ;  %sfp,
+	std Y+2,r19	 ;  %sfp,
+	std Y+3,r20	 ;  %sfp,
+	std Y+4,r21	 ;  %sfp,
+ ;  Display.c:82:             y0 += sy;
+	mov r10,r22	 ;  iftmp.43_16, iftmp.43_16
+	lsl r22		 ; 
+	sbc r11,r11	 ; 
 .L54:
- ;  Display.c:68:         VBuffer_DrawDot( x0, y0 );
-	mov r22,r28	 ; , y0
-	mov r24,r29	 ; , x0
+ ;  Display.c:71:         VBuffer_DrawDot( x0, y0 );
+	ldd r22,Y+7	 ; , %sfp
+	ldd r23,Y+8	 ; , %sfp
+	movw r24,r16	 ; , x0
 	call VBuffer_DrawDot	 ; 
- ;  Display.c:69:         if ( x0 == x1 && y0 == y1 ) { break; }
-	cpse r29,r17	 ;  x0, x1
-	rjmp .L55	 ; 
- ;  Display.c:69:         if ( x0 == x1 && y0 == y1 ) { break; }
-	cp r28,r16		 ;  y0, y1
+ ;  Display.c:72:         if ( x0 == x1 && y0 == y1 ) { break; }
+	cp r16,r2	 ;  x0, x1
+	cpc r17,r3	 ;  x0, x1
+	brne .L55		 ; ,
+ ;  Display.c:72:         if ( x0 == x1 && y0 == y1 ) { break; }
+	ldd r20,Y+7	 ; , %sfp
+	ldd r21,Y+8	 ; , %sfp
+	cp r20,r8	 ; , y1
+	cpc r21,r9	 ; , y1
 	breq .L49		 ; ,
 .L55:
- ;  Display.c:70:         e2 = err * 2;
-	movw r26,r10	 ;  e2, err
-	movw r24,r8	 ;  e2, err
+ ;  Display.c:73:         e2 = err * 2;
+	movw r26,r14	 ;  e2, err
+	movw r24,r12	 ;  e2, err
 	lsl r24	 ;  e2
 	rol r25	 ;  e2
 	rol r26	 ;  e2
 	rol r27	 ;  e2
- ;  Display.c:71:         if ( e2 >= dy )
-	cp r24,r4	 ;  e2, _9
-	cpc r25,r5	 ;  e2, _9
-	cpc r26,r6	 ;  e2, _9
-	cpc r27,r7	 ;  e2, _9
+ ;  Display.c:74:         if ( e2 >= dy )
+	cp r24,r4	 ;  e2, _5
+	cpc r25,r5	 ;  e2, _5
+	cpc r26,r6	 ;  e2, _5
+	cpc r27,r7	 ;  e2, _5
 	brlt .L57		 ; ,
- ;  Display.c:73:             err += dy;
-	add r8,r4	 ;  err, _9
-	adc r9,r5	 ;  err, _9
-	adc r10,r6	 ;  err, _9
-	adc r11,r7	 ;  err, _9
- ;  Display.c:74:             x0 += sx;
-	add r29,r2	 ;  x0, iftmp.40_19
+ ;  Display.c:76:             err += dy;
+	add r12,r4	 ;  err, _5
+	adc r13,r5	 ;  err, _5
+	adc r14,r6	 ;  err, _5
+	adc r15,r7	 ;  err, _5
+ ;  Display.c:77:             x0 += sx;
+	ldd r22,Y+5	 ; , %sfp
+	ldd r23,Y+6	 ; , %sfp
+	add r16,r22	 ;  x0,
+	adc r17,r23	 ;  x0,
 .L57:
- ;  Display.c:76:         if ( e2 <= dx )
-	cp r12,r24	 ;  _12, e2
-	cpc r13,r25	 ;  _12, e2
-	cpc r14,r26	 ;  _12, e2
-	cpc r15,r27	 ;  _12, e2
+ ;  Display.c:79:         if ( e2 <= dx )
+	ldd r18,Y+1	 ; , %sfp
+	ldd r19,Y+2	 ; , %sfp
+	ldd r20,Y+3	 ; , %sfp
+	ldd r21,Y+4	 ; , %sfp
+	cp r18,r24	 ; , e2
+	cpc r19,r25	 ; , e2
+	cpc r20,r26	 ; , e2
+	cpc r21,r27	 ; , e2
 	brlt .L54		 ; ,
- ;  Display.c:78:             err += dx;
-	add r8,r12	 ;  err, _12
-	adc r9,r13	 ;  err, _12
-	adc r10,r14	 ;  err, _12
-	adc r11,r15	 ;  err, _12
- ;  Display.c:79:             y0 += sy;
-	add r28,r3	 ;  y0, iftmp.41_20
+ ;  Display.c:81:             err += dx;
+	add r12,r18	 ;  err,
+	adc r13,r19	 ;  err,
+	adc r14,r20	 ;  err,
+	adc r15,r21	 ;  err,
+ ;  Display.c:82:             y0 += sy;
+	ldd r20,Y+7	 ; , %sfp
+	ldd r21,Y+8	 ; , %sfp
+	add r20,r10	 ; , iftmp.43_16
+	adc r21,r11	 ; , iftmp.43_16
+	std Y+8,r21	 ;  %sfp,
+	std Y+7,r20	 ;  %sfp,
 	rjmp .L54		 ; 
+.L60:
+ ;  Display.c:66:     int8 sy = y1 > y0 ? 1 : -1;
+	ldi r22,lo8(1)	 ;  iftmp.43_16,
+	rjmp .L53		 ; 
 .L49:
 /* epilogue start */
- ;  Display.c:82: } 
+ ;  Display.c:85: } 
+	adiw r28,8	 ; ,
+	in __tmp_reg__,__SREG__
+	cli
+	out __SP_H__,r29	 ; ,
+	out __SREG__,__tmp_reg__
+	out __SP_L__,r28	 ; ,
 	pop r29		 ; 
 	pop r28		 ; 
 	pop r17		 ; 

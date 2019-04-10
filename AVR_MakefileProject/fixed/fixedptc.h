@@ -89,7 +89,7 @@ typedef	__uint128_t fixedptud;
 #endif
 
 #ifndef FIXEDPT_WBITS
-#define FIXEDPT_WBITS	24
+#define FIXEDPT_WBITS	16
 #endif
 
 #if FIXEDPT_WBITS >= FIXEDPT_BITS
@@ -115,9 +115,10 @@ typedef	__uint128_t fixedptud;
 #define FIXEDPT_ONE	((fixedpt)((fixedpt)1 << FIXEDPT_FBITS))
 #define FIXEDPT_ONE_HALF (FIXEDPT_ONE >> 1)
 #define FIXEDPT_TWO	(FIXEDPT_ONE + FIXEDPT_ONE)
-#define FIXEDPT_PI	fixedpt_rconst(3.14159265358979323846)
-#define FIXEDPT_TWO_PI	fixedpt_rconst(2 * 3.14159265358979323846)
-#define FIXEDPT_HALF_PI	fixedpt_rconst(3.14159265358979323846 / 2)
+#define LITERAL_PI 3.14159265358979323846
+#define FIXEDPT_PI	fixedpt_rconst(LITERAL_PI)
+#define FIXEDPT_TWO_PI	fixedpt_rconst(2 * LITERAL_PI)
+#define FIXEDPT_HALF_PI	fixedpt_rconst(LITERAL_PI / 2)
 #define FIXEDPT_E	fixedpt_rconst(2.7182818284590452354)
 
 #define fixedpt_abs(A) ((A) < 0 ? -(A) : (A))

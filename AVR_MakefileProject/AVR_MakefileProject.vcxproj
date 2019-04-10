@@ -171,15 +171,8 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
     <NMakeIncludeSearchPath>C:/MinGW/avrgcc/avr/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <NMakeBuildCommandLine>if exist intermediate (
-rmdir /S /Q intermediate
-)
-mkdir intermediate
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3 -Xlinker -Map=output.map -fdata-sections -ffunction-sections -Wl,--gc-sections 
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -Os
-move *.s Intermediate\
-
-avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>build_release.bat
+</NMakeBuildCommandLine>
     <NMakeOutput>program.out</NMakeOutput>
     <NMakeCleanCommandLine>C:\MinGW\bin\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O2</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>INTELLISENSE;WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
@@ -187,15 +180,8 @@ avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <AdditionalOptions>-std=c11</AdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NMakeBuildCommandLine>if exist intermediate (
-rmdir /S /Q intermediate
-)
-mkdir intermediate
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -o program.out -O3 -Xlinker -Map=output.map -fdata-sections -ffunction-sections -Wl,--gc-sections 
-C:\MinGW\avrgcc\bin\avr-gcc *.c -mmcu=atmega128 -S -fverbose-asm -Os
-move *.s Intermediate\
-
-avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>build_release.bat
+</NMakeBuildCommandLine>
     <NMakeOutput>program.out</NMakeOutput>
     <NMakeCleanCommandLine>
     </NMakeCleanCommandLine>
@@ -209,12 +195,14 @@ avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <ClCompile Include="container.c" />
     <ClCompile Include="ArrayTest.cpp" />
     <ClCompile Include="CGROM.c" />
-    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Graphics.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="math.c" />
     <ClCompile Include="memory128.c" />
     <ClCompile Include="MemoryTest.cpp" />
     <ClCompile Include="Display.c" />
     <ClCompile Include="Serial.c" />
+    <ClCompile Include="IMAGES.c" />
     <ClCompile Include="__TestMain.cpp" />
     <ClCompile Include="__TMain.c" />
   </ItemGroup>
@@ -236,9 +224,11 @@ avr-objdump -D program.out &gt; dump.s</NMakeBuildCommandLine>
     <ClInclude Include="__TestMain.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="build_release.bat" />
     <None Include="dump.s" />
     <None Include="output.map" />
     <None Include="program.out" />
+    <None Include="program_device.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

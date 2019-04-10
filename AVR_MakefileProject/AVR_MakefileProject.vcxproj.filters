@@ -66,8 +66,14 @@
     <ClCompile Include="container.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
+    <ClCompile Include="Graphics.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="math.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IMAGES.c">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +126,8 @@
   <ItemGroup>
     <None Include="program.out" />
     <None Include="output.map" />
+    <None Include="program_device.bat" />
+    <None Include="build_release.bat" />
     <None Include="dump.s" />
   </ItemGroup>
 </Project>
