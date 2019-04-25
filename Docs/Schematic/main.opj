@@ -57,7 +57,8 @@
       (Path "Design Resources" ".\main.dsn" "SCHEMATIC1")
       (Path "Design Resources" ".\main.dsn" "Design Cache")
       (Path "Design Resources" "Library")
-      (Path "Design Resources" "Library" ".\lib.olb"))
+      (Path "Design Resources" "Library" ".\lib.olb")
+      (Select "Design Resources"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
@@ -68,10 +69,11 @@
       (Type "COrSchematicDoc")
       (Frame
         (Placement "44 2 3 -1 -1 -8 -31 52 1540 52 670")
-        (Scroll "0 59")
-        (Zoom "72")
+        (Scroll "301 236")
+        (Zoom "144")
         (Occurrence "/"))
       (Path
          "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\MAIN.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "PAGE1"))))
+      (Page "PAGE1")))
+  (MPSSessionName "Kang"))

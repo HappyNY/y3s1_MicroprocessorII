@@ -175,7 +175,7 @@ main:
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_QueueOutputString	 ; 
- ;  main.c:25:         VBuffer_Clear();
+ ;  main.c:25:         VBuffer_Clear(); 
 	call VBuffer_Clear	 ; 
 	ldi r16,lo8(5)	 ;  ivtmp.38,
 	ldi r17,0		 ;  ivtmp.38

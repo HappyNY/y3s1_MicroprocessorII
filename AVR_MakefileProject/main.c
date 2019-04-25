@@ -22,7 +22,7 @@ void main(void)
     UART0_WaitAnyKey();
     CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
     {
-        VBuffer_Clear();
+        VBuffer_Clear(); 
         byte i = 0, j = 0, cnt = 11;
         while ( cnt-- )
         { 
