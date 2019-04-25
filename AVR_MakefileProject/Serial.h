@@ -26,6 +26,8 @@ char CSerialSender_ConsumeOutputCharacter( CSerialSender* const Sender );
 bool CSerialSender_IsQueueEmpty( CSerialSender const* const Sender );
 
 char UART0_WaitAnyKey();
+// returns null character if there's no character to read.
+char UART0_TryReadKey();
 char* UART0_GetLine( char* buff );
 #else
 #define CSerialSender_Initialize(...)

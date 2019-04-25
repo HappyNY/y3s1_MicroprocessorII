@@ -13,11 +13,53 @@ volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
 /* BODY */
 void InitializeDevice(); 
 
-void main(void)
+void main( void )
 {
     InitializeDevice();
-    CSerialSender_Initialize( &UART0Sender ); 
+    CSerialSender_Initialize( &UART0Sender );
 
+    // Setup draw args
+    DECLARE_LINE_VECTOR( Triangle );
+    CDrawArgs Arg;
+    Arg.Mesh = Triangle;
+    Arg.Position.x = 50;
+    Arg.Position.y = 0;
+
+    // Setup camera
+    FCameraTransform Cam;
+    Cam.Position.x = 0;
+    Cam.Position.y = 0;
+    Cam.ReadOnly_DirectionRadian = 0;
+    CalculateTranformCache( &Cam );
+
+    UART0_WaitAnyKey();
+    while ( 1 )
+    {
+        char ch = UART0_TryReadKey(); // UART0_WaitAnyKey();
+
+        switch ( ch )
+        {
+        case 'q':
+            Cam.ReadOnly_DirectionRadian -= 256; break;
+        case 'e':
+            Cam.ReadOnly_DirectionRadian += 256; break;
+        case 'w':
+            Cam.Position.x += 5; break;
+        case 's':
+            Cam.Position.x -= 5; break;
+        case 'a':
+            Cam.Position.y -= 5; break;
+        case 'd':
+            Cam.Position.y += 5; break;
+        }
+
+        VBuffer_Clear();
+        CalculateTranformCache( &Cam );
+        CDrawArgs_DrawOnDisplayBufferPerspective( &Arg, &Cam );
+        LCDDevice__Render();
+    }
+}
+#if 0
     outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
     UART0_WaitAnyKey();
     CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
@@ -79,7 +121,7 @@ void main(void)
 
         while ( 1 );
     }
-}
+#endif
 
 void InitializeDevice()
 {

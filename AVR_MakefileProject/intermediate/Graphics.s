@@ -58,6 +58,62 @@ __zero_reg__ = 1
  ;  -fzero-initialized-in-bss -mgas-isr-prologues -mmain-is-OS_task
 
 	.text
+.global	CalculateTranformCache
+	.type	CalculateTranformCache, @function
+CalculateTranformCache:
+	push r12		 ; 
+	push r13		 ; 
+	push r14		 ; 
+	push r15		 ; 
+	push r28		 ; 
+	push r29		 ; 
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 6 */
+.L__stack_usage = 6
+	movw r28,r24	 ;  Camera, Camera
+ ;  fixed/fixedptc.h:189:     return ( fixedpt_sin( FIXEDPT_HALF_PI - A ) );
+	ldd r12,Y+4	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	ldd r13,Y+5	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	ldd r14,Y+6	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	ldd r15,Y+7	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	ldi r22,lo8(32)	 ;  tmp49,
+	ldi r23,lo8(-110)	 ; ,
+	ldi r24,lo8(1)	 ; ,
+	ldi r25,0		 ; 
+	sub r22,r12	 ;  tmp48, Camera_4(D)->ReadOnly_DirectionRadian
+	sbc r23,r13	 ; , Camera_4(D)->ReadOnly_DirectionRadian
+	sbc r24,r14	 ; , Camera_4(D)->ReadOnly_DirectionRadian
+	sbc r25,r15	 ; , Camera_4(D)->ReadOnly_DirectionRadian
+	call fixedpt_sin	 ; 
+	movw r12,r22	 ;  _12,
+	movw r14,r24	 ;  _12,
+ ;  Graphics.c:8:     fixedpt sinT = fixedpt_sin( Camera->ReadOnly_DirectionRadian );
+	ldd r22,Y+4	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	ldd r23,Y+5	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	ldd r24,Y+6	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	ldd r25,Y+7	 ;  Camera_4(D)->ReadOnly_DirectionRadian, Camera_4(D)->ReadOnly_DirectionRadian
+	call fixedpt_sin	 ; 
+ ;  Graphics.c:11:     Camera->CachedDirection.x = cosT;
+	std Y+8,r12	 ;  Camera_4(D)->CachedDirection.x, _12
+	std Y+9,r13	 ;  Camera_4(D)->CachedDirection.x, _12
+	std Y+10,r14	 ;  Camera_4(D)->CachedDirection.x, _12
+	std Y+11,r15	 ;  Camera_4(D)->CachedDirection.x, _12
+ ;  Graphics.c:12:     Camera->CachedDirection.y = sinT;
+	std Y+12,r22	 ;  Camera_4(D)->CachedDirection.y, sinT
+	std Y+13,r23	 ;  Camera_4(D)->CachedDirection.y, sinT
+	std Y+14,r24	 ;  Camera_4(D)->CachedDirection.y, sinT
+	std Y+15,r25	 ;  Camera_4(D)->CachedDirection.y, sinT
+/* epilogue start */
+ ;  Graphics.c:13: }
+	pop r29		 ; 
+	pop r28		 ; 
+	pop r15		 ; 
+	pop r14		 ; 
+	pop r13		 ; 
+	pop r12		 ; 
+	ret	
+	.size	CalculateTranformCache, .-CalculateTranformCache
 .global	__muldi3
 .global	__divdi3
 .global	__floatsisf
@@ -88,188 +144,106 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	push r29		 ; 
 	in r28,__SP_L__	 ; 
 	in r29,__SP_H__	 ; 
-	sbiw r28,51	 ; ,
+	sbiw r28,46	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 51 */
-/* stack size = 69 */
-.L__stack_usage = 69
-	std Y+30,r25	 ;  %sfp, Instance
-	std Y+29,r24	 ;  %sfp, Instance
+/* frame size = 46 */
+/* stack size = 64 */
+.L__stack_usage = 64
+	std Y+34,r25	 ;  %sfp, Instance
+	std Y+33,r24	 ;  %sfp, Instance
 	movw r30,r22	 ;  Camera, Camera
  ;  Graphics.c:32:     DirectionVector.x = fixedpt_fromint( Position->x - Camera->Position.x );
 	movw r26,r24	 ; , Instance
-	adiw r26,3	 ;  MEM[(const struct FPoint16 *)Instance_36(D) + 3B].x
-	ld r20,X+	 ;  MEM[(const struct FPoint16 *)Instance_36(D) + 3B].x
-	ld r21,X	 ;  MEM[(const struct FPoint16 *)Instance_36(D) + 3B].x
-	sbiw r26,3+1	 ;  MEM[(const struct FPoint16 *)Instance_36(D) + 3B].x
-	ld r24,Z	 ;  Camera_38(D)->Position.x, Camera_38(D)->Position.x
-	ldd r25,Z+1	 ;  Camera_38(D)->Position.x, Camera_38(D)->Position.x
-	sub r20,r24	 ;  tmp143, Camera_38(D)->Position.x
-	sbc r21,r25	 ; , Camera_38(D)->Position.x
-	mov r25,r21	 ;  tmp148,
-	lsl r25	 ;  tmp148
-	sbc r25,r25	 ;  tmp148
+	adiw r26,3	 ;  MEM[(const struct FPoint16 *)Instance_35(D) + 3B].x
+	ld r20,X+	 ;  MEM[(const struct FPoint16 *)Instance_35(D) + 3B].x
+	ld r21,X	 ;  MEM[(const struct FPoint16 *)Instance_35(D) + 3B].x
+	sbiw r26,3+1	 ;  MEM[(const struct FPoint16 *)Instance_35(D) + 3B].x
+	ld r24,Z	 ;  Camera_37(D)->Position.x, Camera_37(D)->Position.x
+	ldd r25,Z+1	 ;  Camera_37(D)->Position.x, Camera_37(D)->Position.x
+	sub r20,r24	 ;  tmp135, Camera_37(D)->Position.x
+	sbc r21,r25	 ; , Camera_37(D)->Position.x
+	mov r25,r21	 ;  tmp140,
+	lsl r25	 ;  tmp140
+	sbc r25,r25	 ;  tmp140
 	movw r18,r20	 ; ,
-	mov r20,r25	 ; , tmp148
-	mov r21,r25	 ; , tmp148
-	mov r22,r25	 ; , tmp148
-	mov r23,r25	 ; , tmp148
-	mov r24,r25	 ; , tmp148
+	mov r20,r25	 ; , tmp140
+	mov r21,r25	 ; , tmp140
+	mov r22,r25	 ; , tmp140
+	mov r23,r25	 ; , tmp140
+	mov r24,r25	 ; , tmp140
 	ldi r16,lo8(16)	 ; ,
 	call __ashldi3
-	std Y+31,r18	 ;  %sfp,
-	std Y+32,r19	 ;  %sfp,
-	std Y+33,r20	 ;  %sfp,
-	std Y+34,r21	 ;  %sfp,
-	std Y+35,r22	 ;  %sfp,
-	std Y+36,r23	 ;  %sfp,
-	std Y+51,r24	 ;  %sfp,
-	std Y+50,r25	 ;  %sfp,
+	std Y+35,r18	 ;  %sfp,
+	std Y+36,r19	 ;  %sfp,
+	std Y+37,r20	 ;  %sfp,
+	std Y+38,r21	 ;  %sfp,
+	std Y+39,r22	 ;  %sfp,
+	std Y+40,r23	 ;  %sfp,
+	std Y+41,r24	 ;  %sfp,
+	std Y+42,r25	 ;  %sfp,
  ;  Graphics.c:33:     DirectionVector.y = fixedpt_fromint( Position->y - Camera->Position.y );
-	adiw r26,5	 ;  MEM[(const struct FPoint16 *)Instance_36(D) + 3B].y
-	ld r20,X+	 ;  MEM[(const struct FPoint16 *)Instance_36(D) + 3B].y
-	ld r21,X	 ;  MEM[(const struct FPoint16 *)Instance_36(D) + 3B].y
-	ldd r24,Z+2	 ;  Camera_38(D)->Position.y, Camera_38(D)->Position.y
-	ldd r25,Z+3	 ;  Camera_38(D)->Position.y, Camera_38(D)->Position.y
-	sub r20,r24	 ;  tmp149, Camera_38(D)->Position.y
-	sbc r21,r25	 ; , Camera_38(D)->Position.y
-	mov r25,r21	 ;  tmp154,
-	lsl r25	 ;  tmp154
-	sbc r25,r25	 ;  tmp154
+	adiw r26,5	 ;  MEM[(const struct FPoint16 *)Instance_35(D) + 3B].y
+	ld r20,X+	 ;  MEM[(const struct FPoint16 *)Instance_35(D) + 3B].y
+	ld r21,X	 ;  MEM[(const struct FPoint16 *)Instance_35(D) + 3B].y
+	ldd r24,Z+2	 ;  Camera_37(D)->Position.y, Camera_37(D)->Position.y
+	ldd r25,Z+3	 ;  Camera_37(D)->Position.y, Camera_37(D)->Position.y
+	sub r20,r24	 ;  tmp141, Camera_37(D)->Position.y
+	sbc r21,r25	 ; , Camera_37(D)->Position.y
+	mov r25,r21	 ;  tmp146,
+	lsl r25	 ;  tmp146
+	sbc r25,r25	 ;  tmp146
 	movw r18,r20	 ; ,
-	mov r20,r25	 ; , tmp154
-	mov r21,r25	 ; , tmp154
-	mov r22,r25	 ; , tmp154
-	mov r23,r25	 ; , tmp154
-	mov r24,r25	 ; , tmp154
+	mov r20,r25	 ; , tmp146
+	mov r21,r25	 ; , tmp146
+	mov r22,r25	 ; , tmp146
+	mov r23,r25	 ; , tmp146
+	mov r24,r25	 ; , tmp146
 	call __ashldi3
-	std Y+37,r18	 ;  %sfp,
-	std Y+38,r19	 ;  %sfp,
-	std Y+39,r20	 ;  %sfp,
-	std Y+40,r21	 ;  %sfp,
-	std Y+41,r22	 ;  %sfp,
-	std Y+42,r23	 ;  %sfp,
+	std Y+46,r18	 ;  %sfp,
+	std Y+45,r19	 ;  %sfp,
+	mov r9,r20	 ;  _63,
+	mov r8,r21	 ;  _63,
+	mov r3,r22	 ;  _63,
+	mov r2,r23	 ;  _63,
 	std Y+43,r24	 ;  %sfp,
 	std Y+44,r25	 ;  %sfp,
- ;  Graphics.c:34:     CameraDirectionUnitVector.x = Camera->CachedDirection.x;
-	ldd r14,Z+8	 ; , Camera_38(D)->CachedDirection.x
-	ldd r15,Z+9	 ; , Camera_38(D)->CachedDirection.x
-	ldd r16,Z+10	 ; , Camera_38(D)->CachedDirection.x
-	ldd r17,Z+11	 ; , Camera_38(D)->CachedDirection.x
-	std Y+1,r14	 ;  %sfp,
-	std Y+2,r15	 ;  %sfp,
-	std Y+3,r16	 ;  %sfp,
-	std Y+4,r17	 ;  %sfp,
- ;  Graphics.c:35:     CameraDirectionUnitVector.y = Camera->CachedDirection.y;
-	ldd r20,Z+12	 ; , Camera_38(D)->CachedDirection.y
-	ldd r21,Z+13	 ; , Camera_38(D)->CachedDirection.y
-	ldd r22,Z+14	 ; , Camera_38(D)->CachedDirection.y
-	ldd r23,Z+15	 ; , Camera_38(D)->CachedDirection.y
-	std Y+21,r20	 ;  %sfp,
-	std Y+22,r21	 ;  %sfp,
-	std Y+23,r22	 ;  %sfp,
-	std Y+24,r23	 ;  %sfp,
- ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	ldd r10,Y+31	 ; , %sfp
-	ldd r11,Y+32	 ; , %sfp
-	ldd r12,Y+33	 ; , %sfp
-	ldd r13,Y+34	 ; , %sfp
-	ldd r14,Y+35	 ; , %sfp
-	ldd r15,Y+36	 ; , %sfp
-	ldd r16,Y+51	 ; , %sfp
-	ldd r17,Y+50	 ; , %sfp
-	movw r18,r10	 ; ,
-	movw r20,r12	 ; ,
-	movw r22,r14	 ; ,
-	movw r24,r16	 ; ,
-	call __muldi3	 ; 
-	ldi r16,lo8(16)	 ; ,
-	call __ashrdi3
-	movw r2,r18	 ; ,
-	movw r4,r20	 ; ,
- ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	ldd r10,Y+37	 ; , %sfp
-	ldd r11,Y+38	 ; , %sfp
-	ldd r12,Y+39	 ; , %sfp
-	ldd r13,Y+40	 ; , %sfp
-	ldd r14,Y+41	 ; , %sfp
-	ldd r15,Y+42	 ; , %sfp
-	ldd r16,Y+43	 ; , %sfp
-	ldd r17,Y+44	 ; , %sfp
-	movw r18,r10	 ; ,
-	movw r20,r12	 ; ,
-	movw r22,r14	 ; ,
-	movw r24,r16	 ; ,
-	call __muldi3	 ; 
-	ldi r16,lo8(16)	 ; ,
-	call __ashrdi3
-	movw r10,r18	 ; ,
-	movw r12,r20	 ; ,
- ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	movw r6,r4	 ;  _51,
-	movw r4,r2	 ;  _51,
-	add r4,r10	 ;  _51, tmp158
-	adc r5,r11	 ;  _51,
-	adc r6,r12	 ;  _51,
-	adc r7,r13	 ;  _51,
- ;  fixed/fixedptc.h:235:     if ( A < 0 )
-	sbrs r7,7	 ;  _51,
-	rjmp .L2		 ; 
- ;  fixed/fixedptc.h:236:         return ( -1 );
-	clr r4		 ;  _51
-	dec r4		 ;  _51
-	mov r5,r4	 ;  _51, _51
-	movw r6,r4	 ;  _51
-.L3:
- ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	ldd r24,Y+1	 ; , %sfp
-	ldd r25,Y+2	 ; , %sfp
-	ldd r26,Y+3	 ; , %sfp
-	ldd r27,Y+4	 ; , %sfp
-	lsl r27	 ; 
-	sbc r24,r24	 ; 
-	mov r25,r24	 ; 
-	movw r26,r24	 ; 
+ ;  Graphics.c:34:     CameraDirectionUnitVector = Camera->CachedDirection;
+	ldd r24,Z+8	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 8B]
+	ldd r25,Z+9	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 8B]
+	ldd r26,Z+10	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 8B]
+	ldd r27,Z+11	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 8B]
+	std Y+1,r24	 ;  %sfp,
+	std Y+2,r25	 ;  %sfp,
+	std Y+3,r26	 ;  %sfp,
+	std Y+4,r27	 ;  %sfp,
+	ldd r24,Z+12	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 12B]
+	ldd r25,Z+13	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 12B]
+	ldd r26,Z+14	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 12B]
+	ldd r27,Z+15	 ; , MEM[(const struct FCameraTransform *)Camera_37(D) + 12B]
 	std Y+17,r24	 ;  %sfp,
 	std Y+18,r25	 ;  %sfp,
 	std Y+19,r26	 ;  %sfp,
 	std Y+20,r27	 ;  %sfp,
- ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	ldd r14,Y+21	 ; , %sfp
-	ldd r15,Y+22	 ; , %sfp
-	ldd r16,Y+23	 ; , %sfp
-	ldd r17,Y+24	 ; , %sfp
-	lsl r17	 ; 
-	sbc r14,r14	 ; 
-	mov r15,r14	 ; 
-	movw r16,r14	 ; 
-	std Y+25,r14	 ;  %sfp,
-	std Y+26,r15	 ;  %sfp,
-	std Y+27,r16	 ;  %sfp,
-	std Y+28,r17	 ;  %sfp,
- ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	ldd r10,Y+1	 ; , %sfp
-	ldd r11,Y+2	 ; , %sfp
-	ldd r12,Y+3	 ; , %sfp
-	ldd r13,Y+4	 ; , %sfp
-	ldd r14,Y+17	 ; , %sfp
-	mov r15,r14	 ; ,
-	mov r16,r14	 ; , tmp15
-	mov r17,r14	 ; , tmp16
-	ldd r18,Y+31	 ; , %sfp
-	ldd r19,Y+32	 ; , %sfp
-	ldd r20,Y+33	 ; , %sfp
-	ldd r21,Y+34	 ; , %sfp
-	ldd r22,Y+35	 ; , %sfp
-	ldd r23,Y+36	 ; , %sfp
-	ldd r24,Y+51	 ; , %sfp
-	ldd r25,Y+50	 ; , %sfp
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldd r10,Y+35	 ; , %sfp
+	ldd r11,Y+36	 ; , %sfp
+	ldd r12,Y+37	 ; , %sfp
+	ldd r13,Y+38	 ; , %sfp
+	ldd r14,Y+39	 ; , %sfp
+	ldd r15,Y+40	 ; , %sfp
+	ldd r16,Y+41	 ; , %sfp
+	ldd r17,Y+42	 ; , %sfp
+	movw r18,r10	 ; ,
+	movw r20,r12	 ; ,
+	movw r22,r14	 ; ,
+	movw r24,r16	 ; ,
 	call __muldi3	 ; 
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
 	std Y+9,r18	 ;  %sfp,
@@ -280,93 +254,186 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	std Y+14,r23	 ;  %sfp,
 	std Y+15,r24	 ;  %sfp,
 	std Y+16,r25	 ;  %sfp,
- ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	ldd r10,Y+21	 ; , %sfp
-	ldd r11,Y+22	 ; , %sfp
-	ldd r12,Y+23	 ; , %sfp
-	ldd r13,Y+24	 ; , %sfp
-	ldd r14,Y+25	 ; , %sfp
-	mov r15,r14	 ; ,
-	mov r16,r14	 ; , tmp15
-	mov r17,r14	 ; , tmp16
-	ldd r18,Y+37	 ; , %sfp
-	ldd r19,Y+38	 ; , %sfp
-	ldd r20,Y+39	 ; , %sfp
-	ldd r21,Y+40	 ; , %sfp
-	ldd r22,Y+41	 ; , %sfp
-	ldd r23,Y+42	 ; , %sfp
-	ldd r24,Y+43	 ; , %sfp
-	ldd r25,Y+44	 ; , %sfp
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldd r10,Y+46	 ; , %sfp
+	ldd r11,Y+45	 ; , %sfp
+	mov r12,r9	 ; , _63
+	mov r13,r8	 ; , _63
+	mov r14,r3	 ; , _63
+	mov r15,r2	 ; , _63
+	ldd r16,Y+43	 ; , %sfp
+	ldd r17,Y+44	 ; , %sfp
+	movw r18,r10	 ; ,
+	mov r20,r9	 ; , _63
+	mov r21,r8	 ; , _63
+	mov r22,r3	 ; , _63
+	mov r23,r2	 ; , _63
+	movw r24,r16	 ; ,
 	call __muldi3	 ; 
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
-	movw r8,r18	 ; ,
-	movw r10,r20	 ; ,
+	movw r10,r18	 ; ,
+	movw r12,r20	 ; ,
  ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
-	ldd r20,Y+9	 ; , %sfp
-	ldd r21,Y+10	 ; , %sfp
-	ldd r22,Y+11	 ; , %sfp
-	ldd r23,Y+12	 ; , %sfp
-	add r8,r20	 ;  tmp179,
-	adc r9,r21	 ; ,
-	adc r10,r22	 ; ,
-	adc r11,r23	 ; ,
- ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	movw r14,r10	 ; ,
-	movw r12,r8	 ;  tmp182, tmp179
-	lsl r15	 ;  tmp182
-	sbc r12,r12	 ;  tmp182
-	mov r13,r12	 ;  tmp182
-	movw r14,r12	 ;  tmp182
- ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	movw r18,r8	 ; ,
-	movw r20,r10	 ; ,
-	mov r22,r12	 ; , tmp182
-	mov r23,r12	 ; , tmp182
-	mov r24,r12	 ; , tmp182
-	mov r25,r12	 ; , tmp182
-	call __ashldi3
- ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	movw r10,r4	 ; ,
-	movw r12,r6	 ; ,
-	movw r16,r6	 ; , _51
-	movw r14,r4	 ; , _51
-	lsl r17	 ; 
-	sbc r14,r14	 ; 
-	mov r15,r14	 ; 
-	movw r16,r14	 ; 
-	std Y+9,r14	 ;  %sfp,
-	std Y+10,r15	 ;  %sfp,
-	std Y+11,r16	 ;  %sfp,
-	std Y+12,r17	 ;  %sfp,
-	ldd r14,Y+9	 ; , %sfp
-	mov r15,r14	 ; ,
-	mov r16,r14	 ; , tmp15
-	mov r17,r14	 ; , tmp16
-	call __divdi3	 ; 
- ;  Graphics.c:44:     AngleBetween = fixedpt_acos( fixedpt_div( dot( DirectionVector, CameraDirectionUnitVector ), DistanceFromCamera /* ¡¿ 1.0, unit length of direction vector */) );
-	movw r22,r18	 ; ,
-	movw r24,r20	 ; ,
-	call fixedpt_acos	 ; 
-	std Y+9,r22	 ;  %sfp,
-	std Y+10,r23	 ;  %sfp,
-	std Y+11,r24	 ;  %sfp,
-	std Y+12,r25	 ;  %sfp,
+	ldd r22,Y+9	 ;  _119, %sfp
+	ldd r23,Y+10	 ;  _119, %sfp
+	ldd r24,Y+11	 ;  _119, %sfp
+	ldd r25,Y+12	 ;  _119, %sfp
+	add r22,r10	 ;  _119, tmp150
+	adc r23,r11	 ;  _119,
+	adc r24,r12	 ;  _119,
+	adc r25,r13	 ;  _119,
+ ;  fixed/fixedptc.h:225:     if ( n < 0 )
+	sbrs r25,7	 ;  _119,
+	rjmp .L3		 ; 
+ ;  fixed/fixedptc.h:226:         return 0;
+	std Y+21,__zero_reg__	 ;  %sfp,
+	std Y+22,__zero_reg__	 ;  %sfp,
+	std Y+23,__zero_reg__	 ;  %sfp,
+	std Y+24,__zero_reg__	 ;  %sfp,
+.L4:
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldd r24,Y+1	 ; , %sfp
+	ldd r25,Y+2	 ; , %sfp
+	ldd r26,Y+3	 ; , %sfp
+	ldd r27,Y+4	 ; , %sfp
+	lsl r27	 ; 
+	sbc r24,r24	 ; 
+	mov r25,r24	 ; 
+	movw r26,r24	 ; 
+	std Y+25,r24	 ;  %sfp,
+	std Y+26,r25	 ;  %sfp,
+	std Y+27,r26	 ;  %sfp,
+	std Y+28,r27	 ;  %sfp,
+	ldd r24,Y+17	 ; , %sfp
+	ldd r25,Y+18	 ; , %sfp
+	ldd r26,Y+19	 ; , %sfp
+	ldd r27,Y+20	 ; , %sfp
+	lsl r27	 ; 
+	sbc r24,r24	 ; 
+	mov r25,r24	 ; 
+	movw r26,r24	 ; 
+	std Y+29,r24	 ;  %sfp,
+	std Y+30,r25	 ;  %sfp,
+	std Y+31,r26	 ;  %sfp,
+	std Y+32,r27	 ;  %sfp,
  ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldd r10,Y+1	 ; , %sfp
 	ldd r11,Y+2	 ; , %sfp
 	ldd r12,Y+3	 ; , %sfp
 	ldd r13,Y+4	 ; , %sfp
-	ldd r14,Y+17	 ; , %sfp
+	ldd r14,Y+25	 ; , %sfp
 	mov r15,r14	 ; ,
 	mov r16,r14	 ; , tmp15
 	mov r17,r14	 ; , tmp16
-	ldd r18,Y+37	 ; , %sfp
-	ldd r19,Y+38	 ; , %sfp
-	ldd r20,Y+39	 ; , %sfp
-	ldd r21,Y+40	 ; , %sfp
-	ldd r22,Y+41	 ; , %sfp
-	ldd r23,Y+42	 ; , %sfp
+	ldd r18,Y+35	 ; , %sfp
+	ldd r19,Y+36	 ; , %sfp
+	ldd r20,Y+37	 ; , %sfp
+	ldd r21,Y+38	 ; , %sfp
+	ldd r22,Y+39	 ; , %sfp
+	ldd r23,Y+40	 ; , %sfp
+	ldd r24,Y+41	 ; , %sfp
+	ldd r25,Y+42	 ; , %sfp
+	call __muldi3	 ; 
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldi r16,lo8(16)	 ; ,
+	call __ashrdi3
+	std Y+9,r18	 ;  %sfp,
+	std Y+10,r19	 ;  %sfp,
+	std Y+11,r20	 ;  %sfp,
+	std Y+12,r21	 ;  %sfp,
+	std Y+13,r22	 ;  %sfp,
+	std Y+14,r23	 ;  %sfp,
+	std Y+15,r24	 ;  %sfp,
+	std Y+16,r25	 ;  %sfp,
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldd r10,Y+17	 ; , %sfp
+	ldd r11,Y+18	 ; , %sfp
+	ldd r12,Y+19	 ; , %sfp
+	ldd r13,Y+20	 ; , %sfp
+	ldd r14,Y+29	 ; , %sfp
+	mov r15,r14	 ; ,
+	mov r16,r14	 ; , tmp15
+	mov r17,r14	 ; , tmp16
+	ldd r18,Y+46	 ; , %sfp
+	ldd r19,Y+45	 ; , %sfp
+	mov r20,r9	 ; , _63
+	mov r21,r8	 ; , _63
+	mov r22,r3	 ; , _63
+	mov r23,r2	 ; , _63
+	ldd r24,Y+43	 ; , %sfp
+	ldd r25,Y+44	 ; , %sfp
+	call __muldi3	 ; 
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldi r16,lo8(16)	 ; ,
+	call __ashrdi3
+	movw r10,r18	 ; ,
+	movw r12,r20	 ; ,
+ ;  Graphics.c:17:     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
+	ldd r24,Y+9	 ;  tmp164, %sfp
+	ldd r25,Y+10	 ;  tmp164, %sfp
+	ldd r26,Y+11	 ;  tmp164, %sfp
+	ldd r27,Y+12	 ;  tmp164, %sfp
+	add r24,r10	 ;  tmp164, tmp163
+	adc r25,r11	 ; ,
+	adc r26,r12	 ; ,
+	adc r27,r13	 ; ,
+ ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
+	movw r12,r24	 ;  tmp167, tmp164
+	movw r14,r26	 ; ,
+	lsl r15	 ;  tmp167
+	sbc r12,r12	 ;  tmp167
+	mov r13,r12	 ;  tmp167
+	movw r14,r12	 ;  tmp167
+ ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
+	movw r18,r24	 ; ,
+	movw r20,r26	 ; ,
+	mov r22,r12	 ; , tmp167
+	mov r23,r12	 ; , tmp167
+	mov r24,r12	 ; , tmp167
+	mov r25,r12	 ; , tmp167
+	ldi r16,lo8(16)	 ; ,
+	call __ashldi3
+ ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
+	ldd r10,Y+21	 ; , %sfp
+	ldd r11,Y+22	 ; , %sfp
+	ldd r12,Y+23	 ; , %sfp
+	ldd r13,Y+24	 ; , %sfp
+	ldd r4,Y+21	 ;  tmp171, %sfp
+	ldd r5,Y+22	 ;  tmp171, %sfp
+	ldd r6,Y+23	 ;  tmp171, %sfp
+	ldd r7,Y+24	 ;  tmp171, %sfp
+	lsl r7	 ;  tmp171
+	sbc r4,r4	 ;  tmp171
+	mov r5,r4	 ;  tmp171
+	movw r6,r4	 ;  tmp171
+	mov r14,r4	 ; , tmp171
+	mov r15,r4	 ; , tmp171
+	mov r16,r4	 ; , tmp171
+	mov r17,r4	 ; , tmp171
+	call __divdi3	 ; 
+ ;  Graphics.c:49:     AngleBetween = fixedpt_acos( AngleBetween );
+	movw r22,r18	 ; ,
+	movw r24,r20	 ; ,
+	call fixedpt_acos	 ; 
+	movw r4,r22	 ;  AngleBetween,
+	movw r6,r24	 ;  AngleBetween,
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldd r10,Y+1	 ; , %sfp
+	ldd r11,Y+2	 ; , %sfp
+	ldd r12,Y+3	 ; , %sfp
+	ldd r13,Y+4	 ; , %sfp
+	ldd r14,Y+25	 ; , %sfp
+	mov r15,r14	 ; ,
+	mov r16,r14	 ; , tmp15
+	mov r17,r14	 ; , tmp16
+	ldd r18,Y+46	 ; , %sfp
+	ldd r19,Y+45	 ; , %sfp
+	mov r20,r9	 ; , _63
+	mov r21,r8	 ; , _63
+	mov r22,r3	 ; , _63
+	mov r23,r2	 ; , _63
 	ldd r24,Y+43	 ; , %sfp
 	ldd r25,Y+44	 ; , %sfp
 	call __muldi3	 ; 
@@ -382,56 +449,52 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	std Y+7,r24	 ;  %sfp,
 	std Y+8,r25	 ;  %sfp,
  ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
-	ldd r10,Y+21	 ; , %sfp
-	ldd r11,Y+22	 ; , %sfp
-	ldd r12,Y+23	 ; , %sfp
-	ldd r13,Y+24	 ; , %sfp
-	ldd r14,Y+25	 ; , %sfp
+	ldd r10,Y+17	 ; , %sfp
+	ldd r11,Y+18	 ; , %sfp
+	ldd r12,Y+19	 ; , %sfp
+	ldd r13,Y+20	 ; , %sfp
+	ldd r14,Y+29	 ; , %sfp
 	mov r15,r14	 ; ,
 	mov r16,r14	 ; , tmp15
 	mov r17,r14	 ; , tmp16
-	ldd r18,Y+31	 ; , %sfp
-	ldd r19,Y+32	 ; , %sfp
-	ldd r20,Y+33	 ; , %sfp
-	ldd r21,Y+34	 ; , %sfp
-	ldd r22,Y+35	 ; , %sfp
-	ldd r23,Y+36	 ; , %sfp
-	ldd r24,Y+51	 ; , %sfp
-	ldd r25,Y+50	 ; , %sfp
+	ldd r18,Y+35	 ; , %sfp
+	ldd r19,Y+36	 ; , %sfp
+	ldd r20,Y+37	 ; , %sfp
+	ldd r21,Y+38	 ; , %sfp
+	ldd r22,Y+39	 ; , %sfp
+	ldd r23,Y+40	 ; , %sfp
+	ldd r24,Y+41	 ; , %sfp
+	ldd r25,Y+42	 ; , %sfp
 	call __muldi3	 ; 
  ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
 	movw r8,r18	 ; ,
 	movw r10,r20	 ; ,
- ;  Graphics.c:45:     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
+ ;  Graphics.c:51:     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
 	ldd r24,Y+1	 ;  Z, %sfp
 	ldd r25,Y+2	 ;  Z, %sfp
 	ldd r26,Y+3	 ;  Z, %sfp
 	ldd r27,Y+4	 ;  Z, %sfp
-	sub r24,r8	 ;  Z, tmp194
+	sub r24,r8	 ;  Z, tmp179
 	sbc r25,r9	 ;  Z,
 	sbc r26,r10	 ;  Z,
 	sbc r27,r11	 ;  Z,
- ;  Graphics.c:46:     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
+ ;  Graphics.c:52:     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
 	cp __zero_reg__,r24	 ;  Z
 	cpc __zero_reg__,r25	 ;  Z
 	cpc __zero_reg__,r26	 ;  Z
 	cpc __zero_reg__,r27	 ;  Z
 	brge .+2	 ; 
-	rjmp .L14	 ; 
-	ldd r22,Y+9	 ;  iftmp.5_93, %sfp
-	ldd r23,Y+10	 ;  iftmp.5_93, %sfp
-	ldd r24,Y+11	 ;  iftmp.5_93, %sfp
-	ldd r25,Y+12	 ;  iftmp.5_93, %sfp
-	com r25	 ;  iftmp.5_93
-	com r24	 ;  iftmp.5_93
-	com r23	 ;  iftmp.5_93
-	neg r22	 ;  iftmp.5_93
-	sbci r23,lo8(-1)	 ;  iftmp.5_93
-	sbci r24,lo8(-1)	 ;  iftmp.5_93
-	sbci r25,lo8(-1)	 ;  iftmp.5_93
-.L8:
+	rjmp .L9	 ; 
+	clr r22	 ;  iftmp.5_93
+	clr r23	 ;  iftmp.5_93
+	movw r24,r22	 ;  iftmp.5_93
+	sub r22,r4	 ;  iftmp.5_93, AngleBetween
+	sbc r23,r5	 ;  iftmp.5_93, AngleBetween
+	sbc r24,r6	 ;  iftmp.5_93, AngleBetween
+	sbc r25,r7	 ;  iftmp.5_93, AngleBetween
+.L5:
  ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r18,0		 ; 
 	ldi r19,0		 ; 
@@ -444,16 +507,16 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	movw r8,r18	 ; ,
 	movw r10,r20	 ; ,
  ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	movw r22,r20	 ; , tmp10
-	movw r20,r8	 ; ,
-	lsl r23	 ; 
-	sbc r20,r20	 ; 
-	mov r21,r20	 ; 
-	movw r22,r20	 ; 
-	std Y+1,r20	 ;  %sfp,
-	std Y+2,r21	 ;  %sfp,
-	std Y+3,r22	 ;  %sfp,
-	std Y+4,r23	 ;  %sfp,
+	movw r26,r20	 ; , tmp10
+	movw r24,r18	 ; , tmp8
+	lsl r27	 ; 
+	sbc r24,r24	 ; 
+	mov r25,r24	 ; 
+	movw r26,r24	 ; 
+	std Y+1,r24	 ;  %sfp,
+	std Y+2,r25	 ;  %sfp,
+	std Y+3,r26	 ;  %sfp,
+	std Y+4,r27	 ;  %sfp,
  ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
 	movw r18,r8	 ; ,
 	movw r20,r10	 ; ,
@@ -477,82 +540,264 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	call __divdi3	 ; 
 	movw r8,r18	 ; ,
 	movw r10,r20	 ; ,
- ;  Graphics.c:46:     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
-	movw r24,r10	 ;  tmp206, tmp205
-	clr r27	 ;  tmp206
-	sbrc r25,7	 ;  tmp206
-	com r27	 ;  tmp206
-	mov r26,r27	 ;  tmp206
- ;  Graphics.c:74:     if ( !CalculateAngleIfVIsible( &Instance->Position, Camera, &AngleInDegrees, &Distance ) )
-	ldd r14,Y+9	 ; , %sfp
-	ldd r15,Y+10	 ; , %sfp
-	ldd r16,Y+11	 ; , %sfp
-	ldd r17,Y+12	 ; , %sfp
-	ldi r20,26	 ; ,
-	cp r14,r20		 ; ,
-	ldi r20,79	 ; ,
-	cpc r15,r20	 ; ,
-	sbci r16,1	 ; ,
-	cpc r17,__zero_reg__	 ; 
-	brge .L1		 ; ,
- ;  Graphics.c:83:             *arg = Instance->Mesh.Lines,
-	ldd r30,Y+29	 ; , %sfp
-	ldd r31,Y+30	 ; , %sfp
-	ld __tmp_reg__,Z+	 ;  Instance_36(D)->Mesh.Lines
-	ld r31,Z	 ; , Instance_36(D)->Mesh.Lines
+ ;  Graphics.c:52:     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
+	movw r24,r10	 ;  tmp191, tmp190
+	clr r27	 ;  tmp191
+	sbrc r25,7	 ;  tmp191
+	com r27	 ;  tmp191
+	mov r26,r27	 ;  tmp191
+ ;  Graphics.c:53:     *Distance = fixedpt_toint( DistanceFromCamera );
+	ldd r18,Y+23	 ;  _105, %sfp
+	ldd r19,Y+24	 ;  _105, %sfp
+ ;  Graphics.c:95:     if ( !bIsVisibleArg )
+	ldi r30,26	 ; ,
+	cp r4,r30		 ;  AngleBetween,
+	ldi r30,79	 ; ,
+	cpc r5,r30	 ;  AngleBetween,
+	ldi r30,1	 ; ,
+	cpc r6,r30	 ;  AngleBetween,
+	cpc r7,__zero_reg__	 ;  AngleBetween
+	brlt .+2	 ; 
+	rjmp .L2	 ; 
+ ;  Graphics.c:105:             *arg = Instance->Mesh.Lines,
+	ldd r30,Y+33	 ; , %sfp
+	ldd r31,Y+34	 ; , %sfp
+	ld __tmp_reg__,Z+	 ;  Instance_35(D)->Mesh.Lines
+	ld r31,Z	 ; , Instance_35(D)->Mesh.Lines
 	mov r30,__tmp_reg__	 ; 
 	std Y+26,r31	 ;  %sfp,
 	std Y+25,r30	 ;  %sfp,
- ;  Graphics.c:84:             *end = Instance->Mesh.Lines + Instance->Mesh.NumLines;
-	ldd r30,Y+29	 ; , %sfp
-	ldd r31,Y+30	 ; , %sfp
-	ldd r16,Z+2	 ;  Instance_36(D)->Mesh.NumLines, Instance_36(D)->Mesh.NumLines
+ ;  Graphics.c:106:             *end = Instance->Mesh.Lines + Instance->Mesh.NumLines;
+	ldd r30,Y+33	 ; , %sfp
+	ldd r31,Y+34	 ; , %sfp
+	ldd r16,Z+2	 ;  Instance_35(D)->Mesh.NumLines, Instance_35(D)->Mesh.NumLines
 	ldi r31,lo8(4)	 ; ,
-	mul r16,r31	 ;  Instance_36(D)->Mesh.NumLines,
-	movw r16,r0	 ;  tmp210
+	mul r16,r31	 ;  Instance_35(D)->Mesh.NumLines,
+	movw r16,r0	 ;  tmp195
 	clr __zero_reg__
- ;  Graphics.c:84:             *end = Instance->Mesh.Lines + Instance->Mesh.NumLines;
-	ldd r14,Y+25	 ; , %sfp
-	ldd r15,Y+26	 ; , %sfp
-	add r16,r14	 ;  end,
-	adc r17,r15	 ;  end,
- ;  Graphics.c:88:         centerX = LCD_WIDTH / 2 + rotator;
-	ldi r20,lo8(72)	 ; ,
-	muls r24,r20	 ;  tmp206,
-	movw r24,r0	 ;  tmp211
+ ;  Graphics.c:106:             *end = Instance->Mesh.Lines + Instance->Mesh.NumLines;
+	ldd r20,Y+25	 ; , %sfp
+	ldd r21,Y+26	 ; , %sfp
+	add r16,r20	 ;  end,
+	adc r17,r21	 ;  end,
+ ;  Graphics.c:110:         centerX = LCD_WIDTH / 2 + rotator;
+	ldi r21,lo8(72)	 ; ,
+	muls r24,r21	 ;  tmp191,
+	movw r24,r0	 ;  tmp196
 	clr __zero_reg__
 	ldi r22,lo8(75)	 ; ,
 	ldi r23,0		 ; 
 	call __divmodhi4
- ;  Graphics.c:88:         centerX = LCD_WIDTH / 2 + rotator;
+ ;  Graphics.c:110:         centerX = LCD_WIDTH / 2 + rotator;
 	subi r22,-36	 ;  centerX,
 	sbci r23,-1	 ;  centerX,
- ;  Graphics.c:94:             x0 = scale( arg->Begin.x ) + centerX;
-	movw r4,r6	 ;  _105, _105
-	lsl r7		 ; 
+ ;  Graphics.c:117:             x0 = scale( arg->Begin.x ) + centerX;
+	movw r4,r18	 ;  _105, _105
+	lsl r19		 ; 
 	sbc r6,r6	 ; 
 	sbc r7,r7	 ; 
- ;  Graphics.c:94:             x0 = scale( arg->Begin.x ) + centerX;
+ ;  Graphics.c:117:             x0 = scale( arg->Begin.x ) + centerX;
 	movw r24,r22	 ; , centerX
 	lsl r23		 ; 
 	sbc r26,r26	 ; 
 	sbc r27,r27	 ; 
-	std Y+17,r24	 ;  %sfp,
-	std Y+18,r25	 ;  %sfp,
-	std Y+19,r26	 ;  %sfp,
-	std Y+20,r27	 ;  %sfp,
-.L10:
- ;  Graphics.c:91:         while ( arg != end )
-	ldd r14,Y+25	 ; , %sfp
-	ldd r15,Y+26	 ; , %sfp
-	cp r14,r16	 ; , end
-	cpc r15,r17	 ; , end
-	breq .+2	 ; 
-	rjmp .L11	 ; 
-.L1:
+	std Y+21,r24	 ;  %sfp,
+	std Y+22,r25	 ;  %sfp,
+	std Y+23,r26	 ;  %sfp,
+	std Y+24,r27	 ;  %sfp,
+.L7:
+ ;  Graphics.c:114:         while ( arg != end )
+	ldd r24,Y+25	 ; , %sfp
+	ldd r25,Y+26	 ; , %sfp
+	cp r24,r16	 ; , end
+	cpc r25,r17	 ; , end
+	brne .+2	 ; 
+	rjmp .L2	 ; 
+ ;  Graphics.c:117:             x0 = scale( arg->Begin.x ) + centerX;
+	movw r24,r6	 ; , _105
+	movw r22,r4	 ; , _105
+	call __floatsisf	 ; 
+	movw r12,r22	 ;  _13,
+	movw r14,r24	 ;  _13,
+ ;  Graphics.c:117:             x0 = scale( arg->Begin.x ) + centerX;
+	ldd r22,Y+21	 ; , %sfp
+	ldd r23,Y+22	 ; , %sfp
+	ldd r24,Y+23	 ; , %sfp
+	ldd r25,Y+24	 ; , %sfp
+	call __floatsisf	 ; 
+	movw r8,r22	 ;  _15,
+	movw r10,r24	 ;  _15,
+ ;  Graphics.c:120:             y1 = scale( arg->End.y ) + centerY;
+	ldd r26,Y+25	 ; , %sfp
+	ldd r27,Y+26	 ; , %sfp
+	adiw r26,3	 ;  MEM[base: arg_32, offset: 3B]
+	ld r22,X	 ;  MEM[base: arg_32, offset: 3B]
+	mov __tmp_reg__,r22	 ; 
+	lsl r0		 ; 
+	sbc r23,r23	 ; 
+	sbc r24,r24	 ; 
+	sbc r25,r25	 ; 
+	call __floatsisf	 ; 
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,lo8(-56)	 ; ,
+	ldi r21,lo8(66)	 ; ,
+	call __mulsf3	 ; 
+	movw r20,r14	 ; , _13
+	movw r18,r12	 ; , _13
+	call __divsf3	 ; 
+ ;  Graphics.c:120:             y1 = scale( arg->End.y ) + centerY;
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,lo8(48)	 ; ,
+	ldi r21,lo8(65)	 ; ,
+	call __addsf3	 ; 
+ ;  Graphics.c:120:             y1 = scale( arg->End.y ) + centerY;
+	call __fixsfsi	 ; 
+	std Y+1,r22	 ;  %sfp,
+	std Y+2,r23	 ;  %sfp,
+	std Y+3,r24	 ;  %sfp,
+	std Y+4,r25	 ;  %sfp,
+ ;  Graphics.c:119:             x1 = scale( arg->End.x ) + centerX;
+	ldd r30,Y+25	 ; , %sfp
+	ldd r31,Y+26	 ; , %sfp
+	ldd r22,Z+2	 ;  MEM[base: arg_32, offset: 2B], MEM[base: arg_32, offset: 2B]
+	mov __tmp_reg__,r22	 ; 
+	lsl r0		 ; 
+	sbc r23,r23	 ; 
+	sbc r24,r24	 ; 
+	sbc r25,r25	 ; 
+	call __floatsisf	 ; 
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,lo8(-56)	 ; ,
+	ldi r21,lo8(66)	 ; ,
+	call __mulsf3	 ; 
+	movw r20,r14	 ; , _13
+	movw r18,r12	 ; , _13
+	call __divsf3	 ; 
+ ;  Graphics.c:119:             x1 = scale( arg->End.x ) + centerX;
+	movw r20,r10	 ; , _15
+	movw r18,r8	 ; , _15
+	call __addsf3	 ; 
+ ;  Graphics.c:119:             x1 = scale( arg->End.x ) + centerX;
+	call __fixsfsi	 ; 
+	std Y+17,r22	 ;  %sfp,
+	std Y+18,r23	 ;  %sfp,
+	std Y+19,r24	 ;  %sfp,
+	std Y+20,r25	 ;  %sfp,
+ ;  Graphics.c:118:             y0 = scale( arg->Begin.y ) + centerY;
+	ldd r26,Y+25	 ; , %sfp
+	ldd r27,Y+26	 ; , %sfp
+	adiw r26,1	 ;  MEM[base: arg_32, offset: 1B]
+	ld r22,X	 ;  MEM[base: arg_32, offset: 1B]
+	mov __tmp_reg__,r22	 ; 
+	lsl r0		 ; 
+	sbc r23,r23	 ; 
+	sbc r24,r24	 ; 
+	sbc r25,r25	 ; 
+	call __floatsisf	 ; 
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,lo8(-56)	 ; ,
+	ldi r21,lo8(66)	 ; ,
+	call __mulsf3	 ; 
+	movw r20,r14	 ; , _13
+	movw r18,r12	 ; , _13
+	call __divsf3	 ; 
+ ;  Graphics.c:118:             y0 = scale( arg->Begin.y ) + centerY;
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,lo8(48)	 ; ,
+	ldi r21,lo8(65)	 ; ,
+	call __addsf3	 ; 
+ ;  Graphics.c:118:             y0 = scale( arg->Begin.y ) + centerY;
+	call __fixsfsi	 ; 
+	std Y+9,r22	 ;  %sfp,
+	std Y+10,r23	 ;  %sfp,
+	std Y+11,r24	 ;  %sfp,
+	std Y+12,r25	 ;  %sfp,
+ ;  Graphics.c:117:             x0 = scale( arg->Begin.x ) + centerX;
+	ldd r30,Y+25	 ; , %sfp
+	ldd r31,Y+26	 ; , %sfp
+	ld r22,Z		 ;  MEM[base: arg_32, offset: 0B], MEM[base: arg_32, offset: 0B]
+	mov __tmp_reg__,r22	 ; 
+	lsl r0		 ; 
+	sbc r23,r23	 ; 
+	sbc r24,r24	 ; 
+	sbc r25,r25	 ; 
+	call __floatsisf	 ; 
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,lo8(-56)	 ; ,
+	ldi r21,lo8(66)	 ; ,
+	call __mulsf3	 ; 
+	movw r20,r14	 ; , _13
+	movw r18,r12	 ; , _13
+	call __divsf3	 ; 
+ ;  Graphics.c:117:             x0 = scale( arg->Begin.x ) + centerX;
+	movw r20,r10	 ; , _15
+	movw r18,r8	 ; , _15
+	call __addsf3	 ; 
+ ;  Graphics.c:117:             x0 = scale( arg->Begin.x ) + centerX;
+	call __fixsfsi	 ; 
+	movw r24,r22	 ;  tmp235,
+ ;  Graphics.c:123:             VBuffer_DrawLine( x0, y0, x1, y1 );
+	ldd r18,Y+1	 ; , %sfp
+	ldd r19,Y+2	 ; , %sfp
+	ldd r20,Y+17	 ; , %sfp
+	ldd r21,Y+18	 ; , %sfp
+	ldd r22,Y+9	 ; , %sfp
+	ldd r23,Y+10	 ; , %sfp
+	call VBuffer_DrawLine	 ; 
+ ;  Graphics.c:125:             ++arg;
+	ldd r20,Y+25	 ; , %sfp
+	ldd r21,Y+26	 ; , %sfp
+	subi r20,-4	 ; ,
+	sbci r21,-1	 ; ,
+	std Y+26,r21	 ;  %sfp,
+	std Y+25,r20	 ;  %sfp,
+	rjmp .L7		 ; 
+.L3:
+ ;  fixed/fixedptc.h:227:     return ( fixedpt_exp( fixedpt_mul( fixedpt_ln( n ), exp ) ) );
+	call fixedpt_ln	 ; 
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	movw r12,r22	 ;  tmp153, _121
+	movw r14,r24	 ; , _121
+	lsl r15	 ;  tmp153
+	sbc r12,r12	 ;  tmp153
+	mov r13,r12	 ;  tmp153
+	movw r14,r12	 ;  tmp153
+	movw r18,r22	 ; ,
+	movw r20,r24	 ; ,
+	mov r22,r12	 ; , tmp153
+	mov r23,r12	 ; , tmp153
+	mov r24,r12	 ; , tmp153
+	mov r25,r12	 ; , tmp153
+	ldi r16,lo8(15)	 ; ,
+	call __ashldi3
+ ;  fixed/fixedptc.h:136:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
+	ldi r16,lo8(16)	 ; ,
+	call __ashrdi3
+ ;  fixed/fixedptc.h:227:     return ( fixedpt_exp( fixedpt_mul( fixedpt_ln( n ), exp ) ) );
+	movw r22,r18	 ; ,
+	movw r24,r20	 ; ,
+	call fixedpt_exp	 ; 
+	std Y+21,r22	 ;  %sfp,
+	std Y+22,r23	 ;  %sfp,
+	std Y+23,r24	 ;  %sfp,
+	std Y+24,r25	 ;  %sfp,
+ ;  Graphics.c:37:     if ( DistanceFromCamera > fixedpt_rconst( MINIMAL_VISIBLE_DISTANCE ) ) 
+	cpi r22,1	 ; ,
+	cpc r23,__zero_reg__	 ; 
+	sbci r24,-12	 ; ,
+	sbci r25,1	 ; ,
+	brge .+2	 ; 
+	rjmp .L4	 ; 
+.L2:
 /* epilogue start */
- ;  Graphics.c:106: }
-	adiw r28,51	 ; ,
+ ;  Graphics.c:129: } 
+	adiw r28,46	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
@@ -577,275 +822,10 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	pop r3		 ; 
 	pop r2		 ; 
 	ret	
-.L2:
- ;  fixed/fixedptc.h:237:     if ( A == 0 || A == FIXEDPT_ONE )
-	cp r4,__zero_reg__	 ;  _51
-	cpc r5,__zero_reg__	 ;  _51
-	cpc r6,__zero_reg__	 ;  _51
-	cpc r7,__zero_reg__	 ;  _51
-	brne .+2	 ; 
-	rjmp .L3	 ; 
- ;  fixed/fixedptc.h:237:     if ( A == 0 || A == FIXEDPT_ONE )
-	cp r4,__zero_reg__	 ;  _51
-	cpc r5,__zero_reg__	 ;  _51
-	ldi r21,1	 ; ,
-	cpc r6,r21	 ;  _51,
-	cpc r7,__zero_reg__	 ;  _51
-	brne .+2	 ; 
-	rjmp .L3	 ; 
- ;  fixed/fixedptc.h:232:     int iter = FIXEDPT_FBITS;
-	ldi r24,lo8(16)	 ; ,
-	mov r8,r24	 ;  iter,
-	mov r9,__zero_reg__	 ;  iter
- ;  fixed/fixedptc.h:243:     if ( A > FIXEDPT_ONE ) {
-	ldi r22,1	 ; ,
-	cp r4,r22		 ;  _51,
-	cpc r5,__zero_reg__	 ;  _51
-	cpc r6,r22	 ;  _51,
-	cpc r7,__zero_reg__	 ;  _51
-	brlt .L5		 ; ,
-	mov r9,__zero_reg__	 ;  iter
-	mov r8,__zero_reg__	 ;  iter
-.L5:
- ;  fixed/fixedptc.h:254:     l = ( A >> 1 ) + 1;
-	movw r26,r6	 ; , _51
-	movw r24,r4	 ;  tmp159, _51
-	asr r27	 ;  tmp159
-	ror r26	 ;  tmp159
-	ror r25	 ;  tmp159
-	ror r24	 ;  tmp159
- ;  fixed/fixedptc.h:254:     l = ( A >> 1 ) + 1;
-	movw r30,r24	 ;  l,
-	adiw r30,1	 ;  l,
- ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	movw r14,r6	 ; , _51
-	movw r12,r4	 ;  tmp162, _51
-	lsl r15	 ;  tmp162
-	sbc r12,r12	 ;  tmp162
-	mov r13,r12	 ;  tmp162
-	movw r14,r12	 ;  tmp162
- ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	movw r18,r4	 ; ,
-	movw r20,r6	 ; ,
-	mov r22,r12	 ; , tmp162
-	mov r23,r12	 ; , tmp162
-	mov r24,r12	 ; , tmp162
-	mov r25,r12	 ; , tmp162
-	ldi r16,lo8(16)	 ; ,
-	call __ashldi3
-	std Y+9,r18	 ;  %sfp,
-	std Y+17,r19	 ;  %sfp,
-	std Y+25,r20	 ;  %sfp,
-	std Y+45,r21	 ;  %sfp,
-	std Y+46,r22	 ;  %sfp,
-	std Y+47,r23	 ;  %sfp,
-	std Y+48,r24	 ;  %sfp,
-	std Y+49,r25	 ;  %sfp,
- ;  fixed/fixedptc.h:255:     for ( i = 0; i < iter; i++ )
-	mov r3,__zero_reg__	 ;  i
-	mov r2,__zero_reg__	 ;  i
-.L6:
-	movw r4,r30	 ;  _51, l
-	mov __tmp_reg__,r31	 ; 
-	lsl r0		 ; 
-	sbc r6,r6	 ; 
-	sbc r7,r7	 ; 
- ;  fixed/fixedptc.h:255:     for ( i = 0; i < iter; i++ )
-	cp r2,r8	 ;  i, iter
-	cpc r3,r9	 ;  i, iter
-	brne .+2	 ; 
-	rjmp .L3	 ; 
- ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	mov r17,r31	 ;  tmp165,
-	lsl r17	 ;  tmp165
-	sbc r17,r17	 ;  tmp165
- ;  fixed/fixedptc.h:144:     return ( ( (fixedptd) A << FIXEDPT_FBITS ) / (fixedptd) B );
-	movw r10,r30	 ; ,
-	mov r12,r17	 ; , tmp165
-	mov r13,r17	 ; , tmp165
-	mov r14,r17	 ; , tmp165
-	mov r15,r17	 ; , tmp165
-	mov r16,r17	 ; , tmp165
-	ldd r18,Y+9	 ; , %sfp
-	ldd r19,Y+17	 ; , %sfp
-	ldd r20,Y+25	 ; , %sfp
-	ldd r21,Y+45	 ; , %sfp
-	ldd r22,Y+46	 ; , %sfp
-	ldd r23,Y+47	 ; , %sfp
-	ldd r24,Y+48	 ; , %sfp
-	ldd r25,Y+49	 ; , %sfp
-	call __divdi3	 ; 
-	movw r10,r18	 ; ,
-	movw r12,r20	 ; ,
- ;  fixed/fixedptc.h:256:         l = ( l + fixedpt_div( A, l ) ) >> 1;
-	add r10,r4	 ;  tmp170, _51
-	adc r11,r5	 ; , _51
-	adc r12,r6	 ; , _51
-	adc r13,r7	 ; , _51
- ;  fixed/fixedptc.h:256:         l = ( l + fixedpt_div( A, l ) ) >> 1;
-	asr r13	 ;  _144
-	ror r12	 ;  _144
-	ror r11	 ;  _144
-	ror r10	 ;  _144
- ;  fixed/fixedptc.h:256:         l = ( l + fixedpt_div( A, l ) ) >> 1;
-	movw r30,r10	 ;  l, _144
- ;  fixed/fixedptc.h:255:     for ( i = 0; i < iter; i++ )
-	ldi r23,-1	 ; ,
-	sub r2,r23	 ;  i,
-	sbc r3,r23	 ;  i,
-	rjmp .L6		 ; 
-.L14:
- ;  Graphics.c:46:     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
-	ldd r22,Y+9	 ;  iftmp.5_93, %sfp
-	ldd r23,Y+10	 ;  iftmp.5_93, %sfp
-	ldd r24,Y+11	 ;  iftmp.5_93, %sfp
-	ldd r25,Y+12	 ;  iftmp.5_93, %sfp
-	rjmp .L8		 ; 
-.L11:
- ;  Graphics.c:94:             x0 = scale( arg->Begin.x ) + centerX;
-	movw r24,r6	 ; , _105
-	movw r22,r4	 ; , _105
-	call __floatsisf	 ; 
-	movw r12,r22	 ;  _14,
-	movw r14,r24	 ;  _14,
- ;  Graphics.c:94:             x0 = scale( arg->Begin.x ) + centerX;
-	ldd r22,Y+17	 ; , %sfp
-	ldd r23,Y+18	 ; , %sfp
-	ldd r24,Y+19	 ; , %sfp
-	ldd r25,Y+20	 ; , %sfp
-	call __floatsisf	 ; 
-	movw r8,r22	 ;  _16,
-	movw r10,r24	 ;  _16,
- ;  Graphics.c:97:             y1 = scale( arg->End.y ) + centerY;
-	ldd r26,Y+25	 ; , %sfp
-	ldd r27,Y+26	 ; , %sfp
-	adiw r26,3	 ;  MEM[base: arg_33, offset: 3B]
-	ld r22,X	 ;  MEM[base: arg_33, offset: 3B]
-	mov __tmp_reg__,r22	 ; 
-	lsl r0		 ; 
-	sbc r23,r23	 ; 
-	sbc r24,r24	 ; 
-	sbc r25,r25	 ; 
-	call __floatsisf	 ; 
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(-56)	 ; ,
-	ldi r21,lo8(66)	 ; ,
-	call __mulsf3	 ; 
-	movw r20,r14	 ; , _14
-	movw r18,r12	 ; , _14
-	call __divsf3	 ; 
- ;  Graphics.c:97:             y1 = scale( arg->End.y ) + centerY;
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(48)	 ; ,
-	ldi r21,lo8(65)	 ; ,
-	call __addsf3	 ; 
- ;  Graphics.c:97:             y1 = scale( arg->End.y ) + centerY;
-	call __fixsfsi	 ; 
-	std Y+1,r22	 ;  %sfp,
-	std Y+2,r23	 ;  %sfp,
-	std Y+3,r24	 ;  %sfp,
-	std Y+4,r25	 ;  %sfp,
- ;  Graphics.c:96:             x1 = scale( arg->End.x ) + centerX;
-	ldd r30,Y+25	 ; , %sfp
-	ldd r31,Y+26	 ; , %sfp
-	ldd r22,Z+2	 ;  MEM[base: arg_33, offset: 2B], MEM[base: arg_33, offset: 2B]
-	mov __tmp_reg__,r22	 ; 
-	lsl r0		 ; 
-	sbc r23,r23	 ; 
-	sbc r24,r24	 ; 
-	sbc r25,r25	 ; 
-	call __floatsisf	 ; 
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(-56)	 ; ,
-	ldi r21,lo8(66)	 ; ,
-	call __mulsf3	 ; 
-	movw r20,r14	 ; , _14
-	movw r18,r12	 ; , _14
-	call __divsf3	 ; 
- ;  Graphics.c:96:             x1 = scale( arg->End.x ) + centerX;
-	movw r20,r10	 ; , _16
-	movw r18,r8	 ; , _16
-	call __addsf3	 ; 
- ;  Graphics.c:96:             x1 = scale( arg->End.x ) + centerX;
-	call __fixsfsi	 ; 
-	std Y+21,r22	 ;  %sfp,
-	std Y+22,r23	 ;  %sfp,
-	std Y+23,r24	 ;  %sfp,
-	std Y+24,r25	 ;  %sfp,
- ;  Graphics.c:95:             y0 = scale( arg->Begin.y ) + centerY;
-	ldd r26,Y+25	 ; , %sfp
-	ldd r27,Y+26	 ; , %sfp
-	adiw r26,1	 ;  MEM[base: arg_33, offset: 1B]
-	ld r22,X	 ;  MEM[base: arg_33, offset: 1B]
-	mov __tmp_reg__,r22	 ; 
-	lsl r0		 ; 
-	sbc r23,r23	 ; 
-	sbc r24,r24	 ; 
-	sbc r25,r25	 ; 
-	call __floatsisf	 ; 
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(-56)	 ; ,
-	ldi r21,lo8(66)	 ; ,
-	call __mulsf3	 ; 
-	movw r20,r14	 ; , _14
-	movw r18,r12	 ; , _14
-	call __divsf3	 ; 
- ;  Graphics.c:95:             y0 = scale( arg->Begin.y ) + centerY;
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(48)	 ; ,
-	ldi r21,lo8(65)	 ; ,
-	call __addsf3	 ; 
- ;  Graphics.c:95:             y0 = scale( arg->Begin.y ) + centerY;
-	call __fixsfsi	 ; 
-	std Y+9,r22	 ;  %sfp,
-	std Y+10,r23	 ;  %sfp,
-	std Y+11,r24	 ;  %sfp,
-	std Y+12,r25	 ;  %sfp,
- ;  Graphics.c:94:             x0 = scale( arg->Begin.x ) + centerX;
-	ldd r30,Y+25	 ; , %sfp
-	ldd r31,Y+26	 ; , %sfp
-	ld r22,Z		 ;  MEM[base: arg_33, offset: 0B], MEM[base: arg_33, offset: 0B]
-	mov __tmp_reg__,r22	 ; 
-	lsl r0		 ; 
-	sbc r23,r23	 ; 
-	sbc r24,r24	 ; 
-	sbc r25,r25	 ; 
-	call __floatsisf	 ; 
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(-56)	 ; ,
-	ldi r21,lo8(66)	 ; ,
-	call __mulsf3	 ; 
-	movw r20,r14	 ; , _14
-	movw r18,r12	 ; , _14
-	call __divsf3	 ; 
- ;  Graphics.c:94:             x0 = scale( arg->Begin.x ) + centerX;
-	movw r20,r10	 ; , _16
-	movw r18,r8	 ; , _16
-	call __addsf3	 ; 
- ;  Graphics.c:94:             x0 = scale( arg->Begin.x ) + centerX;
-	call __fixsfsi	 ; 
-	movw r24,r22	 ;  tmp250,
- ;  Graphics.c:100:             VBuffer_DrawLine( x0, y0, x1, y1 );
-	ldd r18,Y+1	 ; , %sfp
-	ldd r19,Y+2	 ; , %sfp
-	ldd r20,Y+21	 ; , %sfp
-	ldd r21,Y+22	 ; , %sfp
-	ldd r22,Y+9	 ; , %sfp
-	ldd r23,Y+10	 ; , %sfp
-	call VBuffer_DrawLine	 ; 
- ;  Graphics.c:102:             ++arg;
-	ldd r20,Y+25	 ; , %sfp
-	ldd r21,Y+26	 ; , %sfp
-	subi r20,-4	 ; ,
-	sbci r21,-1	 ; ,
-	std Y+26,r21	 ;  %sfp,
-	std Y+25,r20	 ;  %sfp,
-	rjmp .L10		 ; 
+.L9:
+ ;  Graphics.c:52:     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
+	movw r24,r6	 ;  iftmp.5_93, AngleBetween
+	movw r22,r4	 ;  iftmp.5_93, AngleBetween
+	rjmp .L5		 ; 
 	.size	CDrawArgs_DrawOnDisplayBufferPerspective, .-CDrawArgs_DrawOnDisplayBufferPerspective
 	.ident	"GCC: (GNU) 8.3.0"

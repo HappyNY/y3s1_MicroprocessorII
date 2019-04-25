@@ -353,6 +353,26 @@ UART0_WaitAnyKey:
  ;  Serial.c:99: }
 	ret	
 	.size	UART0_WaitAnyKey, .-UART0_WaitAnyKey
+.global	UART0_TryReadKey
+	.type	UART0_TryReadKey, @function
+UART0_TryReadKey:
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 0 */
+.L__stack_usage = 0
+ ;  Serial.c:103:     return ( UCSR0A & 0x80 ) ? UDR0 : 0;
+	sbis 0xb,7	 ; ,
+	rjmp .L30		 ; 
+ ;  Serial.c:103:     return ( UCSR0A & 0x80 ) ? UDR0 : 0;
+	in r24,0xc	 ;  <retval>, MEM[(volatile uint8_t *)44B]
+	ret	
+.L30:
+ ;  Serial.c:103:     return ( UCSR0A & 0x80 ) ? UDR0 : 0;
+	ldi r24,0		 ;  <retval>
+/* epilogue start */
+ ;  Serial.c:104: }
+	ret	
+	.size	UART0_TryReadKey, .-UART0_TryReadKey
 	.comm	UART0Sender,7,1
 	.ident	"GCC: (GNU) 8.3.0"
 .global __do_clear_bss

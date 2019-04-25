@@ -59,10 +59,15 @@ typedef struct FPointFP {
 
 typedef struct FCameraTransform {
     FPoint16 Position;
-    fixedpt DirectionRadian;
+    // DirectionRadian is -pi ~ +pi
+    fixedpt ReadOnly_DirectionRadian;
     // Transform cache should be refreshed on every rendering request.
     FPointFP CachedDirection; 
 } FCameraTransform;
 
+void CalculateTranformCache( FCameraTransform* Camera );
 void CDrawArgs_DrawOnDisplayBufferPerspective( const CDrawArgs* Vector, const FCameraTransform* Camera );
 void CDrawArgs_DrawOnDisplayBufferDirect( const CDrawArgs* Vector );
+
+void fixedpt_AddDegreesNormalized( fixedpt* dst, int8 degrees );
+void fixedpt_AddRadianNormalized( fixedpt* dst, fixedpt add );

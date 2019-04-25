@@ -98,4 +98,9 @@ char UART0_WaitAnyKey()
     return UDR0;
 }
 
+char UART0_TryReadKey()
+{
+    return ( UCSR0A & 0x80 ) ? UDR0 : 0;
+}
+
 #endif

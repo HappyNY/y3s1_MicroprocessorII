@@ -92,53 +92,25 @@ InitializeDevice:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:88:     LCDDevice__Initialize();
+ ;  main.c:130:     LCDDevice__Initialize();
 	call LCDDevice__Initialize	 ; 
- ;  main.c:90:     DDRC = 0xff;
+ ;  main.c:132:     DDRC = 0xff;
 	ldi r24,lo8(-1)	 ;  tmp43,
 	out 0x14,r24	 ;  MEM[(volatile uint8_t *)52B], tmp43
- ;  main.c:91:     PORTC = 0xff;
+ ;  main.c:133:     PORTC = 0xff;
 	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], tmp43
- ;  main.c:92:     InitializeTX0SerialOutput();
+ ;  main.c:134:     InitializeTX0SerialOutput();
 	call InitializeTX0SerialOutput	 ; 
- ;  main.c:96:     sei();
+ ;  main.c:138:     sei();
 /* #APP */
- ;  96 "main.c" 1
+ ;  138 "main.c" 1
 	sei	
  ;  0 "" 2
 /* #NOAPP */
 /* epilogue start */
- ;  main.c:97: }
+ ;  main.c:139: }
 	ret	
 	.size	InitializeDevice, .-InitializeDevice
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC8:
-	.string	"Program start, press any key. \033[H \r\n"
-.LC9:
-	.string	"Begin\r\n"
-.LC0:
-	.string	"Hello, world!"
-.LC1:
-	.string	"good Morning!"
-.LC2:
-	.string	"What's up, my boy?"
-.LC3:
-	.string	"I'm here, with you"
-.LC4:
-	.string	"Oh, no, no!z"
-.LC5:
-	.string	"Pl-ease."
-.LC6:
-	.string	"Heck the wao!"
-	.section	.rodata
-.LC10:
-	.word	.LC0
-	.word	.LC1
-	.word	.LC2
-	.word	.LC3
-	.word	.LC4
-	.word	.LC5
-	.word	.LC6
 	.section	.text.startup,"ax",@progbits
 .global	main
 	.type	main, @function
@@ -147,118 +119,151 @@ main:
 	push r29		 ; 
 	in r28,__SP_L__	 ; 
 	in r29,__SP_H__	 ; 
-	sbiw r28,16	 ; ,
+	sbiw r28,23	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 16 */
-/* stack size = 18 */
-.L__stack_usage = 18
+/* frame size = 23 */
+/* stack size = 25 */
+.L__stack_usage = 25
  ;  main.c:18:     InitializeDevice();
 	call InitializeDevice	 ; 
- ;  main.c:19:     CSerialSender_Initialize( &UART0Sender ); 
+ ;  main.c:19:     CSerialSender_Initialize( &UART0Sender );
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_Initialize	 ; 
- ;  main.c:21:     outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
-	ldi r24,lo8(.LC8)	 ; ,
-	ldi r25,hi8(.LC8)	 ; ,
-	call outputmsg_uart0	 ; 
- ;  main.c:22:     UART0_WaitAnyKey();
-	call UART0_WaitAnyKey	 ; 
- ;  main.c:23:     CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
-	ldi r22,lo8(.LC9)	 ; ,
-	ldi r23,hi8(.LC9)	 ; ,
-	ldi r24,lo8(UART0Sender)	 ; ,
-	ldi r25,hi8(UART0Sender)	 ; ,
-	call CSerialSender_QueueOutputString	 ; 
- ;  main.c:25:         VBuffer_Clear(); 
-	call VBuffer_Clear	 ; 
-	ldi r16,lo8(5)	 ;  ivtmp.38,
-	ldi r17,0		 ;  ivtmp.38
-.L6:
-	movw r24,r16	 ;  _36, ivtmp.38
-	sbiw r24,5	 ;  _36,
- ;  main.c:29:             VBuffer_DrawLine( i, j, i + 5, j + 7 ); 
-	movw r18,r16	 ;  tmp50, ivtmp.38
-	subi r18,-2	 ;  tmp50,
-	sbci r19,-1	 ; ,
-	movw r20,r16	 ; , ivtmp.38
-	movw r22,r24	 ; , _36
-	call VBuffer_DrawLine	 ; 
- ;  main.c:32:             LCDDevice__Render();
-	call LCDDevice__Render	 ; 
- ;  main.c:33:             VBuffer_Clear();
-	call VBuffer_Clear	 ; 
-	subi r16,-1	 ;  ivtmp.38,
-	sbci r17,-1	 ;  ivtmp.38,
- ;  main.c:27:         while ( cnt-- )
-	cpi r16,16	 ;  ivtmp.38,
-	cpc r17,__zero_reg__	 ;  ivtmp.38
-	brne .L6		 ; ,
- ;  main.c:36:         const char* str[] =
-	ldi r24,lo8(14)	 ;  tmp51,
-	ldi r30,lo8(.LC10)	 ; ,
-	ldi r31,hi8(.LC10)	 ; ,
-	movw r26,r28	 ; ,
-	adiw r26,1	 ; ,
-	0:	
-	ld r0,Z+		 ; 
-	st X+,r0		 ; 
-	dec r24		 ;  tmp51
-	brne 0b	
- ;  main.c:46:         const char** pp = str;
-	movw r16,r28	 ;  pp,
-	subi r16,-1	 ;  pp,
-	sbci r17,-1	 ;  pp,
- ;  main.c:51:             VBuffer_DrawString( &xidx, &yidx, *pp, false );
-	movw r14,r28	 ;  tmp53,
-	ldi r18,15	 ; ,
-	add r14,r18	 ;  tmp53,
-	adc r15,__zero_reg__	 ; 
-.L8:
- ;  main.c:50:             xidx = yidx = 0;
-	std Y+15,__zero_reg__	 ;  yidx,
- ;  main.c:50:             xidx = yidx = 0;
-	std Y+16,__zero_reg__	 ;  xidx,
- ;  main.c:51:             VBuffer_DrawString( &xidx, &yidx, *pp, false );
-	movw r30,r16	 ; , pp
-	ld r20,Z+	 ;  *pp_7, *pp_7
-	ld r21,Z+	 ;  *pp_7, *pp_7
-	movw r16,r30	 ;  pp,
-	ldi r19,0		 ; 
-	ldi r18,0		 ; 
-	movw r22,r14	 ; , tmp53
+ ;  main.c:24:     Arg.Mesh = Triangle;
+	lds r24,Triangle	 ;  Triangle, Triangle
+	lds r25,Triangle+1	 ;  Triangle, Triangle
+	lds r26,Triangle+2	 ;  Triangle, Triangle
+	std Y+17,r24	 ;  Arg.Mesh, Triangle
+	std Y+18,r25	 ;  Arg.Mesh, Triangle
+	std Y+19,r26	 ;  Arg.Mesh, Triangle
+ ;  main.c:25:     Arg.Position.x = 50;
+	ldi r24,lo8(50)	 ;  tmp56,
+	ldi r25,0		 ; 
+	std Y+21,r25	 ;  Arg.Position.x, tmp56
+	std Y+20,r24	 ;  Arg.Position.x, tmp56
+ ;  main.c:26:     Arg.Position.y = 0;
+	std Y+23,__zero_reg__	 ;  Arg.Position.y,
+	std Y+22,__zero_reg__	 ;  Arg.Position.y,
+ ;  main.c:30:     Cam.Position.x = 0;
+	std Y+2,__zero_reg__	 ;  Cam.Position.x,
+	std Y+1,__zero_reg__	 ;  Cam.Position.x,
+ ;  main.c:31:     Cam.Position.y = 0;
+	std Y+4,__zero_reg__	 ;  Cam.Position.y,
+	std Y+3,__zero_reg__	 ;  Cam.Position.y,
+ ;  main.c:32:     Cam.ReadOnly_DirectionRadian = 0;
+	std Y+5,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
+	std Y+6,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
+	std Y+7,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
+	std Y+8,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
+ ;  main.c:33:     CalculateTranformCache( &Cam );
 	movw r24,r28	 ; ,
-	adiw r24,16	 ; ,
-	call VBuffer_DrawString	 ; 
- ;  main.c:52:             LCDDevice__Render();
-	call LCDDevice__Render	 ; 
- ;  main.c:53:             VBuffer_Clear();
+	adiw r24,1	 ; ,
+	call CalculateTranformCache	 ; 
+ ;  main.c:35:     UART0_WaitAnyKey();
+	call UART0_WaitAnyKey	 ; 
+.L13:
+ ;  main.c:38:         char ch = UART0_TryReadKey(); // UART0_WaitAnyKey();
+	call UART0_TryReadKey	 ; 
+ ;  main.c:40:         switch ( ch )
+	cpi r24,lo8(101)	 ;  ch,
+	breq .L6		 ; ,
+	brge .L7		 ; ,
+	cpi r24,lo8(97)	 ;  ch,
+	breq .L8		 ; ,
+	cpi r24,lo8(100)	 ;  ch,
+	breq .L9		 ; ,
+.L10:
+ ;  main.c:56:         VBuffer_Clear();
 	call VBuffer_Clear	 ; 
- ;  main.c:55:             if ( pp == pp_end ) pp = str;
-	cp r16,r14	 ;  pp, tmp53
-	cpc r17,r15	 ;  pp, tmp53
-	brne .L7		 ; ,
- ;  main.c:55:             if ( pp == pp_end ) pp = str;
-	movw r16,r28	 ;  pp,
-	subi r16,-1	 ;  pp,
-	sbci r17,-1	 ;  pp,
+ ;  main.c:57:         CalculateTranformCache( &Cam );
+	movw r24,r28	 ; ,
+	adiw r24,1	 ; ,
+	call CalculateTranformCache	 ; 
+ ;  main.c:58:         CDrawArgs_DrawOnDisplayBufferPerspective( &Arg, &Cam );
+	movw r22,r28	 ; ,
+	subi r22,-1	 ; ,
+	sbci r23,-1	 ; ,
+	movw r24,r28	 ; ,
+	adiw r24,17	 ; ,
+	call CDrawArgs_DrawOnDisplayBufferPerspective	 ; 
+ ;  main.c:59:         LCDDevice__Render();
+	call LCDDevice__Render	 ; 
+ ;  main.c:37:     {
+	rjmp .L13		 ; 
 .L7:
- ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
-	ldi r31,lo8(1599999)	 ; ,
-	ldi r18,hi8(1599999)	 ; ,
-	ldi r24,hlo8(1599999)	 ; ,
-1:	subi r31,1	 ; 
-	sbci r18,0	 ; 
-	sbci r24,0	 ; 
-	brne 1b
-	rjmp .	
-	nop	
-	rjmp .L8		 ; 
+ ;  main.c:40:         switch ( ch )
+	cpi r24,lo8(115)	 ;  ch,
+	breq .L11		 ; ,
+	cpi r24,lo8(119)	 ;  ch,
+	breq .L12		 ; ,
+	cpi r24,lo8(113)	 ;  ch,
+	brne .L10		 ; ,
+ ;  main.c:43:             Cam.ReadOnly_DirectionRadian -= 256; break;
+	ldd r24,Y+5	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	subi r25,1	 ; ,
+	sbc r26,__zero_reg__	 ; 
+	sbc r27,__zero_reg__	 ; 
+.L14:
+ ;  main.c:45:             Cam.ReadOnly_DirectionRadian += 256; break;
+	std Y+5,r24	 ;  Cam.ReadOnly_DirectionRadian, tmp59
+	std Y+6,r25	 ;  Cam.ReadOnly_DirectionRadian, tmp59
+	std Y+7,r26	 ;  Cam.ReadOnly_DirectionRadian, tmp59
+	std Y+8,r27	 ;  Cam.ReadOnly_DirectionRadian, tmp59
+ ;  main.c:45:             Cam.ReadOnly_DirectionRadian += 256; break;
+	rjmp .L10		 ; 
+.L6:
+ ;  main.c:45:             Cam.ReadOnly_DirectionRadian += 256; break;
+	ldd r24,Y+5	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	subi r25,-1	 ; ,
+	sbci r26,-1	 ; ,
+	sbci r27,-1	 ; ,
+	rjmp .L14		 ; 
+.L12:
+ ;  main.c:47:             Cam.Position.x += 5; break;
+	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
+	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
+	adiw r24,5	 ;  tmp61,
+.L16:
+ ;  main.c:49:             Cam.Position.x -= 5; break;
+	std Y+2,r25	 ;  Cam.Position.x, tmp63
+	std Y+1,r24	 ;  Cam.Position.x, tmp63
+ ;  main.c:49:             Cam.Position.x -= 5; break;
+	rjmp .L10		 ; 
+.L11:
+ ;  main.c:49:             Cam.Position.x -= 5; break;
+	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
+	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
+	sbiw r24,5	 ;  tmp63,
+	rjmp .L16		 ; 
+.L8:
+ ;  main.c:51:             Cam.Position.y -= 5; break;
+	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
+	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
+	sbiw r24,5	 ;  tmp65,
+.L15:
+ ;  main.c:53:             Cam.Position.y += 5; break;
+	std Y+4,r25	 ;  Cam.Position.y, tmp67
+	std Y+3,r24	 ;  Cam.Position.y, tmp67
+ ;  main.c:53:             Cam.Position.y += 5; break;
+	rjmp .L10		 ; 
+.L9:
+ ;  main.c:53:             Cam.Position.y += 5; break;
+	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
+	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
+	adiw r24,5	 ;  tmp67,
+	rjmp .L15		 ; 
 	.size	main, .-main
 .global	__INTERRUPT_LOCK_MUTEX__
 	.section .bss
@@ -267,5 +272,4 @@ main:
 __INTERRUPT_LOCK_MUTEX__:
 	.zero	1
 	.ident	"GCC: (GNU) 8.3.0"
-.global __do_copy_data
 .global __do_clear_bss
