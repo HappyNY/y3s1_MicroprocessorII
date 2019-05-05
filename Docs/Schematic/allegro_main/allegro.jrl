@@ -1,0 +1,67 @@
+\t (00:00:01) allegro 16.6-2015 S059 (v16-6-112ER) Windows 32
+\t (00:00:01)     Journal start - Sun May 05 10:36:21 2019
+\t (00:00:01)         Host=DESKTOP-7A7JSBA User=Kang Pid=16196 CPUs=8
+\t (00:00:01) CmdLine= D:\Program Files\OrCAD\tools\pcb\bin\allegro.exe -orcad D:\Onedrive\Edu\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Schematic\allegro_main\MAIN.brd
+\t (00:00:01) 
+\t (00:00:01) Opening existing design...
+\d (00:00:01) Design opened: D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_main/MAIN.brd
+\i (00:00:01) trapsize 598
+\i (00:00:01) trapsize 587
+\i (00:00:01) trapsize 599
+\i (00:00:01) trapsize 599
+\i (00:00:02) generaledit 
+\i (00:00:06) trapsize 331
+\i (00:00:07) roam start
+\i (00:00:07) roam x 32
+\i (00:00:07) roam y 16
+\i (00:00:07) roam x 128
+\i (00:00:07) roam y 80
+\i (00:00:07) roam y 16
+\i (00:00:07) roam x -16
+\i (00:00:07) roam y -16
+\i (00:00:07) roam x -16
+\i (00:00:07) roam x -16
+\i (00:00:07) roam y -16
+\i (00:00:07) roam y -16
+\i (00:00:07) roam x -16
+\i (00:00:07) roam y -16
+\i (00:00:08) roam y -16
+\i (00:00:08) roam x -16
+\i (00:00:08) roam y -16
+\i (00:00:08) roam y -16
+\i (00:00:08) roam x -16
+\i (00:00:08) roam y -16
+\i (00:00:08) roam end
+\i (00:00:17) drag_start grid 120.834 -0.177
+\i (00:00:19) drag_stop -1.566 71.041
+\i (00:00:20) pick grid 0.418 67.073
+\t (00:00:20) last pick:  0.000 67.310
+\i (00:00:20) pick grid -0.971 66.478
+\t (00:00:20) last pick:  -1.270 66.040
+\i (00:00:55) pick grid 131.547 51.401
+\t (00:00:55) last pick:  132.080 50.800
+\i (00:00:58) setwindow form.vf_vis
+\i (00:00:58) FORM vf_vis 2 via_colorvisible 0 
+\i (00:00:59) FORM vf_vis 2 drc_colorvisible 1 
+\i (00:01:00) FORM vf_vis 2 drc_colorvisible 0 
+\i (00:01:00) FORM vf_vis 2 pin_colorvisible 0 
+\i (00:01:01) FORM vf_vis 2 etch_colorvisible 0 
+\i (00:01:19) setwindow pcb
+\i (00:01:19) pick grid 130.687 12.056
+\t (00:01:19) last pick:  130.810 11.430
+\i (00:01:22) setwindow form.vf_vis
+\i (00:01:22) FORM vf_vis 2 etch_colorvisible 1 
+\i (00:01:22) FORM vf_vis 2 via_colorvisible 1 
+\i (00:01:23) FORM vf_vis 2 pin_colorvisible 1 
+\i (00:01:23) FORM vf_vis 1 pin_colorvisible 0 
+\i (00:01:24) FORM vf_vis 1 via_colorvisible 0 
+\i (00:01:24) FORM vf_vis 1 etch_colorvisible 0 
+\i (00:01:44) FORM vf_vis 1 etch_colorvisible 1 
+\i (00:01:44) FORM vf_vis 1 via_colorvisible 1 
+\i (00:01:46) FORM vf_vis 1 pin_colorvisible 1 
+\i (00:01:46) FORM vf_vis 2 pin_colorvisible 0 
+\i (00:01:47) FORM vf_vis 2 via_colorvisible 0 
+\i (00:01:47) FORM vf_vis 2 etch_colorvisible 0 
+\i (00:03:19) setwindow pcb
+\i (00:03:19) exit 
+\t (00:03:20)     Journal end - Sun May 05 10:39:40 2019

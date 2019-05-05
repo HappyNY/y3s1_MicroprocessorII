@@ -1,0 +1,207 @@
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   1  |
+|------------------------------------------------------------------------------|
+|  DISPLAY.brd                                                                 |
+|                                                    Sat May 04 14:58:49 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |                net     pins                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  GND          pins ADDED TO this existing net (pins not previously on any net)
+                                 C3.2                           
+                                 C4.2                           
+                                 J1.1                           
+                                 R9.2                           
+                                 R10.2                          
+                                 R11.2                          
+                                 R12.2                          
+                                 R13.2                          
+                                 R14.2                          
+                                 R15.2                          
+                                 U1.7                           
+                                 U1.9                           
+                                 U1.10                          
+                                 U1.11                          
+                                 U1.12                          
+                                 U1.22                          
+                                 U1.23                          
+                                 U1.25                          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N23824       pins ADDED TO this new net
+                                 R1.2           U1.24          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N24272       pins ADDED TO this new net
+                                 R3.1           R13.1          U1.14          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N24280       pins ADDED TO this new net
+                                 R2.1           R15.1          U1.16          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N24284       pins ADDED TO this new net
+                                 R5.1           R14.1          U1.15          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N24292       pins ADDED TO this new net
+                                 R8.1           R9.1           U1.19          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N24296       pins ADDED TO this new net
+                                 R6.1           R11.1          U1.18          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N24300       pins ADDED TO this new net
+                                 R7.1           R10.1          U1.17          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N24664       pins ADDED TO this new net
+                                 R4.1           R12.1          U1.13          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N26095       pins ADDED TO this new net
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   2  |
+|------------------------------------------------------------------------------|
+|  DISPLAY.brd                                                                 |
+|                                                    Sat May 04 14:58:49 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |                net     pins                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+                                 J2.1           R2.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N26425       pins ADDED TO this new net
+                                 J2.3           R3.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N26429       pins ADDED TO this new net
+                                 J2.2           R5.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N26433       pins ADDED TO this new net
+                                 J2.4           R4.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N26437       pins ADDED TO this new net
+                                 J2.5           R6.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N26441       pins ADDED TO this new net
+                                 J2.6           R7.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N26445       pins ADDED TO this new net
+                                 J2.7           R8.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VB0+         pins ADDED TO this new net
+                                 C2.1           U1.3           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VB0-         pins ADDED TO this new net
+                                 C2.2           U1.4           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VB1+         pins ADDED TO this new net
+                                 C1.1           U1.1           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VB1-         pins ADDED TO this new net
+                                 C1.2           U1.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VBIAS        pins ADDED TO this new net
+                                 C3.1           U1.6           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VCC          pins ADDED TO this new net
+                                 J1.2           R1.1           U2.1           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VDD          pins ADDED TO this new net
+                                 U1.8           U1.20          U1.21          
+                                 U2.3           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VLCD         pins ADDED TO this new net
+                                 C4.1           U1.5           
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
+|------------------------------------------------------------------------------|
+|  DISPLAY.brd                                                                 |
+|                                                    Sat May 04 14:58:49 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENT DEFINITION added to design                                         |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    device type                                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ CAP_CAP_POL_0.1UF/25V
+ CAP_CAP_POL_4.7UF/6.3V
+ CON2_JUMPER2_CON_POWER
+ CON7_JUMPER7_CON_DATIN
+ GLCD_LG2401283_GLCD_LG2401283_G
+ LM3940/TO220_1_LM3940SOT223_LM3
+ R_RES400_10K
+ R_RES400_20K
+ R_RES400_R
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   4  |
+|------------------------------------------------------------------------------|
+|  DISPLAY.brd                                                                 |
+|                                                    Sat May 04 14:58:49 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C1                  CAP_CAP_POL_4.7UF/6.3V 
+ C2                  CAP_CAP_POL_4.7UF/6.3V 
+ C3                  CAP_CAP_POL_0.1UF/25V 
+ C4                  CAP_CAP_POL_0.1UF/25V 
+ J1                  CON2_JUMPER2_CON_POWER 
+ J2                  CON7_JUMPER7_CON_DATIN 
+ R1                  R_RES400_R            
+ R2                  R_RES400_10K          
+ R3                  R_RES400_10K          
+ R4                  R_RES400_10K          
+ R5                  R_RES400_10K          
+ R6                  R_RES400_10K          
+ R7                  R_RES400_10K          
+ R8                  R_RES400_10K          
+ R9                  R_RES400_20K          
+ R10                 R_RES400_20K          
+ R11                 R_RES400_20K          
+ R12                 R_RES400_20K          
+ R13                 R_RES400_20K          
+ R14                 R_RES400_20K          
+ R15                 R_RES400_20K          
+ U1                  GLCD_LG2401283_GLCD_LG2401283_G 
+ U2                  LM3940/TO220_1_LM3940SOT223_LM3 
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   5  |
+|------------------------------------------------------------------------------|
+|  DISPLAY.brd                                                                 |
+|                                                    Sat May 04 14:58:49 2019  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C1.2                           PRIM_FILE      .\pstchip.dat
+ C2.2                           PRIM_FILE      .\pstchip.dat
+ C3.2                           PRIM_FILE      .\pstchip.dat
+ C4.2                           PRIM_FILE      .\pstchip.dat
+ J1.2                           PRIM_FILE      .\pstchip.dat
+ J2.7                           PRIM_FILE      .\pstchip.dat
+ R1.2                           PRIM_FILE      .\pstchip.dat
+ R2.2                           PRIM_FILE      .\pstchip.dat
+ R3.2                           PRIM_FILE      .\pstchip.dat
+ R4.2                           PRIM_FILE      .\pstchip.dat
+ R5.2                           PRIM_FILE      .\pstchip.dat
+ R6.2                           PRIM_FILE      .\pstchip.dat
+ R7.2                           PRIM_FILE      .\pstchip.dat
+ R8.2                           PRIM_FILE      .\pstchip.dat
+ R9.2                           PRIM_FILE      .\pstchip.dat
+ R10.2                          PRIM_FILE      .\pstchip.dat
+ R11.2                          PRIM_FILE      .\pstchip.dat
+ R12.2                          PRIM_FILE      .\pstchip.dat
+ R13.2                          PRIM_FILE      .\pstchip.dat
+ R14.2                          PRIM_FILE      .\pstchip.dat
+ R15.2                          PRIM_FILE      .\pstchip.dat
+ U1.17                          PRIM_FILE      .\pstchip.dat
+ U2.3                           PRIM_FILE      .\pstchip.dat
+|------------------------------------------------------------------------------|
+|       Nets changed          :      74                                        |
+|       Comp definitions added:       9                                        |
+|       Components added      :      23                                        |
+|       Slot property added   :      23                                        |
+|                                                                              |
+|   Total ECO changes reported:     129                                        |
+|------------------------------------------------------------------------------|

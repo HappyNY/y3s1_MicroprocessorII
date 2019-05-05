@@ -1,0 +1,581 @@
+\t (00:00:02) allegro 16.6-2015 S059 (v16-6-112ER) Windows 32
+\t (00:00:02)     Journal start - Fri May 03 09:06:32 2019
+\t (00:00:02)         Host=DESKTOP-7A7JSBA User=Kang Pid=2992 CPUs=8
+\t (00:00:02) CmdLine= D:\Program Files\OrCAD\tools\pcb\bin\allegro.exe -orcad D:\Onedrive\Edu\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Schematic\allegro\MAIN.brd
+\t (00:00:02) 
+\t (00:00:02) Opening existing design...
+\d (00:00:04) Design opened: D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro/MAIN.brd
+\i (00:00:04) trapsize 515
+\i (00:00:04) trapsize 505
+\i (00:00:04) trapsize 516
+\i (00:00:04) trapsize 516
+\i (00:00:05) generaledit 
+\i (00:04:41) trapsize 517
+\i (00:04:42) zoom out 1 
+\i (00:04:42) setwindow pcb
+\i (00:04:42) zoom out 135.398 87.768
+\i (00:04:42) trapsize 1035
+\i (00:04:42) zoom out 1 
+\i (00:04:42) setwindow pcb
+\i (00:04:42) zoom out 134.698 84.456
+\i (00:04:42) trapsize 1849
+\i (00:04:43) zoom in 1 
+\i (00:04:43) setwindow pcb
+\i (00:04:43) zoom in 58.671 35.000
+\i (00:04:43) trapsize 925
+\i (00:04:43) zoom in 1 
+\i (00:04:43) setwindow pcb
+\i (00:04:43) zoom in 45.911 34.630
+\i (00:04:43) trapsize 462
+\i (00:04:44) roam start
+\i (00:04:44) roam x -96
+\i (00:04:44) roam y -32
+\i (00:04:44) roam x -64
+\i (00:04:44) roam y -16
+\i (00:04:44) roam x -16
+\i (00:04:44) roam x -64
+\i (00:04:44) roam x -80
+\i (00:04:44) roam x -16
+\i (00:04:44) roam x 32
+\i (00:04:44) roam y -64
+\i (00:04:44) roam x 16
+\i (00:04:44) roam y -32
+\i (00:04:44) roam y -16
+\i (00:04:44) roam x 16
+\i (00:04:44) roam y 16
+\i (00:04:44) roam x 48
+\i (00:04:44) roam y 32
+\i (00:04:44) roam x 16
+\i (00:04:44) roam y 16
+\i (00:04:44) roam end
+\i (00:04:44) zoom out 1 
+\i (00:04:44) setwindow pcb
+\i (00:04:44) zoom out 55.065 41.102
+\i (00:04:44) trapsize 925
+\i (00:04:45) zoom in 1 
+\i (00:04:45) setwindow pcb
+\i (00:04:45) zoom in 116.462 20.945
+\i (00:04:45) trapsize 462
+\i (00:04:46) roam start
+\i (00:04:46) roam y 32
+\i (00:04:46) roam x 80
+\i (00:04:46) roam y -16
+\i (00:04:46) roam x 96
+\i (00:04:46) roam y -48
+\i (00:04:46) roam x 48
+\i (00:04:46) roam y -48
+\i (00:04:46) roam x -32
+\i (00:04:46) roam x -80
+\i (00:04:46) roam x -32
+\i (00:04:46) roam y 16
+\i (00:04:46) roam x -80
+\i (00:04:46) roam y 16
+\i (00:04:46) roam x -48
+\i (00:04:46) roam x -32
+\i (00:04:46) roam x -48
+\i (00:04:47) roam x -32
+\i (00:04:47) roam y 16
+\i (00:04:47) roam x -16
+\i (00:04:47) roam y 16
+\i (00:04:47) roam x -16
+\i (00:04:47) roam x -16
+\i (00:04:47) roam y 16
+\i (00:04:47) roam x -16
+\i (00:04:47) roam y 16
+\i (00:04:47) roam x -16
+\i (00:04:47) roam x -16
+\i (00:04:47) roam y 16
+\i (00:04:47) roam x -16
+\i (00:04:47) roam x -32
+\i (00:04:47) roam x 32
+\i (00:04:48) roam x 16
+\i (00:04:48) roam end
+\i (00:06:49) roam start
+\i (00:06:49) roam x 112
+\i (00:06:49) roam y 32
+\i (00:06:49) roam x 160
+\i (00:06:49) roam y 80
+\i (00:06:49) roam x 48
+\i (00:06:49) roam y 32
+\i (00:06:49) roam end
+\i (00:06:50) roam start
+\i (00:06:50) roam x -48
+\i (00:06:50) roam x -64
+\i (00:06:50) roam y -32
+\i (00:06:50) roam x -16
+\i (00:06:50) roam x -32
+\i (00:06:50) roam y -16
+\i (00:06:50) roam x -32
+\i (00:06:50) roam y -16
+\i (00:06:50) roam x -16
+\i (00:06:50) roam y -16
+\i (00:06:50) roam end
+\i (00:07:07) roam start
+\i (00:07:07) roam x 32
+\i (00:07:07) roam y 48
+\i (00:07:07) roam x 64
+\i (00:07:07) roam y 64
+\i (00:07:08) roam end
+\i (00:07:08) zoom out 1 
+\i (00:07:08) setwindow pcb
+\i (00:07:08) zoom out 93.808 30.839
+\i (00:07:08) trapsize 925
+\i (00:07:08) roam start
+\i (00:07:08) roam x 48
+\i (00:07:08) roam y 48
+\i (00:07:08) roam x 96
+\i (00:07:08) roam y 96
+\i (00:07:08) roam x 48
+\i (00:07:08) roam y 16
+\i (00:07:08) roam x -96
+\i (00:07:08) roam y -32
+\i (00:07:08) roam x -160
+\i (00:07:08) roam y -80
+\i (00:07:09) roam x -64
+\i (00:07:09) roam y -32
+\i (00:07:09) roam x -64
+\i (00:07:09) roam y -64
+\i (00:07:09) roam x -32
+\i (00:07:09) roam y -32
+\i (00:07:09) roam end
+\i (00:07:14) plot 
+\i (00:07:25) artwork 
+\i (00:07:29) setwindow form.film_control
+\i (00:07:29) FORM film_control filmtree 'MULTISEL YES' SST 
+\i (00:07:29) FORM film_control filmtree  SST 
+\i (00:07:30) FORM film_control filmtree popup 'Display for Visibility' SST 
+\i (00:07:31) FORM film_control cancel  
+\i (00:07:31) setwindow pcb
+\i (00:07:31) generaledit 
+\i (00:07:31) zoom in 1 
+\i (00:07:31) setwindow pcb
+\i (00:07:31) zoom in 104.719 41.472
+\i (00:07:31) trapsize 462
+\i (00:07:31) zoom in 1 
+\i (00:07:31) setwindow pcb
+\i (00:07:31) zoom in 101.113 40.363
+\i (00:07:31) trapsize 231
+\i (00:07:32) zoom out 1 
+\i (00:07:32) setwindow pcb
+\i (00:07:32) zoom out 100.327 40.270
+\i (00:07:32) trapsize 462
+\i (00:07:32) zoom out 1 
+\i (00:07:32) setwindow pcb
+\i (00:07:32) zoom out 99.403 40.086
+\i (00:07:32) trapsize 925
+\i (00:07:32) roam start
+\i (00:07:32) roam x -16
+\i (00:07:32) roam end
+\i (00:07:32) zoom in 1 
+\i (00:07:32) setwindow pcb
+\i (00:07:32) zoom in 89.371 39.161
+\i (00:07:32) trapsize 462
+\i (00:07:32) zoom in 1 
+\i (00:07:32) setwindow pcb
+\i (00:07:32) zoom in 89.464 40.364
+\i (00:07:32) trapsize 231
+\i (00:07:33) zoom out 1 
+\i (00:07:33) setwindow pcb
+\i (00:07:33) zoom out 89.788 40.826
+\i (00:07:33) trapsize 462
+\i (00:07:33) zoom out 1 
+\i (00:07:33) setwindow pcb
+\i (00:07:33) zoom out 89.788 40.919
+\i (00:07:33) trapsize 925
+\i (00:07:33) roam start
+\i (00:07:33) roam x -32
+\i (00:07:33) roam y -48
+\i (00:07:34) roam y 32
+\i (00:07:34) roam y 32
+\i (00:07:34) roam end
+\i (00:07:34) zoom in 1 
+\i (00:07:34) setwindow pcb
+\i (00:07:34) zoom in 85.118 40.734
+\i (00:07:34) trapsize 462
+\i (00:07:35) roam start
+\i (00:07:35) roam x 16
+\i (00:07:35) roam x -48
+\i (00:07:35) roam y 48
+\i (00:07:35) roam x -32
+\i (00:07:35) roam y 16
+\i (00:07:35) roam y -48
+\i (00:07:35) roam x 16
+\i (00:07:35) roam y -48
+\i (00:07:35) roam x 16
+\i (00:07:35) roam end
+\i (00:07:37) color192 
+\i (00:07:37) setwindow cvf.dialog
+\i (00:07:37) cvf layer_mode
+\i (00:07:37) setwindow pcb
+\i (00:07:37) generaledit 
+\i (00:07:41) setwindow cvf.dialog
+\i (00:07:41) cvf layer_tree_item 'My Favorites'
+\i (00:07:41) cvf layer_tree_item 'Display'
+\i (00:07:42) cvf layer_tree_item 'Stack-Up'
+\i (00:07:45) cvf layer_tree_item 'Areas'
+\i (00:07:46) cvf layer_tree_item 'Board Geometry'
+\i (00:07:47) cvf layer_tree_item 'Package Geometry'
+\i (00:07:47) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:07:48) cvf layer_tree_item 'Components'
+\i (00:07:48) cvf layer_tree_item 'Manufacturing'
+\i (00:07:49) cvf layer_tree_item 'Drawing Format'
+\i (00:07:49) cvf layer_tree_item 'Components'
+\i (00:07:51) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:07:51) cvf layer_tree_item 'Package Geometry'
+\i (00:07:52) cvf layer_tree_item 'Board Geometry'
+\i (00:07:53) cvf layer_tree_item 'Areas'
+\i (00:07:54) cvf layer_tree_item 'Non-Conductor' 'Stack-Up'
+\i (00:07:55) cvf layer_tree_item 'Conductor' 'Stack-Up'
+\i (00:07:58) cvf layer_tree_item 'Stack-Up'
+\i (00:08:01) cvf layers_visible stack-up pin/top TRUE
+\i (00:08:02) cvf layers_visible stack-up pin/top FALSE
+\i (00:08:02) cvf layers_visible stack-up via/top TRUE
+\i (00:08:02) cvf layers_visible stack-up pin/top TRUE
+\i (00:08:03) cvf layers_visible stack-up etch/top TRUE
+\i (00:08:04) cvf apply
+\i (00:08:05) setwindow pcb
+\i (00:08:05) roam start
+\i (00:08:05) roam x 32
+\i (00:08:05) roam y -16
+\i (00:08:05) roam end
+\i (00:08:07) setwindow cvf.dialog
+\i (00:08:07) cvf okay
+\i (00:08:08) setwindow pcb
+\i (00:08:08) roam start
+\i (00:08:08) roam x -48
+\i (00:08:08) roam y 16
+\i (00:08:08) roam x -16
+\i (00:08:08) roam x -16
+\i (00:08:08) roam x -32
+\i (00:08:08) roam x -16
+\i (00:08:08) roam y -16
+\i (00:08:08) roam y -16
+\i (00:08:08) roam y -32
+\i (00:08:08) roam x 48
+\i (00:08:08) roam x 16
+\i (00:08:08) roam x 48
+\i (00:08:08) roam y 16
+\i (00:08:09) roam x 48
+\i (00:08:09) roam end
+\i (00:08:11) roam start
+\i (00:08:11) roam x -64
+\i (00:08:11) roam x -48
+\i (00:08:11) roam y 16
+\i (00:08:11) roam x -16
+\i (00:08:11) roam x 16
+\i (00:08:11) roam x 96
+\i (00:08:11) roam y -32
+\i (00:08:11) roam x 144
+\i (00:08:11) roam x 64
+\i (00:08:11) roam y 32
+\i (00:08:11) roam x -48
+\i (00:08:11) roam y 16
+\i (00:08:11) roam x -64
+\i (00:08:11) roam x -16
+\i (00:08:11) roam end
+\i (00:08:13) color192 
+\i (00:08:13) setwindow cvf.dialog
+\i (00:08:13) cvf layer_mode
+\i (00:08:13) setwindow pcb
+\i (00:08:13) generaledit 
+\i (00:08:14) setwindow cvf.dialog
+\i (00:08:14) cvf layer_tree_item 'Areas'
+\i (00:08:14) cvf layer_tree_item 'Components'
+\i (00:08:15) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:08:16) cvf layer_tree_item 'Package Geometry'
+\i (00:08:16) cvf layer_tree_item 'Drawing Format'
+\i (00:08:17) cvf layer_tree_item 'Manufacturing'
+\i (00:08:18) cvf layer_tree_item 'Analysis'
+\i (00:08:18) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:08:18) cvf layer_tree_item 'Package Geometry'
+\i (00:08:19) cvf layer_tree_item 'Board Geometry'
+\i (00:08:20) cvf layers_visible board_geometry/outline TRUE
+\i (00:08:21) cvf apply
+\i (00:08:22) cvf okay
+\i (00:08:22) setwindow pcb
+\i (00:08:22) zoom out 1 
+\i (00:08:22) setwindow pcb
+\i (00:08:22) zoom out 115.724 24.737
+\i (00:08:22) trapsize 925
+\i (00:09:25) zoom in 1 
+\i (00:09:25) setwindow pcb
+\i (00:09:25) zoom in 70.323 43.786
+\i (00:09:25) trapsize 462
+\i (00:09:28) plot setup 
+\i (00:09:32) setwindow form.fpfileplotsetup
+\i (00:09:32) FORM fpfileplotsetup windows  
+\i (00:09:33) FORM fpfileplotsetup general  
+\i (00:09:35) FORM fpfileplotsetup fpplotfittopage YES 
+\i (00:09:35) FORM fpfileplotsetup fpplotscaling YES 
+\i (00:09:39) FORM fpfileplotsetup done  
+\i (00:09:40) setwindow pcb
+\i (00:09:40) generaledit 
+\i (00:09:41) plot 
+\i (00:09:43) plotwint initialize "Microsoft Print to PDF"
+\i (00:09:43) plotwint orientation 1
+\i (00:09:43) plotwint papername "A4"
+\i (00:09:43) plotwint copies 1
+\i (00:09:43) plotwint defaultsource 15
+\i (00:09:43) plotwint printquality 600
+\i (00:09:43) plotwint color 2
+\i (00:09:43) plotwint execute
+\i (00:09:51) roam start
+\i (00:09:51) roam x 32
+\i (00:09:51) roam y 32
+\i (00:09:52) roam x -48
+\i (00:09:52) roam y -16
+\i (00:09:52) roam x -32
+\i (00:09:52) roam y -16
+\i (00:09:52) roam end
+\i (00:10:04) pick grid -8.458 68.104
+\t (00:10:04) last pick:  -7.620 68.580
+\i (00:10:05) plot 
+\i (00:10:09) plotwint initialize "Microsoft Print to PDF"
+\i (00:10:09) plotwint execute
+\i (00:10:35) roam start
+\i (00:10:35) roam x -96
+\i (00:10:35) roam y -48
+\i (00:10:35) roam y 16
+\i (00:10:36) roam x 64
+\i (00:10:36) roam y 64
+\i (00:10:36) roam x 96
+\i (00:10:36) roam y 80
+\i (00:10:36) roam end
+\i (00:10:39) color192 
+\i (00:10:39) setwindow cvf.dialog
+\i (00:10:39) cvf layer_mode
+\i (00:10:39) setwindow pcb
+\i (00:10:39) generaledit 
+\i (00:10:41) setwindow cvf.dialog
+\i (00:10:41) cvf layers_color board_geometry/silkscreen_top 1
+\i (00:10:43) cvf select_color_cell 1
+\i (00:10:43) cvf layers_color board_geometry/silkscreen_top 2
+\i (00:10:44) cvf okay
+\i (00:10:46) setwindow pcb
+\i (00:10:46) roam start
+\i (00:10:46) roam x -16
+\i (00:10:46) roam x -16
+\i (00:10:46) roam x -16
+\i (00:10:46) roam y -16
+\i (00:10:46) roam y -16
+\i (00:10:46) roam y -32
+\i (00:10:46) roam y -32
+\i (00:10:46) roam y -32
+\i (00:10:46) roam y -48
+\i (00:10:46) roam y -48
+\i (00:10:46) roam end
+\i (00:10:47) roam start
+\i (00:10:47) roam x 16
+\i (00:10:47) roam y 16
+\i (00:10:47) roam x 16
+\i (00:10:47) roam y 16
+\i (00:10:47) roam end
+\i (00:10:48) color192 
+\i (00:10:48) setwindow cvf.dialog
+\i (00:10:48) cvf layer_mode
+\i (00:10:48) setwindow pcb
+\i (00:10:48) generaledit 
+\i (00:10:50) setwindow cvf.dialog
+\i (00:10:50) cvf layer_tree_item 'Package Geometry'
+\i (00:10:51) cvf layers_color package_geometry/silkscreen_top 1
+\i (00:10:53) cvf select_color_cell 1
+\i (00:10:54) cvf layers_color package_geometry/silkscreen_top 2
+\i (00:10:56) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:10:58) cvf layer_tree_item 'Areas'
+\i (00:11:00) cvf layer_tree_item 'Board Geometry'
+\i (00:11:01) cvf layers_color board_geometry/outline 2
+\i (00:11:02) cvf apply
+\i (00:11:03) cvf okay
+\i (00:11:03) setwindow pcb
+\i (00:11:03) zoom out 1 
+\i (00:11:03) setwindow pcb
+\i (00:11:03) zoom out 79.107 55.251
+\i (00:11:03) trapsize 925
+\i (00:11:03) zoom out 1 
+\i (00:11:03) setwindow pcb
+\i (00:11:03) zoom out 87.892 55.251
+\i (00:11:03) trapsize 1849
+\i (00:11:04) zoom in 1 
+\i (00:11:04) setwindow pcb
+\i (00:11:04) zoom in 36.849 28.712
+\i (00:11:04) trapsize 925
+\i (00:11:04) zoom in 1 
+\i (00:11:04) setwindow pcb
+\i (00:11:04) zoom in 36.480 28.897
+\i (00:11:04) trapsize 462
+\i (00:11:05) color192 
+\i (00:11:05) setwindow cvf.dialog
+\i (00:11:05) cvf layer_mode
+\i (00:11:05) setwindow pcb
+\i (00:11:05) generaledit 
+\i (00:11:06) setwindow cvf.dialog
+\i (00:11:06) cvf layer_tree_item 'Stack-Up'
+\i (00:11:09) cvf layer_tree_item 'Analysis'
+\i (00:11:09) cvf layer_tree_item 'Drawing Format'
+\i (00:11:09) cvf layer_tree_item 'Manufacturing'
+\i (00:11:10) cvf layer_tree_item 'Drawing Format'
+\i (00:11:10) cvf layer_tree_item 'Components'
+\i (00:11:11) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:11:11) cvf layer_tree_item 'Package Geometry'
+\i (00:11:13) cvf layer_tree_item 'Board Geometry'
+\i (00:11:16) cvf layer_tree_item 'Areas'
+\i (00:11:18) cvf layer_tree_item 'Constraints Region' 'Areas'
+\i (00:11:19) cvf layer_tree_item 'Route KeepOut' 'Areas'
+\i (00:11:19) cvf layer_tree_item 'Via KeepOut' 'Areas'
+\i (00:11:20) cvf layer_tree_item 'Stack-Up'
+\i (00:11:20) cvf layer_tree_item 'Display'
+\i (00:11:21) cvf layer_tree_item 'My Favorites'
+\i (00:11:21) cvf layer_tree_item 'Stack-Up'
+\i (00:11:21) cvf layer_tree_item 'Display'
+\i (00:11:27) cvf layer_tree_item 'Conductor' 'Stack-Up'
+\i (00:11:27) cvf layer_tree_item 'Non-Conductor' 'Stack-Up'
+\i (00:11:29) cvf layer_tree_item 'Conductor' 'Stack-Up'
+\i (00:11:30) cvf layer_tree_item 'Stack-Up'
+\i (00:11:31) cvf layer_tree_item 'Areas'
+\i (00:11:32) cvf layer_tree_item 'Constraints Region' 'Areas'
+\i (00:11:32) cvf layer_tree_item 'Via KeepOut' 'Areas'
+\i (00:11:33) cvf layer_tree_item 'Route KeepOut' 'Areas'
+\i (00:11:33) cvf layer_tree_item 'Package KeepOut' 'Areas'
+\i (00:11:33) cvf layer_tree_item 'Route KeepIn' 'Areas'
+\i (00:11:35) cvf layer_tree_item 'Package KeepIn' 'Areas'
+\i (00:11:35) cvf layer_tree_item 'Board Geometry'
+\i (00:11:36) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:11:36) cvf layer_tree_item 'Package Geometry'
+\i (00:11:38) cvf layer_tree_item 'Components'
+\i (00:11:39) cvf layers_color components ref_des/silkscreen_top 1
+\i (00:11:41) cvf select_color_cell 1
+\i (00:11:41) cvf layers_color components ref_des/silkscreen_top 2
+\i (00:11:42) cvf apply
+\i (00:11:43) cvf okay
+\i (00:11:43) setwindow pcb
+\i (00:11:43) roam start
+\i (00:11:43) roam x -48
+\i (00:11:43) roam y -16
+\i (00:11:43) roam x -16
+\i (00:11:44) roam x -80
+\i (00:11:44) roam y -16
+\i (00:11:44) roam x 96
+\i (00:11:44) roam x 80
+\i (00:11:44) roam x 64
+\i (00:11:44) roam x 80
+\i (00:11:44) roam y 16
+\i (00:11:44) roam x 64
+\i (00:11:44) roam y 16
+\i (00:11:44) roam x 16
+\i (00:11:44) roam x -48
+\i (00:11:44) roam x -144
+\i (00:11:44) roam x -64
+\i (00:11:44) roam x -48
+\i (00:11:44) roam end
+\i (00:12:16) plot 
+\i (00:12:18) plotwint initialize "Microsoft Print to PDF"
+\i (00:12:18) plotwint execute
+\i (00:12:59) place manual -h 
+\i (00:13:01) artwork 
+\i (00:13:02) setwindow form.film_control
+\i (00:13:02) FORM film_control filmtree popup Add SMB 
+\i (00:13:03) fillin "menu_cancel"
+\i (00:13:04) FORM film_control filmtree popup 'Display for Visibility' SMT 
+\i (00:13:05) FORM film_control filmtree popup 'Display for Visibility' OUTLINE 
+\i (00:13:06) FORM film_control filmtree popup 'Display for Visibility' DRD 
+\i (00:13:07) FORM film_control cancel  
+\i (00:13:07) setwindow pcb
+\i (00:13:07) generaledit 
+\i (00:13:08) color192 
+\i (00:13:08) setwindow cvf.dialog
+\i (00:13:08) cvf layer_mode
+\i (00:13:08) setwindow pcb
+\i (00:13:08) generaledit 
+\i (00:13:10) setwindow cvf.dialog
+\i (00:13:10) cvf select_color_cell 81
+\i (00:13:10) cvf layers_color board_geometry/outline 82
+\i (00:13:11) cvf layers_color board_geometry/silkscreen_bottom 82
+\i (00:13:14) cvf reset
+\i (00:13:15) cvf layers_color board_geometry/silkscreen_top 82
+\i (00:13:15) cvf layers_color board_geometry/outline 82
+\i (00:13:16) cvf layer_tree_item 'Conductor' 'Stack-Up'
+\i (00:13:17) cvf layer_tree_item 'Stack-Up'
+\i (00:13:18) cvf layer_tree_item 'Areas'
+\i (00:13:19) cvf layer_tree_item 'Board Geometry'
+\i (00:13:19) cvf layer_tree_item 'Package Geometry'
+\i (00:13:21) cvf layers_color package_geometry/silkscreen_top 82
+\i (00:13:21) cvf layer_tree_item 'Board Geometry'
+\i (00:13:22) cvf layer_tree_item 'Embedded Geomerty'
+\i (00:13:23) cvf layer_tree_item 'Package Geometry'
+\i (00:13:23) cvf layer_tree_item 'Components'
+\i (00:13:24) cvf layers_color components ref_des/silkscreen_top 82
+\i (00:13:25) cvf apply
+\i (00:13:26) cvf okay
+\i (00:13:29) setwindow pcb
+\i (00:13:29) artwork 
+\i (00:13:31) setwindow form.film_control
+\i (00:13:31) FORM film_control filmtree popup 'Display for Visibility' SMT 
+\i (00:13:32) FORM film_control filmtree popup 'Display for Visibility' OUTLINE 
+\i (00:13:33) FORM film_control filmtree popup 'Display for Visibility' SST 
+\i (00:13:33) FORM film_control filmtree popup 'Display for Visibility' TOP 
+\i (00:13:34) FORM film_control filmtree  SST 
+\i (00:13:34) FORM film_control filmtree popup 'Display for Visibility' SST 
+\i (00:13:35) FORM film_control ok  
+\i (00:13:35) setwindow pcb
+\i (00:13:35) generaledit 
+\i (00:13:36) zoom in 1 
+\i (00:13:36) setwindow pcb
+\i (00:13:36) zoom in 87.706 8.000
+\i (00:13:36) trapsize 231
+\i (00:13:36) roam start
+\i (00:13:36) roam x -48
+\i (00:13:36) roam x -16
+\i (00:13:36) roam x -128
+\i (00:13:36) roam y -48
+\i (00:13:36) roam x -80
+\i (00:13:36) roam y -32
+\i (00:13:36) roam end
+\i (00:13:36) zoom out 1 
+\i (00:13:36) setwindow pcb
+\i (00:13:36) zoom out 73.883 15.074
+\i (00:13:36) trapsize 462
+\i (00:13:36) roam start
+\i (00:13:36) roam x -128
+\i (00:13:36) roam y -64
+\i (00:13:36) roam x -112
+\i (00:13:36) roam y -64
+\i (00:13:37) roam x -96
+\i (00:13:37) roam y -64
+\i (00:13:37) roam x -80
+\i (00:13:37) roam y -48
+\i (00:13:37) roam x -48
+\i (00:13:37) roam y -32
+\i (00:13:37) roam x 32
+\i (00:13:37) roam y -16
+\i (00:13:37) roam x 80
+\i (00:13:37) roam y -16
+\i (00:13:37) roam x 80
+\i (00:13:37) roam x 144
+\i (00:13:37) roam x 96
+\i (00:13:37) roam y 16
+\i (00:13:37) roam x 80
+\i (00:13:37) roam y 16
+\i (00:13:37) roam x 64
+\i (00:13:37) roam y 32
+\i (00:13:37) roam x 32
+\i (00:13:37) roam y 32
+\i (00:13:37) roam x 16
+\i (00:13:37) roam y 16
+\i (00:13:37) roam x 16
+\i (00:13:37) roam y 48
+\i (00:13:37) roam x 16
+\i (00:13:37) roam y 48
+\i (00:13:37) roam y 32
+\i (00:13:37) roam end
+\i (00:21:29) zoom out 1 
+\i (00:21:29) setwindow pcb
+\i (00:21:29) zoom out 96.121 17.894
+\i (00:21:29) trapsize 925
+\i (00:21:29) zoom in 1 
+\i (00:21:29) setwindow pcb
+\i (00:21:29) zoom in 88.909 18.450
+\i (00:21:29) trapsize 462
+\i (00:21:30) exit 
+\e (00:21:30) Do you want to save the changes you made to MAIN.brd?
+\i (00:21:33) fillin no 
+\t (00:21:33)     Journal end - Fri May 03 09:28:03 2019

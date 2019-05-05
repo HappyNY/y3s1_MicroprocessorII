@@ -23,17 +23,7 @@ extern const char CGROM[2048];
 void LCDDevice__Initialize();
 void LCDDevice__Render();
 
-inline void VBuffer_Clear()
-{  
-	byte* pHead = LCDBuffer;
-	const byte* pEnd = LCDBuffer + LCD_BUFFER_LENGTH;
-
-	while ( pHead != pEnd )
-	{
-		*pHead = 0;
-		++pHead;
-	} 
-}
+void VBuffer_Clear();
 
 inline void VBuffer_DrawDot( int16 x, int16 y )
 {
@@ -42,46 +32,14 @@ inline void VBuffer_DrawDot( int16 x, int16 y )
     {
         const byte Page = x >> 3;
         const byte Idx = x & 0b111;
+        // @todo. Apply pixel filter by using masking buffer.
         const uint16 Block = LCD_LINE_BYTE * y + Page;
         const byte Mask = mask( 7 - Idx );
         LCDBuffer[Block] |= Mask;
     }
 }
 
-inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
-{
-    int16 BuffIdx = xCol + y * LCD_LINE_BYTE;
-    uint8 i;
-    const char* ascii_head = &CGROM[ASCII_IDX * CGROM_CHARACTER_BYTE_SIZE + CGROM_TRUNC_BEGIN ];
-
-    for ( i = 0; i < CGROM_DISPLAY_HEIGHT; ++i )
-    {
-        if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
-        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
-        ++ascii_head;
-        BuffIdx += LCD_LINE_BYTE;
-    }
-}
-
-inline void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed )
-{
-    assertf( xCol != NULL && y != NULL, "Input index must not be null!" );
-    while ( *String != '\0' )
-    {
-        VBuffer_DrawChar( *xCol, *y, *String, bInversed );
-
-        if ( *xCol + 1 < LCD_LINE_BYTE )
-        {
-            ++( *xCol );
-        }
-        else
-        {
-            *y += CGROM_DISPLAY_HEIGHT;
-            *xCol = 0;
-        }
-
-        ++String;
-    }
-}
+inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed ); 
+void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed );
 
 void VBuffer_DrawLine( int16 xbeg, int16 ybeg, const int16 xend, const int16 yend );

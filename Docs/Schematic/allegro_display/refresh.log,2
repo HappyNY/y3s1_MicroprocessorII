@@ -1,0 +1,78 @@
+Sat May 04 15:19:39 2019				Page     1
+
+
+ 
+Update Symbols/Modules Logfile
+	Sat May 04 15:19:39 2019
+
+------ Module Refresh Messages ------
+
+SUMMARY:    Updated 0 out of 0 modules
+
+------ End Module Messages     ------
+
+
+
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Refresh Symbol                                                   )
+(                                                                     )
+(    Drawing          : DISPLAY.brd                                   )
+(    Software Version : 16.6-2015S059                                 )
+(    Date/Time        : Sat May 04 15:19:39 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Sat May 04 15:19:39 2019				Page     1
+
+
+------ Symbol Refresh Directives ------
+
+Input design  = 'D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_display/DISPLAY.brd'
+Output design = ''
+
+Update mechanical symbols              = 'NO'
+Update format symbols                  = 'NO'
+Update package symbols                 = 'YES'
+Update shape/flash symbols             = 'NO'
+Update symbol padstacks                = 'NO'
+Preserve padstacks replaced on pins    = 'NO'
+Reset symbol text and size locations   = 'NO'
+Reset Pin Escapes (fanouts)            = 'NO'
+Ripup Etch                             = 'NO'
+Reset custom drill data                = 'NO'
+
+
+------ Library Paths ------
+PSMPATH =  . 
+           symbols 
+           .. 
+           ../symbols 
+           D:/Program Files/OrCAD/share/local/pcb/symbols 
+           D:/Program Files/OrCAD/share/pcb/pcb_lib/symbols 
+           D:/Program Files/OrCAD/share/pcb/allegrolib/symbols 
+           D:/Onedrive/Edu/y2_s2/JeonJaGongHakSilSup2/B2014161001_3/PackageSymbol/ 
+           D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Footprints/ 
+
+PADPATH =  . 
+           symbols 
+           .. 
+           ../symbols 
+           D:/Program Files/OrCAD/share/local/pcb/padstacks 
+           D:/Program Files/OrCAD/share/pcb/pcb_lib/symbols 
+           D:/Program Files/OrCAD/share/pcb/allegrolib/symbols 
+           D:/Onedrive/Edu/y2_s2/JeonJaGongHakSilSup2/B2014161001_3/PackageSymbol/ 
+           D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Footprints/ 
+
+
+------ Symbol Refresh Messages ------
+
+'GLCD_LG2401283'  symbol refreshed successfully.
+
+
+----- Symbol Update Summary ----
+
+Updated symbols: 1 out 1
+    Design updated.
+

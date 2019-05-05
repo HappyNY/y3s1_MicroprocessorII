@@ -92,23 +92,23 @@ InitializeDevice:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:130:     LCDDevice__Initialize();
+ ;  main.c:136:     LCDDevice__Initialize();
 	call LCDDevice__Initialize	 ; 
- ;  main.c:132:     DDRC = 0xff;
+ ;  main.c:138:     DDRC = 0xff;
 	ldi r24,lo8(-1)	 ;  tmp43,
 	out 0x14,r24	 ;  MEM[(volatile uint8_t *)52B], tmp43
- ;  main.c:133:     PORTC = 0xff;
+ ;  main.c:139:     PORTC = 0xff;
 	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], tmp43
- ;  main.c:134:     InitializeTX0SerialOutput();
+ ;  main.c:140:     InitializeTX0SerialOutput();
 	call InitializeTX0SerialOutput	 ; 
- ;  main.c:138:     sei();
+ ;  main.c:144:     sei();
 /* #APP */
- ;  138 "main.c" 1
+ ;  144 "main.c" 1
 	sei	
  ;  0 "" 2
 /* #NOAPP */
 /* epilogue start */
- ;  main.c:139: }
+ ;  main.c:145: }
 	ret	
 	.size	InitializeDevice, .-InitializeDevice
 	.section	.text.startup,"ax",@progbits
@@ -143,10 +143,10 @@ main:
 	std Y+18,r25	 ;  Arg.Mesh, Triangle
 	std Y+19,r26	 ;  Arg.Mesh, Triangle
  ;  main.c:25:     Arg.Position.x = 50;
-	ldi r24,lo8(50)	 ;  tmp56,
+	ldi r24,lo8(50)	 ;  tmp45,
 	ldi r25,0		 ; 
-	std Y+21,r25	 ;  Arg.Position.x, tmp56
-	std Y+20,r24	 ;  Arg.Position.x, tmp56
+	std Y+21,r25	 ;  Arg.Position.x, tmp45
+	std Y+20,r24	 ;  Arg.Position.x, tmp45
  ;  main.c:26:     Arg.Position.y = 0;
 	std Y+23,__zero_reg__	 ;  Arg.Position.y,
 	std Y+22,__zero_reg__	 ;  Arg.Position.y,
@@ -167,103 +167,38 @@ main:
 	call CalculateTranformCache	 ; 
  ;  main.c:35:     UART0_WaitAnyKey();
 	call UART0_WaitAnyKey	 ; 
-.L13:
- ;  main.c:38:         char ch = UART0_TryReadKey(); // UART0_WaitAnyKey();
+.L6:
+ ;  main.c:40:             UART0_TryReadKey(); 
 	call UART0_TryReadKey	 ; 
- ;  main.c:40:         switch ( ch )
-	cpi r24,lo8(101)	 ;  ch,
-	breq .L6		 ; ,
-	brge .L7		 ; ,
-	cpi r24,lo8(97)	 ;  ch,
-	breq .L8		 ; ,
-	cpi r24,lo8(100)	 ;  ch,
-	breq .L9		 ; ,
-.L10:
- ;  main.c:56:         VBuffer_Clear();
+ ;  main.c:51:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.1 ); break;
+	ldd r24,Y+5	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
+	subi r24,-109	 ;  tmp46,
+	sbci r25,-81	 ; ,
+	sbci r26,-1	 ; ,
+	sbci r27,-1	 ; ,
+	std Y+5,r24	 ;  Cam.ReadOnly_DirectionRadian, tmp46
+	std Y+6,r25	 ;  Cam.ReadOnly_DirectionRadian, tmp46
+	std Y+7,r26	 ;  Cam.ReadOnly_DirectionRadian, tmp46
+	std Y+8,r27	 ;  Cam.ReadOnly_DirectionRadian, tmp46
+ ;  main.c:62:         VBuffer_Clear();
 	call VBuffer_Clear	 ; 
- ;  main.c:57:         CalculateTranformCache( &Cam );
+ ;  main.c:63:         CalculateTranformCache( &Cam );
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call CalculateTranformCache	 ; 
- ;  main.c:58:         CDrawArgs_DrawOnDisplayBufferPerspective( &Arg, &Cam );
+ ;  main.c:64:         CDrawArgs_DrawOnDisplayBufferPerspective( &Arg, &Cam );
 	movw r22,r28	 ; ,
 	subi r22,-1	 ; ,
 	sbci r23,-1	 ; ,
 	movw r24,r28	 ; ,
 	adiw r24,17	 ; ,
 	call CDrawArgs_DrawOnDisplayBufferPerspective	 ; 
- ;  main.c:59:         LCDDevice__Render();
+ ;  main.c:65:         LCDDevice__Render(); 
 	call LCDDevice__Render	 ; 
- ;  main.c:37:     {
-	rjmp .L13		 ; 
-.L7:
- ;  main.c:40:         switch ( ch )
-	cpi r24,lo8(115)	 ;  ch,
-	breq .L11		 ; ,
-	cpi r24,lo8(119)	 ;  ch,
-	breq .L12		 ; ,
-	cpi r24,lo8(113)	 ;  ch,
-	brne .L10		 ; ,
- ;  main.c:43:             Cam.ReadOnly_DirectionRadian -= 256; break;
-	ldd r24,Y+5	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	subi r25,1	 ; ,
-	sbc r26,__zero_reg__	 ; 
-	sbc r27,__zero_reg__	 ; 
-.L14:
- ;  main.c:45:             Cam.ReadOnly_DirectionRadian += 256; break;
-	std Y+5,r24	 ;  Cam.ReadOnly_DirectionRadian, tmp59
-	std Y+6,r25	 ;  Cam.ReadOnly_DirectionRadian, tmp59
-	std Y+7,r26	 ;  Cam.ReadOnly_DirectionRadian, tmp59
-	std Y+8,r27	 ;  Cam.ReadOnly_DirectionRadian, tmp59
- ;  main.c:45:             Cam.ReadOnly_DirectionRadian += 256; break;
-	rjmp .L10		 ; 
-.L6:
- ;  main.c:45:             Cam.ReadOnly_DirectionRadian += 256; break;
-	ldd r24,Y+5	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	subi r25,-1	 ; ,
-	sbci r26,-1	 ; ,
-	sbci r27,-1	 ; ,
-	rjmp .L14		 ; 
-.L12:
- ;  main.c:47:             Cam.Position.x += 5; break;
-	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
-	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
-	adiw r24,5	 ;  tmp61,
-.L16:
- ;  main.c:49:             Cam.Position.x -= 5; break;
-	std Y+2,r25	 ;  Cam.Position.x, tmp63
-	std Y+1,r24	 ;  Cam.Position.x, tmp63
- ;  main.c:49:             Cam.Position.x -= 5; break;
-	rjmp .L10		 ; 
-.L11:
- ;  main.c:49:             Cam.Position.x -= 5; break;
-	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
-	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
-	sbiw r24,5	 ;  tmp63,
-	rjmp .L16		 ; 
-.L8:
- ;  main.c:51:             Cam.Position.y -= 5; break;
-	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
-	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
-	sbiw r24,5	 ;  tmp65,
-.L15:
- ;  main.c:53:             Cam.Position.y += 5; break;
-	std Y+4,r25	 ;  Cam.Position.y, tmp67
-	std Y+3,r24	 ;  Cam.Position.y, tmp67
- ;  main.c:53:             Cam.Position.y += 5; break;
-	rjmp .L10		 ; 
-.L9:
- ;  main.c:53:             Cam.Position.y += 5; break;
-	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
-	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
-	adiw r24,5	 ;  tmp67,
-	rjmp .L15		 ; 
+	rjmp .L6		 ; 
 	.size	main, .-main
 .global	__INTERRUPT_LOCK_MUTEX__
 	.section .bss

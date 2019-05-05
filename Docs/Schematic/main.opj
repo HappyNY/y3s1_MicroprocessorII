@@ -10,34 +10,180 @@
       (Type "Schematic Design")
       (DisplayName ".\main.DSN"))
     (BuildFileAddedOrDeleted "x")
-    (CompileFileAddedOrDeleted "x"))
-  (Folder "Outputs")
+    (CompileFileAddedOrDeleted "x")
+    (DOCKED "TRUE")
+    (DOCKING_POSITION "59420")
+    (ANNOTATE_Scope "0")
+    (ANNOTATE_Mode "1")
+    (ANNOTATE_Action "0")
+    (Annotate_Page_Order "0")
+    (ANNOTATE_Reset_References_to_1 "FALSE")
+    (ANNOTATE_No_Page_Number_Change "FALSE")
+    (ANNOTATE_Property_Combine "{Value}{Source Package}{POWER_GROUP}")
+    (ANNOTATE_IncludeNonPrimitive "FALSE")
+    (ANNOTATE_PreserveDesignator "FALSE")
+    (ANNOTATE_PreserveUserEdits "FALSE")
+    (ANNOTATE_Refdes_Control_Required "FALSE")
+    (Update_Instace_for_External_Design "FALSE")
+    (Annotate_type "Default")
+    (width_pages "100")
+    (width_start "80")
+    (width_End "80")
+    (DRC_Scope "0")
+    (DRC_Action "0")
+    (DRC_Create_Warnings "FALSE")
+    (DRC_View_Output "TRUE")
+    (DRC_Preserved_Waived "FALSE")
+    (DRC_Run_Electrical_Rules "TRUE")
+    (DRC_Run_Physical_Rules "TRUE")
+    (DRC_Report_File
+       "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\MAIN.DRC")
+    (DRC_Check_Ports "FALSE")
+    (DRC_Check_Off-Page_Connectors "FALSE")
+    (DRC_Report_Ports_and_Off-page_Connectors "FALSE")
+    (DRC_SDT_Compatibility "FALSE")
+    (DRC_Report_Off-grid_Objects "FALSE")
+    (DRC_Check_Unconnected_Nets "TRUE")
+    (DRC_Check_for_Misleading_TAP "FALSE")
+    (DRC_Report_Netnames "FALSE")
+    (DRC_Check_Single_Node_Nets "TRUE")
+    (DRC_Run_Electrical_Custom_DRC "FALSE")
+    (DRC_Check_No_Driving_Source "TRUE")
+    (DRC_Check_Duplicate_NetNames "TRUE")
+    (DRC_Check_Floating_Pins "TRUE")
+    (DRC_Check_Physical_Power_Pins_Visibility "TRUE")
+    (DRC_Check_PCB_Footprint_Property "TRUE")
+    (DRC_Check_Normal_Convert_View_Sync "TRUE")
+    (DRC_Check_Incorrect_PinGroup_Assignment "TRUE")
+    (DRC_Check_High_Speed_Props_Syntax "TRUE")
+    (DRC_Check_Missing_Pin_Numbers "TRUE")
+    (DRC_Check_Device_With_No_Pins "TRUE")
+    (DRC_Check_Power_Ground_Short "TRUE")
+    (DRC_Identical_References "TRUE")
+    (DRC_Type_Mismatch "TRUE")
+    (DRC_Visible_Power_pins "FALSE")
+    (DRC_Report_Unused_Part_Packages "TRUE")
+    (DRC_Check_Name_Prop_For_HierBlocks "TRUE")
+    (DRC_Run_Physical_Custom_DRC "FALSE")
+    ("Create Allegro Netlist" "TRUE")
+    ("Allegro Netlist Directory" "allegro_main")
+    ("View Allegro Netlist Files" "FALSE")
+    ("Allegro Netlist Create DCF File" "FALSE")
+    ("Update Allegro Board" "TRUE")
+    ("Allegro Netlist Output Board File" "allegro_main\MAIN.brd")
+    ("Allegro Netlist Remove Etch" "FALSE")
+    ("Allegro Netlist Place Changed Component" "ALWAYS_REPLACE")
+    ("Allegro Netlist Open Board in Allegro" "NEITHER")
+    ("Allegro Setup Backup Versions" "3")
+    ("Allegro Setup Output Warnings" "TRUE")
+    ("Allegro Setup Ignore Constraints" "FALSE")
+    ("Allegro Setup Part Type Length" "31")
+    ("Allegro Netlist Combine Property String" "PCB Footprint")
+    ("Allegro Netlist Ignore Fixed Property" "FALSE")
+    ("Allegro Netlist User Defined Property" "FALSE")
+    (Netlist_TAB "0"))
+  (Folder "Outputs"
+    (File ".\main.drc"
+      (Type "Report"))
+    (File ".\allegro\pstxnet.dat"
+      (Type "Report")
+      (DisplayName "pstxnet.dat"))
+    (File ".\allegro\pstxprt.dat"
+      (Type "Report")
+      (DisplayName "pstxprt.dat"))
+    (File ".\allegro\pstchip.dat"
+      (Type "Report")
+      (DisplayName "pstchip.dat"))
+    (File ".\allegro_main\pstxnet.dat"
+      (Type "Report")
+      (DisplayName "pstxnet.dat"))
+    (File ".\allegro_main\pstxprt.dat"
+      (Type "Report")
+      (DisplayName "pstxprt.dat"))
+    (File ".\allegro_main\pstchip.dat"
+      (Type "Report")
+      (DisplayName "pstchip.dat")))
   (Folder "Referenced Projects")
   (PartMRUSelector
-    (GND
-      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
     (VCC
       (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
       (DeviceIndex "0"))
-    (74FCT2573
-      (FullPartName "74FCT2573.Normal")
-      (LibraryName
-         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
+    (GND
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
       (DeviceIndex "0"))
-    (74ACT825
-      (FullPartName "74ACT825.Normal")
-      (LibraryName
-         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
+    (CON2
+      (FullPartName "CON2.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
       (DeviceIndex "0"))
-    (74ACT16373/SO
-      (FullPartName "74ACT16373/SO.Normal")
-      (LibraryName
-         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
+    ("CAP POL"
+      (FullPartName "CAP POL.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
       (DeviceIndex "0"))
-    (74AHC16373/SO
-      (FullPartName "74AHC16373/SO.Normal")
-      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\LATCH.OLB")
+    (VCC_BAR
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (R
+      (FullPartName "R.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    (GLCD_LG2401283
+      (FullPartName "GLCD_LG2401283.Normal")
+      (LibraryName
+         "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\LIB.OLB")
+      (DeviceIndex "0"))
+    (LM3940/TO220
+      (FullPartName "LM3940/TO220.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\REGULATOR.OLB")
+      (DeviceIndex "0"))
+    (CAP
+      (FullPartName "CAP.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    (RESISTOR
+      (FullPartName "RESISTOR.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    ("CAP NP"
+      (FullPartName "CAP NP.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
+    (ADXL202
+      (FullPartName "ADXL202.Normal")
+      (LibraryName
+         "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\LIB.OLB")
+      (DeviceIndex "0"))
+    (CON4
+      (FullPartName "CON4.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (CON10
+      (FullPartName "CON10.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (MAX232
+      (FullPartName "MAX232.Normal")
+      (LibraryName
+         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\LINEDRIVERRECEIVER.OLB")
+      (DeviceIndex "0"))
+    (CON6
+      (FullPartName "CON6.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (CON5
+      (FullPartName "CON5.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (CON3
+      (FullPartName "CON3.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (CON7
+      (FullPartName "CON7.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (DIODE
+      (FullPartName "DIODE.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
       (DeviceIndex "0"))
     (IS62C256AL_45ULI
       (FullPartName "IS62C256AL_45ULI.Normal")
@@ -47,6 +193,21 @@
     (ATmega128
       (FullPartName "ATmega128.Normal")
       (LibraryName "D:\ONEDRIVE\EDU\COMMON\AVR.OLB")
+      (DeviceIndex "0"))
+    (74HC573
+      (FullPartName "74HC573.Normal")
+      (LibraryName
+         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
+      (DeviceIndex "0"))
+    (ATMEGA128MCU
+      (FullPartName "ATMEGA128MCU.Normal")
+      (LibraryName
+         "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\LIB.OLB")
+      (DeviceIndex "0"))
+    (74FCT2573
+      (FullPartName "74FCT2573.Normal")
+      (LibraryName
+         "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\BUSDRIVERTRANSCEIVER.OLB")
       (DeviceIndex "0")))
   (LastUsedLibraryBrowseDirectory
      "D:\Onedrive\Edu\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs")
@@ -58,22 +219,24 @@
       (Path "Design Resources" ".\main.dsn" "Design Cache")
       (Path "Design Resources" "Library")
       (Path "Design Resources" "Library" ".\lib.olb")
-      (Select "Design Resources"))
+      (Path "Outputs")
+      (Select "Design Resources" ".\main.dsn" "SCHEMATIC1" "MAIN"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 0 200 0 579"))
+        (Placement "44 0 1 -1 -1 -1 -1 0 250 0 895"))
       (Tab 0))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -8 -31 52 1540 52 670")
-        (Scroll "301 236")
-        (Zoom "144")
+        (Placement "44 2 3 -1 -1 -8 -31 104 1237 104 593")
+        (Scroll "461 879")
+        (Zoom "160")
         (Occurrence "/"))
       (Path
          "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\MAIN.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "PAGE1")))
-  (MPSSessionName "Kang"))
+      (Page "MAIN")))
+  (MPSSessionName "Kang")
+  (ISPCBBASICLICENSE "false"))

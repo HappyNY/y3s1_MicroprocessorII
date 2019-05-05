@@ -54,7 +54,57 @@ void LCDDevice__Render()
         CSerialSender_QueueOutputString( &UART0Sender, "::" );
         CSerialSender_QueueOutputString( &UART0Sender, buff );
     }
+    while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
 #endif
+}
+
+void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
+{
+    int16 BuffIdx = xCol + y * LCD_LINE_BYTE;
+    uint8 i;
+    const char* ascii_head = &CGROM[ASCII_IDX * CGROM_CHARACTER_BYTE_SIZE + CGROM_TRUNC_BEGIN];
+
+    for ( i = 0; i < CGROM_DISPLAY_HEIGHT; ++i )
+    {
+        if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
+        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
+        ++ascii_head;
+        BuffIdx += LCD_LINE_BYTE;
+    }
+}
+
+void VBuffer_Clear()
+{
+    byte* pHead = LCDBuffer;
+    const byte* pEnd = LCDBuffer + LCD_BUFFER_LENGTH;
+
+    while ( pHead != pEnd )
+    {
+        *pHead = 0;
+        ++pHead;
+    }
+}
+
+
+void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed )
+{
+    assertf( xCol != NULL && y != NULL, "Input index must not be null!" );
+    while ( *String != '\0' )
+    {
+        VBuffer_DrawChar( *xCol, *y, *String, bInversed );
+
+        if ( *xCol + 1 < LCD_LINE_BYTE )
+        {
+            ++( *xCol );
+        }
+        else
+        {
+            *y += CGROM_DISPLAY_HEIGHT;
+            *xCol = 0;
+        }
+
+        ++String;
+    }
 }
 
 void VBuffer_DrawLine( int16 x0, int16 y0, const int16 x1, const int16 y1 )

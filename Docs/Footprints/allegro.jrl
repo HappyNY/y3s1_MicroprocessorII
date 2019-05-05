@@ -1,0 +1,478 @@
+\t (00:00:01) allegro 16.6-2015 S059 (v16-6-112ER) Windows 32
+\t (00:00:01)     Journal start - Sun May 05 10:25:06 2019
+\t (00:00:01)         Host=DESKTOP-7A7JSBA User=Kang Pid=11488 CPUs=8
+\t (00:00:01) CmdLine= D:\Program Files\OrCAD\tools\pcb\bin\allegro.exe -orcad D:\Onedrive\Edu\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Footprints\GLCD_LG2401283.dra
+\t (00:00:01) 
+\t (00:00:01) Opening existing design...
+\d (00:00:01) Design opened: D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Footprints/GLCD_LG2401283.dra
+\i (00:00:01) trapsize 598
+\i (00:00:01) trapsize 587
+\i (00:00:01) trapsize 599
+\i (00:00:01) trapsize 599
+\i (00:00:02) generaledit 
+\i (00:00:03) zoom in 1 
+\i (00:00:03) setwindow pcb
+\i (00:00:03) zoom in 17.466 0.805
+\i (00:00:03) trapsize 300
+\i (00:00:03) zoom in 1 
+\i (00:00:03) setwindow pcb
+\i (00:00:03) zoom in 17.467 0.806
+\i (00:00:03) trapsize 150
+\i (00:00:03) zoom in 1 
+\i (00:00:03) setwindow pcb
+\i (00:00:03) zoom in 17.467 0.806
+\i (00:00:03) trapsize 75
+\i (00:00:04) roam start
+\i (00:00:04) roam x -32
+\i (00:00:04) roam y 16
+\i (00:00:04) roam x -80
+\i (00:00:04) roam y 64
+\i (00:00:04) roam x -128
+\i (00:00:04) roam y 64
+\i (00:00:04) roam x -96
+\i (00:00:04) roam y 48
+\i (00:00:04) roam x -112
+\i (00:00:04) roam y 64
+\i (00:00:04) roam x -64
+\i (00:00:04) roam y 32
+\i (00:00:04) roam x -48
+\i (00:00:04) roam y 16
+\i (00:00:04) roam x -32
+\i (00:00:04) roam x -32
+\i (00:00:04) roam y -16
+\i (00:00:04) roam x -64
+\i (00:00:04) roam y -16
+\i (00:00:05) roam x -64
+\i (00:00:05) roam y -16
+\i (00:00:05) roam x -16
+\i (00:00:05) roam y -16
+\i (00:00:05) roam end
+\i (00:00:07) pick grid 6.947 -0.230
+\t (00:00:07) last pick:  7.620 0.000
+\i (00:00:07) pick grid 7.995 -0.379
+\t (00:00:07) last pick:  7.620 0.000
+\i (00:00:08) pick grid 8.775 -0.334
+\t (00:00:08) last pick:  7.620 0.000
+\i (00:00:08) pick grid 10.333 -0.319
+\t (00:00:08) last pick:  10.160 0.000
+\i (00:00:09) pick grid 11.921 -0.304
+\t (00:00:09) last pick:  12.700 0.000
+\i (00:00:09) pick grid 13.704 -0.230
+\t (00:00:09) last pick:  12.700 0.000
+\i (00:00:10) pick grid 15.951 -0.275
+\t (00:00:10) last pick:  15.240 0.000
+\i (00:00:11) pick grid 16.940 -0.289
+\t (00:00:11) last pick:  17.780 0.000
+\i (00:00:11) zoom out 1 
+\i (00:00:11) setwindow pcb
+\i (00:00:11) zoom out 16.940 -0.289
+\i (00:00:11) trapsize 150
+\i (00:00:12) roam start
+\i (00:00:12) roam x 64
+\i (00:00:12) roam x 80
+\i (00:00:12) roam x 64
+\i (00:00:12) roam end
+\i (00:00:17) add pin 
+\t (00:00:17) Using 'HOLE120.pad'.
+\i (00:00:21) setwindow form.mini
+\i (00:00:21) FORM mini pad_browse  
+\i (00:00:29) fillin "Pad40cir28d"
+\w (00:00:29) WARNING(SPMHUT-48): Scaled value has been rounded off.
+\t (00:00:29) Using 'PAD40CIR28D.pad'.
+\i (00:00:30) setwindow pcb
+\i (00:00:30) zoom in 1 
+\i (00:00:30) setwindow pcb
+\i (00:00:30) zoom in 0.085 -1.698
+\i (00:00:30) trapsize 75
+\i (00:00:32) zoom in 1 
+\i (00:00:32) setwindow pcb
+\i (00:00:32) zoom in 0.011 -0.993
+\i (00:00:32) trapsize 37
+\i (00:00:33) pick grid 0.056 -1.277
+\t (00:00:33) last pick:  0.000 -2.540
+\t (00:00:33) Using 'PAD40CIR28D.pad'.
+\i (00:00:36) prepopup 1.127 -1.862
+\i (00:00:38) oops 
+\t (00:00:38) Using 'PAD40CIR28D.pad'.
+\i (00:00:39) setwindow form.mini
+\i (00:00:39) FORM mini pad_browse  
+\i (00:00:53) fillin "Pad35cir25d"
+\t (00:00:53) Using 'PAD35CIR25D.pad'.
+\i (00:00:54) setwindow pcb
+\i (00:00:54) pick grid 0.798 -1.277
+\t (00:00:54) last pick:  0.000 -2.540
+\t (00:00:54) Using 'PAD35CIR25D.pad'.
+\i (00:00:55) zoom in 1 
+\i (00:00:55) setwindow pcb
+\i (00:00:55) zoom in 0.633 -2.671
+\i (00:00:55) trapsize 19
+\i (00:00:55) zoom in 1 
+\i (00:00:55) setwindow pcb
+\i (00:00:55) zoom in 0.498 -2.716
+\i (00:00:55) trapsize 9
+\i (00:00:56) zoom in 1 
+\i (00:00:56) setwindow pcb
+\i (00:00:56) zoom in 1.614 -2.390
+\i (00:00:56) trapsize 5
+\i (00:00:57) zoom out 1 
+\i (00:00:57) setwindow pcb
+\i (00:00:57) zoom out 1.453 -2.401
+\i (00:00:57) trapsize 9
+\i (00:00:57) zoom out 1 
+\i (00:00:57) setwindow pcb
+\i (00:00:57) zoom out 1.233 -2.387
+\i (00:00:57) trapsize 19
+\i (00:00:58) prepopup 1.806 -2.450
+\i (00:00:58) oops 
+\t (00:00:58) Using 'PAD35CIR25D.pad'.
+\i (00:00:59) setwindow form.mini
+\i (00:00:59) FORM mini pad_browse  
+\i (00:01:07) fillin "Pad40cir28d"
+\t (00:01:07) Using 'PAD40CIR28D.pad'.
+\i (00:01:08) setwindow pcb
+\i (00:01:08) zoom out 1 
+\i (00:01:08) setwindow pcb
+\i (00:01:08) zoom out 0.166 -1.577
+\i (00:01:08) trapsize 37
+\i (00:01:08) zoom out 1 
+\i (00:01:08) setwindow pcb
+\i (00:01:08) zoom out 0.143 -1.593
+\i (00:01:08) trapsize 75
+\i (00:01:10) prepopup 2.120 -3.031
+\i (00:01:11) done 
+\t (00:01:11) Exiting from Add Pin.
+\i (00:01:11) generaledit 
+\i (00:01:12) pick grid -0.142 -0.020
+\t (00:01:12) last pick:  0.000 0.000
+\i (00:01:12) zoom out 1 
+\i (00:01:12) setwindow pcb
+\i (00:01:12) zoom out 6.734 -1.024
+\i (00:01:12) trapsize 150
+\i (00:01:12) zoom out 1 
+\i (00:01:12) setwindow pcb
+\i (00:01:12) zoom out 8.831 -1.413
+\i (00:01:12) trapsize 300
+\i (00:01:13) drag_start grid 29.443 4.100
+\i (00:01:13) drag_stop -6.148 -1.352
+\i (00:01:14) prepopup 5.715 -0.274
+\i (00:01:15) pop dyn_option_select @:@Delete 
+\i (00:01:15) delete 
+\i (00:01:15) generaledit 
+\i (00:01:15) zoom in 1 
+\i (00:01:15) setwindow pcb
+\i (00:01:15) zoom in 2.300 1.763
+\i (00:01:15) trapsize 150
+\i (00:01:16) zoom in 1 
+\i (00:01:16) setwindow pcb
+\i (00:01:16) zoom in 1.671 1.434
+\i (00:01:16) trapsize 75
+\i (00:01:18) add pin 
+\t (00:01:18) Using 'PAD40CIR28D.pad'.
+\i (00:01:21) setwindow form.mini
+\i (00:01:21) FORM mini x_count 23 
+\i (00:01:22) FORM mini next_pin_number 1 
+\i (00:01:22) setwindow pcb
+\i (00:01:22) pick grid 1.267 0.026
+\t (00:01:22) last pick:  0.000 0.000
+\t (00:01:22) Using 'PAD40CIR28D.pad'.
+\i (00:01:23) prepopup 0.323 -0.109
+\i (00:01:23) done 
+\t (00:01:23) Exiting from Add Pin.
+\i (00:01:23) generaledit 
+\i (00:01:23) zoom in 1 
+\i (00:01:23) setwindow pcb
+\i (00:01:23) zoom in 0.637 -0.109
+\i (00:01:23) trapsize 37
+\i (00:01:24) zoom in 1 
+\i (00:01:24) setwindow pcb
+\i (00:01:24) zoom in 0.577 -0.064
+\i (00:01:24) trapsize 19
+\i (00:01:24) zoom in 1 
+\i (00:01:24) setwindow pcb
+\i (00:01:24) zoom in 0.577 -0.063
+\i (00:01:24) trapsize 9
+\i (00:01:25) roam start
+\i (00:01:25) roam x 80
+\i (00:01:25) roam x 112
+\i (00:01:25) roam x 96
+\i (00:01:25) roam x 80
+\i (00:01:25) roam end
+\i (00:01:25) zoom out 1 
+\i (00:01:25) setwindow pcb
+\i (00:01:25) zoom out 1.266 -0.095
+\i (00:01:25) trapsize 19
+\i (00:01:25) zoom out 1 
+\i (00:01:25) setwindow pcb
+\i (00:01:25) zoom out 1.266 -0.095
+\i (00:01:25) trapsize 37
+\i (00:01:26) zoom out 1 
+\i (00:01:26) setwindow pcb
+\i (00:01:26) zoom out 1.266 -0.117
+\i (00:01:26) trapsize 75
+\i (00:01:26) zoom out 1 
+\i (00:01:26) setwindow pcb
+\i (00:01:26) zoom out 1.267 -0.133
+\i (00:01:26) trapsize 150
+\i (00:01:26) roam start
+\i (00:01:26) roam x 48
+\i (00:01:26) roam x 208
+\i (00:01:26) roam y 16
+\i (00:01:26) roam x 176
+\i (00:01:26) roam x 176
+\i (00:01:26) roam x 272
+\i (00:01:26) roam y 16
+\i (00:01:27) roam end
+\i (00:01:31) zoom in 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom in 26.995 -0.927
+\i (00:01:31) trapsize 75
+\i (00:01:31) zoom in 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom in 26.995 -0.927
+\i (00:01:31) trapsize 37
+\i (00:01:31) zoom in 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom in 26.973 -0.927
+\i (00:01:31) trapsize 19
+\i (00:01:31) zoom in 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom in 26.962 -0.930
+\i (00:01:31) trapsize 9
+\i (00:01:31) zoom in 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom in 26.957 -0.932
+\i (00:01:31) trapsize 5
+\i (00:01:31) zoom in 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom in 26.943 -0.874
+\i (00:01:31) trapsize 2
+\i (00:01:31) zoom out 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom out 26.937 -0.874
+\i (00:01:31) trapsize 5
+\i (00:01:31) zoom out 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom out 26.890 -0.863
+\i (00:01:31) trapsize 9
+\i (00:01:31) zoom out 1 
+\i (00:01:31) setwindow pcb
+\i (00:01:31) zoom out 26.862 -0.854
+\i (00:01:31) trapsize 19
+\i (00:01:32) zoom in 1 
+\i (00:01:32) setwindow pcb
+\i (00:01:32) zoom in 26.805 -0.562
+\i (00:01:32) trapsize 9
+\i (00:01:33) roam start
+\i (00:01:33) roam y -64
+\i (00:01:33) roam x -16
+\i (00:01:33) roam y -80
+\i (00:01:33) roam x -48
+\i (00:01:33) roam y -176
+\i (00:01:33) roam x -16
+\i (00:01:33) roam y -16
+\i (00:01:33) roam end
+\i (00:01:34) zoom out 1 
+\i (00:01:34) setwindow pcb
+\i (00:01:34) zoom out 27.333 -0.506
+\i (00:01:34) trapsize 19
+\i (00:01:34) zoom out 1 
+\i (00:01:34) setwindow pcb
+\i (00:01:34) zoom out 27.308 -0.513
+\i (00:01:34) trapsize 37
+\i (00:01:35) zoom out 1 
+\i (00:01:35) setwindow pcb
+\i (00:01:35) zoom out 27.143 -0.506
+\i (00:01:35) trapsize 75
+\i (00:01:35) roam start
+\i (00:01:35) roam x -48
+\i (00:01:35) roam x -160
+\i (00:01:35) roam y 32
+\i (00:01:35) roam x -112
+\i (00:01:35) roam y 32
+\i (00:01:35) roam x -224
+\i (00:01:35) roam y 48
+\i (00:01:35) roam x -256
+\i (00:01:35) roam y 48
+\i (00:01:35) roam x -160
+\i (00:01:35) roam end
+\i (00:01:35) save 
+\i (00:01:36) fillin yes 
+\t (00:01:37) Symbol 'glcd_lg2401283.psm' created.
+\i (00:01:37) generaledit 
+\i (00:01:46) color192 
+\i (00:01:46) setwindow cvf.dialog
+\i (00:01:46) cvf layer_mode
+\i (00:01:46) setwindow pcb
+\i (00:01:46) generaledit 
+\i (00:01:49) setwindow cvf.dialog
+\i (00:01:49) cvf layer_tree_item 'Stack-Up'
+\i (00:01:51) cvf layers_visible stack-up pin/soldermask_bottom FALSE
+\i (00:01:52) cvf layers_visible stack-up pin/soldermask_top FALSE
+\i (00:01:52) cvf apply
+\i (00:01:53) cvf layers_visible stack-up pin/soldermask_top TRUE
+\i (00:01:55) cvf apply
+\i (00:01:56) cvf layers_visible stack-up pin/soldermask_top FALSE
+\i (00:01:56) cvf layers_visible stack-up pin/soldermask_bottom TRUE
+\i (00:01:57) cvf apply
+\i (00:01:58) cvf layers_visible stack-up pin/soldermask_bottom FALSE
+\i (00:01:59) cvf layers_visible stack-up pin/soldermask_top TRUE
+\i (00:01:59) cvf layers_visible stack-up pin/soldermask_bottom TRUE
+\i (00:02:00) cvf apply
+\i (00:02:03) cvf select_color_cell 13
+\i (00:02:04) cvf okay
+\i (00:02:05) setwindow pcb
+\i (00:02:05) zoom in 1 
+\i (00:02:05) setwindow pcb
+\i (00:02:05) zoom in 9.918 -0.148
+\i (00:02:05) trapsize 37
+\i (00:02:05) zoom in 1 
+\i (00:02:05) setwindow pcb
+\i (00:02:05) zoom in 9.873 -0.140
+\i (00:02:05) trapsize 19
+\i (00:02:05) zoom out 1 
+\i (00:02:05) setwindow pcb
+\i (00:02:05) zoom out 9.858 -0.177
+\i (00:02:05) trapsize 37
+\i (00:02:05) zoom out 1 
+\i (00:02:05) setwindow pcb
+\i (00:02:05) zoom out 9.873 -0.207
+\i (00:02:05) trapsize 75
+\i (00:02:05) zoom out 1 
+\i (00:02:05) setwindow pcb
+\i (00:02:05) zoom out 9.934 -0.312
+\i (00:02:05) trapsize 150
+\i (00:02:05) zoom out 1 
+\i (00:02:05) setwindow pcb
+\i (00:02:05) zoom out 10.053 -0.552
+\i (00:02:05) trapsize 300
+\i (00:02:06) zoom in 1 
+\i (00:02:06) setwindow pcb
+\i (00:02:06) zoom in 27.310 0.886
+\i (00:02:06) trapsize 150
+\i (00:02:06) drag_start grid 31.354 1.755
+\i (00:02:07) drag_stop -0.372 -2.439
+\i (00:02:07) zoom in 1 
+\i (00:02:07) setwindow pcb
+\i (00:02:07) zoom in 0.197 -1.571
+\i (00:02:07) trapsize 75
+\i (00:02:07) zoom in 1 
+\i (00:02:07) setwindow pcb
+\i (00:02:07) zoom in 0.212 -1.571
+\i (00:02:07) trapsize 37
+\i (00:02:08) zoom out 1 
+\i (00:02:08) setwindow pcb
+\i (00:02:08) zoom out 2.085 -1.481
+\i (00:02:08) trapsize 75
+\i (00:02:10) prepopup 4.946 0.047
+\i (00:02:11) pop dyn_option_select @:@Delete 
+\i (00:02:11) delete 
+\i (00:02:11) generaledit 
+\i (00:02:13) add pin 
+\t (00:02:13) Using 'PAD40CIR28D.pad'.
+\i (00:02:14) setwindow form.mini
+\i (00:02:14) FORM mini pad_browse  
+\i (00:02:22) fillin "Pad35cir25d"
+\t (00:02:22) Using 'PAD35CIR25D.pad'.
+\i (00:02:23) setwindow pcb
+\i (00:02:23) pick grid 1.246 -0.987
+\t (00:02:23) last pick:  0.000 0.000
+\t (00:02:23) Using 'PAD35CIR25D.pad'.
+\i (00:02:23) prepopup 1.126 -0.507
+\i (00:02:23) done 
+\t (00:02:23) Exiting from Add Pin.
+\i (00:02:24) generaledit 
+\i (00:02:25) undo 
+\i (00:02:25) generaledit 
+\i (00:02:26) prepopup 0.123 0.227
+\i (00:02:26) pick grid -0.941 0.601
+\t (00:02:26) last pick:  0.000 0.000
+\i (00:02:27) zoom out 1 
+\i (00:02:27) setwindow pcb
+\i (00:02:27) zoom out -0.357 1.065
+\i (00:02:27) trapsize 150
+\i (00:02:27) drag_start grid -2.124 1.935
+\i (00:02:27) drag_stop 30.262 -1.271
+\i (00:02:28) prepopup 18.158 0.197
+\i (00:02:28) pop dyn_option_select @:@Delete 
+\i (00:02:28) delete 
+\i (00:02:29) generaledit 
+\i (00:02:30) add pin 
+\t (00:02:30) Using 'PAD35CIR25D.pad'.
+\i (00:02:31) setwindow form.mini
+\i (00:02:31) FORM mini next_pin_number 1 
+\i (00:02:32) setwindow pcb
+\i (00:02:32) pick grid 1.262 -0.252
+\t (00:02:32) last pick:  0.000 0.000
+\t (00:02:32) Using 'PAD35CIR25D.pad'.
+\i (00:02:33) prepopup 1.381 -0.612
+\i (00:02:33) done 
+\t (00:02:33) Exiting from Add Pin.
+\i (00:02:33) generaledit 
+\i (00:02:33) zoom in 1 
+\i (00:02:33) setwindow pcb
+\i (00:02:33) zoom in 2.280 -0.971
+\i (00:02:33) trapsize 75
+\i (00:02:34) zoom in 1 
+\i (00:02:34) setwindow pcb
+\i (00:02:34) zoom in 2.370 -0.956
+\i (00:02:34) trapsize 37
+\i (00:02:34) roam start
+\i (00:02:34) roam x -80
+\i (00:02:34) roam y -48
+\i (00:02:34) roam x -16
+\i (00:02:34) roam y -16
+\i (00:02:34) roam end
+\i (00:02:44) color192 
+\i (00:02:44) setwindow cvf.dialog
+\i (00:02:44) cvf layer_mode
+\i (00:02:44) setwindow pcb
+\i (00:02:44) generaledit 
+\i (00:02:45) setwindow cvf.dialog
+\i (00:02:45) cvf layer_tree_item 'Display'
+\i (00:02:46) cvf layer_tree_item 'Stack-Up'
+\i (00:02:47) cvf layers_visible stack-up pin/soldermask_top FALSE
+\i (00:02:48) cvf apply
+\i (00:02:49) cvf layers_visible stack-up pin/soldermask_bottom FALSE
+\i (00:02:49) cvf layers_visible stack-up pin/soldermask_top TRUE
+\i (00:02:50) cvf apply
+\i (00:02:51) cvf layers_visible stack-up pin/soldermask_top FALSE
+\i (00:02:51) cvf apply
+\i (00:02:52) cvf layers_visible stack-up pin/soldermask_bottom TRUE
+\i (00:02:52) cvf layers_visible stack-up pin/soldermask_top TRUE
+\i (00:02:53) cvf apply
+\i (00:02:53) cvf okay
+\i (00:02:54) setwindow pcb
+\i (00:02:54) zoom out 1 
+\i (00:02:54) setwindow pcb
+\i (00:02:54) zoom out 5.491 -3.054
+\i (00:02:54) trapsize 75
+\i (00:02:54) zoom out 1 
+\i (00:02:54) setwindow pcb
+\i (00:02:54) zoom out 5.177 -2.919
+\i (00:02:54) trapsize 150
+\i (00:02:55) zoom in 1 
+\i (00:02:55) setwindow pcb
+\i (00:02:55) zoom in 4.069 -0.193
+\i (00:02:55) trapsize 75
+\i (00:02:55) zoom in 1 
+\i (00:02:55) setwindow pcb
+\i (00:02:55) zoom in 4.069 -0.193
+\i (00:02:55) trapsize 37
+\i (00:02:56) zoom out 1 
+\i (00:02:56) setwindow pcb
+\i (00:02:56) zoom out 3.575 0.024
+\i (00:02:56) trapsize 75
+\i (00:02:56) zoom out 1 
+\i (00:02:56) setwindow pcb
+\i (00:02:56) zoom out 3.574 0.024
+\i (00:02:56) trapsize 150
+\i (00:02:56) zoom out 1 
+\i (00:02:56) setwindow pcb
+\i (00:02:56) zoom out 3.575 0.025
+\i (00:02:56) trapsize 300
+\i (00:02:59) save 
+\i (00:03:00) fillin yes 
+\t (00:03:00) Symbol 'glcd_lg2401283.psm' created.
+\i (00:03:00) generaledit 
+\i (00:10:57) exit 
+\t (00:10:58)     Journal end - Sun May 05 10:36:03 2019

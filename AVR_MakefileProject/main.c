@@ -35,14 +35,20 @@ void main( void )
     UART0_WaitAnyKey();
     while ( 1 )
     {
-        char ch = UART0_TryReadKey(); // UART0_WaitAnyKey();
+        char ch = 
+            // /* 
+            UART0_TryReadKey(); 
+            // */ UART0_WaitAnyKey();
+
+        // const fixedpt arg = fixedpt_rconst( LITERAL_PI * 0.1 );
+        ch = 'e';
 
         switch ( ch )
         {
         case 'q':
-            Cam.ReadOnly_DirectionRadian -= 256; break;
+            Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.1 ); break;
         case 'e':
-            Cam.ReadOnly_DirectionRadian += 256; break;
+            Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.1 ); break;
         case 'w':
             Cam.Position.x += 5; break;
         case 's':
@@ -56,7 +62,7 @@ void main( void )
         VBuffer_Clear();
         CalculateTranformCache( &Cam );
         CDrawArgs_DrawOnDisplayBufferPerspective( &Arg, &Cam );
-        LCDDevice__Render();
+        LCDDevice__Render(); 
     }
 }
 #if 0
