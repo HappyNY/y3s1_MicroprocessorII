@@ -17,7 +17,7 @@
  */
 #define DECLARE_LINE_VECTOR(Identifier) extern const FLineVector Identifier;
 
-#define CAMERA_FOV 75.0
+#define CAMERA_FOV 125.0
 #define MINIMAL_VISIBLE_DISTANCE 500.0
 #define STANDARD_DISTANCE_IN_UNITS 100.0
 
@@ -39,13 +39,7 @@ typedef struct FLineInfo {
 typedef struct FLineVector {
     FLineInfo const * Lines;
     uint8 NumLines;
-} FLineVector;
-
-typedef struct CMonocolorBuffer {
-    uint8 Width;
-    uint8 Height;
-    byte* Buffer;
-} CMonocolorBuffer;
+} FLineVector; 
 
 typedef struct CDrawArgs {
     FLineVector Mesh;

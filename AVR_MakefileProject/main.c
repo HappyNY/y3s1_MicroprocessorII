@@ -4,8 +4,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include "Display.h"
-
-extern inline void VBuffer_Clear();
+ 
 
 /* DEVICE CONTROLLER STATICS */ 
 volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
@@ -33,6 +32,14 @@ void main( void )
     CalculateTranformCache( &Cam );
 
     UART0_WaitAnyKey();
+    {    
+        byte x = 0, y = 0;
+        VBuffer_Clear();
+        VBuffer_DrawString( &x, &y, "3D TEST", false );
+        LCDDevice__Render();
+    }
+
+    UART0_WaitAnyKey();
     while ( 1 )
     {
         char ch = 
@@ -40,15 +47,14 @@ void main( void )
             UART0_TryReadKey(); 
             // */ UART0_WaitAnyKey();
 
-        // const fixedpt arg = fixedpt_rconst( LITERAL_PI * 0.1 );
-        ch = 'e';
+        // const fixedpt arg = fixedpt_rconst( LITERAL_PI * 0.1 ); 
 
         switch ( ch )
         {
         case 'q':
-            Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.1 ); break;
+            Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
         case 'e':
-            Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.1 ); break;
+            Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
         case 'w':
             Cam.Position.x += 5; break;
         case 's':

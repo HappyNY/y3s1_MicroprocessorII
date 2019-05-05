@@ -95,12 +95,16 @@
       (DisplayName "pstchip.dat")))
   (Folder "Referenced Projects")
   (PartMRUSelector
-    (LM3940/TO263
-      (FullPartName "LM3940/TO263.Normal")
-      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\REGULATOR.OLB")
+    (CAP
+      (FullPartName "CAP.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
       (DeviceIndex "0"))
     (GND
       (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (LM3940/TO263
+      (FullPartName "LM3940/TO263.Normal")
+      (LibraryName "D:\PROGRAM FILES\ORCAD\TOOLS\CAPTURE\LIBRARY\REGULATOR.OLB")
       (DeviceIndex "0"))
     (R
       (FullPartName "R.Normal")
@@ -126,21 +130,11 @@
   (GlobalState
     (FileView
       (Path "Design Resources")
-      (Path "Design Resources"
-         "D:\ONEDRIVE\EDU\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Schematic\display.dsn")
-      (Path "Design Resources"
-         "D:\ONEDRIVE\EDU\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Schematic\display.dsn"
-         "SCHEMATIC1")
-      (Path "Design Resources"
-         "D:\ONEDRIVE\EDU\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Schematic\display.dsn"
-         "Design Cache")
+      (Path "Design Resources" ".\display.dsn")
+      (Path "Design Resources" ".\display.dsn" "SCHEMATIC1")
       (Path "Design Resources" "Library")
-      (Path "Design Resources" "Library"
-         "D:\ONEDRIVE\EDU\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Schematic\lib.olb")
       (Path "Outputs")
-      (Select "Design Resources"
-         "D:\ONEDRIVE\EDU\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Schematic\display.dsn"
-         "SCHEMATIC1" "DISPLAY"))
+      (Select "Design Resources" ".\display.dsn" "SCHEMATIC1" "DISPLAY"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
@@ -151,11 +145,12 @@
       (Type "COrSchematicDoc")
       (Frame
         (Placement "44 0 1 -1 -1 -8 -31 78 1211 78 567")
-        (Scroll "573 357")
+        (Scroll "727 731")
         (Zoom "200")
         (Occurrence "/"))
       (Path
          "D:\ONEDRIVE\EDU\Y3_S1\MICROPROCESSOR_II\P190316_MAKEFILEPROJAVRGCC\DOCS\SCHEMATIC\DISPLAY.DSN")
       (Schematic "SCHEMATIC1")
       (Page "DISPLAY")))
-  (ISPCBBASICLICENSE "false"))
+  (ISPCBBASICLICENSE "false")
+  (MPSSessionName "Kang"))
