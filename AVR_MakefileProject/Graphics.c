@@ -19,7 +19,7 @@ static inline fixedpt dot( FPointFP a, FPointFP b )
 
 static inline fixedpt sz( FPointFP a )
 {
-    return fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
+    return fixedpt_sqrt( dot( a, a ) );//fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
 }
 
 extern inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTransform* Camera, int8* DegreesWhenVisible, int16* Distance );
@@ -45,8 +45,8 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     }
 
     // acos(dot(a,b) / (sz(a)*sz(b)))
-    AngleBetween = fixedpt_div( dot( DirectionVector, CameraDirectionUnitVector ), DistanceFromCamera );
-    AngleBetween = fixedpt_acos( AngleBetween );
+    AngleBetween = fixedpt_div( dot( DirectionVector, CameraDirectionUnitVector ), DistanceFromCamera ); 
+    AngleBetween = fixedpt_acos_half( AngleBetween );
     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
     *Distance = fixedpt_toint( DistanceFromCamera );
@@ -89,7 +89,7 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const CDrawArgs * Instance, const
     if ( !bIsVisibleArg )
     {
         // Object is invisible.
-        log_verbose( "Culled because of invisibility" );
+        log_verbose( "Culled because of invisibility" ); 
         return;
     }
     
@@ -114,6 +114,8 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const CDrawArgs * Instance, const
             y1 = scale( arg->End.y ) + centerY;
             log_verbose( "Draw args %d, %d to %d, %d", x0, y0, x1, y1 );
             // Draw
+
+            // @todo. Cull line before draw using rectangle.
             VBuffer_DrawLine( x0, y0, x1, y1 );
 
             ++arg;

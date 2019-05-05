@@ -148,3 +148,34 @@ void TListNode_Remove( TListNode * const pNode )
     TListNode_Delete( pNode );
 }
 
+
+void *TryBinarySearch( void *key, void *base, uint16 const NumItems, uint8 const ItemSize, int8( *Comparator )( void const *, void const * ) )
+{
+    uint16 p = 0;
+    uint16 n = NumItems;
+    uint16 v = NumItems >> 1;
+
+    while ( 1 )
+    {
+        void * entry = (byte *) base + v * ItemSize;
+
+        int8 comp_v = Comparator( key, entry );
+        if ( comp_v == 0 )
+            return entry;
+        else if ( comp_v < 0 )
+            n = v;
+        else
+            p = v;
+
+        if ( n - p <= 1 )
+        {
+            while ( v < NumItems ) {
+                entry = (byte*) base + v++ * ItemSize;
+                if ( Comparator( key, entry ) <= 0 )
+                    break;
+            }
+            return entry;
+        }
+        v = ( n + p ) >> 1;
+    }
+}

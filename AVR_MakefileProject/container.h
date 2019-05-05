@@ -5,6 +5,16 @@
 #include <string.h>
 #include "memory128.h"
 
+// Tries binary search, returns the pointer of given element. 
+// If there's no matching element, returns the element which is larger than the key.
+void *TryBinarySearch(
+    void *key,
+    void *base,
+    uint16 const NumItems,
+    uint8 const ItemSize,
+    int8( *Comparator )( void const *, void const * )
+);
+
 /** Dynamic array. All struct elements are read only. */
 // N must be 8 * byte size 
 typedef struct TArray {
@@ -54,6 +64,7 @@ inline void* TArray_At( TArray* const pArray, size_type Index )
     assertf( (void*) pCursor < GetMemoryBound( pArray->_data ), "Invalid memory access!" );
     return pCursor;
 }
+
 
 inline void TArray_Initialize( TArray* const pArray, const uint8 ElementSize, const size_type Capacity )
 {

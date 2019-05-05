@@ -35,7 +35,7 @@ void main( void )
     {    
         byte x = 0, y = 0;
         VBuffer_Clear();
-        VBuffer_DrawString( &x, &y, "3D TEST", false );
+        // VBuffer_DrawString( &x, &y, "3D TEST", false );
         LCDDevice__Render();
     }
 

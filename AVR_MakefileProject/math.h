@@ -15,6 +15,6 @@ inline int16 abs16( int16 val ) { return val > 0 ? val : -val; }
 inline int16 max16( int16 a, int16 b ) { return a > b ? a : b; }
 inline int16 min16( int16 a, int16 b ) { return a < b ? a : b; }
 inline int16 clamp16( int16 val, int16 min, int16 max ) { return math_clamp( val, min, max ); }
-fixedpt fixedpt_atan( fixedpt rad );
-fixedpt fixedpt_asin( fixedpt rad );
-inline fixedpt fixedpt_acos( fixedpt rad ) { return FIXEDPT_HALF_PI - fixedpt_asin( rad ); }
+fixedpt fixedpt_atan( fixedpt val );
+fixedpt fixedpt_asin( fixedpt val );
+fixedpt fixedpt_acos_half( fixedpt val );

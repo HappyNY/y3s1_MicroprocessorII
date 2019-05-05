@@ -84,9 +84,6 @@ InitializeDevice:
  ;  main.c:151: }
 	ret	
 	.size	InitializeDevice, .-InitializeDevice
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"3D TEST"
 	.section	.text.startup,"ax",@progbits
 .global	main
 	.type	main, @function
@@ -95,16 +92,16 @@ main:
 	push r29		 ; 
 	in r28,__SP_L__	 ; 
 	in r29,__SP_H__	 ; 
-	sbiw r28,25	 ; ,
+	sbiw r28,23	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 25 */
-/* stack size = 27 */
-.L__stack_usage = 27
+/* frame size = 23 */
+/* stack size = 25 */
+.L__stack_usage = 25
  ;  main.c:17:     InitializeDevice();
 	call InitializeDevice	 ; 
  ;  main.c:18:     CSerialSender_Initialize( &UART0Sender );
@@ -143,23 +140,8 @@ main:
 	call CalculateTranformCache	 ; 
  ;  main.c:34:     UART0_WaitAnyKey();
 	call UART0_WaitAnyKey	 ; 
- ;  main.c:36:         byte x = 0, y = 0;
-	std Y+25,__zero_reg__	 ;  x,
- ;  main.c:36:         byte x = 0, y = 0;
-	std Y+24,__zero_reg__	 ;  y,
  ;  main.c:37:         VBuffer_Clear();
 	call VBuffer_Clear	 ; 
- ;  main.c:38:         VBuffer_DrawString( &x, &y, "3D TEST", false );
-	ldi r19,0		 ; 
-	ldi r18,0		 ; 
-	ldi r20,lo8(.LC0)	 ; ,
-	ldi r21,hi8(.LC0)	 ; ,
-	movw r22,r28	 ; ,
-	subi r22,-24	 ; ,
-	sbci r23,-1	 ; ,
-	movw r24,r28	 ; ,
-	adiw r24,25	 ; ,
-	call VBuffer_DrawString	 ; 
  ;  main.c:39:         LCDDevice__Render();
 	call LCDDevice__Render	 ; 
  ;  main.c:42:     UART0_WaitAnyKey();
@@ -206,16 +188,16 @@ main:
 	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	subi r24,11	 ;  tmp59,
+	subi r24,11	 ;  tmp57,
 	sbci r25,8	 ; ,
 	sbc r26,__zero_reg__	 ; 
 	sbc r27,__zero_reg__	 ; 
 .L11:
  ;  main.c:57:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-	std Y+5,r24	 ;  Cam.ReadOnly_DirectionRadian, tmp61
-	std Y+6,r25	 ;  Cam.ReadOnly_DirectionRadian, tmp61
-	std Y+7,r26	 ;  Cam.ReadOnly_DirectionRadian, tmp61
-	std Y+8,r27	 ;  Cam.ReadOnly_DirectionRadian, tmp61
+	std Y+5,r24	 ;  Cam.ReadOnly_DirectionRadian, tmp59
+	std Y+6,r25	 ;  Cam.ReadOnly_DirectionRadian, tmp59
+	std Y+7,r26	 ;  Cam.ReadOnly_DirectionRadian, tmp59
+	std Y+8,r27	 ;  Cam.ReadOnly_DirectionRadian, tmp59
  ;  main.c:57:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
 	rjmp .L7		 ; 
 .L3:
@@ -224,7 +206,7 @@ main:
 	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	subi r24,-11	 ;  tmp61,
+	subi r24,-11	 ;  tmp59,
 	sbci r25,-9	 ; ,
 	sbci r26,-1	 ; ,
 	sbci r27,-1	 ; ,
@@ -233,35 +215,35 @@ main:
  ;  main.c:59:             Cam.Position.x += 5; break;
 	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
 	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
-	adiw r24,5	 ;  tmp63,
+	adiw r24,5	 ;  tmp61,
 .L13:
  ;  main.c:61:             Cam.Position.x -= 5; break;
-	std Y+2,r25	 ;  Cam.Position.x, tmp65
-	std Y+1,r24	 ;  Cam.Position.x, tmp65
+	std Y+2,r25	 ;  Cam.Position.x, tmp63
+	std Y+1,r24	 ;  Cam.Position.x, tmp63
  ;  main.c:61:             Cam.Position.x -= 5; break;
 	rjmp .L7		 ; 
 .L8:
  ;  main.c:61:             Cam.Position.x -= 5; break;
 	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
 	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
-	sbiw r24,5	 ;  tmp65,
+	sbiw r24,5	 ;  tmp63,
 	rjmp .L13		 ; 
 .L5:
  ;  main.c:63:             Cam.Position.y -= 5; break;
 	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
 	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
-	sbiw r24,5	 ;  tmp67,
+	sbiw r24,5	 ;  tmp65,
 .L12:
  ;  main.c:65:             Cam.Position.y += 5; break;
-	std Y+4,r25	 ;  Cam.Position.y, tmp69
-	std Y+3,r24	 ;  Cam.Position.y, tmp69
+	std Y+4,r25	 ;  Cam.Position.y, tmp67
+	std Y+3,r24	 ;  Cam.Position.y, tmp67
  ;  main.c:65:             Cam.Position.y += 5; break;
 	rjmp .L7		 ; 
 .L6:
  ;  main.c:65:             Cam.Position.y += 5; break;
 	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
 	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
-	adiw r24,5	 ;  tmp69,
+	adiw r24,5	 ;  tmp67,
 	rjmp .L12		 ; 
 	.size	main, .-main
 .global	__INTERRUPT_LOCK_MUTEX__
@@ -271,5 +253,4 @@ main:
 __INTERRUPT_LOCK_MUTEX__:
 	.zero	1
 	.ident	"GCC: (GNU) 8.3.0"
-.global __do_copy_data
 .global __do_clear_bss

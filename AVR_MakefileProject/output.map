@@ -1,33 +1,33 @@
 Archive member included to satisfy reference by file (symbol)
 
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o (__mulsi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o (__mulsi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodhi4.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__divmodhi4)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__divmodhi4)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodsi4.o)
-                              C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o (__divmodsi4)
+                              C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o (__divmodsi4)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_negsi2.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodsi4.o) (__negsi2)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_exit.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51/crtatmega128.o (exit)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_copy_data.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o (__do_copy_data)
+                              C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o (__do_copy_data)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_clear_bss.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o (__do_clear_bss)
+                              C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o (__do_clear_bss)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muluhisi3.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsi3.o) (__muluhisi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muldi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__muldi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__muldi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muldi3_6.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muldi3.o) (__muldi3_6)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsidi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__mulsidi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__mulsidi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_umulsidi3.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsidi3.o) (__umulsidi3_helper)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divdi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o (__moddi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o (__moddi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivdi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o (__umoddi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o (__umoddi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmod64.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divdi3.o) (__udivmod64)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_negdi2.o)
@@ -37,15 +37,15 @@ c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_prologue.o)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_epilogue.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divdi3.o) (__epilogue_restores__)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_ashldi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__ashldi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__ashldi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_ashrdi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__ashrdi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__ashrdi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_adddi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o (__adddi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o (__adddi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_subdi3.o)
-                              C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o (__subdi3)
+                              C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o (__subdi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_cmpdi2_s8.o)
-                              C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o (__cmpdi2_s8)
+                              C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o (__cmpdi2_s8)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmodhi4.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodhi4.o) (__udivmodhi4)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmodsi4.o)
@@ -53,19 +53,19 @@ c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmodsi4.o)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_umulhisi3.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muluhisi3.o) (__umulhisi3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__addsf3)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__addsf3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3x.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3.o) (__addsf3x)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(divsf3.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__divsf3)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__divsf3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(divsf3x.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(divsf3.o) (__divsf3x)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fixsfsi.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__fixsfsi)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__fixsfsi)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fixunssfsi.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fixsfsi.o) (__fixunssfsi)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(floatsisf.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__floatsisf)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__floatsisf)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_inf.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3x.o) (__fp_inf)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_nan.o)
@@ -81,21 +81,21 @@ c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_spl
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_zero.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3x.o) (__fp_zero)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(mulsf3.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o (__mulsf3)
+                              C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o (__mulsf3)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(mulsf3x.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(mulsf3.o) (__mulsf3x)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
-                              C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o (malloc)
+                              C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o (malloc)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(memcpy.o)
-                              C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o (memcpy)
+                              C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o (memcpy)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strcpy.o)
-                              C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o (strcpy)
+                              C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o (strcpy)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(itoa_ncheck.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o (__itoa_ncheck)
+                              C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o (__itoa_ncheck)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(utoa_ncheck.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(itoa_ncheck.o) (__utoa_common)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(sprintf.o)
-                              C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o (sprintf)
+                              C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o (sprintf)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(vfprintf_std.o)
                               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(sprintf.o) (vfprintf)
 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strnlen_P.o)
@@ -112,82 +112,92 @@ c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(ultoa_
 Allocating common symbols
 Common symbol       size              file
 
-UART0Sender         0x7               C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
+UART0Sender         0x7               C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
 __brkval            0x2               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
-LCDBuffer           0x2               C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
+LCDBuffer           0x2               C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
 __flp               0x2               c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
 
 Discarded input sections
 
  .data          0x00000000        0x0 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51/crtatmega128.o
  .bss           0x00000000        0x0 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51/crtatmega128.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccYBxPqE.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccYBxPqE.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccYBxPqE.o
- .comment       0x00000000       0x12 C:\Users\Kang\AppData\Local\Temp\ccYBxPqE.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccqQZxqe.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccqQZxqe.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccqQZxqe.o
+ .comment       0x00000000       0x12 C:\Users\Kang\AppData\Local\Temp\ccqQZxqe.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
  .rodata.internal_logslow.str1.1
-                0x00000000       0x1b C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
+                0x00000000       0x1b C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
  .text.internal_logslow
-                0x00000000      0x1ca C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cck7ROCv.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cck7ROCv.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cck7ROCv.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000      0x1ca C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc3H3kap.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc3H3kap.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc3H3kap.o
+ .rodata.CGROM  0x00000000      0x800 C:\Users\Kang\AppData\Local\Temp\cc3H3kap.o
+ .comment       0x00000000       0x12 C:\Users\Kang\AppData\Local\Temp\cc3H3kap.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TArray_AddLast
-                0x00000000       0xe8 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000       0xe8 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TArray_RemoveElement
-                0x00000000       0x84 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000       0x84 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TList_Dispose
-                0x00000000       0x9a C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000       0x9a C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TListNode_New
-                0x00000000       0x88 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000       0x88 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TListNode_Delete
-                0x00000000       0x5c C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000       0x5c C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TList_PushFront
-                0x00000000       0xc2 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000       0xc2 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TList_PopBack
-                0x00000000       0x82 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000000       0x82 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
  .text.TListNode_Remove
-                0x00000000       0x7a C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
+                0x00000000       0x7a C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
  .text.VBuffer_DrawChar
-                0x00000000      0x35a C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
+                0x00000000      0x35a C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+ .rodata.VBuffer_DrawString.str1.1
+                0x00000000       0x28 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+ .text.VBuffer_DrawString
+                0x00000000      0x416 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
  .text.CalculateAngleIfVIsible
-                0x00000000      0x3d8 C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccPtc18F.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccPtc18F.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccPtc18F.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
+                0x00000000      0x38e C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccbkMOQX.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccbkMOQX.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccbkMOQX.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
  .text.InitializeDevice
-                0x00000000       0x12 C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
- .text.fixedpt_str
-                0x00000000      0x44e C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
- .text.fixedpt_sqrt
-                0x00000000      0x248 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
+                0x00000000       0x12 C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
  .text.fixedpt_atan
-                0x00000000      0x190 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccwWOXRW.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccwWOXRW.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccwWOXRW.o
- .comment       0x00000000       0x12 C:\Users\Kang\AppData\Local\Temp\ccwWOXRW.o
- .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
- .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
- .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
+                0x00000000      0x190 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .text.fixedpt_asin
+                0x00000000      0x12a C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .text.fixedpt_ln
+                0x00000000      0x396 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .text.fixedpt_exp
+                0x00000000      0x290 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .text.fixedpt_str
+                0x00000000      0x44e C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccsbQv7m.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccsbQv7m.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccsbQv7m.o
+ .comment       0x00000000       0x12 C:\Users\Kang\AppData\Local\Temp\ccsbQv7m.o
+ .text          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+ .data          0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+ .bss           0x00000000        0x0 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
  .text          0x00000000        0x0 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsi3.o)
  .data          0x00000000        0x0 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsi3.o)
  .bss           0x00000000        0x0 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsi3.o)
@@ -669,17 +679,17 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51/crtatmega128.o
-LOAD C:\Users\Kang\AppData\Local\Temp\ccYBxPqE.o
-LOAD C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
-LOAD C:\Users\Kang\AppData\Local\Temp\cck7ROCv.o
-LOAD C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
-LOAD C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-LOAD C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
-LOAD C:\Users\Kang\AppData\Local\Temp\ccPtc18F.o
-LOAD C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
-LOAD C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
-LOAD C:\Users\Kang\AppData\Local\Temp\ccwWOXRW.o
-LOAD C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccqQZxqe.o
+LOAD C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
+LOAD C:\Users\Kang\AppData\Local\Temp\cc3H3kap.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccbkMOQX.o
+LOAD C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccsbQv7m.o
+LOAD C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
 START GROUP
 LOAD c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a
 LOAD c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a
@@ -784,7 +794,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x2ec0
+.text           0x00000000     0x2606
  *(.vectors)
  .vectors       0x00000000       0x8c c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51/crtatmega128.o
                 0x00000000                __vector_default
@@ -878,249 +888,248 @@ END GROUP
                 0x000000ce                . = ALIGN (0x2)
  *(.text.*)
  .text.outputmsg_uart0
-                0x000000ce       0x3c C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
+                0x000000ce       0x3c C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
                 0x000000ce                outputmsg_uart0
  .text.internal_assertion_failed
-                0x0000010a       0x5e C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
+                0x0000010a       0x5e C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
                 0x0000010a                internal_assertion_failed
  .text.FString_Initialize
-                0x00000168       0x6c C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000168       0x6c C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
                 0x00000168                FString_Initialize
  .text.TList_PushBack
-                0x000001d4       0xc2 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x000001d4       0xc2 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
                 0x000001d4                TList_PushBack
  .text.TList_PopFront
-                0x00000296       0x82 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
+                0x00000296       0x82 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
                 0x00000296                TList_PopFront
- .text.Malloc   0x00000318       0xdc C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-                0x00000318                Malloc
+ .text.TryBinarySearch
+                0x00000318       0xd0 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
+                0x00000318                TryBinarySearch
+ .text.Malloc   0x000003e8       0xdc C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+                0x000003e8                Malloc
  .text.LCDDevice__Initialize
-                0x000003f4       0x12 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-                0x000003f4                LCDDevice__Initialize
+                0x000004c4       0x12 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+                0x000004c4                LCDDevice__Initialize
  .text.LCDDevice__Render
-                0x00000406      0x1a2 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-                0x00000406                LCDDevice__Render
+                0x000004d6      0x1a2 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+                0x000004d6                LCDDevice__Render
  .text.VBuffer_Clear
-                0x000005a8       0x14 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-                0x000005a8                VBuffer_Clear
- .text.VBuffer_DrawString
-                0x000005bc      0x416 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-                0x000005bc                VBuffer_DrawString
+                0x00000678       0x14 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+                0x00000678                VBuffer_Clear
  .text.VBuffer_DrawLine
-                0x000009d2      0x18c C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-                0x000009d2                VBuffer_DrawLine
+                0x0000068c      0x18c C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+                0x0000068c                VBuffer_DrawLine
  .text.CalculateTranformCache
-                0x00000b5e       0x58 C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
-                0x00000b5e                CalculateTranformCache
+                0x00000818       0x58 C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
+                0x00000818                CalculateTranformCache
  .text.CDrawArgs_DrawOnDisplayBufferPerspective
-                0x00000bb6      0x550 C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
-                0x00000bb6                CDrawArgs_DrawOnDisplayBufferPerspective
+                0x00000870      0x510 C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
+                0x00000870                CDrawArgs_DrawOnDisplayBufferPerspective
  .text.startup.main
-                0x00001106      0x12e C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
-                0x00001106                main
- .text.fixedpt_asin
-                0x00001234      0x12a C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
-                0x00001234                fixedpt_asin
+                0x00000d80      0x114 C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
+                0x00000d80                main
+ .text.compare_acos_table
+                0x00000e94       0x14 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .text.fixedpt_acos_half
+                0x00000ea8       0x58 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+                0x00000ea8                fixedpt_acos_half
  .text.fixedpt_sin
-                0x0000135e      0x20e C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
-                0x0000135e                fixedpt_sin
- .text.fixedpt_ln
-                0x0000156c      0x396 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
-                0x0000156c                fixedpt_ln
- .text.fixedpt_exp
-                0x00001902      0x290 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
-                0x00001902                fixedpt_exp
+                0x00000f00      0x20e C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+                0x00000f00                fixedpt_sin
+ .text.fixedpt_sqrt
+                0x0000110e      0x1ca C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+                0x0000110e                fixedpt_sqrt
  .text.InitializeTX0SerialOutput
-                0x00001b92       0x18 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001b92                InitializeTX0SerialOutput
+                0x000012d8       0x18 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x000012d8                InitializeTX0SerialOutput
  .text.CSerialSender_Initialize
-                0x00001baa       0x14 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001baa                CSerialSender_Initialize
+                0x000012f0       0x14 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x000012f0                CSerialSender_Initialize
  .text.CSerialSender_QueueOutputString
-                0x00001bbe       0x66 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001bbe                CSerialSender_QueueOutputString
+                0x00001304       0x66 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x00001304                CSerialSender_QueueOutputString
  .text.CSerialSender_ConsumeOutputCharacter
-                0x00001c24       0xf2 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001c24                CSerialSender_ConsumeOutputCharacter
+                0x0000136a       0xf2 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x0000136a                CSerialSender_ConsumeOutputCharacter
  .text.__vector_20
-                0x00001d16       0x62 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001d16                __vector_20
+                0x0000145c       0x62 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x0000145c                __vector_20
  .text.CSerialSender_IsQueueEmpty
-                0x00001d78       0x16 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001d78                CSerialSender_IsQueueEmpty
+                0x000014be       0x16 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x000014be                CSerialSender_IsQueueEmpty
  .text.UART0_WaitAnyKey
-                0x00001d8e        0xa C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001d8e                UART0_WaitAnyKey
+                0x000014d4        0xa C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x000014d4                UART0_WaitAnyKey
  .text.UART0_TryReadKey
-                0x00001d98        0xc C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00001d98                UART0_TryReadKey
+                0x000014de        0xc C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x000014de                UART0_TryReadKey
  .text.libgcc.mul
-                0x00001da4       0x20 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsi3.o)
-                0x00001da4                __mulsi3
+                0x000014ea       0x20 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsi3.o)
+                0x000014ea                __mulsi3
  .text.libgcc.div
-                0x00001dc4       0x28 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodhi4.o)
-                0x00001dc4                _div
-                0x00001dc4                __divmodhi4
+                0x0000150a       0x28 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodhi4.o)
+                0x0000150a                _div
+                0x0000150a                __divmodhi4
  .text.libgcc.div
-                0x00001dec       0x2e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodsi4.o)
-                0x00001dec                __divmodsi4
+                0x00001532       0x2e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divmodsi4.o)
+                0x00001532                __divmodsi4
  .text.libgcc.div
-                0x00001e1a       0x10 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_negsi2.o)
-                0x00001e1a                __negsi2
+                0x00001560       0x10 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_negsi2.o)
+                0x00001560                __negsi2
  .text.libgcc.mul
-                0x00001e2a       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muluhisi3.o)
-                0x00001e2a                __muluhisi3
+                0x00001570       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muluhisi3.o)
+                0x00001570                __muluhisi3
  .text.libgcc.mul
-                0x00001e40       0x9e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muldi3.o)
-                0x00001e40                __muldi3
+                0x00001586       0x9e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muldi3.o)
+                0x00001586                __muldi3
  .text.libgcc.mul
-                0x00001ede       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muldi3_6.o)
-                0x00001ede                __muldi3_6
+                0x00001624       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_muldi3_6.o)
+                0x00001624                __muldi3_6
  .text.libgcc.mul
-                0x00001ef0       0x1e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsidi3.o)
-                0x00001ef0                __mulsidi3
+                0x00001636       0x1e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_mulsidi3.o)
+                0x00001636                __mulsidi3
  .text.libgcc.mul
-                0x00001f0e       0x56 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_umulsidi3.o)
-                0x00001f0e                __umulsidi3
-                0x00001f10                __umulsidi3_helper
+                0x00001654       0x56 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_umulsidi3.o)
+                0x00001654                __umulsidi3
+                0x00001656                __umulsidi3_helper
  .text.libgcc.div
-                0x00001f64       0x62 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divdi3.o)
-                0x00001f64                __moddi3
-                0x00001f68                __divdi3
-                0x00001f6a                __divdi3_moddi3
+                0x000016aa       0x62 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_divdi3.o)
+                0x000016aa                __moddi3
+                0x000016ae                __divdi3
+                0x000016b0                __divdi3_moddi3
  .text.libgcc.div
-                0x00001fc6       0x1c c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivdi3.o)
-                0x00001fc6                __umoddi3
-                0x00001fca                __udivdi3
-                0x00001fcc                __udivdi3_umoddi3
+                0x0000170c       0x1c c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivdi3.o)
+                0x0000170c                __umoddi3
+                0x00001710                __udivdi3
+                0x00001712                __udivdi3_umoddi3
  .text.libgcc.div
-                0x00001fe2       0xa2 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmod64.o)
-                0x00001fe2                __udivmod64
- .text.libgcc   0x00002084       0x20 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_negdi2.o)
-                0x00002084                __negdi2
+                0x00001728       0xa2 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmod64.o)
+                0x00001728                __udivmod64
+ .text.libgcc   0x000017ca       0x20 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_negdi2.o)
+                0x000017ca                __negdi2
  .text.libgcc.prologue
-                0x000020a4       0x38 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_prologue.o)
-                0x000020a4                __prologue_saves__
+                0x000017ea       0x38 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_prologue.o)
+                0x000017ea                __prologue_saves__
  .text.libgcc.prologue
-                0x000020dc       0x36 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_epilogue.o)
-                0x000020dc                __epilogue_restores__
+                0x00001822       0x36 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_epilogue.o)
+                0x00001822                __epilogue_restores__
  .text.libgcc.builtins
-                0x00002112       0x32 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_ashldi3.o)
-                0x00002112                __ashldi3
+                0x00001858       0x32 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_ashldi3.o)
+                0x00001858                __ashldi3
  .text.libgcc.builtins
-                0x00002144       0x3a c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_ashrdi3.o)
-                0x00002144                __ashrdi3
-                0x00002148                __lshrdi3
- .text.libgcc   0x0000217e       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_adddi3.o)
-                0x0000217e                __adddi3
- .text.libgcc   0x00002190       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_subdi3.o)
-                0x00002190                __subdi3
+                0x0000188a       0x3a c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_ashrdi3.o)
+                0x0000188a                __ashrdi3
+                0x0000188e                __lshrdi3
+ .text.libgcc   0x000018c4       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_adddi3.o)
+                0x000018c4                __adddi3
+ .text.libgcc   0x000018d6       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_subdi3.o)
+                0x000018d6                __subdi3
  .text.libgcc.div
-                0x000021a2       0x28 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmodhi4.o)
-                0x000021a2                __udivmodhi4
+                0x000018e8       0x28 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmodhi4.o)
+                0x000018e8                __udivmodhi4
  .text.libgcc.div
-                0x000021ca       0x44 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmodsi4.o)
-                0x000021ca                __udivmodsi4
+                0x00001910       0x44 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_udivmodsi4.o)
+                0x00001910                __udivmodsi4
  .text.libgcc.mul
-                0x0000220e       0x1e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_umulhisi3.o)
-                0x0000220e                __umulhisi3
+                0x00001954       0x1e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_umulhisi3.o)
+                0x00001954                __umulhisi3
  .text.avr-libc.fplib
-                0x0000222c        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3.o)
-                0x0000222c                __subsf3
-                0x0000222e                __addsf3
+                0x00001972        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3.o)
+                0x00001972                __subsf3
+                0x00001974                __addsf3
  .text.avr-libc.fplib
-                0x0000223a       0xcc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3x.o)
-                0x0000225c                __addsf3x
+                0x00001980       0xcc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(addsf3x.o)
+                0x000019a2                __addsf3x
  .text.avr-libc.fplib
-                0x00002306        0x8 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(divsf3.o)
-                0x00002306                __divsf3
+                0x00001a4c        0x8 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(divsf3.o)
+                0x00001a4c                __divsf3
  .text.avr-libc.fplib
-                0x0000230e       0xdc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(divsf3x.o)
-                0x0000232e                __divsf3x
-                0x00002334                __divsf3_pse
+                0x00001a54       0xdc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(divsf3x.o)
+                0x00001a74                __divsf3x
+                0x00001a7a                __divsf3_pse
  .text.avr-libc.fplib
-                0x000023ea        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fixsfsi.o)
-                0x000023ea                __fixsfsi
+                0x00001b30        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fixsfsi.o)
+                0x00001b30                __fixsfsi
  .text.avr-libc.fplib
-                0x000023f8       0x5e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fixunssfsi.o)
-                0x000023f8                __fixunssfsi
+                0x00001b3e       0x5e c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fixunssfsi.o)
+                0x00001b3e                __fixunssfsi
  .text.avr-libc.fplib
-                0x00002456       0x7a c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(floatsisf.o)
-                0x00002456                __floatunsisf
-                0x0000245a                __floatsisf
+                0x00001b9c       0x7a c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(floatsisf.o)
+                0x00001b9c                __floatunsisf
+                0x00001ba0                __floatsisf
  .text.avr-libc.fplib
-                0x000024d0        0xc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_inf.o)
-                0x000024d0                __fp_inf
+                0x00001c16        0xc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_inf.o)
+                0x00001c16                __fp_inf
  .text.avr-libc.fplib
-                0x000024dc        0x6 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_nan.o)
-                0x000024dc                __fp_nan
+                0x00001c22        0x6 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_nan.o)
+                0x00001c22                __fp_nan
  .text.avr-libc.fplib
-                0x000024e2        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_pscA.o)
-                0x000024e2                __fp_pscA
+                0x00001c28        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_pscA.o)
+                0x00001c28                __fp_pscA
  .text.avr-libc.fplib
-                0x000024f0        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_pscB.o)
-                0x000024f0                __fp_pscB
+                0x00001c36        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_pscB.o)
+                0x00001c36                __fp_pscB
  .text.avr-libc.fplib
-                0x000024fe       0x22 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_round.o)
-                0x000024fe                __fp_round
+                0x00001c44       0x22 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_round.o)
+                0x00001c44                __fp_round
  .text.avr-libc.fplib
-                0x00002520       0x44 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_split3.o)
-                0x00002520                __fp_split3
-                0x00002530                __fp_splitA
+                0x00001c66       0x44 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_split3.o)
+                0x00001c66                __fp_split3
+                0x00001c76                __fp_splitA
  .text.avr-libc.fplib
-                0x00002564        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_zero.o)
-                0x00002564                __fp_zero
-                0x00002566                __fp_szero
+                0x00001caa        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(fp_zero.o)
+                0x00001caa                __fp_zero
+                0x00001cac                __fp_szero
  .text.avr-libc.fplib
-                0x00002572        0x8 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(mulsf3.o)
-                0x00002572                __mulsf3
+                0x00001cb8        0x8 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(mulsf3.o)
+                0x00001cb8                __mulsf3
  .text.avr-libc.fplib
-                0x0000257a       0xd2 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(mulsf3x.o)
-                0x00002598                __mulsf3x
-                0x0000259e                __mulsf3_pse
+                0x00001cc0       0xd2 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libm.a(mulsf3x.o)
+                0x00001cde                __mulsf3x
+                0x00001ce4                __mulsf3_pse
  .text.avr-libc
-                0x0000264c      0x256 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
-                0x0000264c                malloc
-                0x00002780                free
+                0x00001d92      0x256 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
+                0x00001d92                malloc
+                0x00001ec6                free
  .text.avr-libc
-                0x000028a2       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(memcpy.o)
-                0x000028a2                memcpy
+                0x00001fe8       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(memcpy.o)
+                0x00001fe8                memcpy
  .text.avr-libc
-                0x000028b4        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strcpy.o)
-                0x000028b4                strcpy
+                0x00001ffa        0xe c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strcpy.o)
+                0x00001ffa                strcpy
  .text.avr-libc
-                0x000028c2       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(itoa_ncheck.o)
-                0x000028c2                __itoa_ncheck
+                0x00002008       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(itoa_ncheck.o)
+                0x00002008                __itoa_ncheck
  .text.avr-libc
-                0x000028d8       0x34 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(utoa_ncheck.o)
-                0x000028d8                __utoa_ncheck
-                0x000028da                __utoa_common
+                0x0000201e       0x34 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(utoa_ncheck.o)
+                0x0000201e                __utoa_ncheck
+                0x00002020                __utoa_common
  .text.avr-libc
-                0x0000290c       0x60 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(sprintf.o)
-                0x0000290c                sprintf
+                0x00002052       0x60 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(sprintf.o)
+                0x00002052                sprintf
  .text.avr-libc
-                0x0000296c      0x3e8 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(vfprintf_std.o)
-                0x0000296c                vfprintf
+                0x000020b2      0x3e8 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(vfprintf_std.o)
+                0x000020b2                vfprintf
  .text.avr-libc
-                0x00002d54       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strnlen_P.o)
-                0x00002d54                strnlen_P
+                0x0000249a       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strnlen_P.o)
+                0x0000249a                strnlen_P
  .text.avr-libc
-                0x00002d6a       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strnlen.o)
-                0x00002d6a                strnlen
+                0x000024b0       0x16 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strnlen.o)
+                0x000024b0                strnlen
  .text.avr-libc
-                0x00002d80       0x20 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strrev.o)
-                0x00002d80                strrev
+                0x000024c6       0x20 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(strrev.o)
+                0x000024c6                strrev
  .text.avr-libc
-                0x00002da0       0x60 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(fputc.o)
-                0x00002da0                fputc
+                0x000024e6       0x60 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(fputc.o)
+                0x000024e6                fputc
  .text.avr-libc
-                0x00002e00       0xbc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(ultoa_invert.o)
-                0x00002e00                __ultoa_invert
-                0x00002ebc                . = ALIGN (0x2)
+                0x00002546       0xbc c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(ultoa_invert.o)
+                0x00002546                __ultoa_invert
+                0x00002602                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00002ebc        0x0 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_exit.o)
-                0x00002ebc                _exit
-                0x00002ebc                exit
+ .fini9         0x00002602        0x0 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_exit.o)
+                0x00002602                _exit
+                0x00002602                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1139,17 +1148,17 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00002ebc        0x4 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_exit.o)
+ .fini0         0x00002602        0x4 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/avr51\libgcc.a(_exit.o)
  *(.fini0)
  *(.hightext)
  *(.hightext*)
  *(.progmemx.*)
-                0x00002ec0                . = ALIGN (0x2)
+                0x00002606                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
-                0x00002ec0                _etext = .
+                0x00002606                _etext = .
 
-.data           0x00800100      0x956 load address 0x00002ec0
+.data           0x00800100      0x384 load address 0x00002606
                 0x00800100                PROVIDE (__data_start = .)
  *(.data)
  .data          0x00800100        0x6 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
@@ -1157,62 +1166,58 @@ END GROUP
                 0x00800102                __malloc_heap_start
                 0x00800104                __malloc_margin
  *(.data*)
+ .data.acos_table
+                0x00800106      0x25e C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
  .rodata.internal_assertion_failed.str1.1
-                0x00800106       0x48 C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
+                0x00800364       0x48 C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
                                  0x4b (size before relaxing)
- .rodata.CGROM  0x0080014e      0x800 C:\Users\Kang\AppData\Local\Temp\cck7ROCv.o
-                0x0080014e                CGROM
  .rodata.Malloc.str1.1
-                0x0080094e       0x9a C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
+                0x008003ac       0x9a C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
  .rodata.LCDDevice__Render.str1.1
-                0x008009e8        0x7 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
- .rodata.VBuffer_DrawString.str1.1
-                0x008009ef       0x28 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
+                0x00800446        0x7 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
  .rodata.Triangle
-                0x00800a17        0x3 C:\Users\Kang\AppData\Local\Temp\ccPtc18F.o
-                0x00800a17                Triangle
+                0x0080044d        0x3 C:\Users\Kang\AppData\Local\Temp\ccbkMOQX.o
+                0x0080044d                Triangle
  .rodata.src_triangle
-                0x00800a1a        0xc C:\Users\Kang\AppData\Local\Temp\ccPtc18F.o
-                0x00800a1a                src_triangle
- .rodata.main.str1.1
-                0x00800a26        0x8 C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
+                0x00800450        0xc C:\Users\Kang\AppData\Local\Temp\ccbkMOQX.o
+                0x00800450                src_triangle
  .rodata.CSerialSender_ConsumeOutputCharacter.str1.1
-                0x00800a2e       0x27 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
+                0x0080045c       0x27 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
                                  0x33 (size before relaxing)
  *(.gnu.linkonce.r*)
-                0x00800a56                . = ALIGN (0x2)
- *fill*         0x00800a55        0x1 
-                0x00800a56                _edata = .
-                0x00800a56                PROVIDE (__data_end = .)
+                0x00800484                . = ALIGN (0x2)
+ *fill*         0x00800483        0x1 
+                0x00800484                _edata = .
+                0x00800484                PROVIDE (__data_end = .)
 
-.bss            0x00800a56        0xe
-                0x00800a56                PROVIDE (__bss_start = .)
+.bss            0x00800484        0xe
+                0x00800484                PROVIDE (__bss_start = .)
  *(.bss)
  *(.bss*)
  .bss.__INTERRUPT_LOCK_MUTEX__
-                0x00800a56        0x1 C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
-                0x00800a56                __INTERRUPT_LOCK_MUTEX__
+                0x00800484        0x1 C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
+                0x00800484                __INTERRUPT_LOCK_MUTEX__
  *(COMMON)
- COMMON         0x00800a57        0x2 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
-                0x00800a57                LCDBuffer
- COMMON         0x00800a59        0x7 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
-                0x00800a59                UART0Sender
- COMMON         0x00800a60        0x4 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
-                0x00800a60                __brkval
-                0x00800a62                __flp
-                0x00800a64                PROVIDE (__bss_end = .)
-                0x00002ec0                __data_load_start = LOADADDR (.data)
-                0x00003816                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800485        0x2 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+                0x00800485                LCDBuffer
+ COMMON         0x00800487        0x7 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
+                0x00800487                UART0Sender
+ COMMON         0x0080048e        0x4 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
+                0x0080048e                __brkval
+                0x00800490                __flp
+                0x00800492                PROVIDE (__bss_end = .)
+                0x00002606                __data_load_start = LOADADDR (.data)
+                0x0000298a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800a64        0x0
+.noinit         0x00800492        0x0
                 [!provide]                PROVIDE (__noinit_start = .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end = .)
-                0x00800a64                _end = .
-                0x00800a64                PROVIDE (__heap_start = .)
+                0x00800492                _end = .
+                0x00800492                PROVIDE (__heap_start = .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -1250,16 +1255,15 @@ END GROUP
 
 .comment        0x00000000       0x11
  *(.comment)
- .comment       0x00000000       0x11 C:\Users\Kang\AppData\Local\Temp\ccAjc3Cx.o
+ .comment       0x00000000       0x11 C:\Users\Kang\AppData\Local\Temp\cc8kYDrl.o
                                  0x12 (size before relaxing)
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\cck7ROCv.o
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\cciUJWzC.o
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccR1eEbQ.o
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccOTHNMd.o
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccPtc18F.o
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\cc6nB4uh.o
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\cch9Kvk6.o
- .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccRk6tEV.o
+ .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccM2Ckfz.o
+ .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccFksSyU.o
+ .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccI3Eqdq.o
+ .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccbkMOQX.o
+ .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\cc8TVw6z.o
+ .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccbfmUur.o
+ .comment       0x00000011       0x12 C:\Users\Kang\AppData\Local\Temp\ccrQx8Bm.o
  .comment       0x00000011       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(malloc.o)
  .comment       0x00000011       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(sprintf.o)
  .comment       0x00000011       0x12 c:/mingw/avrgcc/bin/../lib/gcc/avr/8.3.0/../../../../avr/lib/avr51\libc.a(vfprintf_std.o)

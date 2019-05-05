@@ -225,13 +225,13 @@ TArray_RemoveElement:
 /* stack size = 8 */
 .L__stack_usage = 8
 	movw r28,r24	 ;  pArray, pArray
- ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+ ;  container.h:63:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
 	ldd r16,Y+3	 ;  _12, pArray_10(D)->_data
 	ldd r17,Y+4	 ;  _12, pArray_10(D)->_data
- ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+ ;  container.h:63:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
 	ldd r18,Y+2	 ;  pArray_10(D)->_ofst, pArray_10(D)->_ofst
 	ldi r19,0		 ;  _20
- ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+ ;  container.h:63:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
 	mul r22,r18	 ;  Index, _20
 	movw r24,r0	 ;  tmp59
 	mul r22,r19	 ;  Index, _20
@@ -239,7 +239,7 @@ TArray_RemoveElement:
 	mul r23,r18	 ;  Index, _20
 	add r25,r0	 ;  tmp59
 	clr r1
- ;  container.h:53:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
+ ;  container.h:63:     uint8* pCursor = pArray->_data + Index * pArray->_ofst;
 	add r24,r16	 ;  pCursor, _12
 	adc r25,r17	 ;  pCursor, _12
  ;  container.c:37: 	uint8* pRead = pWrite + pArray->_ofst;
@@ -603,4 +603,133 @@ TListNode_Remove:
  ;  container.c:148:     TListNode_Delete( pNode );
 	jmp TListNode_Delete	 ; 
 	.size	TListNode_Remove, .-TListNode_Remove
+.global	TryBinarySearch
+	.type	TryBinarySearch, @function
+TryBinarySearch:
+	push r2		 ; 
+	push r3		 ; 
+	push r4		 ; 
+	push r5		 ; 
+	push r6		 ; 
+	push r7		 ; 
+	push r8		 ; 
+	push r9		 ; 
+	push r10		 ; 
+	push r11		 ; 
+	push r12		 ; 
+	push r13		 ; 
+	push r14		 ; 
+	push r15		 ; 
+	push r16		 ; 
+	push r17		 ; 
+	push r28		 ; 
+	push r29		 ; 
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 18 */
+.L__stack_usage = 18
+	movw r10,r24	 ;  key, key
+	movw r4,r22	 ;  base, base
+	movw r12,r20	 ;  NumItems, NumItems
+	movw r6,r16	 ;  Comparator, Comparator
+ ;  container.c:156:     uint16 v = NumItems >> 1;
+	movw r28,r20	 ;  v, NumItems
+	lsr r29	 ;  v
+	ror r28	 ;  v
+ ;  container.c:155:     uint16 n = NumItems;
+	movw r14,r20	 ;  n, NumItems
+ ;  container.c:154:     uint16 p = 0;
+	mov r9,__zero_reg__	 ;  p
+	mov r8,__zero_reg__	 ;  p
+ ;  container.c:160:         void * entry = (byte *) base + v * ItemSize;
+	mov r2,r18	 ;  _1, ItemSize
+	mov r3,__zero_reg__	 ;  _1
+.L40:
+	mul r2,r28	 ;  _1, v
+	movw r16,r0	 ;  tmp58
+	mul r2,r29	 ;  _1, v
+	add r17,r0	 ;  tmp58
+	mul r3,r28	 ;  _1, v
+	add r17,r0	 ;  tmp58
+	clr r1
+ ;  container.c:160:         void * entry = (byte *) base + v * ItemSize;
+	add r16,r4	 ;  <retval>, base
+	adc r17,r5	 ;  <retval>, base
+ ;  container.c:162:         int8 comp_v = Comparator( key, entry );
+	movw r22,r16	 ; , <retval>
+	movw r24,r10	 ; , key
+	movw r30,r6	 ; , Comparator
+	icall	
+ ;  container.c:163:         if ( comp_v == 0 )
+	tst r24		 ;  comp_v
+	breq .L34		 ; ,
+ ;  container.c:165:         else if ( comp_v < 0 )
+	sbrc r24,7	 ;  comp_v,
+	rjmp .L41		 ; 
+	movw r8,r28	 ;  p, v
+.L36:
+ ;  container.c:170:         if ( n - p <= 1 )
+	movw r24,r14	 ;  tmp59, n
+	sub r24,r8	 ;  tmp59, p
+	sbc r25,r9	 ; , p
+ ;  container.c:170:         if ( n - p <= 1 )
+	sbiw r24,2	 ;  tmp59,
+	brsh .L37		 ; ,
+	movw r14,r16	 ;  ivtmp.23, <retval>
+.L38:
+ ;  container.c:172:             while ( v < NumItems ) {
+	cp r28,r12	 ;  v, NumItems
+	cpc r29,r13	 ;  v, NumItems
+	brsh .L34		 ; ,
+ ;  container.c:173:                 entry = (byte*) base + v++ * ItemSize;
+	adiw r28,1	 ;  v,
+ ;  container.c:173:                 entry = (byte*) base + v++ * ItemSize;
+	movw r16,r14	 ;  <retval>, ivtmp.23
+ ;  container.c:174:                 if ( Comparator( key, entry ) <= 0 )
+	movw r22,r14	 ; , ivtmp.23
+	movw r24,r10	 ; , key
+	movw r30,r6	 ; , Comparator
+	icall	
+	add r14,r2	 ;  ivtmp.23, _1
+	adc r15,r3	 ;  ivtmp.23, _1
+ ;  container.c:174:                 if ( Comparator( key, entry ) <= 0 )
+	cp __zero_reg__,r24	 ; 
+	brlt .L38		 ; ,
+.L34:
+ ;  container.c:181: }
+	movw r24,r16	 ; , <retval>
+/* epilogue start */
+	pop r29		 ; 
+	pop r28		 ; 
+	pop r17		 ; 
+	pop r16		 ; 
+	pop r15		 ; 
+	pop r14		 ; 
+	pop r13		 ; 
+	pop r12		 ; 
+	pop r11		 ; 
+	pop r10		 ; 
+	pop r9		 ; 
+	pop r8		 ; 
+	pop r7		 ; 
+	pop r6		 ; 
+	pop r5		 ; 
+	pop r4		 ; 
+	pop r3		 ; 
+	pop r2		 ; 
+	ret	
+.L41:
+	movw r14,r28	 ;  n, v
+	rjmp .L36		 ; 
+.L37:
+ ;  container.c:179:         v = ( n + p ) >> 1;
+	movw r28,r8	 ;  tmp60, p
+	add r28,r14	 ;  tmp60, n
+	adc r29,r15	 ; , n
+ ;  container.c:179:         v = ( n + p ) >> 1;
+	lsr r29	 ;  v
+	ror r28	 ;  v
+ ;  container.c:159:     {
+	rjmp .L40		 ; 
+	.size	TryBinarySearch, .-TryBinarySearch
 	.ident	"GCC: (GNU) 8.3.0"

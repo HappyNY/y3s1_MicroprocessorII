@@ -91,13 +91,13 @@ CSerialSender_Initialize:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24	 ;  Sender, Sender
- ;  container.h:67:     pList->_ofst = ElementSize;
+ ;  container.h:78:     pList->_ofst = ElementSize;
 	ldi r24,lo8(5)	 ;  tmp43,
 	st Z,r24		 ;  MEM[(struct TList *)Sender_1(D)]._ofst, tmp43
- ;  container.h:68:     pList->Head = pList->Tail = NULL;
+ ;  container.h:79:     pList->Head = pList->Tail = NULL;
 	std Z+4,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Tail,
 	std Z+3,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Tail,
- ;  container.h:68:     pList->Head = pList->Tail = NULL;
+ ;  container.h:79:     pList->Head = pList->Tail = NULL;
 	std Z+2,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Head,
 	std Z+1,__zero_reg__	 ;  MEM[(struct TList *)Sender_1(D)].Head,
  ;  Serial.c:39:     Sender->SendingCharacterIndex = 0;
@@ -232,7 +232,7 @@ CSerialSender_ConsumeOutputCharacter:
  ;  Serial.c:82:         *ReadingIndex = 0;
 	std Y+6,__zero_reg__	 ;  MEM[(uint16 *)Sender_13(D) + 5B],
 	std Y+5,__zero_reg__	 ;  MEM[(uint16 *)Sender_13(D) + 5B],
- ;  container.h:73:     Free( pArray->_data );
+ ;  container.h:84:     Free( pArray->_data );
 	movw r24,r20	 ; , String
 	call Free	 ; 
  ;  Serial.c:84:         TList_PopFront( &Sender->StringQueue );
