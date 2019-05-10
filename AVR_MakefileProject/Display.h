@@ -27,7 +27,7 @@ void LCDDevice__Render();
 void VBuffer_Clear();
 
 // @todo. Change coordinate system.
-inline void VBuffer_DrawDot( int16 x, int16 y )
+inline void VBuffer_DrawDot( int16 y, int16 x )
 {
     if( 0 <= x && x < LCD_HEIGHT
         && 0 <= y && y < LCD_NUM_COLUMN )

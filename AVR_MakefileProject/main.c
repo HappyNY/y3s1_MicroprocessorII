@@ -36,11 +36,7 @@ void main( void )
     CSerialSender_Initialize( &UART0Sender );
 
     // Setup draw args
-    DECLARE_LINE_VECTOR( Triangle );
-    CDrawArgs Arg;
-    Arg.Mesh = Triangle;
-    Arg.Position.x = 50;
-    Arg.Position.y = 0;
+    DECLARE_LINE_VECTOR( Triangle ); 
 
     // Setup camera
     FCameraTransform Cam;
@@ -71,16 +67,28 @@ void main( void )
             Cam.Position.y += 5; break;
         }
      
+        PORTC = 0xff;
         VBuffer_Clear();
+        --PORTC;
         {
             byte x = 0, y = 0; 
-            VBuffer_DrawString( &x, &y, "3D TEST", true );
-            VBuffer_DrawLine( 0, 0, Cam.Position.x + 25, Cam.Position.x + 25 );
+            VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+        --PORTC;
         }
         CalculateTranformCache( &Cam );
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Arg.Mesh, Arg.Position, &Cam );
-        VBuffer_DrawChar( 0, 16, 'a' + ( test & 0x0f ), false );
+        --PORTC;
+        FPoint16 Position;
+        Position.x = 50;
+        Position.y = 0;
+        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        Position.y = 11;
+        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        Position.y = 4;
+        Position.x = 93;
+        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        --PORTC;
         LCDDevice__Render(); 
+        --PORTC;
         _delay_ms( 50 );
     }
 }

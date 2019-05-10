@@ -17,9 +17,13 @@ static inline fixedpt dot( FPointFP a, FPointFP b )
     return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
 }
 
-static inline fixedpt sz( FPointFP a )
+static inline fixedpt sz( FPointFP v )
 {
-    return fixedpt_sqrt( dot( a, a ) );//fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
+    //  return fixedpt_sqrt( dot( a, a ) );//fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
+    int32 val = fixedpt_toint( v.x ) * fixedpt_toint( v.x );
+    val += fixedpt_toint( v.y ) * fixedpt_toint( v.y );
+
+    return fixedpt_pow( fixedpt_fromint( val ), fixedpt_rconst( 0.5 ) );
 }
 
 extern inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTransform* Camera, int8* DegreesWhenVisible, int16* Distance );
@@ -33,8 +37,8 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     DirectionVector.x = fixedpt_fromint( Position->x - Camera->Position.x );
     DirectionVector.y = fixedpt_fromint( Position->y - Camera->Position.y );
     CameraDirectionUnitVector = Camera->CachedDirection;
-
-    DistanceFromCamera = sz( DirectionVector );
+     
+    DistanceFromCamera = sz( DirectionVector ); 
     if ( DistanceFromCamera > fixedpt_rconst( MINIMAL_VISIBLE_DISTANCE ) ) 
     {
 #if LOG_VERBOSE
@@ -45,7 +49,9 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     }
 
     // acos(dot(a,b) / (sz(a)*sz(b)))
+    byte x = 0, y = 0;
     AngleBetween = fixedpt_div( dot( DirectionVector, CameraDirectionUnitVector ), DistanceFromCamera ); 
+    VBuffer_DrawString( &x, &y, fixedpt_cstr( AngleBetween, -1 ), false );
     AngleBetween = fixedpt_acos_half( AngleBetween );
     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
@@ -76,11 +82,10 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
     int8 AngleInDegrees;
     int16 Distance;
     bool bIsVisibleArg;
-#define scale(val) (((int32)(val)*STANDARD_DISTANCE_IN_UNITS)/Distance)
-#define rotator (((int16)(AngleInDegrees)*LCD_HEIGHT)/((int16)CAMERA_FOV))
+#define scale(val) (((int32)(val)*(int32)STANDARD_DISTANCE_IN_UNITS)/Distance)
+#define rotator (((int16)(AngleInDegrees)*LCD_NUM_COLUMN)/((int16)CAMERA_FOV))
 
     bIsVisibleArg = CalculateAngleIfVIsible( &MeshPosition, Camera, &AngleInDegrees, &Distance );
-    VBuffer_DrawChar( 0, 0, '0', false );
     log_verbose( "Cam loc: %d, %d", Camera->Position.x, Camera->Position.y );
     log_verbose( "Instance loc: %d, %d", MeshPosition.x, MeshPosition.y );
     log_verbose( "Angle between in degrees %d", AngleInDegrees );
@@ -89,12 +94,11 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
     if ( !bIsVisibleArg )
     {
         // Object is invisible.
-        log_verbose( "Culled because of invisibility" ); 
-        VBuffer_DrawChar( 1, 0, 'w', false );
+        log_verbose( "Culled because of invisibility" );  
         return;
     }
     
-    static const FRect16 ScreenBound = { 0, LCD_HEIGHT, 0, LCD_NUM_COLUMN };
+    static const FRect16 ScreenBound = { 0, LCD_NUM_COLUMN, 0, LCD_HEIGHT };
 
     // Renders arguments...
     {
@@ -105,11 +109,10 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         int16 x0, y0, x1, y1;
         FRect16 LineBound;
 
-        centerX = LCD_HEIGHT / 2 + rotator;
-        centerY = LCD_NUM_COLUMN / 2;
+        centerX = LCD_NUM_COLUMN / 2 + rotator;
+        centerY = LCD_HEIGHT / 2;
 
         log_verbose( "Display center = %d, %d", centerX, centerY );
-        VBuffer_DrawChar( 2, 0, '1', false );
 
         while ( lpLine != lpLineEnd )
         {
@@ -145,7 +148,6 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
 
             ++lpLine;
         }
-        VBuffer_DrawLine( 0, 0, 22, 15 );
     }
 } 
 

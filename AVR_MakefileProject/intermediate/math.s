@@ -297,6 +297,10 @@ fixedpt_atan:
 .global	fixedpt_acos_half
 	.type	fixedpt_acos_half, @function
 fixedpt_acos_half:
+	push r12		 ; 
+	push r13		 ; 
+	push r14		 ; 
+	push r15		 ; 
 	push r16		 ; 
 	push r17		 ; 
 	push r28		 ; 
@@ -307,45 +311,48 @@ fixedpt_acos_half:
 	in r29,__SP_H__	 ; 
 /* prologue: function */
 /* frame size = 2 */
-/* stack size = 6 */
-.L__stack_usage = 6
- ;  math.c:151:     uint16 Key = x & 0xffff0000 ? 0xffff : x & 0xffff;
-	movw r16,r22	 ;  tmp48, x
-	movw r18,r24	 ; , x
-	clr r16		 ;  tmp48
-	clr r17		 ; 
- ;  math.c:151:     uint16 Key = x & 0xffff0000 ? 0xffff : x & 0xffff;
-	or r16,r17	 ;  tmp48
-	or r16,r18	 ;  tmp48
-	or r16,r19	 ;  tmp48
-	breq .L7		 ; ,
-	ldi r22,lo8(-1)	 ;  x,
-	ldi r23,lo8(-1)	 ;  x,
-	ldi r24,0		 ;  x
-	ldi r25,0		 ;  x
-.L7:
- ;  math.c:151:     uint16 Key = x & 0xffff0000 ? 0xffff : x & 0xffff;
+/* stack size = 10 */
+.L__stack_usage = 10
+	movw r12,r22	 ;  x, x
+	movw r14,r24	 ;  x, x
+ ;  math.c:112:     uint16 Key = x; //  x & ~FIXEDPT_FMASK ? 0xffff : x & 0xffff;
 	std Y+2,r23	 ;  Key, x
 	std Y+1,r22	 ;  Key, x
- ;  math.c:152:     _acos_table_val* found = TryBinarySearch( &Key, acos_table, ARRAYCOUNT( acos_table ), (uint8)sizeof( *acos_table ), compare_acos_table );
+ ;  math.c:113:     _acos_table_val* found = TryBinarySearch( &Key, acos_table, ARRAYCOUNT( acos_table ), (uint8)sizeof( *acos_table ), compare_acos_table );
 	ldi r16,lo8(gs(compare_acos_table))	 ; ,
 	ldi r17,hi8(gs(compare_acos_table))	 ; ,
 	ldi r18,lo8(6)	 ; ,
-	ldi r20,lo8(101)	 ; ,
+	ldi r20,lo8(61)	 ; ,
 	ldi r21,0		 ; 
 	ldi r22,lo8(acos_table)	 ; ,
 	ldi r23,hi8(acos_table)	 ; ,
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call TryBinarySearch	 ; 
- ;  math.c:154:     return found->value;
+ ;  math.c:115:     return found->value + ( x < 0 ) * FIXEDPT_HALF_PI;
 	movw r30,r24	 ; ,
-	ldd r22,Z+2	 ;  <retval>, found_9->value
-	ldd r23,Z+3	 ;  <retval>, found_9->value
-	ldd r24,Z+4	 ;  <retval>, found_9->value
-	ldd r25,Z+5	 ;  <retval>, found_9->value
+	ldd r22,Z+2	 ;  _2, found_8->value
+	ldd r23,Z+3	 ;  _2, found_8->value
+	ldd r24,Z+4	 ;  _2, found_8->value
+	ldd r25,Z+5	 ;  _2, found_8->value
+ ;  math.c:115:     return found->value + ( x < 0 ) * FIXEDPT_HALF_PI;
+	ldi r16,0		 ;  iftmp.0_3
+	ldi r17,0		 ;  iftmp.0_3
+	movw r18,r16	 ;  iftmp.0_3
+	sbrs r15,7	 ;  x,
+	rjmp .L7		 ; 
+	ldi r16,lo8(32)	 ;  iftmp.0_3,
+	ldi r17,lo8(-110)	 ;  iftmp.0_3,
+	ldi r18,lo8(1)	 ;  iftmp.0_3,
+	ldi r19,0		 ;  iftmp.0_3
+.L7:
+ ;  math.c:115:     return found->value + ( x < 0 ) * FIXEDPT_HALF_PI;
+	add r22,r16	 ;  tmp48, iftmp.0_3
+	adc r23,r17	 ; , iftmp.0_3
+	adc r24,r18	 ; , iftmp.0_3
+	adc r25,r19	 ; , iftmp.0_3
 /* epilogue start */
- ;  math.c:155: }
+ ;  math.c:116: }
 	 ; SP += 2	 ; 
 	pop __tmp_reg__
 	pop __tmp_reg__
@@ -353,6 +360,10 @@ fixedpt_acos_half:
 	pop r28		 ; 
 	pop r17		 ; 
 	pop r16		 ; 
+	pop r15		 ; 
+	pop r14		 ; 
+	pop r13		 ; 
+	pop r12		 ; 
 	ret	
 	.size	fixedpt_acos_half, .-fixedpt_acos_half
 .global	__muldi3
@@ -389,7 +400,7 @@ fixedpt_asin:
 .L__stack_usage = 24
 	movw r4,r22	 ;  x, x
 	movw r6,r24	 ;  x, x
- ;  math.c:164:     res = m( x, c( 1 ) + m( x, m( x, c( 1.0 / 6 ) + m( x, m( x, c( 3.0 / 40 ) ) ) ) ) + m( x, m( x, c( 15.0 / ( 42 * 8 ) ) ) ) );
+ ;  math.c:125:     res = m( x, c( 1 ) + m( x, m( x, c( 1.0 / 6 ) + m( x, m( x, c( 3.0 / 40 ) ) ) ) ) + m( x, m( x, c( 15.0 / ( 42 * 8 ) ) ) ) );
 	movw r26,r24	 ; , x
 	movw r24,r22	 ; , x
 	lsl r27	 ; 
@@ -474,11 +485,11 @@ fixedpt_asin:
 	movw r18,r4	 ; , x
 	call __mulsidi3
 	call __ashrdi3
- ;  math.c:164:     res = m( x, c( 1 ) + m( x, m( x, c( 1.0 / 6 ) + m( x, m( x, c( 3.0 / 40 ) ) ) ) ) + m( x, m( x, c( 15.0 / ( 42 * 8 ) ) ) ) );
+ ;  math.c:125:     res = m( x, c( 1 ) + m( x, m( x, c( 1.0 / 6 ) + m( x, m( x, c( 3.0 / 40 ) ) ) ) ) + m( x, m( x, c( 15.0 / ( 42 * 8 ) ) ) ) );
 	movw r22,r18	 ; ,
 	movw r24,r20	 ; ,
 /* epilogue start */
- ;  math.c:166: }
+ ;  math.c:127: }
 	adiw r28,8	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
@@ -536,7 +547,7 @@ fixedpt_sin:
 /* frame size = 10 */
 /* stack size = 28 */
 .L__stack_usage = 28
- ;  math.c:178:     fp %= 2 * FIXEDPT_PI;
+ ;  math.c:139:     fp %= 2 * FIXEDPT_PI;
 	ldi r18,lo8(126)	 ; ,
 	ldi r19,lo8(72)	 ; ,
 	ldi r20,lo8(6)	 ; ,
@@ -544,10 +555,10 @@ fixedpt_sin:
 	call __divmodsi4
 	movw r4,r22	 ;  fp,
 	movw r6,r24	 ;  fp,
- ;  math.c:179:     if ( fp < 0 )
+ ;  math.c:140:     if ( fp < 0 )
 	sbrs r7,7	 ;  fp,
-	rjmp .L13		 ; 
- ;  math.c:180:         fp = FIXEDPT_PI * 2 + fp;
+	rjmp .L11		 ; 
+ ;  math.c:141:         fp = FIXEDPT_PI * 2 + fp;
 	ldi r18,126	 ; ,
 	add r4,r18	 ;  fp,
 	ldi r18,72	 ; ,
@@ -555,21 +566,21 @@ fixedpt_sin:
 	ldi r18,6	 ; ,
 	adc r6,r18	 ;  fp,
 	adc r7,__zero_reg__	 ;  fp
-.L13:
- ;  math.c:181:     if ( ( fp > FIXEDPT_HALF_PI ) && ( fp <= FIXEDPT_PI ) )
+.L11:
+ ;  math.c:142:     if ( ( fp > FIXEDPT_HALF_PI ) && ( fp <= FIXEDPT_PI ) )
 	movw r26,r6	 ; , fp
 	movw r24,r4	 ;  tmp67, fp
 	subi r24,33	 ;  tmp67,
 	sbci r25,-110	 ; ,
 	sbci r26,1	 ; ,
 	sbc r27,__zero_reg__	 ; 
- ;  math.c:181:     if ( ( fp > FIXEDPT_HALF_PI ) && ( fp <= FIXEDPT_PI ) )
+ ;  math.c:142:     if ( ( fp > FIXEDPT_HALF_PI ) && ( fp <= FIXEDPT_PI ) )
 	cpi r24,31	 ;  tmp67,
 	sbci r25,-110	 ; ,
 	sbci r26,1	 ; ,
 	cpc r27,__zero_reg__	 ; 
-	brsh .L14		 ; ,
- ;  math.c:182:         fp = FIXEDPT_PI - fp;
+	brsh .L12		 ; ,
+ ;  math.c:143:         fp = FIXEDPT_PI - fp;
 	ldi r24,lo8(63)	 ;  tmp68,
 	ldi r25,lo8(36)	 ; ,
 	ldi r26,lo8(3)	 ; ,
@@ -582,30 +593,30 @@ fixedpt_sin:
 	sbc r21,r7	 ; , fp
 	movw r4,r18	 ;  fp,
 	movw r6,r20	 ;  fp,
- ;  math.c:171:     int sign = 1;
+ ;  math.c:132:     int sign = 1;
 	ldi r20,lo8(1)	 ; ,
 	ldi r21,0		 ; 
-.L18:
- ;  math.c:189:         sign = -1;
+.L16:
+ ;  math.c:150:         sign = -1;
 	std Y+10,r21	 ;  %sfp,
 	std Y+9,r20	 ;  %sfp,
-	rjmp .L15		 ; 
-.L14:
- ;  math.c:183:     else if ( ( fp > FIXEDPT_PI ) && ( fp <= ( FIXEDPT_PI + FIXEDPT_HALF_PI ) ) ) {
+	rjmp .L13		 ; 
+.L12:
+ ;  math.c:144:     else if ( ( fp > FIXEDPT_PI ) && ( fp <= ( FIXEDPT_PI + FIXEDPT_HALF_PI ) ) ) {
 	movw r26,r6	 ; , fp
 	movw r24,r4	 ;  tmp69, fp
 	subi r24,64	 ;  tmp69,
 	sbci r25,36	 ; ,
 	sbci r26,3	 ; ,
 	sbc r27,__zero_reg__	 ; 
- ;  math.c:183:     else if ( ( fp > FIXEDPT_PI ) && ( fp <= ( FIXEDPT_PI + FIXEDPT_HALF_PI ) ) ) {
+ ;  math.c:144:     else if ( ( fp > FIXEDPT_PI ) && ( fp <= ( FIXEDPT_PI + FIXEDPT_HALF_PI ) ) ) {
 	cpi r24,32	 ;  tmp69,
 	sbci r25,-110	 ; ,
 	sbci r26,1	 ; ,
 	cpc r27,__zero_reg__	 ; 
 	brlo .+2	 ; 
-	rjmp .L16	 ; 
- ;  math.c:184:         fp = fp - FIXEDPT_PI;
+	rjmp .L14	 ; 
+ ;  math.c:145:         fp = fp - FIXEDPT_PI;
 	ldi r24,63	 ; ,
 	sub r4,r24	 ;  fp,
 	ldi r24,36	 ; ,
@@ -613,12 +624,12 @@ fixedpt_sin:
 	ldi r24,3	 ; ,
 	sbc r6,r24	 ;  fp,
 	sbc r7,__zero_reg__	 ;  fp
- ;  math.c:185:         sign = -1;
+ ;  math.c:146:         sign = -1;
 	ldi r18,lo8(-1)	 ; ,
 	ldi r19,lo8(-1)	 ; ,
 	std Y+10,r19	 ;  %sfp,
 	std Y+9,r18	 ;  %sfp,
-.L15:
+.L13:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	movw r24,r6	 ; , fp
 	movw r22,r4	 ; , fp
@@ -652,7 +663,7 @@ fixedpt_sin:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
- ;  math.c:194:     result -= SK[1];
+ ;  math.c:155:     result -= SK[1];
 	movw r26,r20	 ;  result, tmp12
 	movw r24,r18	 ;  result, tmp10
 	subi r24,-126	 ;  result,
@@ -689,7 +700,7 @@ fixedpt_sin:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
- ;  math.c:196:     result += FIXEDPT_ONE;
+ ;  math.c:157:     result += FIXEDPT_ONE;
 	movw r22,r18	 ;  result, _25
 	movw r24,r20	 ;  result, _25
 	adiw r24,1	 ;  result,
@@ -703,7 +714,7 @@ fixedpt_sin:
 	mov r26,r19	 ;  tmp144,
 	mov r31,r20	 ;  tmp145,
 	mov r30,r21	 ;  tmp146,
- ;  math.c:198:     return sign * result;
+ ;  math.c:159:     return sign * result;
 	ldd r24,Y+9	 ; , %sfp
 	ldd r25,Y+10	 ; , %sfp
 	movw r18,r24	 ;  sign,
@@ -716,7 +727,7 @@ fixedpt_sin:
 	mov r25,r30	 ; , tmp146
 	call __mulsi3
 /* epilogue start */
- ;  math.c:199: }
+ ;  math.c:160: }
 	adiw r28,10	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
@@ -742,8 +753,8 @@ fixedpt_sin:
 	pop r3		 ; 
 	pop r2		 ; 
 	ret	
-.L16:
- ;  math.c:187:     else if ( fp > ( FIXEDPT_PI + FIXEDPT_HALF_PI ) ) {
+.L14:
+ ;  math.c:148:     else if ( fp > ( FIXEDPT_PI + FIXEDPT_HALF_PI ) ) {
 	ldi r19,96	 ; ,
 	cp r4,r19		 ;  fp,
 	ldi r19,-74	 ; ,
@@ -751,8 +762,8 @@ fixedpt_sin:
 	ldi r19,4	 ; ,
 	cpc r6,r19	 ;  fp,
 	cpc r7,__zero_reg__	 ;  fp
-	brlt .L17		 ; ,
- ;  math.c:188:         fp = ( FIXEDPT_PI << 1 ) - fp;
+	brlt .L15		 ; ,
+ ;  math.c:149:         fp = ( FIXEDPT_PI << 1 ) - fp;
 	ldi r24,lo8(126)	 ;  tmp70,
 	ldi r25,lo8(72)	 ; ,
 	ldi r26,lo8(6)	 ; ,
@@ -765,17 +776,17 @@ fixedpt_sin:
 	sbc r21,r7	 ; , fp
 	movw r4,r18	 ;  fp,
 	movw r6,r20	 ;  fp,
- ;  math.c:189:         sign = -1;
+ ;  math.c:150:         sign = -1;
 	ldi r20,lo8(-1)	 ; ,
 	ldi r21,lo8(-1)	 ; ,
-	rjmp .L18		 ; 
-.L17:
- ;  math.c:171:     int sign = 1;
+	rjmp .L16		 ; 
+.L15:
+ ;  math.c:132:     int sign = 1;
 	ldi r24,lo8(1)	 ; ,
 	ldi r25,0		 ; 
 	std Y+10,r25	 ;  %sfp,
 	std Y+9,r24	 ;  %sfp,
-	rjmp .L15		 ; 
+	rjmp .L13		 ; 
 	.size	fixedpt_sin, .-fixedpt_sin
 .global	__divdi3
 .global	fixedpt_ln
@@ -813,50 +824,50 @@ fixedpt_ln:
 .L__stack_usage = 53
 	movw r8,r22	 ;  x, x
 	movw r10,r24	 ;  x, x
- ;  math.c:218:         return ( 0 );
+ ;  math.c:179:         return ( 0 );
 	ldi r22,0		 ;  <retval>
 	ldi r23,0		 ;  <retval>
 	movw r24,r22	 ;  <retval>
- ;  math.c:217:     if ( x < 0 )
+ ;  math.c:178:     if ( x < 0 )
 	sbrc r11,7	 ;  x,
-	rjmp .L19		 ; 
- ;  math.c:222:     log2 = 0;
+	rjmp .L17		 ; 
+ ;  math.c:183:     log2 = 0;
 	mov r4,__zero_reg__	 ;  log2
 	mov r5,__zero_reg__	 ;  log2
 	movw r6,r4	 ;  log2
- ;  math.c:219:     if ( x == 0 )
+ ;  math.c:180:     if ( x == 0 )
 	cp r8,__zero_reg__	 ;  x
 	cpc r9,__zero_reg__	 ;  x
 	cpc r10,__zero_reg__	 ;  x
 	cpc r11,__zero_reg__	 ;  x
-	brne .L21		 ; ,
- ;  math.c:220:         return 0xffffffff;
+	brne .L19		 ; ,
+ ;  math.c:181:         return 0xffffffff;
 	ldi r22,lo8(-1)	 ;  <retval>,
 	ldi r23,lo8(-1)	 ;  <retval>,
 	movw r24,r22	 ;  <retval>
-	rjmp .L19		 ; 
-.L22:
- ;  math.c:225:         xi >>= 1;
+	rjmp .L17		 ; 
+.L20:
+ ;  math.c:186:         xi >>= 1;
 	asr r11	 ;  x
 	ror r10	 ;  x
 	ror r9	 ;  x
 	ror r8	 ;  x
- ;  math.c:226:         log2++;
+ ;  math.c:187:         log2++;
 	ldi r24,-1	 ; ,
 	sub r4,r24	 ;  log2,
 	sbc r5,r24	 ;  log2,
 	sbc r6,r24	 ;  log2,
 	sbc r7,r24	 ;  log2,
-.L21:
- ;  math.c:224:     while ( xi > FIXEDPT_TWO ) {
+.L19:
+ ;  math.c:185:     while ( xi > FIXEDPT_TWO ) {
 	ldi r25,1	 ; ,
 	cp r8,r25		 ;  x,
 	cpc r9,__zero_reg__	 ;  x
 	ldi r25,2	 ; ,
 	cpc r10,r25	 ;  x,
 	cpc r11,__zero_reg__	 ;  x
-	brge .L22		 ; ,
- ;  math.c:228:     f = xi - FIXEDPT_ONE;
+	brge .L20		 ; ,
+ ;  math.c:189:     f = xi - FIXEDPT_ONE;
 	movw r26,r10	 ; , x
 	movw r24,r8	 ; , x
 	sbiw r26,1	 ; ,
@@ -882,7 +893,7 @@ fixedpt_ln:
 	mov r25,r12	 ; , tmp99
 	ldi r16,lo8(16)	 ; ,
 	call __ashldi3
- ;  math.c:229:     s = fixedpt_div( f, FIXEDPT_TWO + f );
+ ;  math.c:190:     s = fixedpt_div( f, FIXEDPT_TWO + f );
 	movw r16,r10	 ; , x
 	movw r14,r8	 ;  tmp101, x
 	subi r16,-1	 ; ,
@@ -946,7 +957,7 @@ fixedpt_ln:
 	std Y+34,r23	 ;  %sfp,
 	std Y+13,r24	 ;  %sfp,
 	std Y+14,r25	 ;  %sfp,
- ;  math.c:236:     return ( fixedpt_mul( LN2, ( log2 << FIXEDPT_FBITS ) ) + f
+ ;  math.c:197:     return ( fixedpt_mul( LN2, ( log2 << FIXEDPT_FBITS ) ) + f
 	movw r24,r4	 ;  tmp110, log2
 	clr r23	 ;  tmp110
 	clr r22	 ;  tmp110
@@ -960,7 +971,7 @@ fixedpt_ln:
 	call __ashrdi3
 	movw r10,r18	 ; ,
 	movw r12,r20	 ; ,
- ;  math.c:236:     return ( fixedpt_mul( LN2, ( log2 << FIXEDPT_FBITS ) ) + f
+ ;  math.c:197:     return ( fixedpt_mul( LN2, ( log2 << FIXEDPT_FBITS ) ) + f
 	ldd r24,Y+9	 ; , %sfp
 	ldd r25,Y+10	 ; , %sfp
 	ldd r26,Y+11	 ; , %sfp
@@ -994,7 +1005,7 @@ fixedpt_ln:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
- ;  math.c:234:                                                                                           + fixedpt_mul( w, LG[2] + fixedpt_mul( w, LG[4]
+ ;  math.c:195:                                                                                           + fixedpt_mul( w, LG[2] + fixedpt_mul( w, LG[4]
 	movw r26,r20	 ; , tmp12
 	movw r24,r18	 ;  tmp116, tmp10
 	subi r24,115	 ;  tmp116,
@@ -1025,7 +1036,7 @@ fixedpt_ln:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
- ;  math.c:234:                                                                                           + fixedpt_mul( w, LG[2] + fixedpt_mul( w, LG[4]
+ ;  math.c:195:                                                                                           + fixedpt_mul( w, LG[2] + fixedpt_mul( w, LG[4]
 	movw r26,r20	 ; , tmp12
 	movw r24,r18	 ;  tmp122, tmp10
 	subi r24,-37	 ;  tmp122,
@@ -1056,7 +1067,7 @@ fixedpt_ln:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
- ;  math.c:233:                                              + fixedpt_mul( w, LG[5] ) ) ) + fixedpt_mul( z, LG[0]
+ ;  math.c:194:                                              + fixedpt_mul( w, LG[5] ) ) ) + fixedpt_mul( z, LG[0]
 	movw r26,r20	 ; , tmp12
 	movw r24,r18	 ;  tmp128, tmp10
 	subi r24,85	 ;  tmp128,
@@ -1118,7 +1129,7 @@ fixedpt_ln:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
- ;  math.c:232:     R = fixedpt_mul( w, LG[1] + fixedpt_mul( w, LG[3]
+ ;  math.c:193:     R = fixedpt_mul( w, LG[1] + fixedpt_mul( w, LG[3]
 	movw r26,r20	 ; , tmp12
 	movw r24,r18	 ;  tmp136, tmp10
 	subi r24,28	 ;  tmp136,
@@ -1149,7 +1160,7 @@ fixedpt_ln:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r16,lo8(16)	 ; ,
 	call __ashrdi3
- ;  math.c:232:     R = fixedpt_mul( w, LG[1] + fixedpt_mul( w, LG[3]
+ ;  math.c:193:     R = fixedpt_mul( w, LG[1] + fixedpt_mul( w, LG[3]
 	movw r26,r20	 ; , tmp12
 	movw r24,r18	 ;  tmp142, tmp10
 	subi r24,-102	 ;  tmp142,
@@ -1182,7 +1193,7 @@ fixedpt_ln:
 	call __ashrdi3
 	movw r8,r18	 ; ,
 	movw r10,r20	 ; ,
- ;  math.c:232:     R = fixedpt_mul( w, LG[1] + fixedpt_mul( w, LG[3]
+ ;  math.c:193:     R = fixedpt_mul( w, LG[1] + fixedpt_mul( w, LG[3]
 	ldd r24,Y+1	 ; , %sfp
 	ldd r25,Y+2	 ; , %sfp
 	ldd r26,Y+3	 ; , %sfp
@@ -1191,7 +1202,7 @@ fixedpt_ln:
 	adc r9,r25	 ;  R,
 	adc r10,r26	 ;  R,
 	adc r11,r27	 ;  R,
- ;  math.c:237:              - fixedpt_mul( s, f - R ) );
+ ;  math.c:198:              - fixedpt_mul( s, f - R ) );
 	ldd r24,Y+9	 ;  tmp149, %sfp
 	ldd r25,Y+10	 ;  tmp149, %sfp
 	ldd r26,Y+11	 ;  tmp149, %sfp
@@ -1228,7 +1239,7 @@ fixedpt_ln:
 	call __ashrdi3
 	movw r8,r18	 ; ,
 	movw r10,r20	 ; ,
- ;  math.c:237:              - fixedpt_mul( s, f - R ) );
+ ;  math.c:198:              - fixedpt_mul( s, f - R ) );
 	ldd r22,Y+30	 ;  <retval>, %sfp
 	ldd r23,Y+31	 ;  <retval>, %sfp
 	ldd r24,Y+32	 ;  <retval>, %sfp
@@ -1237,9 +1248,9 @@ fixedpt_ln:
 	sbc r23,r9	 ;  <retval>,
 	sbc r24,r10	 ;  <retval>,
 	sbc r25,r11	 ;  <retval>,
-.L19:
+.L17:
 /* epilogue start */
- ;  math.c:238: }
+ ;  math.c:199: }
 	adiw r28,35	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
@@ -1301,16 +1312,16 @@ fixedpt_exp:
 .L__stack_usage = 36
 	movw r12,r22	 ;  fp, fp
 	movw r14,r24	 ;  fp, fp
- ;  math.c:254:     if ( fp == 0 )
+ ;  math.c:215:     if ( fp == 0 )
 	cp r12,__zero_reg__	 ;  fp
 	cpc r13,__zero_reg__	 ;  fp
 	cpc r14,__zero_reg__	 ;  fp
 	cpc r15,__zero_reg__	 ;  fp
 	brne .+2	 ; 
-	rjmp .L31	 ; 
- ;  math.c:256:     xabs = fixedpt_abs( fp );
+	rjmp .L29	 ; 
+ ;  math.c:217:     xabs = fixedpt_abs( fp );
 	sbrs r15,7	 ;  fp,
-	rjmp .L27		 ; 
+	rjmp .L25		 ; 
 	clr r22	 ;  xabs
 	clr r23	 ;  xabs
 	movw r24,r22	 ;  xabs
@@ -1318,7 +1329,7 @@ fixedpt_exp:
 	sbc r23,r13	 ;  xabs, fp
 	sbc r24,r14	 ;  xabs, fp
 	sbc r25,r15	 ;  xabs, fp
-.L27:
+.L25:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldi r18,lo8(84)	 ; ,
 	ldi r19,lo8(113)	 ; ,
@@ -1330,12 +1341,12 @@ fixedpt_exp:
 	call __ashrdi3
 	movw r4,r18	 ; ,
 	movw r6,r20	 ; ,
- ;  math.c:258:     k += FIXEDPT_ONE_HALF;
+ ;  math.c:219:     k += FIXEDPT_ONE_HALF;
 	ldi r24,-128	 ; ,
 	add r5,r24	 ;  k,
 	adc r6,__zero_reg__	 ;  k
 	adc r7,__zero_reg__	 ;  k
- ;  math.c:259:     k &= ~FIXEDPT_FMASK;
+ ;  math.c:220:     k &= ~FIXEDPT_FMASK;
 	movw r26,r6	 ; , k
 	movw r24,r4	 ; , k
 	clr r24		 ; 
@@ -1344,10 +1355,10 @@ fixedpt_exp:
 	std Y+10,r25	 ;  %sfp,
 	std Y+11,r26	 ;  %sfp,
 	std Y+12,r27	 ;  %sfp,
- ;  math.c:260:     if ( fp < 0 )
+ ;  math.c:221:     if ( fp < 0 )
 	sbrs r15,7	 ;  fp,
-	rjmp .L28		 ; 
- ;  math.c:261:         k = -k;
+	rjmp .L26		 ; 
+ ;  math.c:222:         k = -k;
 	com r27	 ; 
 	com r26	 ; 
 	com r25	 ; 
@@ -1359,7 +1370,7 @@ fixedpt_exp:
 	std Y+10,r25	 ;  %sfp,
 	std Y+11,r26	 ;  %sfp,
 	std Y+12,r27	 ;  %sfp,
-.L28:
+.L26:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	ldd r22,Y+9	 ; , %sfp
 	ldd r23,Y+10	 ; , %sfp
@@ -1375,7 +1386,7 @@ fixedpt_exp:
 	call __ashrdi3
 	movw r4,r18	 ; ,
 	movw r6,r20	 ; ,
- ;  math.c:262:     fp -= fixedpt_mul( k, LN2 );
+ ;  math.c:223:     fp -= fixedpt_mul( k, LN2 );
 	sub r12,r4	 ;  fp, tmp91
 	sbc r13,r5	 ;  fp,
 	sbc r14,r6	 ;  fp,
@@ -1459,7 +1470,7 @@ fixedpt_exp:
 	std Y+2,r19	 ;  %sfp,
 	std Y+3,r20	 ;  %sfp,
 	std Y+4,r21	 ;  %sfp,
- ;  math.c:266:         fixedpt_mul( z, EXP_P[0] + fixedpt_mul( z, EXP_P[1] +
+ ;  math.c:227:         fixedpt_mul( z, EXP_P[0] + fixedpt_mul( z, EXP_P[1] +
 	ldd r22,Y+1	 ;  tmp108, %sfp
 	ldd r23,Y+2	 ;  tmp108, %sfp
 	ldd r24,Y+3	 ;  tmp108, %sfp
@@ -1482,7 +1493,7 @@ fixedpt_exp:
 	std Y+6,r23	 ;  %sfp,
 	std Y+7,r24	 ;  %sfp,
 	std Y+8,r25	 ;  %sfp,
- ;  math.c:266:         fixedpt_mul( z, EXP_P[0] + fixedpt_mul( z, EXP_P[1] +
+ ;  math.c:227:         fixedpt_mul( z, EXP_P[0] + fixedpt_mul( z, EXP_P[1] +
 	ldd r22,Y+1	 ;  tmp111, %sfp
 	ldd r23,Y+2	 ;  tmp111, %sfp
 	ldd r24,Y+3	 ;  tmp111, %sfp
@@ -1498,12 +1509,12 @@ fixedpt_exp:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	call __ashrdi3
 	movw r4,r18	 ; ,
- ;  math.c:265:     R = FIXEDPT_TWO +
+ ;  math.c:226:     R = FIXEDPT_TWO +
 	movw r22,r20	 ;  R, tmp6
 	movw r20,r4	 ;  R,
 	subi r22,-2	 ;  R,
 	sbci r23,-1	 ;  R,
- ;  math.c:269:     xp = FIXEDPT_ONE + fixedpt_div( fixedpt_mul( fp, FIXEDPT_TWO ), R - fp );
+ ;  math.c:230:     xp = FIXEDPT_ONE + fixedpt_div( fixedpt_mul( fp, FIXEDPT_TWO ), R - fp );
 	sub r20,r12	 ;  tmp115, fp
 	sbc r21,r13	 ; , fp
 	sbc r22,r14	 ; , fp
@@ -1530,17 +1541,17 @@ fixedpt_exp:
 	ldd r24,Y+15	 ; , %sfp
 	ldd r25,Y+16	 ; , %sfp
 	call __divdi3	 ; 
- ;  math.c:269:     xp = FIXEDPT_ONE + fixedpt_div( fixedpt_mul( fp, FIXEDPT_TWO ), R - fp );
+ ;  math.c:230:     xp = FIXEDPT_ONE + fixedpt_div( fixedpt_mul( fp, FIXEDPT_TWO ), R - fp );
 	subi r20,-1	 ;  xp,
 	sbci r21,-1	 ;  xp,
- ;  math.c:270:     if ( k < 0 )
+ ;  math.c:231:     if ( k < 0 )
 	ldd r24,Y+9	 ; , %sfp
 	ldd r25,Y+10	 ; , %sfp
 	ldd r26,Y+11	 ; , %sfp
 	ldd r27,Y+12	 ; , %sfp
 	sbrs r27,7	 ; ,
-	rjmp .L29		 ; 
- ;  math.c:271:         k = FIXEDPT_ONE >> ( -k >> FIXEDPT_FBITS );
+	rjmp .L27		 ; 
+ ;  math.c:232:         k = FIXEDPT_ONE >> ( -k >> FIXEDPT_FBITS );
 	movw r12,r24	 ;  tmp123,
 	movw r14,r26	 ; ,
 	com r15	 ;  tmp123
@@ -1551,7 +1562,7 @@ fixedpt_exp:
 	adc r13,__zero_reg__	 ;  tmp123
 	adc r14,__zero_reg__	 ;  tmp123
 	adc r15,__zero_reg__	 ;  tmp123
- ;  math.c:271:         k = FIXEDPT_ONE >> ( -k >> FIXEDPT_FBITS );
+ ;  math.c:232:         k = FIXEDPT_ONE >> ( -k >> FIXEDPT_FBITS );
 	ldi r22,0		 ;  tmp125
 	ldi r23,0		 ; 
 	ldi r24,lo8(1)	 ; ,
@@ -1565,7 +1576,7 @@ fixedpt_exp:
 	2:	
 	dec r14		 ; 
 	brpl 1b	
-.L30:
+.L28:
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
 	call __mulsidi3
  ;  fixed/fixedptc.h:140:     return ( ( (fixedptd) A * (fixedptd) B ) >> FIXEDPT_FBITS );
@@ -1573,9 +1584,9 @@ fixedpt_exp:
 	call __ashrdi3
 	movw r22,r18	 ; ,
 	movw r24,r20	 ; ,
-.L25:
+.L23:
 /* epilogue start */
- ;  math.c:275: }
+ ;  math.c:236: }
 	adiw r28,18	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
@@ -1601,8 +1612,8 @@ fixedpt_exp:
 	pop r3		 ; 
 	pop r2		 ; 
 	ret	
-.L29:
- ;  math.c:273:         k = FIXEDPT_ONE << ( k >> FIXEDPT_FBITS );
+.L27:
+ ;  math.c:234:         k = FIXEDPT_ONE << ( k >> FIXEDPT_FBITS );
 	ldi r22,0		 ;  tmp127
 	ldi r23,0		 ; 
 	ldi r24,lo8(1)	 ; ,
@@ -1617,14 +1628,14 @@ fixedpt_exp:
 	2:	
 	dec r0		 ; 
 	brpl 1b	
-	rjmp .L30		 ; 
-.L31:
- ;  math.c:255:         return ( FIXEDPT_ONE );
+	rjmp .L28		 ; 
+.L29:
+ ;  math.c:216:         return ( FIXEDPT_ONE );
 	ldi r22,0		 ;  <retval>
 	ldi r23,0		 ;  <retval>
 	ldi r24,lo8(1)	 ;  <retval>,
 	ldi r25,0		 ;  <retval>
-	rjmp .L25		 ; 
+	rjmp .L23		 ; 
 	.size	fixedpt_exp, .-fixedpt_exp
 .global	__umoddi3
 .global	__moddi3
@@ -1668,7 +1679,7 @@ fixedpt_str:
 	std Y+15,r20	 ;  %sfp, str
 	std Y+18,r19	 ;  %sfp, max_dec
 	std Y+17,r18	 ;  %sfp, max_dec
- ;  math.c:280:     char tmp[12] = { 0 };
+ ;  math.c:241:     char tmp[12] = { 0 };
 	movw r18,r28	 ; ,
 	subi r18,-1	 ; ,
 	sbci r19,-1	 ; ,
@@ -1680,31 +1691,31 @@ fixedpt_str:
 	st X+,__zero_reg__	 ; 
 	dec r24	 ;  tmp93
 	brne 0b
- ;  math.c:285:     if ( max_dec == -1 )
+ ;  math.c:246:     if ( max_dec == -1 )
 	ldd r30,Y+17	 ; , %sfp
 	ldd r31,Y+18	 ; , %sfp
 	cpi r30,-1	 ; ,
 	cpc r31,r30	 ; 
 	brne .+2	 ; 
-	rjmp .L41	 ; 
- ;  math.c:297:     else if ( max_dec == -2 )
+	rjmp .L39	 ; 
+ ;  math.c:258:     else if ( max_dec == -2 )
 	adiw r30,2	 ; ,
-	brne .L33		 ; ,
- ;  math.c:298:         max_dec = 15;
+	brne .L31		 ; ,
+ ;  math.c:259:         max_dec = 15;
 	ldi r24,lo8(15)	 ; ,
 	ldi r25,0		 ; 
 	std Y+18,r25	 ;  %sfp,
 	std Y+17,r24	 ;  %sfp,
-.L33:
- ;  math.c:300:     if ( A < 0 ) {
+.L31:
+ ;  math.c:261:     if ( A < 0 ) {
 	sbrs r7,7	 ;  A,
-	rjmp .L42		 ; 
- ;  math.c:301:         str[slen++] = '-';
+	rjmp .L40		 ; 
+ ;  math.c:262:         str[slen++] = '-';
 	ldi r24,lo8(45)	 ;  tmp95,
 	ldd r30,Y+15	 ; , %sfp
 	ldd r31,Y+16	 ; , %sfp
 	st Z,r24		 ;  *str_48(D), tmp95
- ;  math.c:302:         A *= -1;
+ ;  math.c:263:         A *= -1;
 	com r7	 ;  A
 	com r6	 ;  A
 	com r5	 ;  A
@@ -1713,19 +1724,19 @@ fixedpt_str:
 	adc r5,__zero_reg__	 ;  A
 	adc r6,__zero_reg__	 ;  A
 	adc r7,__zero_reg__	 ;  A
- ;  math.c:301:         str[slen++] = '-';
+ ;  math.c:262:         str[slen++] = '-';
 	ldi r18,lo8(1)	 ; ,
 	ldi r19,0		 ; 
 	std Y+22,r19	 ;  %sfp,
 	std Y+21,r18	 ;  %sfp,
-.L34:
- ;  math.c:305:     ip = fixedpt_toint( A );
+.L32:
+ ;  math.c:266:     ip = fixedpt_toint( A );
 	movw r24,r6	 ;  tmp96, A
 	clr r27	 ;  tmp96
 	sbrc r25,7	 ;  tmp96
 	com r27	 ;  tmp96
 	mov r26,r27	 ;  tmp96
- ;  math.c:305:     ip = fixedpt_toint( A );
+ ;  math.c:266:     ip = fixedpt_toint( A );
 	movw r2,r24	 ; ,
 	movw r8,r26	 ; ,
 	movw r26,r6	 ; , A
@@ -1742,17 +1753,17 @@ fixedpt_str:
 	adiw r24,1	 ; ,
 	std Y+28,r25	 ;  %sfp,
 	std Y+27,r24	 ;  %sfp,
- ;  math.c:279:     int ndec = 0, slen = 0;
+ ;  math.c:240:     int ndec = 0, slen = 0;
 	std Y+20,__zero_reg__	 ;  %sfp,
 	std Y+19,__zero_reg__	 ;  %sfp,
-.L35:
- ;  math.c:307:         tmp[ndec++] = '0' + ip % 10;
+.L33:
+ ;  math.c:268:         tmp[ndec++] = '0' + ip % 10;
 	ldd r30,Y+19	 ; , %sfp
 	ldd r31,Y+20	 ; , %sfp
 	adiw r30,1	 ; ,
 	std Y+30,r31	 ;  %sfp,
 	std Y+29,r30	 ;  %sfp,
- ;  math.c:307:         tmp[ndec++] = '0' + ip % 10;
+ ;  math.c:268:         tmp[ndec++] = '0' + ip % 10;
 	ldi r19,lo8(10)	 ; ,
 	mov r10,r19	 ; ,
 	mov r11,__zero_reg__	 ; 
@@ -1769,15 +1780,15 @@ fixedpt_str:
 	ldd r24,Y+25	 ; , %sfp
 	ldd r25,Y+26	 ; , %sfp
 	call __umoddi3	 ; 
- ;  math.c:307:         tmp[ndec++] = '0' + ip % 10;
+ ;  math.c:268:         tmp[ndec++] = '0' + ip % 10;
 	subi r18,lo8(-(48))	 ;  tmp111,
- ;  math.c:307:         tmp[ndec++] = '0' + ip % 10;
+ ;  math.c:268:         tmp[ndec++] = '0' + ip % 10;
 	ldd r26,Y+27	 ; , %sfp
 	ldd r27,Y+28	 ; , %sfp
 	st X+,r18		 ;  MEM[base: _24, offset: 0B], tmp111
 	std Y+28,r27	 ;  %sfp,
 	std Y+27,r26	 ;  %sfp,
- ;  math.c:308:         ip /= 10;
+ ;  math.c:269:         ip /= 10;
 	movw r18,r2	 ; ,
 	movw r20,r8	 ; ,
 	ldd r22,Y+23	 ; , %sfp
@@ -1791,7 +1802,7 @@ fixedpt_str:
 	mov r27,r23	 ;  tmp179,
 	mov r31,r24	 ;  tmp180,
 	mov r30,r25	 ;  tmp181,
- ;  math.c:309:     } while ( ip != 0 );
+ ;  math.c:270:     } while ( ip != 0 );
 	movw r18,r2	 ; ,
 	movw r20,r8	 ; ,
 	ldd r22,Y+23	 ; , %sfp
@@ -1802,40 +1813,40 @@ fixedpt_str:
 	call __cmpdi2_s8
 	breq .+4
 	brlo .+2
-	rjmp .L43	 ; 
-	ldi r24,lo8(1)	 ;  ivtmp.40,
-	ldi r25,0		 ;  ivtmp.40
-	add r24,r28	 ;  ivtmp.40,
-	adc r25,r29	 ;  ivtmp.40,
+	rjmp .L41	 ; 
+	ldi r24,lo8(1)	 ;  ivtmp.37,
+	ldi r25,0		 ;  ivtmp.37
+	add r24,r28	 ;  ivtmp.37,
+	adc r25,r29	 ;  ivtmp.37,
 	ldd r30,Y+29	 ; , %sfp
 	ldd r31,Y+30	 ; , %sfp
-	add r24,r30	 ;  ivtmp.40,
-	adc r25,r31	 ;  ivtmp.40,
-	ldd r30,Y+15	 ;  ivtmp.43, %sfp
-	ldd r31,Y+16	 ;  ivtmp.43, %sfp
+	add r24,r30	 ;  ivtmp.37,
+	adc r25,r31	 ;  ivtmp.37,
+	ldd r30,Y+15	 ;  ivtmp.40, %sfp
+	ldd r31,Y+16	 ;  ivtmp.40, %sfp
 	ldd r18,Y+21	 ; , %sfp
 	ldd r19,Y+22	 ; , %sfp
-	add r30,r18	 ;  ivtmp.43,
-	adc r31,r19	 ;  ivtmp.43,
-.L36:
- ;  math.c:312:         str[slen++] = tmp[--ndec];
+	add r30,r18	 ;  ivtmp.40,
+	adc r31,r19	 ;  ivtmp.40,
+.L34:
+ ;  math.c:273:         str[slen++] = tmp[--ndec];
 	movw r26,r24	 ; , tmp118
 	ld r18,-X		 ;  MEM[base: _68, offset: 0B], MEM[base: _68, offset: 0B]
 	movw r24,r26	 ;  tmp118,
 	st Z+,r18		 ;  MEM[base: _43, offset: 0B], MEM[base: _68, offset: 0B]
- ;  math.c:311:     while ( ndec > 0 )
+ ;  math.c:272:     while ( ndec > 0 )
 	ldd r18,Y+13	 ; , %sfp
 	ldd r19,Y+14	 ; , %sfp
-	cp r18,r26	 ; , ivtmp.40
-	cpc r19,r27	 ; , ivtmp.40
-	brne .L36		 ; ,
+	cp r18,r26	 ; , ivtmp.37
+	cpc r19,r27	 ; , ivtmp.37
+	brne .L34		 ; ,
 	ldd r24,Y+19	 ;  slen, %sfp
 	ldd r25,Y+20	 ;  slen, %sfp
 	ldd r26,Y+21	 ; , %sfp
 	ldd r27,Y+22	 ; , %sfp
 	add r24,r26	 ;  slen,
 	adc r25,r27	 ;  slen,
- ;  math.c:313:     str[slen++] = '.';
+ ;  math.c:274:     str[slen++] = '.';
 	ldd r30,Y+15	 ;  tmp120, %sfp
 	ldd r31,Y+16	 ;  tmp120, %sfp
 	ldd r18,Y+19	 ; , %sfp
@@ -1846,32 +1857,32 @@ fixedpt_str:
 	adc r31,r27	 ; ,
 	ldi r18,lo8(46)	 ;  tmp122,
 	std Z+1,r18	 ;  *_12, tmp122
- ;  math.c:315:     fr = ( fixedpt_fracpart( A ) << FIXEDPT_WBITS ) & mask;
+ ;  math.c:276:     fr = ( fixedpt_fracpart( A ) << FIXEDPT_WBITS ) & mask;
 	movw r6,r4	 ;  tmp123, A
 	clr r5	 ;  tmp123
 	clr r4	 ;  tmp123
- ;  math.c:315:     fr = ( fixedpt_fracpart( A ) << FIXEDPT_WBITS ) & mask;
+ ;  math.c:276:     fr = ( fixedpt_fracpart( A ) << FIXEDPT_WBITS ) & mask;
 	movw r30,r4	 ; ,
 	std Y+19,r6	 ;  %sfp,
 	mov r3,r7	 ;  fr,
- ;  math.c:313:     str[slen++] = '.';
+ ;  math.c:274:     str[slen++] = '.';
 	movw r6,r24	 ;  slen, slen
 	ldi r19,2	 ; ,
 	add r6,r19	 ;  slen,
 	adc r7,__zero_reg__	 ;  slen
 	ldd r26,Y+15	 ; , %sfp
 	ldd r27,Y+16	 ; , %sfp
-	add r6,r26	 ;  ivtmp.32,
-	adc r7,r27	 ;  ivtmp.32,
- ;  math.c:315:     fr = ( fixedpt_fracpart( A ) << FIXEDPT_WBITS ) & mask;
+	add r6,r26	 ;  ivtmp.29,
+	adc r7,r27	 ;  ivtmp.29,
+ ;  math.c:276:     fr = ( fixedpt_fracpart( A ) << FIXEDPT_WBITS ) & mask;
 	mov r9,__zero_reg__	 ;  ndec
 	mov r8,__zero_reg__	 ;  ndec
 	movw r4,r24	 ;  tmp129, slen
 	ldi r27,3	 ; ,
 	add r4,r27	 ;  tmp129,
 	adc r5,__zero_reg__	 ; 
-.L38:
- ;  math.c:317:         fr = ( fr & mask ) * 10;
+.L36:
+ ;  math.c:278:         fr = ( fr & mask ) * 10;
 	ldi r24,lo8(10)	 ; ,
 	mov r10,r24	 ; ,
 	mov r11,__zero_reg__	 ; 
@@ -1898,23 +1909,23 @@ fixedpt_str:
 	movw r14,r4	 ;  _82, tmp129
 	add r14,r8	 ;  _82, ndec
 	adc r15,r9	 ;  _82, ndec
- ;  math.c:319:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
-	movw r12,r6	 ;  _22, ivtmp.32
- ;  math.c:319:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
+ ;  math.c:280:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
+	movw r12,r6	 ;  _22, ivtmp.29
+ ;  math.c:280:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
 	ldi r16,lo8(32)	 ; ,
 	call __lshrdi3
- ;  math.c:319:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
+ ;  math.c:280:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
 	ldi r17,lo8(48)	 ;  _23,
 	add r17,r18	 ;  _23, tmp198
- ;  math.c:319:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
-	movw r26,r6	 ; , ivtmp.32
+ ;  math.c:280:         str[slen++] = '0' + ( fr >> FIXEDPT_BITS ) % 10;
+	movw r26,r6	 ; , ivtmp.29
 	st X+,r17		 ;  MEM[base: _22, offset: 0B], _23
-	movw r6,r26	 ;  ivtmp.32,
- ;  math.c:320:         ndec++;
+	movw r6,r26	 ;  ivtmp.29,
+ ;  math.c:281:         ndec++;
 	ldi r27,-1	 ; ,
 	sub r8,r27	 ;  ndec,
 	sbc r9,r27	 ;  ndec,
- ;  math.c:321:     } while ( fr != 0 && ndec < max_dec );
+ ;  math.c:282:     } while ( fr != 0 && ndec < max_dec );
 	movw r18,r30	 ; ,
 	ldd r20,Y+19	 ; , %sfp
 	mov r21,r3	 ; , fr
@@ -1923,26 +1934,26 @@ fixedpt_str:
 	ldd r25,Y+21	 ; , %sfp
 	ldi r26,0		 ; 
 	call __cmpdi2_s8
-	breq .L37		 ; ,
- ;  math.c:321:     } while ( fr != 0 && ndec < max_dec );
+	breq .L35		 ; ,
+ ;  math.c:282:     } while ( fr != 0 && ndec < max_dec );
 	ldd r18,Y+17	 ; , %sfp
 	ldd r19,Y+18	 ; , %sfp
 	cp r8,r18	 ;  ndec,
 	cpc r9,r19	 ;  ndec,
-	brlt .L38		 ; ,
-.L37:
- ;  math.c:323:     if ( ndec > 1 && str[slen - 1] == '0' )
+	brlt .L36		 ; ,
+.L35:
+ ;  math.c:284:     if ( ndec > 1 && str[slen - 1] == '0' )
 	dec r8	 ;  ndec
 	or r8,r9	 ;  ndec
-	breq .L39		 ; ,
- ;  math.c:323:     if ( ndec > 1 && str[slen - 1] == '0' )
+	breq .L37		 ; ,
+ ;  math.c:284:     if ( ndec > 1 && str[slen - 1] == '0' )
 	cpi r17,lo8(48)	 ;  _23,
-	brne .L39		 ; ,
- ;  math.c:324:         str[slen - 1] = '\0'; /* cut off trailing 0 */
+	brne .L37		 ; ,
+ ;  math.c:285:         str[slen - 1] = '\0'; /* cut off trailing 0 */
 	movw r26,r12	 ; , _22
 	st X,__zero_reg__		 ;  *_22,
-.L40:
- ;  math.c:329: }
+.L38:
+ ;  math.c:290: }
 	ldd r24,Y+15	 ; , %sfp
 	ldd r25,Y+16	 ; , %sfp
 /* epilogue start */
@@ -1971,219 +1982,55 @@ fixedpt_str:
 	pop r3		 ; 
 	pop r2		 ; 
 	ret	
-.L41:
- ;  math.c:290:         max_dec = 4;
+.L39:
+ ;  math.c:251:         max_dec = 4;
 	ldi r26,lo8(4)	 ; ,
 	ldi r27,0		 ; 
 	std Y+18,r27	 ;  %sfp,
 	std Y+17,r26	 ;  %sfp,
-	rjmp .L33		 ; 
-.L42:
- ;  math.c:279:     int ndec = 0, slen = 0;
+	rjmp .L31		 ; 
+.L40:
+ ;  math.c:240:     int ndec = 0, slen = 0;
 	std Y+22,__zero_reg__	 ;  %sfp,
 	std Y+21,__zero_reg__	 ;  %sfp,
-	rjmp .L34		 ; 
-.L43:
- ;  math.c:308:         ip /= 10;
+	rjmp .L32		 ; 
+.L41:
+ ;  math.c:269:         ip /= 10;
 	movw r2,r12	 ; ,
 	movw r8,r14	 ; ,
 	std Y+23,r17	 ;  %sfp, tmp178
 	std Y+24,r27	 ;  %sfp, tmp179
 	std Y+25,r31	 ;  %sfp, tmp180
 	std Y+26,r30	 ;  %sfp, tmp181
- ;  math.c:307:         tmp[ndec++] = '0' + ip % 10;
+ ;  math.c:268:         tmp[ndec++] = '0' + ip % 10;
 	ldd r26,Y+29	 ; , %sfp
 	ldd r27,Y+30	 ; , %sfp
 	std Y+20,r27	 ;  %sfp,
 	std Y+19,r26	 ;  %sfp,
-	rjmp .L35		 ; 
-.L39:
- ;  math.c:326:         str[slen] = '\0';
+	rjmp .L33		 ; 
+.L37:
+ ;  math.c:287:         str[slen] = '\0';
 	ldd r30,Y+15	 ;  tmp131, %sfp
 	ldd r31,Y+16	 ;  tmp131, %sfp
 	add r30,r14	 ;  tmp131, _82
 	adc r31,r15	 ; , _82
 	st Z,__zero_reg__		 ;  *_27,
-	rjmp .L40		 ; 
+	rjmp .L38		 ; 
 	.size	fixedpt_str, .-fixedpt_str
 .global	fixedpt_sqrt
 	.type	fixedpt_sqrt, @function
 fixedpt_sqrt:
-	push r3		 ; 
-	push r4		 ; 
-	push r5		 ; 
-	push r6		 ; 
-	push r7		 ; 
-	push r8		 ; 
-	push r9		 ; 
-	push r10		 ; 
-	push r11		 ; 
-	push r12		 ; 
-	push r13		 ; 
-	push r14		 ; 
-	push r15		 ; 
-	push r16		 ; 
-	push r17		 ; 
-	push r28		 ; 
-	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	sbiw r28,10	 ; ,
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 10 */
-/* stack size = 27 */
-.L__stack_usage = 27
-	movw r8,r22	 ;  A, A
-	movw r10,r24	 ;  A, A
- ;  math.c:334:     if ( A < 0 )
-	sbrc r11,7	 ;  A,
-	rjmp .L53		 ; 
- ;  math.c:336:     if ( A == 0 || A == FIXEDPT_ONE )
-	cp r8,__zero_reg__	 ;  A
-	cpc r9,__zero_reg__	 ;  A
-	cpc r10,__zero_reg__	 ;  A
-	cpc r11,__zero_reg__	 ;  A
-	brne .+2	 ; 
-	rjmp .L50	 ; 
- ;  math.c:336:     if ( A == 0 || A == FIXEDPT_ONE )
-	cp r8,__zero_reg__	 ;  A
-	cpc r9,__zero_reg__	 ;  A
-	ldi r18,1	 ; ,
-	cpc r10,r18	 ;  A,
-	cpc r11,__zero_reg__	 ;  A
-	brne .+2	 ; 
-	rjmp .L50	 ; 
- ;  math.c:341:     fixedpt v = A >> 1;
-	movw r14,r24	 ;  n, A
-	movw r12,r22	 ;  n, A
-	asr r15	 ;  n
-	ror r14	 ;  n
-	ror r13	 ;  n
-	ror r12	 ;  n
-	std Y+10,r22	 ;  %sfp, A
-	std Y+9,r9	 ;  %sfp, A
-	mov r17,r24	 ;  n, A
-	mov r3,r11	 ;  n, A
- ;  math.c:339:     fixedpt p = 0;
-	mov r4,__zero_reg__	 ;  p
-	mov r5,__zero_reg__	 ;  p
-	movw r6,r4	 ;  p
-.L52:
- ;  math.c:345:         fixedptd sq = fixedpt_dmul( v, v );
-	movw r24,r14	 ; , n
-	movw r22,r12	 ; , n
-	movw r20,r14	 ; , n
-	movw r18,r12	 ; , n
-	call __mulsidi3
-	ldi r16,lo8(16)	 ; ,
-	call __ashrdi3
-	std Y+1,r18	 ;  %sfp,
-	std Y+2,r19	 ;  %sfp,
-	std Y+3,r20	 ;  %sfp,
-	std Y+4,r21	 ;  %sfp,
- ;  math.c:346:         fixedpt err = A - sq;
-	movw r26,r10	 ;  _7, A
-	movw r24,r8	 ;  _7, A
-	ldd r18,Y+1	 ; , %sfp
-	ldd r19,Y+2	 ; , %sfp
-	ldd r20,Y+3	 ; , %sfp
-	ldd r21,Y+4	 ; , %sfp
-	sub r24,r18	 ;  _7,
-	sbc r25,r19	 ;  _7,
-	sbc r26,r20	 ;  _7,
-	sbc r27,r21	 ;  _7,
- ;  math.c:348:         if ( fixedpt_abs( err ) < fixedpt_rconst( 0.01 ) )
-	movw r20,r24	 ;  tmp58, _7
-	movw r22,r26	 ; , _7
-	subi r20,114	 ;  tmp58,
-	sbci r21,-3	 ; ,
-	sbci r22,-1	 ; ,
-	sbci r23,-1	 ; ,
- ;  math.c:348:         if ( fixedpt_abs( err ) < fixedpt_rconst( 0.01 ) )
-	cpi r20,29	 ;  tmp58,
-	sbci r21,5	 ; ,
-	cpc r22,__zero_reg__	 ; 
-	cpc r23,__zero_reg__	 ; 
-	brlo .L54		 ; ,
- ;  math.c:350:         if ( err < 0 )
-	sbrc r27,7	 ;  _7,
-	rjmp .L51		 ; 
-	movw r4,r12	 ;  p, n
-	movw r6,r14	 ;  p, n
-	ldd r12,Y+10	 ;  n, %sfp
-	ldd r13,Y+9	 ;  n, %sfp
-	mov r14,r17	 ;  n, n
-	mov r15,r3	 ;  n, n
-.L51:
- ;  math.c:355:         v = ( n + p ) >> 1;
-	movw r26,r6	 ; , p
-	movw r24,r4	 ;  tmp59, p
-	add r24,r12	 ;  tmp59, n
-	adc r25,r13	 ; , n
-	adc r26,r14	 ; , n
-	adc r27,r15	 ; , n
- ;  math.c:344:     {
-	std Y+10,r12	 ;  %sfp, n
-	std Y+9,r13	 ;  %sfp, n
-	mov r17,r14	 ;  n, n
-	mov r3,r15	 ;  n, n
- ;  math.c:355:         v = ( n + p ) >> 1;
-	movw r12,r24	 ;  n, tmp59
-	movw r14,r26	 ;  n,
-	asr r15	 ;  n
-	ror r14	 ;  n
-	ror r13	 ;  n
-	ror r12	 ;  n
- ;  math.c:344:     {
-	rjmp .L52		 ; 
-.L53:
- ;  math.c:335:         return  -1;
-	clr r8		 ;  A
-	dec r8		 ;  A
-	mov r9,r8	 ;  A, A
-	movw r10,r8	 ;  A
-.L50:
- ;  math.c:386: }
-	movw r24,r10	 ; , A
-	movw r22,r8	 ; , A
+/* frame size = 0 */
+/* stack size = 0 */
+.L__stack_usage = 0
 /* epilogue start */
-	adiw r28,10	 ; ,
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
-	pop r29		 ; 
-	pop r28		 ; 
-	pop r17		 ; 
-	pop r16		 ; 
-	pop r15		 ; 
-	pop r14		 ; 
-	pop r13		 ; 
-	pop r12		 ; 
-	pop r11		 ; 
-	pop r10		 ; 
-	pop r9		 ; 
-	pop r8		 ; 
-	pop r7		 ; 
-	pop r6		 ; 
-	pop r5		 ; 
-	pop r4		 ; 
-	pop r3		 ; 
+ ;  math.c:296: }
 	ret	
-.L54:
-	movw r8,r12	 ;  A, n
-	movw r10,r14	 ;  A, n
-	rjmp .L50		 ; 
 	.size	fixedpt_sqrt, .-fixedpt_sqrt
 	.data
 	.type	acos_table, @object
-	.size	acos_table, 606
+	.size	acos_table, 366
 acos_table:
  ;  fractional:
 	.word	0
@@ -2193,702 +2040,422 @@ acos_table:
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	655
+	.word	3441
  ;  value:
-	.byte	-112
-	.byte	-113
+	.byte	-83
+	.byte	-124
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	1311
+	.word	6709
  ;  value:
-	.byte	1
-	.byte	-115
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	1966
- ;  value:
-	.byte	113
-	.byte	-118
+	.byte	-33
+	.byte	119
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	2621
+	.word	9814
  ;  value:
-	.byte	-30
-	.byte	-121
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	3277
- ;  value:
-	.byte	82
-	.byte	-123
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	3932
- ;  value:
-	.byte	-63
-	.byte	-126
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	4588
- ;  value:
-	.byte	48
-	.byte	-128
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	5243
- ;  value:
-	.byte	-97
-	.byte	125
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	5898
- ;  value:
-	.byte	13
-	.byte	123
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	6554
- ;  value:
-	.byte	123
-	.byte	120
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	7209
- ;  value:
-	.byte	-24
-	.byte	117
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	7864
- ;  value:
-	.byte	84
-	.byte	115
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	8520
- ;  value:
-	.byte	-64
-	.byte	112
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	9175
- ;  value:
-	.byte	42
-	.byte	110
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	9830
- ;  value:
-	.byte	-108
+	.byte	-92
 	.byte	107
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	10486
+	.word	12764
  ;  value:
-	.byte	-3
-	.byte	104
+	.byte	-15
+	.byte	95
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	11141
+	.word	15567
  ;  value:
-	.byte	100
-	.byte	102
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	11796
- ;  value:
-	.byte	-53
-	.byte	99
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	12452
- ;  value:
-	.byte	48
-	.byte	97
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	13107
- ;  value:
-	.byte	-109
-	.byte	94
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	13763
- ;  value:
-	.byte	-10
-	.byte	91
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	14418
- ;  value:
-	.byte	87
-	.byte	89
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	15073
- ;  value:
-	.byte	-74
-	.byte	86
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	15729
- ;  value:
-	.byte	20
+	.byte	-69
 	.byte	84
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	16384
+	.word	18229
  ;  value:
-	.byte	112
-	.byte	81
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	17039
- ;  value:
-	.byte	-54
-	.byte	78
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	17695
- ;  value:
-	.byte	35
-	.byte	76
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	18350
- ;  value:
-	.byte	121
+	.byte	-9
 	.byte	73
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	19005
+	.word	20758
  ;  value:
-	.byte	-51
-	.byte	70
+	.byte	-98
+	.byte	63
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	19661
+	.word	23161
  ;  value:
-	.byte	31
-	.byte	68
+	.byte	-89
+	.byte	53
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	20316
+	.word	25444
  ;  value:
-	.byte	111
-	.byte	65
+	.byte	13
+	.byte	44
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	20972
+	.word	27612
  ;  value:
-	.byte	-67
-	.byte	62
+	.byte	-54
+	.byte	34
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	21627
+	.word	29672
  ;  value:
-	.byte	8
-	.byte	60
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	22282
- ;  value:
-	.byte	80
-	.byte	57
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	22938
- ;  value:
-	.byte	-106
-	.byte	54
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	23593
- ;  value:
-	.byte	-39
-	.byte	51
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	24248
- ;  value:
+	.byte	-41
 	.byte	25
+	.byte	1
+	.byte	0
+ ;  fractional:
+	.word	31629
+ ;  value:
 	.byte	49
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	24904
- ;  value:
-	.byte	86
-	.byte	46
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	25559
- ;  value:
-	.byte	-112
-	.byte	43
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	26214
- ;  value:
-	.byte	-57
-	.byte	40
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	26870
- ;  value:
-	.byte	-6
-	.byte	37
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	27525
- ;  value:
-	.byte	41
-	.byte	35
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	28180
- ;  value:
-	.byte	85
-	.byte	32
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	28836
- ;  value:
-	.byte	126
-	.byte	29
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	29491
- ;  value:
-	.byte	-94
-	.byte	26
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	30147
- ;  value:
-	.byte	-62
-	.byte	23
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	30802
- ;  value:
-	.byte	-34
-	.byte	20
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	31457
- ;  value:
-	.byte	-11
 	.byte	17
 	.byte	1
 	.byte	0
  ;  fractional:
-	.word	32113
+	.word	-32048
  ;  value:
-	.byte	7
-	.byte	15
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	-32768
- ;  value:
-	.byte	21
-	.byte	12
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	-32113
- ;  value:
-	.byte	30
-	.byte	9
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	-31457
- ;  value:
-	.byte	33
-	.byte	6
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	-30802
- ;  value:
-	.byte	31
-	.byte	3
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	-30147
- ;  value:
-	.byte	24
-	.byte	0
-	.byte	1
-	.byte	0
- ;  fractional:
-	.word	-29491
- ;  value:
-	.byte	10
-	.byte	-3
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-28836
- ;  value:
-	.byte	-10
-	.byte	-7
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-28180
- ;  value:
-	.byte	-36
-	.byte	-10
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-27525
- ;  value:
-	.byte	-69
-	.byte	-13
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-26870
- ;  value:
-	.byte	-109
-	.byte	-16
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-26214
- ;  value:
-	.byte	99
-	.byte	-19
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-25559
- ;  value:
-	.byte	44
-	.byte	-22
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-24904
- ;  value:
-	.byte	-19
-	.byte	-26
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-24248
- ;  value:
-	.byte	-91
-	.byte	-29
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-23593
- ;  value:
-	.byte	85
-	.byte	-32
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-22938
- ;  value:
-	.byte	-5
-	.byte	-36
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-22282
- ;  value:
-	.byte	-104
-	.byte	-39
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-21627
- ;  value:
-	.byte	43
-	.byte	-42
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-20972
- ;  value:
-	.byte	-78
 	.byte	-46
-	.byte	0
+	.byte	8
+	.byte	1
 	.byte	0
  ;  fractional:
-	.word	-20316
+	.word	-30281
  ;  value:
-	.byte	47
-	.byte	-49
+	.byte	-72
 	.byte	0
+	.byte	1
 	.byte	0
  ;  fractional:
-	.word	-19661
+	.word	-28604
  ;  value:
-	.byte	-97
-	.byte	-53
+	.byte	-35
+	.byte	-8
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-19005
+	.word	-27010
  ;  value:
-	.byte	3
-	.byte	-56
+	.byte	64
+	.byte	-15
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-18350
- ;  value:
-	.byte	90
-	.byte	-60
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-17695
- ;  value:
-	.byte	-94
-	.byte	-64
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-17039
+	.word	-25495
  ;  value:
 	.byte	-36
-	.byte	-68
+	.byte	-23
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-16384
+	.word	-24057
  ;  value:
-	.byte	5
-	.byte	-71
+	.byte	-82
+	.byte	-30
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-15729
+	.word	-22690
  ;  value:
-	.byte	30
+	.byte	-75
+	.byte	-37
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-21392
+ ;  value:
+	.byte	-19
+	.byte	-44
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-20158
+ ;  value:
+	.byte	84
+	.byte	-50
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-18986
+ ;  value:
+	.byte	-24
+	.byte	-57
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-17873
+ ;  value:
+	.byte	-89
+	.byte	-63
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-16816
+ ;  value:
+	.byte	-114
+	.byte	-69
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-15811
+ ;  value:
+	.byte	-100
 	.byte	-75
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-15073
+	.word	-14857
  ;  value:
-	.byte	36
-	.byte	-79
+	.byte	-48
+	.byte	-81
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-14418
+	.word	-13950
  ;  value:
-	.byte	23
-	.byte	-83
+	.byte	38
+	.byte	-86
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-13763
+	.word	-13089
  ;  value:
-	.byte	-11
-	.byte	-88
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-13107
- ;  value:
-	.byte	-67
+	.byte	-98
 	.byte	-92
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-12452
+	.word	-12270
  ;  value:
-	.byte	108
-	.byte	-96
+	.byte	53
+	.byte	-97
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-11796
+	.word	-11493
  ;  value:
-	.byte	1
-	.byte	-100
+	.byte	-20
+	.byte	-103
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-11141
+	.word	-10755
  ;  value:
-	.byte	121
-	.byte	-105
+	.byte	-66
+	.byte	-108
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-10486
+	.word	-10053
  ;  value:
-	.byte	-46
-	.byte	-110
+	.byte	-83
+	.byte	-113
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-9830
+	.word	-9387
  ;  value:
-	.byte	8
-	.byte	-114
+	.byte	-75
+	.byte	-118
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-9175
+	.word	-8753
  ;  value:
-	.byte	24
-	.byte	-119
+	.byte	-43
+	.byte	-123
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-8520
+	.word	-8152
  ;  value:
-	.byte	-2
-	.byte	-125
+	.byte	12
+	.byte	-127
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-7864
+	.word	-7580
  ;  value:
-	.byte	-76
-	.byte	126
+	.byte	89
+	.byte	124
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-7209
+	.word	-7038
  ;  value:
-	.byte	52
-	.byte	121
-	.byte	0
-	.byte	0
- ;  fractional:
-	.word	-6554
- ;  value:
+	.byte	-70
 	.byte	119
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-6522
+ ;  value:
+	.byte	46
 	.byte	115
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-5898
+	.word	-6032
  ;  value:
-	.byte	114
-	.byte	109
+	.byte	-78
+	.byte	110
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-5243
+	.word	-5566
  ;  value:
-	.byte	24
-	.byte	103
+	.byte	70
+	.byte	106
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-4588
+	.word	-5124
  ;  value:
-	.byte	91
-	.byte	96
+	.byte	-24
+	.byte	101
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-3932
+	.word	-4704
  ;  value:
-	.byte	34
+	.byte	-106
+	.byte	97
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-4305
+ ;  value:
+	.byte	79
+	.byte	93
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-3926
+ ;  value:
+	.byte	16
 	.byte	89
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-3277
+	.word	-3566
  ;  value:
-	.byte	76
-	.byte	81
+	.byte	-41
+	.byte	84
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-2622
+	.word	-3224
  ;  value:
-	.byte	-89
+	.byte	-95
+	.byte	80
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-2899
+ ;  value:
+	.byte	109
+	.byte	76
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-2590
+ ;  value:
+	.byte	54
 	.byte	72
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-1966
+	.word	-2297
  ;  value:
-	.byte	-34
-	.byte	62
+	.byte	-7
+	.byte	67
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-1311
+	.word	-2018
  ;  value:
-	.byte	73
-	.byte	51
+	.byte	-78
+	.byte	63
 	.byte	0
 	.byte	0
  ;  fractional:
-	.word	-655
+	.word	-1753
  ;  value:
-	.byte	60
-	.byte	36
+	.byte	89
+	.byte	59
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-1502
+ ;  value:
+	.byte	-23
+	.byte	54
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-1263
+ ;  value:
+	.byte	86
+	.byte	50
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-1036
+ ;  value:
+	.byte	-109
+	.byte	45
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-820
+ ;  value:
+	.byte	-117
+	.byte	40
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-615
+ ;  value:
+	.byte	28
+	.byte	35
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-421
+ ;  value:
+	.byte	6
+	.byte	29
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-236
+ ;  value:
+	.byte	-70
+	.byte	21
+	.byte	0
+	.byte	0
+ ;  fractional:
+	.word	-60
+ ;  value:
+	.byte	-6
+	.byte	10
 	.byte	0
 	.byte	0
  ;  fractional:
 	.word	0
  ;  value:
-	.byte	75
+	.byte	0
 	.byte	0
 	.byte	0
 	.byte	0

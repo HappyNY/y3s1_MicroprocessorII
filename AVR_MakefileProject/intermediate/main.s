@@ -114,21 +114,18 @@ InitializeDevice:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:155:     LCDDevice__Initialize();
+ ;  main.c:163:     LCDDevice__Initialize();
 	call LCDDevice__Initialize	 ; 
- ;  main.c:163:     sei();
+ ;  main.c:171:     sei();
 /* #APP */
- ;  163 "main.c" 1
+ ;  171 "main.c" 1
 	sei	
  ;  0 "" 2
 /* #NOAPP */
 /* epilogue start */
- ;  main.c:164: }
+ ;  main.c:172: }
 	ret	
 	.size	InitializeDevice, .-InitializeDevice
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"3D TEST"
 	.section	.text.startup,"ax",@progbits
 .global	main
 	.type	main, @function
@@ -137,56 +134,43 @@ main:
 	push r29		 ; 
 	in r28,__SP_L__	 ; 
 	in r29,__SP_H__	 ; 
-	sbiw r28,25	 ; ,
+	sbiw r28,16	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 25 */
-/* stack size = 27 */
-.L__stack_usage = 27
+/* frame size = 16 */
+/* stack size = 18 */
+.L__stack_usage = 18
  ;  main.c:35:     InitializeDevice();
 	call InitializeDevice	 ; 
- ;  main.c:41:     Arg.Mesh = Triangle;
-	lds r24,Triangle	 ;  Triangle, Triangle
-	lds r25,Triangle+1	 ;  Triangle, Triangle
-	lds r26,Triangle+2	 ;  Triangle, Triangle
-	std Y+17,r24	 ;  Arg.Mesh, Triangle
-	std Y+18,r25	 ;  Arg.Mesh, Triangle
-	std Y+19,r26	 ;  Arg.Mesh, Triangle
- ;  main.c:42:     Arg.Position.x = 50;
-	ldi r24,lo8(50)	 ;  tmp62,
-	ldi r25,0		 ; 
-	std Y+21,r25	 ;  Arg.Position.x, tmp62
-	std Y+20,r24	 ;  Arg.Position.x, tmp62
- ;  main.c:43:     Arg.Position.y = 0;
-	std Y+23,__zero_reg__	 ;  Arg.Position.y,
-	std Y+22,__zero_reg__	 ;  Arg.Position.y,
- ;  main.c:47:     Cam.Position.x = 0;
+ ;  main.c:43:     Cam.Position.x = 0;
 	std Y+2,__zero_reg__	 ;  Cam.Position.x,
 	std Y+1,__zero_reg__	 ;  Cam.Position.x,
- ;  main.c:48:     Cam.Position.y = 0;
+ ;  main.c:44:     Cam.Position.y = 0;
 	std Y+4,__zero_reg__	 ;  Cam.Position.y,
 	std Y+3,__zero_reg__	 ;  Cam.Position.y,
- ;  main.c:49:     Cam.ReadOnly_DirectionRadian = 0;
+ ;  main.c:45:     Cam.ReadOnly_DirectionRadian = 0;
 	std Y+5,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
 	std Y+6,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
 	std Y+7,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
 	std Y+8,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
- ;  main.c:50:     CalculateTranformCache( &Cam );  
+ ;  main.c:46:     CalculateTranformCache( &Cam );  
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call CalculateTranformCache	 ; 
- ;  main.c:52:     byte test = 0;
+ ;  main.c:48:     byte test = 0;
 	ldi r17,0		 ;  test
+ ;  main.c:70:         PORTC = 0xff;
+	ldi r16,lo8(-1)	 ;  tmp87,
 .L15:
- ;  main.c:55:         ++test;
+ ;  main.c:51:         ++test;
 	subi r17,lo8(-(1))	 ;  test,
- ;  main.c:56:         byte ch = DetectEdge(); 
+ ;  main.c:52:         byte ch = DetectEdge(); 
 	call DetectEdge	 ; 
- ;  main.c:58:         switch ( ch )
+ ;  main.c:54:         switch ( ch )
 	cpi r24,lo8(64)	 ;  ch,
 	brne .+2	 ; 
 	rjmp .L7	 ; 
@@ -199,63 +183,111 @@ main:
 	brne .+2	 ; 
 	rjmp .L10	 ; 
 .L11:
- ;  main.c:74:         VBuffer_Clear();
+ ;  main.c:70:         PORTC = 0xff;
+	out 0x15,r16	 ;  MEM[(volatile uint8_t *)53B], tmp87
+ ;  main.c:71:         VBuffer_Clear();
 	call VBuffer_Clear	 ; 
- ;  main.c:76:             byte x = 0, y = 0; 
-	std Y+25,__zero_reg__	 ;  x,
- ;  main.c:76:             byte x = 0, y = 0; 
-	std Y+24,__zero_reg__	 ;  y,
- ;  main.c:77:             VBuffer_DrawString( &x, &y, "3D TEST", true );
-	ldi r18,lo8(1)	 ; ,
-	ldi r19,0		 ; 
-	ldi r20,lo8(.LC0)	 ; ,
-	ldi r21,hi8(.LC0)	 ; ,
-	movw r22,r28	 ; ,
-	subi r22,-24	 ; ,
-	sbci r23,-1	 ; ,
-	movw r24,r28	 ; ,
-	adiw r24,25	 ; ,
-	call VBuffer_DrawString	 ; 
- ;  main.c:78:             VBuffer_DrawLine( 0, 0, Cam.Position.x + 25, Cam.Position.x + 25 );
-	ldd r20,Y+1	 ;  Cam.Position.x, Cam.Position.x
-	ldd r21,Y+2	 ;  Cam.Position.x, Cam.Position.x
-	subi r20,-25	 ;  _14,
-	sbci r21,-1	 ;  _14,
- ;  main.c:78:             VBuffer_DrawLine( 0, 0, Cam.Position.x + 25, Cam.Position.x + 25 );
-	movw r18,r20	 ; , _14
+ ;  main.c:72:         --PORTC;
+	in r24,0x15	 ;  _13, MEM[(volatile uint8_t *)53B]
+ ;  main.c:72:         --PORTC;
+	subi r24,lo8(-(-1))	 ;  _14,
+	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], _14
+ ;  main.c:75:             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+	ldd r24,Y+1	 ;  _15, Cam.Position.x
+	ldd r25,Y+2	 ;  _15, Cam.Position.x
+ ;  main.c:75:             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+	mov r18,r17	 ;  tmp90, test
+	swap r18		 ;  tmp90
+	andi r18,lo8(15)	 ;  tmp90,
+ ;  main.c:75:             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+	add r18,r24	 ;  tmp92, _15
+	mov r19,r25	 ;  tmp92, _15
+	adc r19,__zero_reg__	 ;  tmp92
+ ;  main.c:75:             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+	mov r20,r17	 ;  tmp93, test
+	andi r20,lo8(15)	 ;  tmp93,
+ ;  main.c:75:             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+	add r20,r24	 ;  tmp95, _15
+	mov r21,r25	 ;  tmp95, _15
+	adc r21,__zero_reg__	 ;  tmp95
+ ;  main.c:75:             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
 	ldi r23,0		 ; 
 	ldi r22,0		 ; 
 	ldi r25,0		 ; 
 	ldi r24,0		 ; 
 	call VBuffer_DrawLine	 ; 
- ;  main.c:80:         CalculateTranformCache( &Cam );
+ ;  main.c:76:         --PORTC;
+	in r24,0x15	 ;  _21, MEM[(volatile uint8_t *)53B]
+ ;  main.c:76:         --PORTC;
+	subi r24,lo8(-(-1))	 ;  _22,
+	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], _22
+ ;  main.c:78:         CalculateTranformCache( &Cam );
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call CalculateTranformCache	 ; 
- ;  main.c:81:         CDrawArgs_DrawOnDisplayBufferPerspective( &Arg.Mesh, Arg.Position, &Cam );
-	ldd r20,Y+20	 ;  Arg.Position, Arg.Position
-	ldd r21,Y+21	 ;  Arg.Position, Arg.Position
-	ldd r22,Y+22	 ;  Arg.Position, Arg.Position
-	ldd r23,Y+23	 ;  Arg.Position, Arg.Position
+ ;  main.c:79:         --PORTC;
+	in r24,0x15	 ;  _23, MEM[(volatile uint8_t *)53B]
+ ;  main.c:79:         --PORTC;
+	subi r24,lo8(-(-1))	 ;  _24,
+	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], _24
+ ;  main.c:81:         Position.x = 50;
+	ldi r24,lo8(50)	 ; ,
+	mov r12,r24	 ;  Position,
+	mov r13,__zero_reg__	 ;  Position
+ ;  main.c:82:         Position.y = 0;
+	mov r15,__zero_reg__	 ;  Position
+	mov r14,__zero_reg__	 ;  Position
+ ;  main.c:83:         CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
 	movw r18,r28	 ; ,
 	subi r18,-1	 ; ,
 	sbci r19,-1	 ; ,
-	movw r24,r28	 ; ,
-	adiw r24,17	 ; ,
+	movw r22,r14	 ; , Position
+	movw r20,r12	 ; , Position
+	ldi r24,lo8(Triangle)	 ; ,
+	ldi r25,hi8(Triangle)	 ; ,
 	call CDrawArgs_DrawOnDisplayBufferPerspective	 ; 
- ;  main.c:82:         VBuffer_DrawChar( 0, 16, 'a' + ( test & 0x0f ), false );
-	mov r20,r17	 ;  tmp80, test
-	andi r20,lo8(15)	 ;  tmp80,
- ;  main.c:82:         VBuffer_DrawChar( 0, 16, 'a' + ( test & 0x0f ), false );
-	subi r20,lo8(-(97))	 ;  tmp81,
- ;  main.c:82:         VBuffer_DrawChar( 0, 16, 'a' + ( test & 0x0f ), false );
-	ldi r19,0		 ; 
-	ldi r18,0		 ; 
-	ldi r22,lo8(16)	 ; ,
-	ldi r24,0		 ; 
-	call VBuffer_DrawChar	 ; 
- ;  main.c:83:         LCDDevice__Render(); 
+ ;  main.c:84:         Position.y = 11;
+	ldi r25,lo8(11)	 ; ,
+	mov r14,r25	 ;  Position,
+	mov r15,__zero_reg__	 ;  Position
+ ;  main.c:85:         CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+	movw r18,r28	 ; ,
+	subi r18,-1	 ; ,
+	sbci r19,-1	 ; ,
+	movw r22,r14	 ; , Position
+	movw r20,r12	 ; , Position
+	ldi r24,lo8(Triangle)	 ; ,
+	ldi r25,hi8(Triangle)	 ; ,
+	call CDrawArgs_DrawOnDisplayBufferPerspective	 ; 
+ ;  main.c:86:         Position.y = 4;
+	ldi r18,lo8(4)	 ; ,
+	mov r14,r18	 ;  Position,
+	mov r15,__zero_reg__	 ;  Position
+ ;  main.c:87:         Position.x = 93;
+	ldi r19,lo8(93)	 ; ,
+	mov r12,r19	 ;  Position,
+	mov r13,__zero_reg__	 ;  Position
+ ;  main.c:88:         CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+	movw r18,r28	 ; ,
+	subi r18,-1	 ; ,
+	sbci r19,-1	 ; ,
+	movw r22,r14	 ; , Position
+	movw r20,r12	 ; , Position
+	ldi r24,lo8(Triangle)	 ; ,
+	ldi r25,hi8(Triangle)	 ; ,
+	call CDrawArgs_DrawOnDisplayBufferPerspective	 ; 
+ ;  main.c:89:         --PORTC;
+	in r24,0x15	 ;  _25, MEM[(volatile uint8_t *)53B]
+ ;  main.c:89:         --PORTC;
+	subi r24,lo8(-(-1))	 ;  _26,
+	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], _26
+ ;  main.c:90:         LCDDevice__Render(); 
 	call LCDDevice__Render	 ; 
+ ;  main.c:91:         --PORTC;
+	in r24,0x15	 ;  _27, MEM[(volatile uint8_t *)53B]
+ ;  main.c:91:         --PORTC;
+	subi r24,lo8(-(-1))	 ;  _28,
+	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], _28
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
 	ldi r18,lo8(159999)	 ; ,
 	ldi r24,hi8(159999)	 ; ,
@@ -266,9 +298,10 @@ main:
 	brne 1b
 	rjmp .	
 	nop	
+ ;  main.c:50:     {
 	rjmp .L15		 ; 
 .L8:
- ;  main.c:58:         switch ( ch )
+ ;  main.c:54:         switch ( ch )
 	cpi r24,lo8(100)	 ;  ch,
 	breq .L12		 ; ,
 	cpi r24,lo8(-128)	 ;  ch,
@@ -276,67 +309,67 @@ main:
 	cpi r24,lo8(97)	 ;  ch,
 	breq .+2	 ; 
 	rjmp .L11	 ; 
- ;  main.c:69:             Cam.Position.y -= 5; break;
+ ;  main.c:65:             Cam.Position.y -= 5; break;
 	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
 	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
-	sbiw r24,5	 ;  tmp71,
+	sbiw r24,5	 ;  tmp82,
 .L17:
- ;  main.c:71:             Cam.Position.y += 5; break;
-	std Y+4,r25	 ;  Cam.Position.y, tmp73
-	std Y+3,r24	 ;  Cam.Position.y, tmp73
- ;  main.c:71:             Cam.Position.y += 5; break;
+ ;  main.c:67:             Cam.Position.y += 5; break;
+	std Y+4,r25	 ;  Cam.Position.y, tmp84
+	std Y+3,r24	 ;  Cam.Position.y, tmp84
+ ;  main.c:67:             Cam.Position.y += 5; break;
 	rjmp .L11		 ; 
 .L10:
- ;  main.c:61:             Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
+ ;  main.c:57:             Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
 	ldd r24,Y+5	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	subi r24,11	 ;  tmp63,
+	subi r24,11	 ;  tmp74,
 	sbci r25,8	 ; ,
 	sbc r26,__zero_reg__	 ; 
 	sbc r27,__zero_reg__	 ; 
 .L16:
- ;  main.c:63:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-	std Y+5,r24	 ;  Cam.ReadOnly_DirectionRadian, tmp65
-	std Y+6,r25	 ;  Cam.ReadOnly_DirectionRadian, tmp65
-	std Y+7,r26	 ;  Cam.ReadOnly_DirectionRadian, tmp65
-	std Y+8,r27	 ;  Cam.ReadOnly_DirectionRadian, tmp65
- ;  main.c:63:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
+ ;  main.c:59:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
+	std Y+5,r24	 ;  Cam.ReadOnly_DirectionRadian, tmp76
+	std Y+6,r25	 ;  Cam.ReadOnly_DirectionRadian, tmp76
+	std Y+7,r26	 ;  Cam.ReadOnly_DirectionRadian, tmp76
+	std Y+8,r27	 ;  Cam.ReadOnly_DirectionRadian, tmp76
+ ;  main.c:59:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
 	rjmp .L11		 ; 
 .L9:
- ;  main.c:63:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
+ ;  main.c:59:             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
 	ldd r24,Y+5	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r25,Y+6	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r26,Y+7	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
 	ldd r27,Y+8	 ;  Cam.ReadOnly_DirectionRadian, Cam.ReadOnly_DirectionRadian
-	subi r24,-11	 ;  tmp65,
+	subi r24,-11	 ;  tmp76,
 	sbci r25,-9	 ; ,
 	sbci r26,-1	 ; ,
 	sbci r27,-1	 ; ,
 	rjmp .L16		 ; 
 .L7:
- ;  main.c:65:             Cam.Position.x += 5; break;
+ ;  main.c:61:             Cam.Position.x += 5; break;
 	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
 	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
-	adiw r24,5	 ;  tmp67,
+	adiw r24,5	 ;  tmp78,
 .L18:
- ;  main.c:67:             Cam.Position.x -= 5; break;
-	std Y+2,r25	 ;  Cam.Position.x, tmp69
-	std Y+1,r24	 ;  Cam.Position.x, tmp69
- ;  main.c:67:             Cam.Position.x -= 5; break;
+ ;  main.c:63:             Cam.Position.x -= 5; break;
+	std Y+2,r25	 ;  Cam.Position.x, tmp80
+	std Y+1,r24	 ;  Cam.Position.x, tmp80
+ ;  main.c:63:             Cam.Position.x -= 5; break;
 	rjmp .L11		 ; 
 .L13:
- ;  main.c:67:             Cam.Position.x -= 5; break;
+ ;  main.c:63:             Cam.Position.x -= 5; break;
 	ldd r24,Y+1	 ;  Cam.Position.x, Cam.Position.x
 	ldd r25,Y+2	 ;  Cam.Position.x, Cam.Position.x
-	sbiw r24,5	 ;  tmp69,
+	sbiw r24,5	 ;  tmp80,
 	rjmp .L18		 ; 
 .L12:
- ;  main.c:71:             Cam.Position.y += 5; break;
+ ;  main.c:67:             Cam.Position.y += 5; break;
 	ldd r24,Y+3	 ;  Cam.Position.y, Cam.Position.y
 	ldd r25,Y+4	 ;  Cam.Position.y, Cam.Position.y
-	adiw r24,5	 ;  tmp73,
+	adiw r24,5	 ;  tmp84,
 	rjmp .L17		 ; 
 	.size	main, .-main
 	.local	Prev.2463
@@ -348,5 +381,4 @@ main:
 __INTERRUPT_LOCK_MUTEX__:
 	.zero	1
 	.ident	"GCC: (GNU) 8.3.0"
-.global __do_copy_data
 .global __do_clear_bss

@@ -73,24 +73,40 @@ COMMAND:
 	ori r18,lo8(32)	 ;  PutDat,
  ;  Display.c:60:     LCDOUTPUT( PutDat );
 	out 0x1b,r18	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r18	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r18,lo8(5)	 ; ,
+1:	dec r18	 ; 
+	brne 1b
+	nop	
  ;  Display.c:61:     PutDat |= mask( LCD_WR );
 	ori r25,lo8(48)	 ;  PutDat,
  ;  Display.c:62:     LCDOUTPUT( PutDat );  
 	out 0x1b,r25	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r25	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r25,lo8(5)	 ; ,
+1:	dec r25	 ; 
+	brne 1b
+	nop	
  ;  Display.c:64:     PutDat = ( LCD_DEFAULT | LO( data ) ) & ~mask( LCD_WR );
-	andi r24,lo8(15)	 ;  tmp55,
-	mov r25,r24	 ;  PutDat, tmp55
+	andi r24,lo8(15)	 ;  tmp53,
+	mov r25,r24	 ;  PutDat, tmp53
 	ori r25,lo8(32)	 ;  PutDat,
  ;  Display.c:65:     LCDOUTPUT( PutDat ); 
 	out 0x1b,r25	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r25	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r18,lo8(5)	 ; ,
+1:	dec r18	 ; 
+	brne 1b
+	nop	
  ;  Display.c:66:     PutDat |= mask( LCD_WR );
 	ori r24,lo8(48)	 ;  PutDat,
  ;  Display.c:67:     LCDOUTPUT( PutDat );
 	out 0x1b,r24	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r24,lo8(5)	 ; ,
+1:	dec r24	 ; 
+	brne 1b
+	nop	
 /* epilogue start */
  ;  Display.c:68: }
 	ret	
@@ -110,24 +126,40 @@ DATAWR:
 	ori r18,lo8(96)	 ;  PutDat,
  ;  Display.c:75:     LCDOUTPUT( PutDat );
 	out 0x1b,r18	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r18	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r18,lo8(5)	 ; ,
+1:	dec r18	 ; 
+	brne 1b
+	nop	
  ;  Display.c:76:     PutDat |= mask( LCD_WR );
 	ori r25,lo8(112)	 ;  PutDat,
  ;  Display.c:77:     LCDOUTPUT( PutDat );
 	out 0x1b,r25	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r25	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r25,lo8(5)	 ; ,
+1:	dec r25	 ; 
+	brne 1b
+	nop	
  ;  Display.c:79:     PutDat = ( mask( LCD_CD ) | LCD_DEFAULT | LO( data ) ) & ~mask( LCD_WR );
-	andi r24,lo8(15)	 ;  tmp55,
-	mov r25,r24	 ;  PutDat, tmp55
+	andi r24,lo8(15)	 ;  tmp53,
+	mov r25,r24	 ;  PutDat, tmp53
 	ori r25,lo8(96)	 ;  PutDat,
  ;  Display.c:80:     LCDOUTPUT( PutDat );
 	out 0x1b,r25	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r25	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r18,lo8(5)	 ; ,
+1:	dec r18	 ; 
+	brne 1b
+	nop	
  ;  Display.c:81:     PutDat |= mask( LCD_WR );
 	ori r24,lo8(112)	 ;  PutDat,
  ;  Display.c:82:     LCDOUTPUT( PutDat );
 	out 0x1b,r24	 ;  MEM[(volatile uint8_t *)59B], PutDat
-	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], PutDat
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r24,lo8(5)	 ; ,
+1:	dec r24	 ; 
+	brne 1b
+	nop	
 /* epilogue start */
  ;  Display.c:83: }
 	ret	
@@ -194,21 +226,33 @@ LCDDevice__Initialize:
  ;  Display.c:51:     LCDOUTPUT( LCD_DEFAULT | mask( LCD_CD ) );
 	ldi r24,lo8(112)	 ;  tmp49,
 	out 0x1b,r24	 ;  MEM[(volatile uint8_t *)59B], tmp49
-	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], tmp49
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r18,lo8(5)	 ; ,
+1:	dec r18	 ; 
+	brne 1b
+	nop	
  ;  Display.c:52:     LCDOUTPUT( LCD_DEFAULT );
-	ldi r24,lo8(48)	 ;  tmp53,
-	out 0x1b,r24	 ;  MEM[(volatile uint8_t *)59B], tmp53
-	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], tmp53
+	ldi r24,lo8(48)	 ;  tmp51,
+	out 0x1b,r24	 ;  MEM[(volatile uint8_t *)59B], tmp51
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r25,lo8(5)	 ; ,
+1:	dec r25	 ; 
+	brne 1b
+	nop	
  ;  Display.c:95:     LCDOUTPUT( LCD_DEFAULT );
-	out 0x1b,r24	 ;  MEM[(volatile uint8_t *)59B], tmp53
-	out 0x15,r24	 ;  MEM[(volatile uint8_t *)53B], tmp53
+	out 0x1b,r24	 ;  MEM[(volatile uint8_t *)59B], tmp51
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:276: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r18,lo8(5)	 ; ,
+1:	dec r18	 ; 
+	brne 1b
+	nop	
  ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
-	ldi r18,lo8(639999)	 ; ,
-	ldi r24,hi8(639999)	 ; ,
-	ldi r25,hlo8(639999)	 ; ,
-1:	subi r18,1	 ; 
-	sbci r24,0	 ; 
+	ldi r24,lo8(639999)	 ; ,
+	ldi r25,hi8(639999)	 ; ,
+	ldi r18,hlo8(639999)	 ; ,
+1:	subi r24,1	 ; 
 	sbci r25,0	 ; 
+	sbci r18,0	 ; 
 	brne 1b
 	rjmp .	
 	nop	

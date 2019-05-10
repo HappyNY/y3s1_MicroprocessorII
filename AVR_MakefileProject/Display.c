@@ -45,7 +45,7 @@ extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bIn
 #define LCDCOM_DISPINVERT(EN) (0XA6|((EN)!=0))
 #define avg(...) __VA_ARGS__(__VA_ARGS__)
 
-#define LCDOUTPUT(DAT) PORTA = (DAT); PORTC = (DAT);
+#define LCDOUTPUT(DAT) PORTA = (DAT); _delay_us(1)
 static void REFRESH()
 {
     LCDOUTPUT( LCD_DEFAULT | mask( LCD_CD ) );
