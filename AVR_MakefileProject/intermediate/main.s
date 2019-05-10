@@ -58,6 +58,55 @@ __zero_reg__ = 1
  ;  -fzero-initialized-in-bss -mgas-isr-prologues -mmain-is-OS_task
 
 	.text
+.global	DetectEdge
+	.type	DetectEdge, @function
+DetectEdge:
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 0 */
+.L__stack_usage = 0
+ ;  main.c:16:     DDRE = 0;
+	out 0x2,__zero_reg__	 ;  MEM[(volatile uint8_t *)34B],
+ ;  main.c:19:     Input = ~PINE & 0xf0;
+	in r25,0x1	 ;  _1, MEM[(volatile uint8_t *)33B]
+	com r25		 ;  tmp50
+ ;  main.c:19:     Input = ~PINE & 0xf0;
+	andi r25,lo8(-16)	 ;  Input,
+ ;  main.c:20:     Edge = ( Input^Prev ) & Input;
+	lds r24,Prev.2495	 ;  Prev, Prev
+	com r24		 ;  tmp51
+ ;  main.c:21:     Prev = Input;
+	sts Prev.2495,r25	 ;  Prev, Input
+ ;  main.c:23: }
+	and r24,r25	 ; , Input
+/* epilogue start */
+	ret	
+	.size	DetectEdge, .-DetectEdge
+.global	WaitInput
+	.type	WaitInput, @function
+WaitInput:
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 0 */
+.L__stack_usage = 0
+.L3:
+ ;  main.c:27:     while ( !DetectEdge() )
+	call DetectEdge	 ; 
+ ;  main.c:27:     while ( !DetectEdge() )
+	cpse r24,__zero_reg__	 ; 
+/* epilogue start */
+ ;  main.c:31: }
+	ret	
+.L4:
+ ;  c:\mingw\avrgcc\avr\include\util\delay.h:187: 	__builtin_avr_delay_cycles(__ticks_dc);
+	ldi r24,lo8(-25537)	 ; ,
+	ldi r25,hi8(-25537)	 ; ,
+1:	sbiw r24,1	 ; 
+	brne 1b
+	rjmp .	
+	nop	
+	rjmp .L3		 ; 
+	.size	WaitInput, .-WaitInput
 .global	InitializeDevice
 	.type	InitializeDevice, @function
 InitializeDevice:
@@ -65,18 +114,21 @@ InitializeDevice:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:147:     LCDDevice__Initialize();
+ ;  main.c:167:     LCDDevice__Initialize();
 	call LCDDevice__Initialize	 ; 
- ;  main.c:155:     sei();
+ ;  main.c:175:     sei();
 /* #APP */
- ;  155 "main.c" 1
+ ;  175 "main.c" 1
 	sei	
  ;  0 "" 2
 /* #NOAPP */
 /* epilogue start */
- ;  main.c:156: }
+ ;  main.c:176: }
 	ret	
 	.size	InitializeDevice, .-InitializeDevice
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC0:
+	.string	"01234567abcdefg"
 	.section	.text.startup,"ax",@progbits
 .global	main
 	.type	main, @function
@@ -85,42 +137,61 @@ main:
 	push r29		 ; 
 	in r28,__SP_L__	 ; 
 	in r29,__SP_H__	 ; 
-	sbiw r28,16	 ; ,
+	sbiw r28,18	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 16 */
-/* stack size = 18 */
-.L__stack_usage = 18
- ;  main.c:17:     InitializeDevice();
+/* frame size = 18 */
+/* stack size = 20 */
+.L__stack_usage = 20
+ ;  main.c:35:     InitializeDevice();
 	call InitializeDevice	 ; 
- ;  main.c:18:     CSerialSender_Initialize( &UART0Sender );
+ ;  main.c:36:     CSerialSender_Initialize( &UART0Sender );
 	ldi r24,lo8(UART0Sender)	 ; ,
 	ldi r25,hi8(UART0Sender)	 ; ,
 	call CSerialSender_Initialize	 ; 
- ;  main.c:29:     Cam.Position.x = 0;
+ ;  main.c:47:     Cam.Position.x = 0;
 	std Y+2,__zero_reg__	 ;  Cam.Position.x,
 	std Y+1,__zero_reg__	 ;  Cam.Position.x,
- ;  main.c:30:     Cam.Position.y = 0;
+ ;  main.c:48:     Cam.Position.y = 0;
 	std Y+4,__zero_reg__	 ;  Cam.Position.y,
 	std Y+3,__zero_reg__	 ;  Cam.Position.y,
- ;  main.c:31:     Cam.ReadOnly_DirectionRadian = 0;
+ ;  main.c:49:     Cam.ReadOnly_DirectionRadian = 0;
 	std Y+5,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
 	std Y+6,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
 	std Y+7,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
 	std Y+8,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
- ;  main.c:32:     CalculateTranformCache( &Cam );
+ ;  main.c:50:     CalculateTranformCache( &Cam );
 	movw r24,r28	 ; ,
 	adiw r24,1	 ; ,
 	call CalculateTranformCache	 ; 
-.L3:
- ;  main.c:36:         LCDDevice__Render();
+ ;  main.c:51:     byte x = 0, y = 0;
+	std Y+18,__zero_reg__	 ;  x,
+ ;  main.c:51:     byte x = 0, y = 0;
+	std Y+17,__zero_reg__	 ;  y,
+ ;  main.c:52:     VBuffer_Clear();
+	call VBuffer_Clear	 ; 
+ ;  main.c:53:     VBuffer_DrawString( &x, &y, "01234567abcdefg", false );
+	ldi r19,0		 ; 
+	ldi r18,0		 ; 
+	ldi r20,lo8(.LC0)	 ; ,
+	ldi r21,hi8(.LC0)	 ; ,
+	movw r22,r28	 ; ,
+	subi r22,-17	 ; ,
+	sbci r23,-1	 ; ,
+	movw r24,r28	 ; ,
+	adiw r24,18	 ; ,
+	call VBuffer_DrawString	 ; 
+.L7:
+ ;  main.c:56:         LCDDevice__Render();
 	call LCDDevice__Render	 ; 
-	rjmp .L3		 ; 
+	rjmp .L7		 ; 
 	.size	main, .-main
+	.local	Prev.2495
+	.comm	Prev.2495,1,1
 .global	__INTERRUPT_LOCK_MUTEX__
 	.section .bss
 	.type	__INTERRUPT_LOCK_MUTEX__, @object
@@ -128,4 +199,5 @@ main:
 __INTERRUPT_LOCK_MUTEX__:
 	.zero	1
 	.ident	"GCC: (GNU) 8.3.0"
+.global __do_copy_data
 .global __do_clear_bss

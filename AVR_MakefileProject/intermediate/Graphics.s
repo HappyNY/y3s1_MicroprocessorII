@@ -777,25 +777,25 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	ld r24,X	 ;  Vector_44(D)->NumLines
 	ldi r27,lo8(4)	 ; ,
 	mul r24,r27	 ;  Vector_44(D)->NumLines,
-	movw r24,r0	 ;  tmp86
+	movw r24,r0	 ;  tmp87
 	clr __zero_reg__
  ;  Graphics.c:102:             *lpLineEnd = Vector->Lines + Vector->NumLines;
 	movw r30,r16	 ; , lpLine
-	add r30,r24	 ; , tmp86
+	add r30,r24	 ; , tmp87
 	adc r31,r25	 ; ,
 	std Y+21,r31	 ;  %sfp,
 	std Y+20,r30	 ;  %sfp,
  ;  Graphics.c:107:         centerX = LCD_WIDTH / 2 + rotator;
-	ldd r24,Y+11	 ;  AngleInDegrees, AngleInDegrees
-	ldi r31,lo8(120)	 ; ,
-	muls r24,r31	 ;  AngleInDegrees,
-	movw r24,r0	 ;  tmp87
+	ldd r18,Y+11	 ;  AngleInDegrees, AngleInDegrees
+	ldi r19,lo8(-128)	 ; ,
+	mulsu r18,r19	 ;  AngleInDegrees,
+	movw r24,r0	 ;  tmp90
 	clr __zero_reg__
 	ldi r22,lo8(125)	 ; ,
 	ldi r23,0		 ; 
 	call __divmodhi4
  ;  Graphics.c:107:         centerX = LCD_WIDTH / 2 + rotator;
-	subi r22,-60	 ;  centerX,
+	subi r22,-64	 ;  centerX,
 	sbci r23,-1	 ;  centerX,
  ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
 	movw r24,r22	 ; , centerX
@@ -883,9 +883,9 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	call __addsf3	 ; 
  ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
 	call __fixsfsi	 ; 
-	movw r4,r22	 ;  tmp103,
-	std Y+23,r23	 ;  %sfp, tmp103
-	std Y+22,r22	 ;  %sfp, tmp103
+	movw r4,r22	 ;  tmp104,
+	std Y+23,r23	 ;  %sfp, tmp104
+	std Y+22,r22	 ;  %sfp, tmp104
  ;  Graphics.c:115:             y0 = scale( lpLine->Begin.y ) + centerY;
 	movw r30,r16	 ; , lpLine
 	ldd r22,Z+1	 ;  MEM[base: lpLine_32, offset: 1B], MEM[base: lpLine_32, offset: 1B]
@@ -906,8 +906,8 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
  ;  Graphics.c:115:             y0 = scale( lpLine->Begin.y ) + centerY;
 	ldi r18,0		 ; 
 	ldi r19,0		 ; 
-	ldi r20,0		 ; 
-	ldi r21,lo8(66)	 ; ,
+	ldi r20,lo8(-16)	 ; ,
+	ldi r21,lo8(65)	 ; ,
 	call __addsf3	 ; 
  ;  Graphics.c:115:             y0 = scale( lpLine->Begin.y ) + centerY;
 	call __fixsfsi	 ; 
@@ -943,7 +943,7 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	call __addsf3	 ; 
  ;  Graphics.c:116:             x1 = scale( lpLine->End.x ) + centerX;
 	call __fixsfsi	 ; 
-	movw r12,r22	 ;  tmp117,
+	movw r12,r22	 ;  tmp118,
  ;  Graphics.c:117:             y1 = scale( lpLine->End.y ) + centerY;
 	movw r30,r16	 ; , lpLine
 	ldd r22,Z+3	 ;  MEM[base: lpLine_32, offset: 3B], MEM[base: lpLine_32, offset: 3B]
@@ -964,23 +964,23 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
  ;  Graphics.c:117:             y1 = scale( lpLine->End.y ) + centerY;
 	ldi r18,0		 ; 
 	ldi r19,0		 ; 
-	ldi r20,0		 ; 
-	ldi r21,lo8(66)	 ; ,
+	ldi r20,lo8(-16)	 ; ,
+	ldi r21,lo8(65)	 ; ,
 	call __addsf3	 ; 
  ;  Graphics.c:117:             y1 = scale( lpLine->End.y ) + centerY;
 	call __fixsfsi	 ; 
-	movw r8,r22	 ;  tmp124,
-	movw r24,r22	 ;  y1, tmp124
+	movw r8,r22	 ;  tmp125,
+	movw r24,r22	 ;  y1, tmp125
  ;  Graphics.c:120:             if ( x0 > x1 ) {
 	cp r12,r4	 ;  x1, tmp18
 	cpc r13,r5	 ;  x1, tmp18
 	brge .L24		 ; ,
  ;  Graphics.c:121:                 LineBound.Left = x1;
-	std Y+2,r13	 ;  LineBound.Left, tmp117
-	std Y+1,r12	 ;  LineBound.Left, tmp117
+	std Y+2,r13	 ;  LineBound.Left, tmp118
+	std Y+1,r12	 ;  LineBound.Left, tmp118
  ;  Graphics.c:122:                 LineBound.Right = x0;
-	std Y+4,r5	 ;  LineBound.Right, tmp103
-	std Y+3,r4	 ;  LineBound.Right, tmp103
+	std Y+4,r5	 ;  LineBound.Right, tmp104
+	std Y+3,r4	 ;  LineBound.Right, tmp104
 .L25:
  ;  Graphics.c:128:             if ( y0 > y1 ) {
 	ldd r26,Y+24	 ; , %sfp
@@ -989,11 +989,11 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	cpc r25,r27	 ;  y1,
 	brge .L26		 ; ,
  ;  Graphics.c:129:                 LineBound.Top = x1;
-	std Y+6,r13	 ;  LineBound.Top, tmp117
-	std Y+5,r12	 ;  LineBound.Top, tmp117
+	std Y+6,r13	 ;  LineBound.Top, tmp118
+	std Y+5,r12	 ;  LineBound.Top, tmp118
  ;  Graphics.c:130:                 LineBound.Bottom = x0;
-	std Y+8,r5	 ;  LineBound.Bottom, tmp103
-	std Y+7,r4	 ;  LineBound.Bottom, tmp103
+	std Y+8,r5	 ;  LineBound.Bottom, tmp104
+	std Y+7,r4	 ;  LineBound.Bottom, tmp104
 .L27:
  ;  Graphics.c:138:             if ( FRect16_IsOverlap( &ScreenBound, &LineBound ) ) 
 	movw r22,r28	 ; ,
@@ -1006,11 +1006,11 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	or r24,r25	 ; 
 	breq .L28		 ; ,
  ;  Graphics.c:140:                 VBuffer_DrawLine( x0, y0, x1, y1 );
-	movw r18,r8	 ; , tmp124
-	movw r20,r12	 ; , tmp117
+	movw r18,r8	 ; , tmp125
+	movw r20,r12	 ; , tmp118
 	ldd r22,Y+16	 ; , %sfp
 	ldd r23,Y+17	 ; , %sfp
-	movw r24,r4	 ; , tmp103
+	movw r24,r4	 ; , tmp104
 	call VBuffer_DrawLine	 ; 
 .L28:
  ;  Graphics.c:143:             ++lpLine;
@@ -1019,19 +1019,19 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	rjmp .L23		 ; 
 .L24:
  ;  Graphics.c:125:                 LineBound.Left = x0;
-	std Y+2,r5	 ;  LineBound.Left, tmp103
-	std Y+1,r4	 ;  LineBound.Left, tmp103
+	std Y+2,r5	 ;  LineBound.Left, tmp104
+	std Y+1,r4	 ;  LineBound.Left, tmp104
  ;  Graphics.c:126:                 LineBound.Right = x1;
-	std Y+4,r13	 ;  LineBound.Right, tmp117
-	std Y+3,r12	 ;  LineBound.Right, tmp117
+	std Y+4,r13	 ;  LineBound.Right, tmp118
+	std Y+3,r12	 ;  LineBound.Right, tmp118
 	rjmp .L25		 ; 
 .L26:
  ;  Graphics.c:133:                 LineBound.Top = x0;
-	std Y+6,r5	 ;  LineBound.Top, tmp103
-	std Y+5,r4	 ;  LineBound.Top, tmp103
+	std Y+6,r5	 ;  LineBound.Top, tmp104
+	std Y+5,r4	 ;  LineBound.Top, tmp104
  ;  Graphics.c:134:                 LineBound.Bottom = x1;
-	std Y+8,r13	 ;  LineBound.Bottom, tmp117
-	std Y+7,r12	 ;  LineBound.Bottom, tmp117
+	std Y+8,r13	 ;  LineBound.Bottom, tmp118
+	std Y+7,r12	 ;  LineBound.Bottom, tmp118
 	rjmp .L27		 ; 
 	.size	CDrawArgs_DrawOnDisplayBufferPerspective, .-CDrawArgs_DrawOnDisplayBufferPerspective
 	.section	.rodata
@@ -1041,10 +1041,10 @@ ScreenBound.2348:
  ;  Left:
 	.word	0
  ;  Right:
-	.word	120
+	.word	128
  ;  Top:
 	.word	0
  ;  Bottom:
-	.word	64
+	.word	60
 	.ident	"GCC: (GNU) 8.3.0"
 .global __do_copy_data

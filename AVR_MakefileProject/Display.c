@@ -24,13 +24,16 @@ extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bIn
 #define LCD_D0 0
 #define LCD_DEFAULT mask(LCD_WR, LCD_RD)
 
-#define LCDCOM_COLUMN_LO(DAT) ((DAT))
-#define LCDCOM_COLUMN_HI(DAT) ((DAT)|0X10)
+#define LO(DAT) ( DAT & 0x0f )
+#define HI(DAT) ( ( DAT & 0xf0 ) >> 4 )
+
+#define LCDCOM_COLUMN_LO(DAT) LO(DAT)
+#define LCDCOM_COLUMN_HI(DAT) (HI(DAT)|0X10)
 #define LCDCOM_SYSRST 0B11100010
 #define LCDCOM_MUXR_TEMPCOMP(MR, C) (0x20|((MR!=0)<<2)|((C)&0B11))
 #define LCDCOM_POWERCON(CON) (0B00101000|((CON)&0B111))
 #define LCDCOM_STARTLINE(VAL) (0X40|((VAL)&0B111111))
-#define LCDCOM_RAMADDR(VAL) (0X88|(VAL&0B111))
+#define LCDCOM_ADDRCTRL(VAL) (0X88|(VAL&0B111))
 #define LCDCOM_ALLPXLON(EN) (0XA4|((EN)!=0))
 #define LCDCOM_DISPEN(EN) (0XAE|((EN)!=0))
 #define LCDCOM_FXLINE(VAL) (0X90|((VAL)&0X0F))
@@ -42,15 +45,12 @@ extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bIn
 #define LCDCOM_DISPINVERT(EN) (0XA6|((EN)!=0))
 #define avg(...) __VA_ARGS__(__VA_ARGS__)
 
-#define LCDOUTPUT(DAT) PORTA = (DAT); PORTC = (DAT); _delay_us(50)
+#define LCDOUTPUT(DAT) PORTA = (DAT); PORTC = (DAT); _delay_us(1)
 static void REFRESH()
 {
     LCDOUTPUT( LCD_DEFAULT | mask( LCD_CD ) );
     LCDOUTPUT( LCD_DEFAULT );
 }
-
-#define LO(DAT) ( DAT & 0x0f )
-#define HI(DAT) ( ( DAT & 0xf0 ) >> 4 )
 
 static void COMMAND( uint8 data )
 {  
@@ -94,18 +94,20 @@ void LCDDevice__Initialize()
     REFRESH(); 
     LCDOUTPUT( LCD_DEFAULT );
     
-#define INITIALIZATION_DELAY_MS 200
+#define INITIALIZATION_DELAY_MS 4
 #define COMMAND_DELAY(VAL) COMMAND( VAL ); _delay_ms( INITIALIZATION_DELAY_MS );
     // LCD Initialization 
-    _delay_ms( 1500 );
+    _delay_ms( 200 );
+    COMMAND_DELAY( LCDCOM_SYSRST );
+    _delay_ms( 1200 );
     COMMAND_DELAY( 0x26 );
     COMMAND_DELAY( 0x2d );
     COMMAND_DELAY( 0xea );
     COMMAND_DELAY( 0x81 );
     COMMAND_DELAY( 0x8b );
-    COMMAND_DELAY( 0xc8 );
+    COMMAND_DELAY( LCDCOM_MAPCTRL( 0b1000 ) );
     COMMAND_DELAY( 0x40 );
-    COMMAND_DELAY( LCDCOM_RAMADDR( 0b001 ) ); 
+    COMMAND_DELAY( LCDCOM_ADDRCTRL( 0b001 ) ); 
     COMMAND_DELAY( LCDCOM_DISPEN( true ) );
 /*
     COMMAND( LCDCOM_DISPEN( true ) );
@@ -128,30 +130,36 @@ void LCDDevice__Initialize()
 
 void LCDDevice__Render()
 {
-	// @todo. Hardware associated functionality.
+    void WaitInput();
+        // @todo. Hardware associated functionality.
     // @. temporary code.
 
-    byte x, y;
-
-    for ( y = 0; ( y >> 1 ) < LCD_HEGIHT; ++y )
-    { 
-        byte yIdx = ( y >> 1 ) * LCD_LINE_BYTE;
-      
-        for ( x = 0; x < LCD_LINE_BYTE; ++x )
+    int i, j;
+    // COMMAND( LCDCOM_COLUMN_HI( 0 ) );
+    // COMMAND( LCDCOM_COLUMN_LO( 0 ) );
+    byte bIter = 1;
+    while ( bIter-- ) for ( i = 0; i < LCD_NUM_PAGE; ++i )
+    {
+        // COMMAND( LCDCOM_PGADDR( 0 ) );
+        byte bInnerIter = 1;
+        while ( bInnerIter-- ) for ( j = 0; j < LCD_NUM_COLUMN; ++j )
         {
-            DATAWR( x );
-            _delay_us( 4 );
-        }
-        // COMMAND( LCDCOM_STARTLINE( y ) );
-    } 
-#if 0
-#if 1 // SERIAL_DEBUG_OUTPUT
+            byte dat = LCDBuffer[j * LCD_NUM_PAGE + ( LCD_NUM_PAGE - i - 1 )];
+            DATAWR( dat );
+            DATAWR( dat );
+            DATAWR( dat );
+            DATAWR( dat );
+        } 
+        WaitInput();
+    }
+
+    /* // SERIAL_DEBUG_OUTPUT
     int i, k, ofst = 0;
     char buff[LCD_WIDTH + 3];
     
     CSerialSender_QueueOutputString( &UART0Sender, "\033[H" );
-    for ( i = 0; i < LCD_HEGIHT; ++i ) {
-        for ( k = 0; k < LCD_LINE_BYTE; ++k ) {
+    for ( i = 0; i < LCD_NUM_COLUMN; ++i ) {
+        for ( k = 0; k < LCD_NUM_PAGE; ++k ) {
 #define pew(idx) buff[k * PIXELS_PER_BYTE + idx] = (*( LCDBuffer + ofst + k ) & ( 1 << ((PIXELS_PER_BYTE - 1) - idx) )) ? '@' : '-';
             pew( 0 );
             pew( 1 );
@@ -166,20 +174,19 @@ void LCDDevice__Render()
         buff[LCD_WIDTH+0] = '\n';
         buff[LCD_WIDTH+1] = '\r';
         buff[LCD_WIDTH+2] = '\0';
-        ofst += LCD_LINE_BYTE;
+        ofst += LCD_NUM_PAGE;
         
         while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
         CSerialSender_QueueOutputString( &UART0Sender, "::" );
         CSerialSender_QueueOutputString( &UART0Sender, buff );
     }
-    while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
-#endif
-#endif
+    while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) )
+// */
 }
 
 void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
 {
-    int16 BuffIdx = xCol + y * LCD_LINE_BYTE;
+    int16 BuffIdx = xCol + y * LCD_NUM_PAGE;
     uint8 i;
     const char* ascii_head = &CGROM[ASCII_IDX * CGROM_CHARACTER_BYTE_SIZE + CGROM_TRUNC_BEGIN];
 
@@ -188,7 +195,7 @@ void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
         if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
         LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
         ++ascii_head;
-        BuffIdx += LCD_LINE_BYTE;
+        BuffIdx += LCD_NUM_PAGE;
     }
 }
 
@@ -212,7 +219,7 @@ void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed
     {
         VBuffer_DrawChar( *xCol, *y, *String, bInversed );
 
-        if ( *xCol + 1 < LCD_LINE_BYTE )
+        if ( *xCol + 1 < LCD_NUM_PAGE )
         {
             ++( *xCol );
         }

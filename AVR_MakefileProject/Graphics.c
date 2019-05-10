@@ -93,7 +93,7 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         return;
     }
     
-    static const FRect16 ScreenBound = { 0, LCD_WIDTH, 0, LCD_HEGIHT };
+    static const FRect16 ScreenBound = { 0, LCD_WIDTH, 0, LCD_NUM_COLUMN };
 
     // Renders arguments...
     {
@@ -105,7 +105,7 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         FRect16 LineBound;
 
         centerX = LCD_WIDTH / 2 + rotator;
-        centerY = LCD_HEGIHT / 2;
+        centerY = LCD_NUM_COLUMN / 2;
 
         log_verbose( "Display center = %d, %d", centerX, centerY );
         while ( lpLine != lpLineEnd )

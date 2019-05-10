@@ -11,6 +11,24 @@ volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
 
 /* BODY */
 void InitializeDevice(); 
+byte DetectEdge()
+{
+    DDRE = 0;
+    static byte Prev;
+    byte Input, Edge;
+    Input = ~PINE & 0xf0;
+    Edge = ( Input^Prev ) & Input;
+    Prev = Input;
+    return Edge;
+}
+
+void WaitInput()
+{
+    while ( !DetectEdge() )
+    {
+        _delay_ms( 10 );
+    }
+}
 
 void main( void )
 {
@@ -30,7 +48,9 @@ void main( void )
     Cam.Position.y = 0;
     Cam.ReadOnly_DirectionRadian = 0;
     CalculateTranformCache( &Cam );
-    
+    byte x = 0, y = 0;
+    VBuffer_Clear();
+    VBuffer_DrawString( &x, &y, "01234567abcdefg", false );
     while ( 1 )
     {
         LCDDevice__Render();
