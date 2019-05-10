@@ -65,203 +65,31 @@ outputmsg_uart0:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  assertion.c:43:     DISABLE_INTERRUPT;
+ ;  assertion.c:44:     DISABLE_INTERRUPT;
 /* #APP */
- ;  43 "assertion.c" 1
+ ;  44 "assertion.c" 1
 	cli	
  ;  0 "" 2
 /* #NOAPP */
-	lds r18,__INTERRUPT_LOCK_MUTEX__	 ;  _2, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
-	subi r18,lo8(-(1))	 ;  _3,
-	sts __INTERRUPT_LOCK_MUTEX__,r18	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _3
-	movw r30,r24	 ; ,
-.L2:
- ;  assertion.c:46:     while ( *head != '\0' )
-	ld r24,Z+		 ;  _6, MEM[base: _26, offset: 0B]
- ;  assertion.c:46:     while ( *head != '\0' )
-	cpse r24,__zero_reg__	 ;  _6,
-	rjmp .L3	 ; 
-.L4:
- ;  assertion.c:52:     while ( !( UCSR0A & 0x20 ) );
-	sbis 0xb,5	 ; ,
-	rjmp .L4		 ; 
- ;  assertion.c:53:     ENABLE_INTERRUPT;
-	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _8, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
-	subi r24,lo8(-(-1))	 ;  _9,
-	sts __INTERRUPT_LOCK_MUTEX__,r24	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _9
-	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _10, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
-	cpse r24,__zero_reg__	 ;  _10,
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _1, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
+	subi r24,lo8(-(1))	 ;  _2,
+	sts __INTERRUPT_LOCK_MUTEX__,r24	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _2
+ ;  assertion.c:62:     ENABLE_INTERRUPT;
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _3, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
+	subi r24,lo8(-(-1))	 ;  _4,
+	sts __INTERRUPT_LOCK_MUTEX__,r24	 ;  MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__], _4
+	lds r24,__INTERRUPT_LOCK_MUTEX__	 ;  _5, MEM[(volatile byte *)&__INTERRUPT_LOCK_MUTEX__]
+	cpse r24,__zero_reg__	 ;  _5,
 	rjmp .L1	 ; 
- ;  assertion.c:53:     ENABLE_INTERRUPT;
+ ;  assertion.c:62:     ENABLE_INTERRUPT;
 /* #APP */
- ;  53 "assertion.c" 1
+ ;  62 "assertion.c" 1
 	sei	
  ;  0 "" 2
 /* #NOAPP */
 .L1:
 /* epilogue start */
- ;  assertion.c:54: } 
+ ;  assertion.c:63: } 
 	ret	
-.L3:
- ;  assertion.c:48:         while ( !( UCSR0A & 0x20 ) );
-	sbis 0xb,5	 ; ,
-	rjmp .L3		 ; 
- ;  assertion.c:49:         UDR0 = *( head++ );
-	out 0xc,r24	 ;  MEM[(volatile uint8_t *)44B], _6
-	rjmp .L2		 ; 
 	.size	outputmsg_uart0, .-outputmsg_uart0
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"\r\nASSERTION::-------->\non file \""
-.LC1:
-	.string	"\" ... line: "
-.LC2:
-	.string	"\r\n"
-.LC3:
-	.string	"\r\n<---------::ASSERTION\r\n"
-	.text
-.global	internal_assertion_failed
-	.type	internal_assertion_failed, @function
-internal_assertion_failed:
-	push r28		 ; 
-	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	sbiw r28,32	 ; ,
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
-/* prologue: function */
-/* frame size = 32 */
-/* stack size = 34 */
-.L__stack_usage = 34
-	movw r12,r24	 ;  FILE, FILE
-	movw r14,r22	 ;  LINE, LINE
-	movw r16,r20	 ;  msg, msg
- ;  assertion.c:11:     outputmsg_uart0( "\r\nASSERTION::-------->\non file \"" );
-	ldi r24,lo8(.LC0)	 ; ,
-	ldi r25,hi8(.LC0)	 ; ,
-	call outputmsg_uart0	 ; 
- ;  assertion.c:12:     outputmsg_uart0( FILE );
-	movw r24,r12	 ; , FILE
-	call outputmsg_uart0	 ; 
- ;  assertion.c:13:     outputmsg_uart0( "\" ... line: " );
-	ldi r24,lo8(.LC1)	 ; ,
-	ldi r25,hi8(.LC1)	 ; ,
-	call outputmsg_uart0	 ; 
- ;  c:\mingw\avrgcc\avr\include\stdlib.h:430: 	return __itoa_ncheck (__val, __s, __radix);
-	ldi r20,lo8(10)	 ; ,
-	movw r22,r28	 ; ,
-	subi r22,-1	 ; ,
-	sbci r23,-1	 ; ,
-	movw r24,r14	 ; , LINE
-	call __itoa_ncheck	 ; 
- ;  assertion.c:16:     outputmsg_uart0( buff );
-	movw r24,r28	 ; ,
-	adiw r24,1	 ; ,
-	call outputmsg_uart0	 ; 
- ;  assertion.c:17:     outputmsg_uart0( "\r\n" );
-	ldi r24,lo8(.LC2)	 ; ,
-	ldi r25,hi8(.LC2)	 ; ,
-	call outputmsg_uart0	 ; 
- ;  assertion.c:18:     outputmsg_uart0( msg );
-	movw r24,r16	 ; , msg
-	call outputmsg_uart0	 ; 
- ;  assertion.c:19:     outputmsg_uart0( "\r\n<---------::ASSERTION\r\n" );
-	ldi r24,lo8(.LC3)	 ; ,
-	ldi r25,hi8(.LC3)	 ; ,
-	call outputmsg_uart0	 ; 
-.L12:
-	rjmp .L12		 ; 
-	.size	internal_assertion_failed, .-internal_assertion_failed
-	.section	.rodata.str1.1
-.LC4:
-	.string	"LOG:: "
-.LC5:
-	.string	" ["
-.LC6:
-	.string	" ... line: "
-.LC7:
-	.string	"] \r\n"
-	.text
-.global	internal_logslow
-	.type	internal_logslow, @function
-internal_logslow:
-	push r12		 ; 
-	push r13		 ; 
-	push r14		 ; 
-	push r15		 ; 
-	push r16		 ; 
-	push r17		 ; 
-	push r28		 ; 
-	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	sbiw r28,32	 ; ,
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
-/* prologue: function */
-/* frame size = 32 */
-/* stack size = 40 */
-.L__stack_usage = 40
-	movw r14,r24	 ;  FILE, FILE
-	movw r16,r22	 ;  LINE, LINE
-	movw r12,r20	 ;  msg, msg
- ;  assertion.c:29:     outputmsg_uart0( "LOG:: " );
-	ldi r24,lo8(.LC4)	 ; ,
-	ldi r25,hi8(.LC4)	 ; ,
-	call outputmsg_uart0	 ; 
- ;  assertion.c:30:     outputmsg_uart0( msg ); 
-	movw r24,r12	 ; , msg
-	call outputmsg_uart0	 ; 
- ;  assertion.c:31:     outputmsg_uart0( " [" );
-	ldi r24,lo8(.LC5)	 ; ,
-	ldi r25,hi8(.LC5)	 ; ,
-	call outputmsg_uart0	 ; 
- ;  assertion.c:32:     outputmsg_uart0( FILE );
-	movw r24,r14	 ; , FILE
-	call outputmsg_uart0	 ; 
- ;  assertion.c:33:     outputmsg_uart0( " ... line: " );
-	ldi r24,lo8(.LC6)	 ; ,
-	ldi r25,hi8(.LC6)	 ; ,
-	call outputmsg_uart0	 ; 
- ;  c:\mingw\avrgcc\avr\include\stdlib.h:430: 	return __itoa_ncheck (__val, __s, __radix);
-	ldi r20,lo8(10)	 ; ,
-	movw r22,r28	 ; ,
-	subi r22,-1	 ; ,
-	sbci r23,-1	 ; ,
-	movw r24,r16	 ; , LINE
-	call __itoa_ncheck	 ; 
- ;  assertion.c:36:     outputmsg_uart0( buff );
-	movw r24,r28	 ; ,
-	adiw r24,1	 ; ,
-	call outputmsg_uart0	 ; 
- ;  assertion.c:37:     outputmsg_uart0( "] \r\n" ); 
-	ldi r24,lo8(.LC7)	 ; ,
-	ldi r25,hi8(.LC7)	 ; ,
-	call outputmsg_uart0	 ; 
-/* epilogue start */
- ;  assertion.c:38: }
-	adiw r28,32	 ; ,
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
-	pop r29		 ; 
-	pop r28		 ; 
-	pop r17		 ; 
-	pop r16		 ; 
-	pop r15		 ; 
-	pop r14		 ; 
-	pop r13		 ; 
-	pop r12		 ; 
-	ret	
-	.size	internal_logslow, .-internal_logslow
 	.ident	"GCC: (GNU) 8.3.0"
-.global __do_copy_data

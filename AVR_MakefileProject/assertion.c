@@ -1,6 +1,7 @@
 #include "core.h"
 #include <stdlib.h>
 #include "assertion.h"
+#include "Display.h"
 
 #ifdef _DEBUG
 void internal_assertion_failed( const char* FILE, int LINE, const char* msg )
@@ -42,6 +43,7 @@ void outputmsg_uart0( const char* msg )
 { 
     DISABLE_INTERRUPT;
 
+#if USE_SERIAL_COMMUNICATION
     const char* head = msg;
     while ( *head != '\0' )
     {
@@ -50,5 +52,12 @@ void outputmsg_uart0( const char* msg )
     }
 
     while ( !( UCSR0A & 0x20 ) );
+
+#elif 0
+    byte DetectEdge();
+    byte x = 0, y = 0;
+    VBuffer_DrawString( &x, &y, msg, true );
+    while ( DetectEdge() == 0 );
+#endif
     ENABLE_INTERRUPT;
 } 

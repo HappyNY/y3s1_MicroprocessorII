@@ -45,7 +45,7 @@ extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bIn
 #define LCDCOM_DISPINVERT(EN) (0XA6|((EN)!=0))
 #define avg(...) __VA_ARGS__(__VA_ARGS__)
 
-#define LCDOUTPUT(DAT) PORTA = (DAT); PORTC = (DAT); _delay_us(1)
+#define LCDOUTPUT(DAT) PORTA = (DAT); PORTC = (DAT);
 static void REFRESH()
 {
     LCDOUTPUT( LCD_DEFAULT | mask( LCD_CD ) );
@@ -105,7 +105,7 @@ void LCDDevice__Initialize()
     COMMAND_DELAY( 0xea );
     COMMAND_DELAY( 0x81 );
     COMMAND_DELAY( 0x8b );
-    COMMAND_DELAY( LCDCOM_MAPCTRL( 0b1000 ) );
+    COMMAND_DELAY( LCDCOM_MAPCTRL( 0b1001 ) );
     COMMAND_DELAY( 0x40 );
     COMMAND_DELAY( LCDCOM_ADDRCTRL( 0b001 ) ); 
     COMMAND_DELAY( LCDCOM_DISPEN( true ) );
@@ -129,33 +129,29 @@ void LCDDevice__Initialize()
 }
 
 void LCDDevice__Render()
-{
-    void WaitInput();
+{ 
         // @todo. Hardware associated functionality.
     // @. temporary code.
 
     int i, j;
     // COMMAND( LCDCOM_COLUMN_HI( 0 ) );
     // COMMAND( LCDCOM_COLUMN_LO( 0 ) );
-    byte bIter = 1;
-    while ( bIter-- ) for ( i = 0; i < LCD_NUM_PAGE; ++i )
+    for ( i = 0; i < LCD_NUM_PAGE; ++i )
     {
         // COMMAND( LCDCOM_PGADDR( 0 ) );
-        byte bInnerIter = 1;
-        while ( bInnerIter-- ) for ( j = 0; j < LCD_NUM_COLUMN; ++j )
+        for ( j = 0; j < LCD_NUM_COLUMN; ++j )
         {
-            byte dat = LCDBuffer[j * LCD_NUM_PAGE + ( LCD_NUM_PAGE - i - 1 )];
+            byte dat = LCDBuffer[j * LCD_NUM_PAGE + i];
             DATAWR( dat );
             DATAWR( dat );
             DATAWR( dat );
             DATAWR( dat );
-        } 
-        WaitInput();
+        }  
     }
 
     /* // SERIAL_DEBUG_OUTPUT
     int i, k, ofst = 0;
-    char buff[LCD_WIDTH + 3];
+    char buff[LCD_HEIGHT + 3];
     
     CSerialSender_QueueOutputString( &UART0Sender, "\033[H" );
     for ( i = 0; i < LCD_NUM_COLUMN; ++i ) {
@@ -171,9 +167,9 @@ void LCDDevice__Render()
             pew( 7 );
         }
 
-        buff[LCD_WIDTH+0] = '\n';
-        buff[LCD_WIDTH+1] = '\r';
-        buff[LCD_WIDTH+2] = '\0';
+        buff[LCD_HEIGHT+0] = '\n';
+        buff[LCD_HEIGHT+1] = '\r';
+        buff[LCD_HEIGHT+2] = '\0';
         ofst += LCD_NUM_PAGE;
         
         while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
@@ -188,15 +184,25 @@ void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
 {
     int16 BuffIdx = xCol + y * LCD_NUM_PAGE;
     uint8 i;
-    const char* ascii_head = &CGROM[ASCII_IDX * CGROM_CHARACTER_BYTE_SIZE + CGROM_TRUNC_BEGIN];
+    const char* ascii_head = &CGROM[( ASCII_IDX + 1 ) * CGROM_CHARACTER_BYTE_SIZE + CGROM_TRUNC_BEGIN - 2];
 
+    for ( i = 0; i < CGROM_CHARCTER_WIDTH ; ++i )
+    {
+        if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
+        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
+        ++ascii_head; ++BuffIdx;
+        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
+        ascii_head -= 3;
+        BuffIdx += LCD_NUM_PAGE -1;
+    }
+    /* // Code for horizontal buffer
     for ( i = 0; i < CGROM_DISPLAY_HEIGHT; ++i )
     {
         if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
         LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
         ++ascii_head;
         BuffIdx += LCD_NUM_PAGE;
-    }
+    }*/
 }
 
 void VBuffer_Clear()
@@ -218,16 +224,25 @@ void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed
     while ( *String != '\0' )
     {
         VBuffer_DrawChar( *xCol, *y, *String, bInversed );
-
-        if ( *xCol + 1 < LCD_NUM_PAGE )
+        if ( *y + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
         {
-            ++( *xCol );
+            *y += CGROM_CHARCTER_WIDTH;
         }
         else
         {
-            *y += CGROM_DISPLAY_HEIGHT;
-            *xCol = 0;
+            *y = 0;
+            *xCol += 2;
         }
+
+        //if ( *xCol + 1 < LCD_NUM_PAGE )
+        //{
+        //    ++( *xCol );
+        //}
+        //else
+        //{
+        //    *y += CGROM_DISPLAY_HEIGHT;
+        //    *xCol = 0;
+        //}
 
         ++String;
     }

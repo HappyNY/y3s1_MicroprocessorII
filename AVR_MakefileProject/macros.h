@@ -23,7 +23,7 @@ extern volatile char __INTERRUPT_LOCK_MUTEX__;
 
 #define portc_dbgout(val) PORTC = val
 
-#define ENABLE_DEBUG 1
+#define ENABLE_DEBUG 0
 
 #if ENABLE_DEBUG
 #define LOG_VERBOSE 0
@@ -32,7 +32,7 @@ extern volatile char __INTERRUPT_LOCK_MUTEX__;
 
 #define ENABLE_HEAP_CACHE 1
 #define USE_STDLIB_MALLOC 1
-#define USE_SERIAL_COMMUNICATION 1
+#define USE_SERIAL_COMMUNICATION 0
 
 #if ENABLE_DEBUG
 #ifndef _DEBUG

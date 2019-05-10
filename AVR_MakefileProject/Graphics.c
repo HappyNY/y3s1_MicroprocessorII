@@ -77,10 +77,10 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
     int16 Distance;
     bool bIsVisibleArg;
 #define scale(val) (((int32)(val)*STANDARD_DISTANCE_IN_UNITS)/Distance)
-#define rotator (((int16)(AngleInDegrees)*LCD_WIDTH)/((int16)CAMERA_FOV))
+#define rotator (((int16)(AngleInDegrees)*LCD_HEIGHT)/((int16)CAMERA_FOV))
 
     bIsVisibleArg = CalculateAngleIfVIsible( &MeshPosition, Camera, &AngleInDegrees, &Distance );
-     
+    VBuffer_DrawChar( 0, 0, '0', false );
     log_verbose( "Cam loc: %d, %d", Camera->Position.x, Camera->Position.y );
     log_verbose( "Instance loc: %d, %d", MeshPosition.x, MeshPosition.y );
     log_verbose( "Angle between in degrees %d", AngleInDegrees );
@@ -90,10 +90,11 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
     {
         // Object is invisible.
         log_verbose( "Culled because of invisibility" ); 
+        VBuffer_DrawChar( 1, 0, 'w', false );
         return;
     }
     
-    static const FRect16 ScreenBound = { 0, LCD_WIDTH, 0, LCD_NUM_COLUMN };
+    static const FRect16 ScreenBound = { 0, LCD_HEIGHT, 0, LCD_NUM_COLUMN };
 
     // Renders arguments...
     {
@@ -104,10 +105,12 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         int16 x0, y0, x1, y1;
         FRect16 LineBound;
 
-        centerX = LCD_WIDTH / 2 + rotator;
+        centerX = LCD_HEIGHT / 2 + rotator;
         centerY = LCD_NUM_COLUMN / 2;
 
         log_verbose( "Display center = %d, %d", centerX, centerY );
+        VBuffer_DrawChar( 2, 0, '1', false );
+
         while ( lpLine != lpLineEnd )
         {
             // Translate.
@@ -135,13 +138,14 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
             } 
 
             // Cull line before draw using rectangle.
-            if ( FRect16_IsOverlap( &ScreenBound, &LineBound ) ) 
+            // if ( FRect16_IsOverlap( &ScreenBound, &LineBound ) ) 
             {
                 VBuffer_DrawLine( x0, y0, x1, y1 );
             }
 
             ++lpLine;
         }
+        VBuffer_DrawLine( 0, 0, 22, 15 );
     }
 } 
 
