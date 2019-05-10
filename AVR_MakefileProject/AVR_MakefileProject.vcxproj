@@ -201,6 +201,7 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
     <ClCompile Include="memory128.c" />
     <ClCompile Include="MemoryTest.cpp" />
     <ClCompile Include="Display.c" />
+    <ClCompile Include="RacingGame.c" />
     <ClCompile Include="Serial.c" />
     <ClCompile Include="IMAGES.c" />
     <ClCompile Include="__TestMain.cpp" />
@@ -229,6 +230,7 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
     <None Include="output.map" />
     <None Include="program.out" />
     <None Include="program_device.bat" />
+    <None Include="RacingGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

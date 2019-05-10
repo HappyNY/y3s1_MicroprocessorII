@@ -59,9 +59,19 @@ typedef struct FCameraTransform {
     FPointFP CachedDirection; 
 } FCameraTransform;
 
+typedef struct FRect16 {
+    int16 Left;
+    int16 Right;
+    int16 Top;
+    int16 Bottom;
+}FRect16;
+
 void CalculateTranformCache( FCameraTransform* Camera );
-void CDrawArgs_DrawOnDisplayBufferPerspective( const CDrawArgs* Vector, const FCameraTransform* Camera );
-void CDrawArgs_DrawOnDisplayBufferDirect( const CDrawArgs* Vector );
+void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const FPoint16 MeshPosition, const FCameraTransform* Camera );
+void CDrawArgs_DrawOnDisplayBufferDirect( const CDrawArgs* Vector, const FPoint16* ofst );
 
 void fixedpt_AddDegreesNormalized( fixedpt* dst, int8 degrees );
 void fixedpt_AddRadianNormalized( fixedpt* dst, fixedpt add );
+
+bool FRect16_IsOverlap( FRect16 const* a, FRect16 const* b );
+bool FPoint16_IsInBound( FPoint16 const* Triangle, FPoint16 Check );

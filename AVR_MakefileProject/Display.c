@@ -2,6 +2,7 @@
 #include "memory128.h"
 #include "math.h" 
 #include "Serial.h"
+#include <util/delay.h>
 
 byte* LCDBuffer;
 extern inline void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed );
@@ -12,6 +13,74 @@ extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bIn
 #define SET_DATA(value_byte) PORTE = (value_byte)
 #define SET_W(w1, w0)
 
+#define LCD_CD 6
+#define LCD_WR1 5
+#define LCD_WR0 4
+#define LCD_WR LCD_WR0
+#define LCD_RD LCD_WR1
+#define LCD_D3 3
+#define LCD_D2 2
+#define LCD_D1 1
+#define LCD_D0 0
+#define LCD_DEFAULT mask(LCD_WR, LCD_RD)
+
+#define LCDCOM_COLUMN_LO(DAT) ((DAT))
+#define LCDCOM_COLUMN_HI(DAT) ((DAT)|0X10)
+#define LCDCOM_SYSRST 0B11100010
+#define LCDCOM_MUXR_TEMPCOMP(MR, C) (0x20|((MR!=0)<<2)|((C)&0B11))
+#define LCDCOM_POWERCON(CON) (0B00101000|((CON)&0B111))
+#define LCDCOM_STARTLINE(VAL) (0X40|((VAL)&0B111111))
+#define LCDCOM_RAMADDR(VAL) (0X88|(VAL&0B111))
+#define LCDCOM_ALLPXLON(EN) (0XA4|((EN)!=0))
+#define LCDCOM_DISPEN(EN) (0XAE|((EN)!=0))
+#define LCDCOM_FXLINE(VAL) (0X90|((VAL)&0X0F))
+#define LCDCOM_PGADDR(VAL) (0XB0|((VAL)&0X0F))
+#define LCDCOM_MAPCTRL(VAL) (0XC0|((VAL)&0X0F))
+#define LCDCOM_BIASRATIO(VAL) (0XC8|((VAL)&0B11))
+#define LCDCOM_GAIN_POTENTIAL_INIT 0X81
+#define LCDCOM_GAIN_POTENTIAL_VAL(VAL) (VAL)
+#define LCDCOM_DISPINVERT(EN) (0XA6|((EN)!=0))
+#define avg(...) __VA_ARGS__(__VA_ARGS__)
+
+#define LCDOUTPUT(DAT) PORTA = (DAT); PORTC = (DAT); _delay_us(50)
+static void REFRESH()
+{
+    LCDOUTPUT( LCD_DEFAULT | mask( LCD_CD ) );
+    LCDOUTPUT( LCD_DEFAULT );
+}
+
+#define LO(DAT) ( DAT & 0x0f )
+#define HI(DAT) ( ( DAT & 0xf0 ) >> 4 )
+
+static void COMMAND( uint8 data )
+{  
+    // Refresh 4-bit latch
+    uint8 PutDat;
+    PutDat = ( LCD_DEFAULT | HI( data ) ) & ~mask( LCD_WR );
+    LCDOUTPUT( PutDat );
+    PutDat |= mask( LCD_WR );
+    LCDOUTPUT( PutDat );  
+    
+    PutDat = ( LCD_DEFAULT | LO( data ) ) & ~mask( LCD_WR );
+    LCDOUTPUT( PutDat ); 
+    PutDat |= mask( LCD_WR );
+    LCDOUTPUT( PutDat );
+}
+
+static void DATAWR( uint8 data )
+{ 
+    // Refresh 4-bit latch
+    uint8 PutDat;
+    PutDat = ( mask( LCD_CD ) | LCD_DEFAULT | HI( data ) ) & ~mask( LCD_WR );
+    LCDOUTPUT( PutDat );
+    PutDat |= mask( LCD_WR );
+    LCDOUTPUT( PutDat );
+
+    PutDat = ( mask( LCD_CD ) | LCD_DEFAULT | LO( data ) ) & ~mask( LCD_WR );
+    LCDOUTPUT( PutDat );
+    PutDat |= mask( LCD_WR );
+    LCDOUTPUT( PutDat );
+}
 
 extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
@@ -20,13 +89,62 @@ void LCDDevice__Initialize()
 	LCDBuffer = Malloc( LCD_BUFFER_LENGTH );
 
 	// Hardware associated functionality.
-} 
+    DDRA = 0XFF;
+    DDRC = 0xFF;
+    REFRESH(); 
+    LCDOUTPUT( LCD_DEFAULT );
+    
+#define INITIALIZATION_DELAY_MS 200
+#define COMMAND_DELAY(VAL) COMMAND( VAL ); _delay_ms( INITIALIZATION_DELAY_MS );
+    // LCD Initialization 
+    _delay_ms( 1500 );
+    COMMAND_DELAY( 0x26 );
+    COMMAND_DELAY( 0x2d );
+    COMMAND_DELAY( 0xea );
+    COMMAND_DELAY( 0x81 );
+    COMMAND_DELAY( 0x8b );
+    COMMAND_DELAY( 0xc8 );
+    COMMAND_DELAY( 0x40 );
+    COMMAND_DELAY( LCDCOM_RAMADDR( 0b001 ) ); 
+    COMMAND_DELAY( LCDCOM_DISPEN( true ) );
+/*
+    COMMAND( LCDCOM_DISPEN( true ) );
+    COMMAND( LCDCOM_MUXR_TEMPCOMP( 1, 0b10 ) );
+    COMMAND( LCDCOM_POWERCON( 0b101 ) ); 
+    COMMAND( LCDCOM_BIASRATIO( 0b10 ) );
+    _delay_ms( 4 );
+    COMMAND( LCDCOM_GAIN_POTENTIAL_INIT );
+    _delay_ms( 4 );
+    COMMAND( LCDCOM_GAIN_POTENTIAL_VAL( 0X8B ) );
+    _delay_ms( 4 );
+    COMMAND( LCDCOM_MAPCTRL( 0X08 ) );
+    _delay_ms( 4 );
+    COMMAND( LCDCOM_STARTLINE( 0 ) );
+    _delay_ms( 4 );
+
+    _delay_ms( 2000 );*/
+    // COMMAND( LCDCOM_ALLPXLON( false ) );
+}
 
 void LCDDevice__Render()
 {
 	// @todo. Hardware associated functionality.
     // @. temporary code.
 
+    byte x, y;
+
+    for ( y = 0; ( y >> 1 ) < LCD_HEGIHT; ++y )
+    { 
+        byte yIdx = ( y >> 1 ) * LCD_LINE_BYTE;
+      
+        for ( x = 0; x < LCD_LINE_BYTE; ++x )
+        {
+            DATAWR( x );
+            _delay_us( 4 );
+        }
+        // COMMAND( LCDCOM_STARTLINE( y ) );
+    } 
+#if 0
 #if 1 // SERIAL_DEBUG_OUTPUT
     int i, k, ofst = 0;
     char buff[LCD_WIDTH + 3];
@@ -55,6 +173,7 @@ void LCDDevice__Render()
         CSerialSender_QueueOutputString( &UART0Sender, buff );
     }
     while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
+#endif
 #endif
 }
 

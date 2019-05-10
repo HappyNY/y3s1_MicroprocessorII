@@ -1,4 +1,4 @@
-	.file	"main.c"
+	.file	"RacingGame.c"
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
@@ -11,7 +11,7 @@ __zero_reg__ = 1
  ;  GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
  ;  options passed:  -imultilib avr51
  ;  -iprefix c:\mingw\avrgcc\bin\../lib/gcc/avr/8.3.0/ -D__AVR_ATmega128__
- ;  -D__AVR_DEVICE_NAME__=atmega128 main.c -mn-flash=2 -mno-skip-bug
+ ;  -D__AVR_DEVICE_NAME__=atmega128 RacingGame.c -mn-flash=2 -mno-skip-bug
  ;  -mmcu=avr51 -Os -fverbose-asm
  ;  options enabled:  -Wmisspelled-isr -faggressive-loop-optimizations
  ;  -falign-functions -falign-jumps -falign-labels -falign-loops
@@ -58,74 +58,15 @@ __zero_reg__ = 1
  ;  -fzero-initialized-in-bss -mgas-isr-prologues -mmain-is-OS_task
 
 	.text
-.global	InitializeDevice
-	.type	InitializeDevice, @function
-InitializeDevice:
+.global	UnloadCurrentTrackInformation
+	.type	UnloadCurrentTrackInformation, @function
+UnloadCurrentTrackInformation:
 /* prologue: function */
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
- ;  main.c:147:     LCDDevice__Initialize();
-	call LCDDevice__Initialize	 ; 
- ;  main.c:155:     sei();
-/* #APP */
- ;  155 "main.c" 1
-	sei	
- ;  0 "" 2
-/* #NOAPP */
 /* epilogue start */
- ;  main.c:156: }
+ ;  RacingGame.c:6: }
 	ret	
-	.size	InitializeDevice, .-InitializeDevice
-	.section	.text.startup,"ax",@progbits
-.global	main
-	.type	main, @function
-main:
-	push r28		 ; 
-	push r29		 ; 
-	in r28,__SP_L__	 ; 
-	in r29,__SP_H__	 ; 
-	sbiw r28,16	 ; ,
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29	 ; ,
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28	 ; ,
-/* prologue: function */
-/* frame size = 16 */
-/* stack size = 18 */
-.L__stack_usage = 18
- ;  main.c:17:     InitializeDevice();
-	call InitializeDevice	 ; 
- ;  main.c:18:     CSerialSender_Initialize( &UART0Sender );
-	ldi r24,lo8(UART0Sender)	 ; ,
-	ldi r25,hi8(UART0Sender)	 ; ,
-	call CSerialSender_Initialize	 ; 
- ;  main.c:29:     Cam.Position.x = 0;
-	std Y+2,__zero_reg__	 ;  Cam.Position.x,
-	std Y+1,__zero_reg__	 ;  Cam.Position.x,
- ;  main.c:30:     Cam.Position.y = 0;
-	std Y+4,__zero_reg__	 ;  Cam.Position.y,
-	std Y+3,__zero_reg__	 ;  Cam.Position.y,
- ;  main.c:31:     Cam.ReadOnly_DirectionRadian = 0;
-	std Y+5,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
-	std Y+6,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
-	std Y+7,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
-	std Y+8,__zero_reg__	 ;  Cam.ReadOnly_DirectionRadian,
- ;  main.c:32:     CalculateTranformCache( &Cam );
-	movw r24,r28	 ; ,
-	adiw r24,1	 ; ,
-	call CalculateTranformCache	 ; 
-.L3:
- ;  main.c:36:         LCDDevice__Render();
-	call LCDDevice__Render	 ; 
-	rjmp .L3		 ; 
-	.size	main, .-main
-.global	__INTERRUPT_LOCK_MUTEX__
-	.section .bss
-	.type	__INTERRUPT_LOCK_MUTEX__, @object
-	.size	__INTERRUPT_LOCK_MUTEX__, 1
-__INTERRUPT_LOCK_MUTEX__:
-	.zero	1
+	.size	UnloadCurrentTrackInformation, .-UnloadCurrentTrackInformation
 	.ident	"GCC: (GNU) 8.3.0"
-.global __do_clear_bss

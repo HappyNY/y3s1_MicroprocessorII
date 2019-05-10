@@ -30,46 +30,51 @@ void main( void )
     Cam.Position.y = 0;
     Cam.ReadOnly_DirectionRadian = 0;
     CalculateTranformCache( &Cam );
-
-    UART0_WaitAnyKey();
-    {    
-        byte x = 0, y = 0;
-        VBuffer_Clear();
-        // VBuffer_DrawString( &x, &y, "3D TEST", false );
-        LCDDevice__Render();
-    }
-
-    UART0_WaitAnyKey();
+    
     while ( 1 )
     {
-        char ch = 
-            // /* 
-            UART0_TryReadKey(); 
-            // */ UART0_WaitAnyKey();
-
-        // const fixedpt arg = fixedpt_rconst( LITERAL_PI * 0.1 ); 
-
-        switch ( ch )
-        {
-        case 'q':
-            Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-        case 'e':
-            Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-        case 'w':
-            Cam.Position.x += 5; break;
-        case 's':
-            Cam.Position.x -= 5; break;
-        case 'a':
-            Cam.Position.y -= 5; break;
-        case 'd':
-            Cam.Position.y += 5; break;
-        }
-
-        VBuffer_Clear();
-        CalculateTranformCache( &Cam );
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Arg, &Cam );
-        LCDDevice__Render(); 
+        LCDDevice__Render();
     }
+    
+    // UART0_WaitAnyKey();
+    // {    
+    //     byte x = 0, y = 0;
+    //     VBuffer_Clear();
+    //     // VBuffer_DrawString( &x, &y, "3D TEST", false );
+    //     LCDDevice__Render();
+    // }
+    // 
+    // UART0_WaitAnyKey();
+    // while ( 1 )
+    // {
+    //     char ch = 
+    //         // /* 
+    //         UART0_TryReadKey(); 
+    //         // */ UART0_WaitAnyKey();
+    // 
+    //     // const fixedpt arg = fixedpt_rconst( LITERAL_PI * 0.1 ); 
+    // 
+    //     switch ( ch )
+    //     {
+    //     case 'q':
+    //         Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
+    //     case 'e':
+    //         Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
+    //     case 'w':
+    //         Cam.Position.x += 5; break;
+    //     case 's':
+    //         Cam.Position.x -= 5; break;
+    //     case 'a':
+    //         Cam.Position.y -= 5; break;
+    //     case 'd':
+    //         Cam.Position.y += 5; break;
+    //     }
+    // 
+    //     VBuffer_Clear();
+    //     CalculateTranformCache( &Cam );
+    //     CDrawArgs_DrawOnDisplayBufferPerspective( &Arg.Mesh, Arg.Position, &Cam );
+    //     LCDDevice__Render(); 
+    // }
 }
 #if 0
     outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
@@ -141,9 +146,9 @@ void InitializeDevice()
 
     LCDDevice__Initialize();
  
-    DDRC = 0xff;
-    PORTC = 0xff;
-    InitializeTX0SerialOutput();
+    // DDRC = 0xff;
+    // PORTC = 0xff;
+    // InitializeTX0SerialOutput();
     
     // Timer monitor
     

@@ -56,7 +56,7 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     return AngleBetween < AngleLimit; 
 }
 
-void CDrawArgs_DrawOnDisplayBufferPerspective( const CDrawArgs * Instance, const FCameraTransform * Camera )
+void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const FPoint16 MeshPosition, const FCameraTransform * Camera )
 {
     log_verbose( "------------------------" );
     // Expects that the transform cache has already been calculated.
@@ -79,10 +79,10 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const CDrawArgs * Instance, const
 #define scale(val) (((int32)(val)*STANDARD_DISTANCE_IN_UNITS)/Distance)
 #define rotator (((int16)(AngleInDegrees)*LCD_WIDTH)/((int16)CAMERA_FOV))
 
-    bIsVisibleArg = CalculateAngleIfVIsible( &Instance->Position, Camera, &AngleInDegrees, &Distance );
+    bIsVisibleArg = CalculateAngleIfVIsible( &MeshPosition, Camera, &AngleInDegrees, &Distance );
      
     log_verbose( "Cam loc: %d, %d", Camera->Position.x, Camera->Position.y );
-    log_verbose( "Instance loc: %d, %d", Instance->Position.x, Instance->Position.y );
+    log_verbose( "Instance loc: %d, %d", MeshPosition.x, MeshPosition.y );
     log_verbose( "Angle between in degrees %d", AngleInDegrees );
     log_verbose( "Distance between two factors %d", Distance );
 
@@ -93,33 +93,66 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const CDrawArgs * Instance, const
         return;
     }
     
+    static const FRect16 ScreenBound = { 0, LCD_WIDTH, 0, LCD_HEGIHT };
+
     // Renders arguments...
     {
         FLineInfo const 
-            *arg = Instance->Mesh.Lines,
-            *end = Instance->Mesh.Lines + Instance->Mesh.NumLines;
+            *lpLine = Vector->Lines,
+            *lpLineEnd = Vector->Lines + Vector->NumLines;
         int16 centerX, centerY;
         int16 x0, y0, x1, y1;
+        FRect16 LineBound;
 
         centerX = LCD_WIDTH / 2 + rotator;
         centerY = LCD_HEGIHT / 2;
 
         log_verbose( "Display center = %d, %d", centerX, centerY );
-        while ( arg != end )
+        while ( lpLine != lpLineEnd )
         {
             // Translate.
-            x0 = scale( arg->Begin.x ) + centerX;
-            y0 = scale( arg->Begin.y ) + centerY;
-            x1 = scale( arg->End.x ) + centerX;
-            y1 = scale( arg->End.y ) + centerY;
+            x0 = scale( lpLine->Begin.x ) + centerX;
+            y0 = scale( lpLine->Begin.y ) + centerY;
+            x1 = scale( lpLine->End.x ) + centerX;
+            y1 = scale( lpLine->End.y ) + centerY;
             log_verbose( "Draw args %d, %d to %d, %d", x0, y0, x1, y1 );
             // Draw
+            if ( x0 > x1 ) {
+                LineBound.Left = x1;
+                LineBound.Right = x0;
+            }
+            else {
+                LineBound.Left = x0;
+                LineBound.Right = x1;
+            }
+            if ( y0 > y1 ) {
+                LineBound.Top = x1;
+                LineBound.Bottom = x0;
+            }
+            else {
+                LineBound.Top = x0;
+                LineBound.Bottom = x1;
+            } 
 
-            // @todo. Cull line before draw using rectangle.
-            VBuffer_DrawLine( x0, y0, x1, y1 );
+            // Cull line before draw using rectangle.
+            if ( FRect16_IsOverlap( &ScreenBound, &LineBound ) ) 
+            {
+                VBuffer_DrawLine( x0, y0, x1, y1 );
+            }
 
-            ++arg;
+            ++lpLine;
         }
     }
-
 } 
+
+bool FRect16_IsOverlap( FRect16 const * a, FRect16 const * b )
+{
+    bool bXOverlap 
+        = b->Left <= a->Left && a->Left <= b->Right 
+        || b->Left <= a->Right && a->Right <= b->Right;
+    bool bYOverlap
+        = b->Top <= a->Top && a->Top <= b->Bottom
+        || b->Top <= a->Bottom && a->Bottom <= b->Bottom;
+
+    return bXOverlap && bYOverlap;
+}

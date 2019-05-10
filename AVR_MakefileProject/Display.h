@@ -7,8 +7,8 @@
  */
 
 #define PIXELS_PER_BYTE 8
-#define LCD_WIDTH 72 // Must be multiplicand of 8
-#define LCD_HEGIHT 23
+#define LCD_WIDTH 120 // Must be multiplicand of 8
+#define LCD_HEGIHT 64
 #define LCD_LINE_BYTE (LCD_WIDTH / PIXELS_PER_BYTE)
 
 #define LCD_BUFFER_LENGTH (LCD_WIDTH * LCD_HEGIHT / PIXELS_PER_BYTE)

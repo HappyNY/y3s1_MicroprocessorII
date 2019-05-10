@@ -75,6 +75,9 @@
     <ClCompile Include="IMAGES.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="RacingGame.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assertion.c">
@@ -129,5 +132,8 @@
     <None Include="program_device.bat" />
     <None Include="build_release.bat" />
     <None Include="dump.s" />
+    <None Include="RacingGame.h">
+      <Filter>Header Files\Application</Filter>
+    </None>
   </ItemGroup>
 </Project>

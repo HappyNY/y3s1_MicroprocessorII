@@ -601,6 +601,115 @@ CalculateAngleIfVIsible:
 	ldi r25,0		 ;  <retval>
 	rjmp .L2		 ; 
 	.size	CalculateAngleIfVIsible, .-CalculateAngleIfVIsible
+.global	FRect16_IsOverlap
+	.type	FRect16_IsOverlap, @function
+FRect16_IsOverlap:
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 0 */
+.L__stack_usage = 0
+	movw r26,r24	 ;  a, a
+	movw r30,r22	 ;  b, b
+ ;  Graphics.c:151:         = b->Left <= a->Left && a->Left <= b->Right 
+	ld r24,Z	 ;  _1, b_15(D)->Left
+	ldd r25,Z+1	 ;  _1, b_15(D)->Left
+ ;  Graphics.c:151:         = b->Left <= a->Left && a->Left <= b->Right 
+	ld r18,X+	 ;  _2
+	ld r19,X	 ;  _2
+	sbiw r26,1
+ ;  Graphics.c:152:         || b->Left <= a->Right && a->Right <= b->Right;
+	cp r18,r24	 ;  _2, _1
+	cpc r19,r25	 ;  _2, _1
+	brlt .L9		 ; ,
+ ;  Graphics.c:151:         = b->Left <= a->Left && a->Left <= b->Right 
+	ldd r20,Z+2	 ;  b_15(D)->Right, b_15(D)->Right
+	ldd r21,Z+3	 ;  b_15(D)->Right, b_15(D)->Right
+	cp r20,r18	 ;  b_15(D)->Right, _2
+	cpc r21,r19	 ;  b_15(D)->Right, _2
+	brge .L16		 ; ,
+.L9:
+ ;  Graphics.c:152:         || b->Left <= a->Right && a->Right <= b->Right;
+	adiw r26,2	 ;  a_16(D)->Right
+	ld r18,X+	 ;  _4
+	ld r19,X	 ;  _4
+	sbiw r26,2+1	 ;  a_16(D)->Right
+ ;  Graphics.c:152:         || b->Left <= a->Right && a->Right <= b->Right;
+	cp r18,r24	 ;  _4, _1
+	cpc r19,r25	 ;  _4, _1
+	brlt .L17		 ; ,
+ ;  Graphics.c:152:         || b->Left <= a->Right && a->Right <= b->Right;
+	ldi r25,lo8(1)	 ;  tmp79,
+	ldi r24,0		 ;  tmp80
+	ldd r20,Z+2	 ;  b_15(D)->Right, b_15(D)->Right
+	ldd r21,Z+3	 ;  b_15(D)->Right, b_15(D)->Right
+	cp r20,r18	 ;  b_15(D)->Right, _4
+	cpc r21,r19	 ;  b_15(D)->Right, _4
+	brge .L11		 ; ,
+	ldi r25,0		 ;  tmp79
+.L11:
+ ;  Graphics.c:152:         || b->Left <= a->Right && a->Right <= b->Right;
+	mov r18,r25	 ;  iftmp.6_11, tmp79
+	mov r19,r24	 ;  iftmp.6_11, tmp80
+.L10:
+ ;  Graphics.c:154:         = b->Top <= a->Top && a->Top <= b->Bottom
+	ldd r20,Z+4	 ;  _6, b_15(D)->Top
+	ldd r21,Z+5	 ;  _6, b_15(D)->Top
+ ;  Graphics.c:154:         = b->Top <= a->Top && a->Top <= b->Bottom
+	adiw r26,4	 ;  a_16(D)->Top
+	ld r24,X+	 ;  _7
+	ld r25,X	 ;  _7
+	sbiw r26,4+1	 ;  a_16(D)->Top
+ ;  Graphics.c:155:         || b->Top <= a->Bottom && a->Bottom <= b->Bottom;
+	cp r24,r20	 ;  _7, _6
+	cpc r25,r21	 ;  _7, _6
+	brlt .L12		 ; ,
+ ;  Graphics.c:154:         = b->Top <= a->Top && a->Top <= b->Bottom
+	ldd r22,Z+6	 ;  b_15(D)->Bottom, b_15(D)->Bottom
+	ldd r23,Z+7	 ;  b_15(D)->Bottom, b_15(D)->Bottom
+	cp r22,r24	 ;  b_15(D)->Bottom, _7
+	cpc r23,r25	 ;  b_15(D)->Bottom, _7
+	brge .L13		 ; ,
+.L12:
+ ;  Graphics.c:155:         || b->Top <= a->Bottom && a->Bottom <= b->Bottom;
+	adiw r26,6	 ;  a_16(D)->Bottom
+	ld r24,X+	 ;  _9
+	ld r25,X	 ;  _9
+ ;  Graphics.c:155:         || b->Top <= a->Bottom && a->Bottom <= b->Bottom;
+	cp r24,r20	 ;  _9, _6
+	cpc r25,r21	 ;  _9, _6
+	brlt .L18		 ; ,
+ ;  Graphics.c:155:         || b->Top <= a->Bottom && a->Bottom <= b->Bottom;
+	ldd r20,Z+6	 ;  b_15(D)->Bottom, b_15(D)->Bottom
+	ldd r21,Z+7	 ;  b_15(D)->Bottom, b_15(D)->Bottom
+	cp r20,r24	 ;  b_15(D)->Bottom, _9
+	cpc r21,r25	 ;  b_15(D)->Bottom, _9
+	brge .L13		 ; ,
+.L18:
+ ;  Graphics.c:157:     return bXOverlap && bYOverlap;
+	ldi r24,0		 ;  iftmp.8_13
+	ldi r25,0		 ;  iftmp.8_13
+	ret	
+.L16:
+ ;  Graphics.c:152:         || b->Left <= a->Right && a->Right <= b->Right;
+	ldi r18,lo8(1)	 ;  iftmp.6_11,
+	ldi r19,0		 ;  iftmp.6_11
+	rjmp .L10		 ; 
+.L17:
+	ldi r19,0		 ;  iftmp.6_11
+	ldi r18,0		 ;  iftmp.6_11
+	rjmp .L10		 ; 
+.L13:
+ ;  Graphics.c:157:     return bXOverlap && bYOverlap;
+	ldi r24,lo8(1)	 ;  tmp81,
+	ldi r25,0		 ;  tmp82
+	or r18,r19	 ;  iftmp.6_11
+	brne .L19		 ; ,
+	ldi r24,0		 ;  tmp81
+.L19:
+/* epilogue start */
+ ;  Graphics.c:158: }
+	ret	
+	.size	FRect16_IsOverlap, .-FRect16_IsOverlap
 .global	__floatsisf
 .global	__mulsf3
 .global	__divsf3
@@ -629,68 +738,85 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	push r29		 ; 
 	in r28,__SP_L__	 ; 
 	in r29,__SP_H__	 ; 
-	sbiw r28,15	 ; ,
+	sbiw r28,29	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28	 ; ,
 /* prologue: function */
-/* frame size = 15 */
-/* stack size = 33 */
-.L__stack_usage = 33
-	movw r14,r24	 ;  Instance, Instance
- ;  Graphics.c:82:     bIsVisibleArg = CalculateAngleIfVIsible( &Instance->Position, Camera, &AngleInDegrees, &Distance );
+/* frame size = 29 */
+/* stack size = 47 */
+.L__stack_usage = 47
+	movw r14,r24	 ;  Vector, Vector
+	std Y+12,r20	 ;  MeshPosition, MeshPosition
+	std Y+13,r21	 ;  MeshPosition, MeshPosition
+	std Y+14,r22	 ;  MeshPosition, MeshPosition
+	std Y+15,r23	 ;  MeshPosition, MeshPosition
+	movw r22,r18	 ;  Camera, Camera
+ ;  Graphics.c:82:     bIsVisibleArg = CalculateAngleIfVIsible( &MeshPosition, Camera, &AngleInDegrees, &Distance );
 	movw r18,r28	 ; ,
-	subi r18,-1	 ; ,
+	subi r18,-9	 ; ,
 	sbci r19,-1	 ; ,
 	movw r20,r28	 ; ,
-	subi r20,-3	 ; ,
+	subi r20,-11	 ; ,
 	sbci r21,-1	 ; ,
-	adiw r24,3	 ; ,
+	movw r24,r28	 ; ,
+	adiw r24,12	 ; ,
 	call CalculateAngleIfVIsible	 ; 
  ;  Graphics.c:89:     if ( !bIsVisibleArg )
 	or r24,r25	 ; 
-	breq .L8		 ; ,
- ;  Graphics.c:99:             *arg = Instance->Mesh.Lines,
-	movw r30,r14	 ; , Instance
-	ld r16,Z	 ;  arg, Instance_35(D)->Mesh.Lines
-	ldd r17,Z+1	 ;  arg, Instance_35(D)->Mesh.Lines
- ;  Graphics.c:100:             *end = Instance->Mesh.Lines + Instance->Mesh.NumLines;
-	ldd r2,Z+2	 ;  Instance_35(D)->Mesh.NumLines, Instance_35(D)->Mesh.NumLines
-	ldi r31,lo8(4)	 ; ,
-	mul r2,r31	 ;  Instance_35(D)->Mesh.NumLines,
-	movw r2,r0	 ;  tmp85
-	clr __zero_reg__
- ;  Graphics.c:100:             *end = Instance->Mesh.Lines + Instance->Mesh.NumLines;
-	add r2,r16	 ;  end, arg
-	adc r3,r17	 ;  end, arg
- ;  Graphics.c:104:         centerX = LCD_WIDTH / 2 + rotator;
-	ldd r24,Y+3	 ;  AngleInDegrees, AngleInDegrees
-	ldi r18,lo8(72)	 ; ,
-	muls r24,r18	 ;  AngleInDegrees,
+	breq .L20		 ; ,
+ ;  Graphics.c:101:             *lpLine = Vector->Lines,
+	movw r26,r14	 ; , Vector
+	ld r16,X+	 ;  lpLine
+	ld r17,X	 ;  lpLine
+	sbiw r26,1
+ ;  Graphics.c:102:             *lpLineEnd = Vector->Lines + Vector->NumLines;
+	adiw r26,2	 ;  Vector_44(D)->NumLines
+	ld r24,X	 ;  Vector_44(D)->NumLines
+	ldi r27,lo8(4)	 ; ,
+	mul r24,r27	 ;  Vector_44(D)->NumLines,
 	movw r24,r0	 ;  tmp86
+	clr __zero_reg__
+ ;  Graphics.c:102:             *lpLineEnd = Vector->Lines + Vector->NumLines;
+	movw r30,r16	 ; , lpLine
+	add r30,r24	 ; , tmp86
+	adc r31,r25	 ; ,
+	std Y+21,r31	 ;  %sfp,
+	std Y+20,r30	 ;  %sfp,
+ ;  Graphics.c:107:         centerX = LCD_WIDTH / 2 + rotator;
+	ldd r24,Y+11	 ;  AngleInDegrees, AngleInDegrees
+	ldi r31,lo8(120)	 ; ,
+	muls r24,r31	 ;  AngleInDegrees,
+	movw r24,r0	 ;  tmp87
 	clr __zero_reg__
 	ldi r22,lo8(125)	 ; ,
 	ldi r23,0		 ; 
 	call __divmodhi4
- ;  Graphics.c:104:         centerX = LCD_WIDTH / 2 + rotator;
-	subi r22,-36	 ;  centerX,
+ ;  Graphics.c:107:         centerX = LCD_WIDTH / 2 + rotator;
+	subi r22,-60	 ;  centerX,
 	sbci r23,-1	 ;  centerX,
- ;  Graphics.c:111:             x0 = scale( arg->Begin.x ) + centerX;
-	movw r4,r22	 ;  centerX, centerX
+ ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
+	movw r24,r22	 ; , centerX
 	lsl r23		 ; 
-	sbc r6,r6	 ; 
-	sbc r7,r7	 ; 
-.L10:
- ;  Graphics.c:108:         while ( arg != end )
-	cp r16,r2	 ;  arg, end
-	cpc r17,r3	 ;  arg, end
-	brne .L11		 ; ,
-.L8:
+	sbc r26,r26	 ; 
+	sbc r27,r27	 ; 
+	std Y+26,r24	 ;  %sfp,
+	std Y+27,r25	 ;  %sfp,
+	std Y+28,r26	 ;  %sfp,
+	std Y+29,r27	 ;  %sfp,
+.L23:
+ ;  Graphics.c:111:         while ( lpLine != lpLineEnd )
+	ldd r30,Y+20	 ; , %sfp
+	ldd r31,Y+21	 ; , %sfp
+	cp r16,r30	 ;  lpLine,
+	cpc r17,r31	 ;  lpLine,
+	brne .L29		 ; ,
+.L20:
 /* epilogue start */
- ;  Graphics.c:123: } 
-	adiw r28,15	 ; ,
+ ;  Graphics.c:146: } 
+	adiw r28,29	 ; ,
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29	 ; ,
@@ -715,26 +841,28 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	pop r3		 ; 
 	pop r2		 ; 
 	ret	
-.L11:
- ;  Graphics.c:111:             x0 = scale( arg->Begin.x ) + centerX;
-	ldd r22,Y+1	 ;  Distance, Distance
-	ldd r23,Y+2	 ;  Distance, Distance
+.L29:
+ ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
+	ldd r22,Y+9	 ;  Distance, Distance
+	ldd r23,Y+10	 ;  Distance, Distance
 	mov __tmp_reg__,r23	 ; 
 	lsl r0		 ; 
 	sbc r24,r24	 ; 
 	sbc r25,r25	 ; 
 	call __floatsisf	 ; 
-	movw r12,r22	 ;  _13,
-	movw r14,r24	 ;  _13,
- ;  Graphics.c:111:             x0 = scale( arg->Begin.x ) + centerX;
-	movw r24,r6	 ; , centerX
-	movw r22,r4	 ; , centerX
+	movw r8,r22	 ;  _12,
+	movw r10,r24	 ;  _12,
+ ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
+	ldd r22,Y+26	 ; , %sfp
+	ldd r23,Y+27	 ; , %sfp
+	ldd r24,Y+28	 ; , %sfp
+	ldd r25,Y+29	 ; , %sfp
 	call __floatsisf	 ; 
-	movw r8,r22	 ;  _15,
-	movw r10,r24	 ;  _15,
- ;  Graphics.c:114:             y1 = scale( arg->End.y ) + centerY;
-	movw r30,r16	 ; , arg
-	ldd r22,Z+3	 ;  MEM[base: arg_32, offset: 3B], MEM[base: arg_32, offset: 3B]
+	movw r12,r22	 ;  _14,
+	movw r14,r24	 ;  _14,
+ ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
+	movw r26,r16	 ; , lpLine
+	ld r22,X		 ;  MEM[base: lpLine_32, offset: 0B], MEM[base: lpLine_32, offset: 0B]
 	mov __tmp_reg__,r22	 ; 
 	lsl r0		 ; 
 	sbc r23,r23	 ; 
@@ -746,24 +874,21 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	ldi r20,lo8(-56)	 ; ,
 	ldi r21,lo8(66)	 ; ,
 	call __mulsf3	 ; 
-	movw r20,r14	 ; , _13
-	movw r18,r12	 ; , _13
+	movw r20,r10	 ; , _12
+	movw r18,r8	 ; , _12
 	call __divsf3	 ; 
- ;  Graphics.c:114:             y1 = scale( arg->End.y ) + centerY;
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(48)	 ; ,
-	ldi r21,lo8(65)	 ; ,
+ ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
+	movw r20,r14	 ; , _14
+	movw r18,r12	 ; , _14
 	call __addsf3	 ; 
- ;  Graphics.c:114:             y1 = scale( arg->End.y ) + centerY;
+ ;  Graphics.c:114:             x0 = scale( lpLine->Begin.x ) + centerX;
 	call __fixsfsi	 ; 
-	std Y+4,r22	 ;  %sfp,
-	std Y+5,r23	 ;  %sfp,
-	std Y+6,r24	 ;  %sfp,
-	std Y+7,r25	 ;  %sfp,
- ;  Graphics.c:113:             x1 = scale( arg->End.x ) + centerX;
-	movw r30,r16	 ; , arg
-	ldd r22,Z+2	 ;  MEM[base: arg_32, offset: 2B], MEM[base: arg_32, offset: 2B]
+	movw r4,r22	 ;  tmp103,
+	std Y+23,r23	 ;  %sfp, tmp103
+	std Y+22,r22	 ;  %sfp, tmp103
+ ;  Graphics.c:115:             y0 = scale( lpLine->Begin.y ) + centerY;
+	movw r30,r16	 ; , lpLine
+	ldd r22,Z+1	 ;  MEM[base: lpLine_32, offset: 1B], MEM[base: lpLine_32, offset: 1B]
 	mov __tmp_reg__,r22	 ; 
 	lsl r0		 ; 
 	sbc r23,r23	 ; 
@@ -775,22 +900,29 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	ldi r20,lo8(-56)	 ; ,
 	ldi r21,lo8(66)	 ; ,
 	call __mulsf3	 ; 
-	movw r20,r14	 ; , _13
-	movw r18,r12	 ; , _13
+	movw r20,r10	 ; , _12
+	movw r18,r8	 ; , _12
 	call __divsf3	 ; 
- ;  Graphics.c:113:             x1 = scale( arg->End.x ) + centerX;
-	movw r20,r10	 ; , _15
-	movw r18,r8	 ; , _15
+ ;  Graphics.c:115:             y0 = scale( lpLine->Begin.y ) + centerY;
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,0		 ; 
+	ldi r21,lo8(66)	 ; ,
 	call __addsf3	 ; 
- ;  Graphics.c:113:             x1 = scale( arg->End.x ) + centerX;
+ ;  Graphics.c:115:             y0 = scale( lpLine->Begin.y ) + centerY;
 	call __fixsfsi	 ; 
-	std Y+8,r22	 ;  %sfp,
-	std Y+9,r23	 ;  %sfp,
-	std Y+10,r24	 ;  %sfp,
-	std Y+11,r25	 ;  %sfp,
- ;  Graphics.c:112:             y0 = scale( arg->Begin.y ) + centerY;
-	movw r30,r16	 ; , arg
-	ldd r22,Z+1	 ;  MEM[base: arg_32, offset: 1B], MEM[base: arg_32, offset: 1B]
+	std Y+16,r22	 ;  %sfp,
+	std Y+17,r23	 ;  %sfp,
+	std Y+18,r24	 ;  %sfp,
+	std Y+19,r25	 ;  %sfp,
+	ldd r18,Y+16	 ; , %sfp
+	ldd r19,Y+17	 ; , %sfp
+	std Y+25,r19	 ;  %sfp,
+	std Y+24,r18	 ;  %sfp,
+ ;  Graphics.c:116:             x1 = scale( lpLine->End.x ) + centerX;
+	movw r26,r16	 ; , lpLine
+	adiw r26,2	 ;  MEM[base: lpLine_32, offset: 2B]
+	ld r22,X	 ;  MEM[base: lpLine_32, offset: 2B]
 	mov __tmp_reg__,r22	 ; 
 	lsl r0		 ; 
 	sbc r23,r23	 ; 
@@ -802,24 +934,19 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	ldi r20,lo8(-56)	 ; ,
 	ldi r21,lo8(66)	 ; ,
 	call __mulsf3	 ; 
-	movw r20,r14	 ; , _13
-	movw r18,r12	 ; , _13
+	movw r20,r10	 ; , _12
+	movw r18,r8	 ; , _12
 	call __divsf3	 ; 
- ;  Graphics.c:112:             y0 = scale( arg->Begin.y ) + centerY;
-	ldi r18,0		 ; 
-	ldi r19,0		 ; 
-	ldi r20,lo8(48)	 ; ,
-	ldi r21,lo8(65)	 ; ,
+ ;  Graphics.c:116:             x1 = scale( lpLine->End.x ) + centerX;
+	movw r20,r14	 ; , _14
+	movw r18,r12	 ; , _14
 	call __addsf3	 ; 
- ;  Graphics.c:112:             y0 = scale( arg->Begin.y ) + centerY;
+ ;  Graphics.c:116:             x1 = scale( lpLine->End.x ) + centerX;
 	call __fixsfsi	 ; 
-	std Y+12,r22	 ;  %sfp,
-	std Y+13,r23	 ;  %sfp,
-	std Y+14,r24	 ;  %sfp,
-	std Y+15,r25	 ;  %sfp,
- ;  Graphics.c:111:             x0 = scale( arg->Begin.x ) + centerX;
-	movw r30,r16	 ; , arg
-	ld r22,Z		 ;  MEM[base: arg_32, offset: 0B], MEM[base: arg_32, offset: 0B]
+	movw r12,r22	 ;  tmp117,
+ ;  Graphics.c:117:             y1 = scale( lpLine->End.y ) + centerY;
+	movw r30,r16	 ; , lpLine
+	ldd r22,Z+3	 ;  MEM[base: lpLine_32, offset: 3B], MEM[base: lpLine_32, offset: 3B]
 	mov __tmp_reg__,r22	 ; 
 	lsl r0		 ; 
 	sbc r23,r23	 ; 
@@ -831,27 +958,93 @@ CDrawArgs_DrawOnDisplayBufferPerspective:
 	ldi r20,lo8(-56)	 ; ,
 	ldi r21,lo8(66)	 ; ,
 	call __mulsf3	 ; 
-	movw r20,r14	 ; , _13
-	movw r18,r12	 ; , _13
+	movw r20,r10	 ; , _12
+	movw r18,r8	 ; , _12
 	call __divsf3	 ; 
- ;  Graphics.c:111:             x0 = scale( arg->Begin.x ) + centerX;
-	movw r20,r10	 ; , _15
-	movw r18,r8	 ; , _15
+ ;  Graphics.c:117:             y1 = scale( lpLine->End.y ) + centerY;
+	ldi r18,0		 ; 
+	ldi r19,0		 ; 
+	ldi r20,0		 ; 
+	ldi r21,lo8(66)	 ; ,
 	call __addsf3	 ; 
- ;  Graphics.c:111:             x0 = scale( arg->Begin.x ) + centerX;
+ ;  Graphics.c:117:             y1 = scale( lpLine->End.y ) + centerY;
 	call __fixsfsi	 ; 
-	movw r24,r22	 ;  tmp127,
- ;  Graphics.c:117:             VBuffer_DrawLine( x0, y0, x1, y1 );
-	ldd r18,Y+4	 ; , %sfp
-	ldd r19,Y+5	 ; , %sfp
-	ldd r20,Y+8	 ; , %sfp
-	ldd r21,Y+9	 ; , %sfp
-	ldd r22,Y+12	 ; , %sfp
-	ldd r23,Y+13	 ; , %sfp
+	movw r8,r22	 ;  tmp124,
+	movw r24,r22	 ;  y1, tmp124
+ ;  Graphics.c:120:             if ( x0 > x1 ) {
+	cp r12,r4	 ;  x1, tmp18
+	cpc r13,r5	 ;  x1, tmp18
+	brge .L24		 ; ,
+ ;  Graphics.c:121:                 LineBound.Left = x1;
+	std Y+2,r13	 ;  LineBound.Left, tmp117
+	std Y+1,r12	 ;  LineBound.Left, tmp117
+ ;  Graphics.c:122:                 LineBound.Right = x0;
+	std Y+4,r5	 ;  LineBound.Right, tmp103
+	std Y+3,r4	 ;  LineBound.Right, tmp103
+.L25:
+ ;  Graphics.c:128:             if ( y0 > y1 ) {
+	ldd r26,Y+24	 ; , %sfp
+	ldd r27,Y+25	 ; , %sfp
+	cp r24,r26	 ;  y1,
+	cpc r25,r27	 ;  y1,
+	brge .L26		 ; ,
+ ;  Graphics.c:129:                 LineBound.Top = x1;
+	std Y+6,r13	 ;  LineBound.Top, tmp117
+	std Y+5,r12	 ;  LineBound.Top, tmp117
+ ;  Graphics.c:130:                 LineBound.Bottom = x0;
+	std Y+8,r5	 ;  LineBound.Bottom, tmp103
+	std Y+7,r4	 ;  LineBound.Bottom, tmp103
+.L27:
+ ;  Graphics.c:138:             if ( FRect16_IsOverlap( &ScreenBound, &LineBound ) ) 
+	movw r22,r28	 ; ,
+	subi r22,-1	 ; ,
+	sbci r23,-1	 ; ,
+	ldi r24,lo8(ScreenBound.2348)	 ; ,
+	ldi r25,hi8(ScreenBound.2348)	 ; ,
+	call FRect16_IsOverlap	 ; 
+ ;  Graphics.c:138:             if ( FRect16_IsOverlap( &ScreenBound, &LineBound ) ) 
+	or r24,r25	 ; 
+	breq .L28		 ; ,
+ ;  Graphics.c:140:                 VBuffer_DrawLine( x0, y0, x1, y1 );
+	movw r18,r8	 ; , tmp124
+	movw r20,r12	 ; , tmp117
+	ldd r22,Y+16	 ; , %sfp
+	ldd r23,Y+17	 ; , %sfp
+	movw r24,r4	 ; , tmp103
 	call VBuffer_DrawLine	 ; 
- ;  Graphics.c:119:             ++arg;
-	subi r16,-4	 ;  arg,
-	sbci r17,-1	 ;  arg,
-	rjmp .L10		 ; 
+.L28:
+ ;  Graphics.c:143:             ++lpLine;
+	subi r16,-4	 ;  lpLine,
+	sbci r17,-1	 ;  lpLine,
+	rjmp .L23		 ; 
+.L24:
+ ;  Graphics.c:125:                 LineBound.Left = x0;
+	std Y+2,r5	 ;  LineBound.Left, tmp103
+	std Y+1,r4	 ;  LineBound.Left, tmp103
+ ;  Graphics.c:126:                 LineBound.Right = x1;
+	std Y+4,r13	 ;  LineBound.Right, tmp117
+	std Y+3,r12	 ;  LineBound.Right, tmp117
+	rjmp .L25		 ; 
+.L26:
+ ;  Graphics.c:133:                 LineBound.Top = x0;
+	std Y+6,r5	 ;  LineBound.Top, tmp103
+	std Y+5,r4	 ;  LineBound.Top, tmp103
+ ;  Graphics.c:134:                 LineBound.Bottom = x1;
+	std Y+8,r13	 ;  LineBound.Bottom, tmp117
+	std Y+7,r12	 ;  LineBound.Bottom, tmp117
+	rjmp .L27		 ; 
 	.size	CDrawArgs_DrawOnDisplayBufferPerspective, .-CDrawArgs_DrawOnDisplayBufferPerspective
+	.section	.rodata
+	.type	ScreenBound.2348, @object
+	.size	ScreenBound.2348, 8
+ScreenBound.2348:
+ ;  Left:
+	.word	0
+ ;  Right:
+	.word	120
+ ;  Top:
+	.word	0
+ ;  Bottom:
+	.word	64
 	.ident	"GCC: (GNU) 8.3.0"
+.global __do_copy_data
