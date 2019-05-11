@@ -12,18 +12,18 @@ void CalculateTranformCache( FCameraTransform* Camera )
     Camera->CachedDirection.y = sinT;
 }
 
-static inline fixedpt dot( FPointFP a, FPointFP b )
+static inline fixedpt dot( FPointFP const* a, FPointFP const* b )
 {
-    return fixedpt_xmul(a.x, b.x) + fixedpt_xmul(a.y,b.y);
+    return fixedpt_mul(a->x, b->x) + fixedpt_mul(a->y,b->y);
 }
 
 static inline fixedpt sz( FPointFP v )
 {
     //  return fixedpt_sqrt( dot( a, a ) );//fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
-    int32 val = fixedpt_toint( v.x ) * fixedpt_toint( v.x );
-    val += fixedpt_toint( v.y ) * fixedpt_toint( v.y );
+    // int32 val = fixedpt_toint( v.x ) * fixedpt_toint( v.x );
+    // val += fixedpt_toint( v.y ) * fixedpt_toint( v.y );
 
-    return fixedpt_pow( fixedpt_fromint( val ), fixedpt_rconst( 0.5 ) );
+    return fixedpt_pow( dot( &v, &v ), fixedpt_rconst( 0.5 ) );
 }
 
 extern inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTransform* Camera, int8* DegreesWhenVisible, int16* Distance );
@@ -39,7 +39,8 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     CameraDirectionUnitVector = Camera->CachedDirection;
      
     DistanceFromCamera = sz( DirectionVector ); 
-    if ( DistanceFromCamera > fixedpt_rconst( MINIMAL_VISIBLE_DISTANCE ) ) 
+    if ( DistanceFromCamera > fixedpt_rconst( MAXIMUM_VISIBLE_DISTANCE )
+         || DistanceFromCamera < fixedpt_rconst( MINIMUM_VISIBLE_DISTANCE ) )
     {
 #if LOG_VERBOSE
         // Return distance only when it need to be loged.
@@ -50,9 +51,11 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
 
     // acos(dot(a,b) / (sz(a)*sz(b)))
     byte x = 0, y = 0;
-    AngleBetween = fixedpt_div( dot( DirectionVector, CameraDirectionUnitVector ), DistanceFromCamera ); 
+    AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera ); 
     VBuffer_DrawString( &x, &y, fixedpt_cstr( AngleBetween, -1 ), false );
     AngleBetween = fixedpt_acos_half( AngleBetween );
+    ++x; y = 0;
+    VBuffer_DrawString( &x, &y, fixedpt_cstr( AngleBetween, -1 ), false );
     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
     *Distance = fixedpt_toint( DistanceFromCamera );

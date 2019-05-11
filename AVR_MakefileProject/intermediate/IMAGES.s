@@ -73,33 +73,33 @@ Triangle:
 src_triangle:
  ;  Begin:
  ;  x:
-	.byte	-1
+	.byte	-3
  ;  y:
-	.byte	-1
+	.byte	-3
  ;  End:
  ;  x:
 	.byte	0
  ;  y:
-	.byte	1
+	.byte	3
  ;  Begin:
  ;  x:
 	.byte	0
  ;  y:
-	.byte	1
+	.byte	3
  ;  End:
  ;  x:
-	.byte	1
+	.byte	3
  ;  y:
-	.byte	-1
+	.byte	-3
  ;  Begin:
  ;  x:
-	.byte	1
+	.byte	3
  ;  y:
-	.byte	-1
+	.byte	-3
  ;  End:
  ;  x:
-	.byte	-1
+	.byte	-3
  ;  y:
-	.byte	-1
+	.byte	-3
 	.ident	"GCC: (GNU) 8.3.0"
 .global __do_copy_data

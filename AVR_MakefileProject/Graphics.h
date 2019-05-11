@@ -18,7 +18,8 @@
 #define DECLARE_LINE_VECTOR(Identifier) extern const FLineVector Identifier;
 
 #define CAMERA_FOV 75
-#define MINIMAL_VISIBLE_DISTANCE 500.0
+#define MAXIMUM_VISIBLE_DISTANCE 500.0
+#define MINIMUM_VISIBLE_DISTANCE 1.0
 #define STANDARD_DISTANCE_IN_UNITS 55
 
 typedef struct FPoint8 {

@@ -49,22 +49,20 @@ void main( void )
     while ( 1 )
     {
         ++test;
-        byte ch = DetectEdge(); 
+        byte ch = ~PINE & 0xf0;
      
         switch ( ch )
         {
-        case 0x20:
-            Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-        case 0x10:
-            Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
         case 0x40:
-            Cam.Position.x += 5; break;
+            Cam.Position.x += 1; break;
         case 0x80:
-            Cam.Position.x -= 5; break;
-        case 'a':
-            Cam.Position.y -= 5; break;
-        case 'd':
-            Cam.Position.y += 5; break;
+            Cam.Position.x -= 1; break;
+        case 0x10:
+            // Cam.Position.y -= 1; break;
+            Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
+        case 0x20:
+            // Cam.Position.y += 1; break;
+            Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
         }
      
         PORTC = 0xff;
@@ -81,11 +79,11 @@ void main( void )
         Position.x = 50;
         Position.y = 0;
         CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        Position.y = 11;
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        Position.y = 4;
-        Position.x = 93;
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        //Position.y = 11;
+        //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        //Position.y = 4;
+        //Position.x = 93;
+        //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
         --PORTC;
         LCDDevice__Render(); 
         --PORTC;

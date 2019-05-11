@@ -26,91 +26,90 @@ fixedpt fixedpt_atan( fixedpt rad )
 }
 
 typedef struct _acos_table_val {
-    uint16 fractional;
+    fixedpt fractional;
     fixedpt value;
 } _acos_table_val; 
 
 
 static int8 compare_acos_table( void const* k, void const* v )
-{
-    // const uint16 l = ( (_acos_table_val*) k )->fractional;
-    const uint16 l = *(uint16*) k;
-    const uint16 r = ( (_acos_table_val*) v )->fractional;
-    const int16 sub = l - r;
+{ 
+    const fixedpt* l = (fixedpt*) k;
+    const fixedpt* r = &( (_acos_table_val*) v )->fractional;
+    const fixedpt sub = *l - *r;
 
-    return ( (int8*) &sub )[1];
+    return sub > 0 ? 1 : -1;
 }
 
 static _acos_table_val acos_table[] = {
-{	fixedpt_rconst( 0.000000 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.570796 ) },
-{	fixedpt_rconst( 0.052500 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.518272 ) },
-{	fixedpt_rconst( 0.102375 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.468242 ) },
-{	fixedpt_rconst( 0.149756 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.420475 ) },
-{	fixedpt_rconst( 0.194768 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.374775 ) },
-{	fixedpt_rconst( 0.237530 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.330974 ) },
-{	fixedpt_rconst( 0.278154 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.288925 ) },
-{	fixedpt_rconst( 0.316746 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.248500 ) },
-{	fixedpt_rconst( 0.353409 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.209584 ) },
-{	fixedpt_rconst( 0.388238 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.172077 ) },
-{	fixedpt_rconst( 0.421326 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.135889 ) },
-{	fixedpt_rconst( 0.452760 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.100938 ) },
-{	fixedpt_rconst( 0.482622 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.067150 ) },
-{	fixedpt_rconst( 0.510991 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.034459 ) },
-{	fixedpt_rconst( 0.537941 ) & FIXEDPT_FMASK, fixedpt_rconst( 1.002803 ) },
-{	fixedpt_rconst( 0.563544 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.972126 ) },
-{	fixedpt_rconst( 0.587867 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.942377 ) },
-{	fixedpt_rconst( 0.610974 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.913506 ) },
-{	fixedpt_rconst( 0.632925 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.885471 ) },
-{	fixedpt_rconst( 0.653779 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.858229 ) },
-{	fixedpt_rconst( 0.673590 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.831741 ) },
-{	fixedpt_rconst( 0.692410 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.805972 ) },
-{	fixedpt_rconst( 0.710290 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.780887 ) },
-{	fixedpt_rconst( 0.727275 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.756453 ) },
-{	fixedpt_rconst( 0.743412 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.732640 ) },
-{	fixedpt_rconst( 0.758741 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.709418 ) },
-{	fixedpt_rconst( 0.773304 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.686761 ) },
-{	fixedpt_rconst( 0.787139 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.664640 ) },
-{	fixedpt_rconst( 0.800282 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.643031 ) },
-{	fixedpt_rconst( 0.812768 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.621909 ) },
-{	fixedpt_rconst( 0.824629 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.601250 ) },
-{	fixedpt_rconst( 0.835898 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.581030 ) },
-{	fixedpt_rconst( 0.846603 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.561226 ) },
-{	fixedpt_rconst( 0.856773 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.541817 ) },
-{	fixedpt_rconst( 0.866434 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.522781 ) },
-{	fixedpt_rconst( 0.875612 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.504094 ) },
-{	fixedpt_rconst( 0.884332 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.485735 ) },
-{	fixedpt_rconst( 0.892615 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.467683 ) },
-{	fixedpt_rconst( 0.900485 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.449914 ) },
-{	fixedpt_rconst( 0.907960 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.432406 ) },
-{	fixedpt_rconst( 0.915062 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.415134 ) },
-{	fixedpt_rconst( 0.921809 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.398074 ) },
-{	fixedpt_rconst( 0.928219 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.381200 ) },
-{	fixedpt_rconst( 0.934308 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.364484 ) },
-{	fixedpt_rconst( 0.940092 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.347895 ) },
-{	fixedpt_rconst( 0.945588 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.331400 ) },
-{	fixedpt_rconst( 0.950808 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.314961 ) },
-{	fixedpt_rconst( 0.955768 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.298536 ) },
-{	fixedpt_rconst( 0.960480 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.282076 ) },
-{	fixedpt_rconst( 0.964956 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.265522 ) },
-{	fixedpt_rconst( 0.969208 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.248803 ) },
-{	fixedpt_rconst( 0.973247 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.231831 ) },
-{	fixedpt_rconst( 0.977085 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.214490 ) },
-{	fixedpt_rconst( 0.980731 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.196629 ) },
-{	fixedpt_rconst( 0.984194 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.178031 ) },
-{	fixedpt_rconst( 0.987485 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.158377 ) },
-{	fixedpt_rconst( 0.990610 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.137145 ) },
-{	fixedpt_rconst( 0.993580 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.113376 ) },
-{	fixedpt_rconst( 0.996401 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.084868 ) },
-{	fixedpt_rconst( 0.999081 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.042880 ) },
-{	fixedpt_rconst( 1.000000 ) & FIXEDPT_FMASK, fixedpt_rconst( 0.000000 ) },
+{	fixedpt_rconst( 0.000000 ), fixedpt_rconst( 1.570796 ) },
+{	fixedpt_rconst( 0.052500 ), fixedpt_rconst( 1.518272 ) },
+{	fixedpt_rconst( 0.102375 ), fixedpt_rconst( 1.468242 ) },
+{	fixedpt_rconst( 0.149756 ), fixedpt_rconst( 1.420475 ) },
+{	fixedpt_rconst( 0.194768 ), fixedpt_rconst( 1.374775 ) },
+{	fixedpt_rconst( 0.237530 ), fixedpt_rconst( 1.330974 ) },
+{	fixedpt_rconst( 0.278154 ), fixedpt_rconst( 1.288925 ) },
+{	fixedpt_rconst( 0.316746 ), fixedpt_rconst( 1.248500 ) },
+{	fixedpt_rconst( 0.353409 ), fixedpt_rconst( 1.209584 ) },
+{	fixedpt_rconst( 0.388238 ), fixedpt_rconst( 1.172077 ) },
+{	fixedpt_rconst( 0.421326 ), fixedpt_rconst( 1.135889 ) },
+{	fixedpt_rconst( 0.452760 ), fixedpt_rconst( 1.100938 ) },
+{	fixedpt_rconst( 0.482622 ), fixedpt_rconst( 1.067150 ) },
+{	fixedpt_rconst( 0.510991 ), fixedpt_rconst( 1.034459 ) },
+{	fixedpt_rconst( 0.537941 ), fixedpt_rconst( 1.002803 ) },
+{	fixedpt_rconst( 0.563544 ), fixedpt_rconst( 0.972126 ) },
+{	fixedpt_rconst( 0.587867 ), fixedpt_rconst( 0.942377 ) },
+{	fixedpt_rconst( 0.610974 ), fixedpt_rconst( 0.913506 ) },
+{	fixedpt_rconst( 0.632925 ), fixedpt_rconst( 0.885471 ) },
+{	fixedpt_rconst( 0.653779 ), fixedpt_rconst( 0.858229 ) },
+{	fixedpt_rconst( 0.673590 ), fixedpt_rconst( 0.831741 ) },
+{	fixedpt_rconst( 0.692410 ), fixedpt_rconst( 0.805972 ) },
+{	fixedpt_rconst( 0.710290 ), fixedpt_rconst( 0.780887 ) },
+{	fixedpt_rconst( 0.727275 ), fixedpt_rconst( 0.756453 ) },
+{	fixedpt_rconst( 0.743412 ), fixedpt_rconst( 0.732640 ) },
+{	fixedpt_rconst( 0.758741 ), fixedpt_rconst( 0.709418 ) },
+{	fixedpt_rconst( 0.773304 ), fixedpt_rconst( 0.686761 ) },
+{	fixedpt_rconst( 0.787139 ), fixedpt_rconst( 0.664640 ) },
+{	fixedpt_rconst( 0.800282 ), fixedpt_rconst( 0.643031 ) },
+{	fixedpt_rconst( 0.812768 ), fixedpt_rconst( 0.621909 ) },
+{	fixedpt_rconst( 0.824629 ), fixedpt_rconst( 0.601250 ) },
+{	fixedpt_rconst( 0.835898 ), fixedpt_rconst( 0.581030 ) },
+{	fixedpt_rconst( 0.846603 ), fixedpt_rconst( 0.561226 ) },
+{	fixedpt_rconst( 0.856773 ), fixedpt_rconst( 0.541817 ) },
+{	fixedpt_rconst( 0.866434 ), fixedpt_rconst( 0.522781 ) },
+{	fixedpt_rconst( 0.875612 ), fixedpt_rconst( 0.504094 ) },
+{	fixedpt_rconst( 0.884332 ), fixedpt_rconst( 0.485735 ) },
+{	fixedpt_rconst( 0.892615 ), fixedpt_rconst( 0.467683 ) },
+{	fixedpt_rconst( 0.900485 ), fixedpt_rconst( 0.449914 ) },
+{	fixedpt_rconst( 0.907960 ), fixedpt_rconst( 0.432406 ) },
+{	fixedpt_rconst( 0.915062 ), fixedpt_rconst( 0.415134 ) },
+{	fixedpt_rconst( 0.921809 ), fixedpt_rconst( 0.398074 ) },
+{	fixedpt_rconst( 0.928219 ), fixedpt_rconst( 0.381200 ) },
+{	fixedpt_rconst( 0.934308 ), fixedpt_rconst( 0.364484 ) },
+{	fixedpt_rconst( 0.940092 ), fixedpt_rconst( 0.347895 ) },
+{	fixedpt_rconst( 0.945588 ), fixedpt_rconst( 0.331400 ) },
+{	fixedpt_rconst( 0.950808 ), fixedpt_rconst( 0.314961 ) },
+{	fixedpt_rconst( 0.955768 ), fixedpt_rconst( 0.298536 ) },
+{	fixedpt_rconst( 0.960480 ), fixedpt_rconst( 0.282076 ) },
+{	fixedpt_rconst( 0.964956 ), fixedpt_rconst( 0.265522 ) },
+{	fixedpt_rconst( 0.969208 ), fixedpt_rconst( 0.248803 ) },
+{	fixedpt_rconst( 0.973247 ), fixedpt_rconst( 0.231831 ) },
+{	fixedpt_rconst( 0.977085 ), fixedpt_rconst( 0.214490 ) },
+{	fixedpt_rconst( 0.980731 ), fixedpt_rconst( 0.196629 ) },
+{	fixedpt_rconst( 0.984194 ), fixedpt_rconst( 0.178031 ) },
+{	fixedpt_rconst( 0.987485 ), fixedpt_rconst( 0.158377 ) },
+{	fixedpt_rconst( 0.990610 ), fixedpt_rconst( 0.137145 ) },
+{	fixedpt_rconst( 0.993580 ), fixedpt_rconst( 0.113376 ) },
+{	fixedpt_rconst( 0.996401 ), fixedpt_rconst( 0.084868 ) },
+{	fixedpt_rconst( 0.999081 ), fixedpt_rconst( 0.042880 ) },
+{	fixedpt_rconst( 1.000000 ), fixedpt_rconst( 0.000000 ) },
 };
 
 
 
 fixedpt fixedpt_acos_half( fixedpt x ) //{ return FIXEDPT_HALF_PI - fixedpt_asin( val ); }
 {
-    uint16 Key = x; //  x & ~FIXEDPT_FMASK ? 0xffff : x & 0xffff;
-    _acos_table_val* found = TryBinarySearch( &Key, acos_table, ARRAYCOUNT( acos_table ), (uint8)sizeof( *acos_table ), compare_acos_table );
+    // uint16 Key = x; //  x & ~FIXEDPT_FMASK ? 0xffff : x & 0xffff;
+    _acos_table_val* found = TryBinarySearch( &x, acos_table, ARRAYCOUNT( acos_table ), (uint8)sizeof( *acos_table ), compare_acos_table );
      
     return found->value + ( x < 0 ) * FIXEDPT_HALF_PI;
 }

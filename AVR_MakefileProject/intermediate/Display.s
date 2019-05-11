@@ -552,8 +552,8 @@ VBuffer_DrawString:
 /* frame size = 0 */
 /* stack size = 8 */
 .L__stack_usage = 8
-	movw r14,r24	 ;  xCol, xCol
-	movw r16,r22	 ;  y, y
+	movw r14,r24	 ;  lpPage, lpPage
+	movw r16,r22	 ;  lpColumn, lpColumn
 	movw r12,r18	 ;  bInversed, bInversed
 	movw r28,r20	 ; ,
 .L26:
@@ -574,31 +574,31 @@ VBuffer_DrawString:
 	pop r12		 ; 
 	ret	
 .L29:
- ;  Display.c:226:         VBuffer_DrawChar( *xCol, *y, *String, bInversed );
+ ;  Display.c:226:         VBuffer_DrawChar( *lpPage, *lpColumn, *String, bInversed );
 	movw r18,r12	 ; , bInversed
-	movw r30,r16	 ; , y
-	ld r22,Z		 ; , *y_13(D)
-	movw r30,r14	 ; , xCol
-	ld r24,Z		 ; , *xCol_14(D)
+	movw r30,r16	 ; , lpColumn
+	ld r22,Z		 ; , *lpColumn_13(D)
+	movw r30,r14	 ; , lpPage
+	ld r24,Z		 ; , *lpPage_14(D)
 	call VBuffer_DrawChar	 ; 
- ;  Display.c:227:         if ( *y + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
-	movw r30,r16	 ; , y
-	ld r24,Z		 ;  _3, *y_13(D)
- ;  Display.c:227:         if ( *y + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
+ ;  Display.c:227:         if ( *lpColumn + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
+	movw r30,r16	 ; , lpColumn
+	ld r24,Z		 ;  _3, *lpColumn_13(D)
+ ;  Display.c:227:         if ( *lpColumn + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
 	cpi r24,lo8(44)	 ;  _3,
 	brsh .L27		 ; ,
- ;  Display.c:229:             *y += CGROM_CHARCTER_WIDTH;
+ ;  Display.c:229:             *lpColumn += CGROM_CHARCTER_WIDTH;
 	subi r24,lo8(-(8))	 ;  tmp55,
 .L30:
- ;  Display.c:234:             *xCol += 2;
+ ;  Display.c:234:             *lpPage += 2;
 	st Z,r24		 ; , tmp56
 	rjmp .L26		 ; 
 .L27:
- ;  Display.c:233:             *y = 0;
-	st Z,__zero_reg__		 ;  *y_13(D),
- ;  Display.c:234:             *xCol += 2;
-	movw r30,r14	 ; , xCol
-	ld r24,Z		 ;  *xCol_14(D), *xCol_14(D)
+ ;  Display.c:233:             *lpColumn = 0;
+	st Z,__zero_reg__		 ;  *lpColumn_13(D),
+ ;  Display.c:234:             *lpPage += 2;
+	movw r30,r14	 ; , lpPage
+	ld r24,Z		 ;  *lpPage_14(D), *lpPage_14(D)
 	subi r24,lo8(-(2))	 ;  tmp56,
 	rjmp .L30		 ; 
 	.size	VBuffer_DrawString, .-VBuffer_DrawString

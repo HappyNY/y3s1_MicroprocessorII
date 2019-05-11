@@ -218,30 +218,30 @@ void VBuffer_Clear()
 }
 
 
-void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed )
+void VBuffer_DrawString( byte* lpPage, byte* lpColumn, const char* String, bool bInversed )
 {
-    assertf( xCol != NULL && y != NULL, "Input index must not be null!" );
+    assertf( lpPage != NULL && lpColumn != NULL, "Input index must not be null!" );
     while ( *String != '\0' )
     {
-        VBuffer_DrawChar( *xCol, *y, *String, bInversed );
-        if ( *y + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
+        VBuffer_DrawChar( *lpPage, *lpColumn, *String, bInversed );
+        if ( *lpColumn + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
         {
-            *y += CGROM_CHARCTER_WIDTH;
+            *lpColumn += CGROM_CHARCTER_WIDTH;
         }
         else
         {
-            *y = 0;
-            *xCol += 2;
+            *lpColumn = 0;
+            *lpPage += 2;
         }
 
-        //if ( *xCol + 1 < LCD_NUM_PAGE )
+        //if ( *lpPage + 1 < LCD_NUM_PAGE )
         //{
-        //    ++( *xCol );
+        //    ++( *lpPage );
         //}
         //else
         //{
-        //    *y += CGROM_DISPLAY_HEIGHT;
-        //    *xCol = 0;
+        //    *lpColumn += CGROM_DISPLAY_HEIGHT;
+        //    *lpPage = 0;
         //}
 
         ++String;
