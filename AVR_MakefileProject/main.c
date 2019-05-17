@@ -5,10 +5,31 @@
 #include <stdlib.h>
 #include "Display.h"
  
+/************************************************************
+
+
+/************************************************************/
 
 /* DEVICE CONTROLLER STATICS */ 
 volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
 
+void init_ebi_heap( void ) __attribute__( ( naked ) ) __attribute__( ( section( ".init5" ) ) );
+
+void init_ebi_heap( void )
+{
+
+    // the malloc heap start and end pointers
+    extern char *__malloc_heap_start;
+    extern char *__malloc_heap_end;
+
+    // your code to init the ebi goes here
+
+    // set heap start and end
+    __malloc_heap_start = (char *) 0x8000;
+    __malloc_heap_end = (char *) 0xffff;
+    
+    MCUCR |= mask( SRE );
+}
 /* BODY */
 void InitializeDevice(); 
 byte DetectEdge()
@@ -45,6 +66,15 @@ void main( void )
     Cam.ReadOnly_DirectionRadian = 0;
     CalculateTranformCache( &Cam );  
 
+    memset( 0x8000, 0, 0x8000 );
+
+    uint16 addr = 0xffff;
+    while ( addr > 0x8000 ) {
+        *(volatile uint8*) addr = addr & 0xff;  
+        // _delay_us( 10 );
+        --addr;
+    }
+
     byte test = 0;
     while ( 1 )
     {
@@ -63,31 +93,39 @@ void main( void )
         case 0x20:
             // Cam.Position.y += 1; break;
             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-        }
-     
-        PORTC = 0xff;
-        VBuffer_Clear();
-        --PORTC;
+        }  
+
+        VBuffer_Clear(); 
         {
             byte x = 0, y = 0; 
             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
-        --PORTC;
+            char buff[32];
+            sprintf( buff, "A %x", addr );
+            VBuffer_DrawString( &x, &y, buff, false );
+            x = 2;
+            y = 0;
+            // *(uint8*) addr = addr & 0xff;
+            sprintf( buff, "D %x", *(uint8*) addr );
+            VBuffer_DrawString( &x, &y, buff, false );
+            x = 4;
+            y = 0;
+            sprintf( buff, "V %x", *(uint8*) ( addr - 0x8000 ) );
+            VBuffer_DrawString( &x, &y, buff, false );
+            addr++;
+
         }
-        CalculateTranformCache( &Cam );
-        --PORTC;
-        FPoint16 Position;
-        Position.x = 50;
-        Position.y = 0;
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        //Position.y = 11;
-        //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        //Position.y = 4;
-        //Position.x = 93;
-        //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        --PORTC;
-        LCDDevice__Render(); 
-        --PORTC;
-        _delay_ms( 50 );
+        // CalculateTranformCache( &Cam ); 
+        // FPoint16 Position;
+        // Position.x = 50;
+        // Position.y = 0;
+        // CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        // //Position.y = 11;
+        // //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        // //Position.y = 4;
+        // //Position.x = 93;
+        // //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam ); 
+        LCDDevice__Render();  
+        // _delay_ms( 50 );
     }
 }
 #if 0
@@ -159,7 +197,8 @@ void InitializeDevice()
     InitMemory( NULL );
 
     LCDDevice__Initialize();
- 
+    MCUCR |= mask( SRE );
+
     // DDRC = 0xff;
     // PORTC = 0xff;
     // InitializeTX0SerialOutput();

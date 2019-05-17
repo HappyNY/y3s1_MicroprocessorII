@@ -4,7 +4,7 @@
 (                                                                     )
 (    Drawing          : MAIN.brd                                      )
 (    Software Version : 16.6-2015S059                                 )
-(    Date/Time        : Sat May 04 18:30:40 2019                      )
+(    Date/Time        : Sat May 11 12:38:11 2019                      )
 (                                                                     )
 (---------------------------------------------------------------------)
 
@@ -20,7 +20,7 @@
  ========= check standalone text              0:00:00
  ========= check standalone rectangles        0:00:00
 
- ..... Total number of DRC errors  8
+ ..... Total number of DRC errors  4
 
  ..... DRC update completed, total CPU time   0:00:00
  *************************************************************************

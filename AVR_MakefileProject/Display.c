@@ -4,7 +4,7 @@
 #include "Serial.h"
 #include <util/delay.h>
 
-byte* LCDBuffer;
+byte* LCDBuffer; // = (byte*) ( 0x1000 );
 extern inline void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed );
 extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed );
 
@@ -45,7 +45,7 @@ extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bIn
 #define LCDCOM_DISPINVERT(EN) (0XA6|((EN)!=0))
 #define avg(...) __VA_ARGS__(__VA_ARGS__)
 
-#define LCDOUTPUT(DAT) PORTA = (DAT); _delay_us(1)
+#define LCDOUTPUT(DAT) PORTD = (DAT); _delay_us(1)
 static void REFRESH()
 {
     LCDOUTPUT( LCD_DEFAULT | mask( LCD_CD ) );
@@ -86,11 +86,10 @@ extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
 {
 	// Software initialization
-	LCDBuffer = Malloc( LCD_BUFFER_LENGTH );
+    LCDBuffer = Malloc( LCD_BUFFER_LENGTH );
 
 	// Hardware associated functionality.
-    DDRA = 0XFF;
-    DDRC = 0xFF;
+    DDRD = 0XFF; 
     REFRESH(); 
     LCDOUTPUT( LCD_DEFAULT );
     
@@ -143,9 +142,9 @@ void LCDDevice__Render()
         {
             byte dat = LCDBuffer[j * LCD_NUM_PAGE + i];
             DATAWR( dat );
-            DATAWR( dat );
-            DATAWR( dat );
-            DATAWR( dat );
+            // DATAWR( dat );
+            // DATAWR( dat );
+            // DATAWR( dat );
         }  
     }
 

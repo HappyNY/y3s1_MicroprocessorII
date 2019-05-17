@@ -49,13 +49,8 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
         return false;
     }
 
-    // acos(dot(a,b) / (sz(a)*sz(b)))
-    byte x = 0, y = 0;
-    AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera ); 
-    VBuffer_DrawString( &x, &y, fixedpt_cstr( AngleBetween, -1 ), false );
-    AngleBetween = fixedpt_acos_half( AngleBetween );
-    ++x; y = 0;
-    VBuffer_DrawString( &x, &y, fixedpt_cstr( AngleBetween, -1 ), false );
+    // acos(dot(a,b) / (sz(a)*sz(b))) 
+    AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera );
     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
     *Distance = fixedpt_toint( DistanceFromCamera );

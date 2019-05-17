@@ -8,12 +8,13 @@
 
 #define PIXELS_PER_BYTE 8
 #define LCD_HEIGHT 128 // Must be multiplicand of 8
-#define LCD_NUM_COLUMN 60
+#define LCD_NUM_COLUMN 240
 #define LCD_NUM_PAGE (LCD_HEIGHT / PIXELS_PER_BYTE)
 
 #define LCD_BUFFER_LENGTH (LCD_HEIGHT * LCD_NUM_COLUMN / PIXELS_PER_BYTE)
 
 extern byte* LCDBuffer;
+// #define LCDBuffer ((volatile byte*)0xe000)
 enum { CGROM_CHARACTER_BYTE_SIZE = 16 };
 enum { CGROM_TRUNC_BEGIN = 0 };
 enum { CGROM_TRUNC_END = 0 };

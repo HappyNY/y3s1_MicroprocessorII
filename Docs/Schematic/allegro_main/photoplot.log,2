@@ -1,0 +1,221 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    ARTWORK LOG                                                      )
+(                                                                     )
+(    Drawing          : MAIN.brd                                      )
+(    Software Version : 16.6-2015S059                                 )
+(    Date/Time        : Sun May 05 09:19:42 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+
+ ******************************************
+ WARNING: DRC OUT OF DATE on this layout.
+ ******************************************
+
+ ---- Photoplot outline rectangle not found; using drawing extents.
+
+
+
+Results from parameter file ...
+    DEVICE-TYPE           GERBER_RS274X
+    OUTPUT-UNITS          MM
+    FILM-SIZE             2400000 1600000
+    FORMAT                3.5
+    ABORT-ON-ERROR        NO
+    SCALE                 1
+    SUPPRESS-LEAD-ZEROES  YES
+    SUPPRESS-TRAIL-ZEROES NO
+    SUPPRESS-EQUAL        YES
+    UNDEF-APT-CONT        NO
+
+
+
+================================================================
+     PROCESSING FILM < TOP >
+     TO FILE < D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_main/TOP.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.254
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.50000                                  DARK 
+  CIRCLE     0.61000                                  DARK 
+  CIRCLE     0.76200                                  DARK 
+  CIRCLE     1.00000                                  DARK 
+  CIRCLE     1.27000                                  DARK 
+  CIRCLE     1.52400                                  DARK 
+  CIRCLE     1.57500                                  DARK 
+  CIRCLE     1.65100                                  DARK 
+  CIRCLE     3.30200                                  DARK 
+  SQUARE     1.27000                     0.000 NO     DARK 
+  SQUARE     1.52400                     0.000 NO     DARK 
+  RECTANGLE  2.79400     x 0.48300       0.000 NO     DARK 
+
+     TOP created with warnings
+
+
+================================================================
+     PROCESSING FILM < BOTTOM >
+     TO FILE < D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_main/BOTTOM.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.254
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.50000                                  DARK 
+  CIRCLE     0.50800                                  DARK 
+  CIRCLE     0.61000                                  DARK 
+  CIRCLE     1.00000                                  DARK 
+  CIRCLE     1.27000                                  DARK 
+  CIRCLE     1.52400                                  DARK 
+  CIRCLE     1.57500                                  DARK 
+  CIRCLE     1.65100                                  DARK 
+  CIRCLE     3.30200                                  DARK 
+  SQUARE     1.27000                     0.000 NO     DARK 
+  SQUARE     1.52400                     0.000 NO     DARK 
+  RECTANGLE  2.79400     x 0.48300      90.000 NO     DARK 
+
+     BOTTOM created with warnings
+
+
+================================================================
+     PROCESSING FILM < SMB >
+     TO FILE < D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_main/SMB.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.254
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     1.11800                                  DARK 
+  CIRCLE     1.52400                                  DARK 
+  CIRCLE     1.77800                                  DARK 
+  CIRCLE     1.90500                                  DARK 
+  CIRCLE     2.03200                                  DARK 
+  CIRCLE     3.55600                                  DARK 
+  CIRCLE     5.08000                                  DARK 
+  SQUARE     1.52400                     0.000 NO     DARK 
+  SQUARE     1.90500                     0.000 NO     DARK 
+  RECTANGLE  3.04800     x 0.58400      90.000 NO     DARK 
+
+     SMB created with warnings
+
+
+================================================================
+     PROCESSING FILM < DRD >
+     TO FILE < D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_main/DRD.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.254
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: text composed 0 width line found at (-13.017 34.074)
+           ... using undefined line width of 0.254
+
+    WARNING: 0 width line found at (-2.500 0.000)
+           ... using undefined line width of 0.254
+
+    WARNING: Multiple 0 width lines; all will be treated the same as the first.
+           ... using undefined line width of 0.254
+
+    WARNING: text having Multiple 0 width lines; all will be treated the same as the first.
+           ... using undefined line width of 0.254
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.25400                                  DARK 
+
+     DRD created with warnings
+
+
+================================================================
+     PROCESSING FILM < OUTLINE >
+     TO FILE < D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_main/OUTLINE.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.254
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.000
+  Offset y:                           0.000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.25400                                  DARK 
+
+     OUTLINE created with warnings
+
+
+------------------------------------------------------
+ SUMMARY:
+        TOP created with warnings
+        BOTTOM created with warnings
+        SMB created with warnings
+        DRD created with warnings
+        OUTLINE created with warnings
+
+ ARTWORK had warnings
