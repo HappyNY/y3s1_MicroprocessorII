@@ -4,20 +4,36 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include "Display.h"
- 
+#include "analog_device.h"
+
 /************************************************************
 
+    MAIN FILE DESCRIPTION
+    
+     This file defines the entry point of the program, test codes which will be excluded on actual release, interrupt functions which drive external sensors & devices.
 
+    TIMER ASSIGNMENTS
+     
+     TIMER0, TIMER2 - Speaker sound frequency control.
+     TIMER1 - Gameplay timer & Acceleration sensor read
+     TIMER2 - 
+
+     
 /************************************************************/
 
-/* DEVICE CONTROLLER STATICS */ 
+// A semaphore to control interrupt state. 
+// If the value of the byte is larger than 0, interrupt will be disabled until it return to 0 by calling RELEASE_INTERRUPT().
 volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
 
+/////////////////////////////////////////////////////////////////////
+// EXTERNAL MEMORY INITIALIZATION
+// 
+// This code will make the initial address of heap memory as 0x8000, and the size of heap will be 32kB
+/////////////////////////////////////////////////////////////////////
 void init_ebi_heap( void ) __attribute__( ( naked ) ) __attribute__( ( section( ".init5" ) ) );
 
 void init_ebi_heap( void )
-{
-
+{ 
     // the malloc heap start and end pointers
     extern char *__malloc_heap_start;
     extern char *__malloc_heap_end;
@@ -29,58 +45,76 @@ void init_ebi_heap( void )
     __malloc_heap_end = (char *) 0xffff;
     
     MCUCR |= mask( SRE );
-}
-/* BODY */
-void InitializeDevice(); 
-byte DetectEdge()
-{
-    DDRE = 0;
-    static byte Prev;
-    byte Input, Edge;
-    Input = ~PINE & 0xf0;
-    Edge = ( Input^Prev ) & Input;
-    Prev = Input;
-    return Edge;
-}
+}  
 
-void WaitInput()
+/////////////////////////////////////////////////////////////////////
+//  ENTRY OF PROGRAM
+//
+// This is the entry point of the program.
+// For now it defines some test code, but on release this code will be excluded, and replaced by gameplay loop.
+/////////////////////////////////////////////////////////////////////
+static bool GOOD_TO_UPDATE = 0;
+void main( void )
 {
-    while ( !DetectEdge() )
+    void InitializeDevice();
+    void runTest();
+    InitializeAnalogDevice();
+    InitializeDevice();
+    runTest();
+
+
+    // MAIN PROGRAM LOOP
+    while ( 1 )
     {
-        _delay_ms( 10 );
+        while ( !GOOD_TO_UPDATE );
+        GOOD_TO_UPDATE = false;
     }
 }
 
-void main( void )
+/////////////////////////////////////////////////////////////////////
+// TIMER 1 FOR GAMEPLAY & ACCELERATION SENSOR
+// INTERVAL = 3.3MS
+/////////////////////////////////////////////////////////////////////
+#define TCNT1_SETUP TCNT1 = 0xffff - 849
+ISR( TIMER1_OVF_vect )
 {
-    InitializeDevice();
-    CSerialSender_Initialize( &UART0Sender );
+    TCNT1_SETUP;
+    enum { ITER_COUNT = 10 };
+    static byte IterCnt = 0;
+    ++IterCnt;
 
+    if ( IterCnt == ITER_COUNT )
+    {
+        GOOD_TO_UPDATE = true;
+        IterCnt = ITER_COUNT;
+    }
+
+    UpdateAccel();
+}
+
+/////////////////////////////////////////////////////////////////////
+// Test code which performs rendering operation
+/////////////////////////////////////////////////////////////////////
+void runTest()
+{ 
     // Setup draw args
-    DECLARE_LINE_VECTOR( Triangle ); 
+    DECLARE_LINE_VECTOR( Triangle );
 
     // Setup camera
     FCameraTransform Cam;
     Cam.Position.x = 0;
     Cam.Position.y = 0;
     Cam.ReadOnly_DirectionRadian = 0;
-    CalculateTranformCache( &Cam );  
-
-    memset( 0x8000, 0, 0x8000 );
-
+    CalculateTranformCache( &Cam ); 
+    
     uint16 addr = 0xffff;
-    while ( addr > 0x8000 ) {
-        *(volatile uint8*) addr = addr & 0xff;  
-        // _delay_us( 10 );
-        --addr;
-    }
-
+    memset( (void*) 0x8000, 0xff, 0x7fff );
     byte test = 0;
     while ( 1 )
     {
         ++test;
         byte ch = ~PINE & 0xf0;
-     
+
         switch ( ch )
         {
         case 0x40:
@@ -93,26 +127,19 @@ void main( void )
         case 0x20:
             // Cam.Position.y += 1; break;
             Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-        }  
+        }
 
-        VBuffer_Clear(); 
+        VBuffer_Clear();
         {
-            byte x = 0, y = 0; 
+            byte x = 0, y = 0;
             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
             char buff[32];
-            sprintf( buff, "A %x", addr );
-            VBuffer_DrawString( &x, &y, buff, false );
-            x = 2;
-            y = 0;
-            // *(uint8*) addr = addr & 0xff;
-            sprintf( buff, "D %x", *(uint8*) addr );
-            VBuffer_DrawString( &x, &y, buff, false );
-            x = 4;
-            y = 0;
-            sprintf( buff, "V %x", *(uint8*) ( addr - 0x8000 ) );
-            VBuffer_DrawString( &x, &y, buff, false );
-            addr++;
+            sprintf( buff, "A %x, D %d, V %d", addr, *(uint8*) addr, *(uint8*) ( addr - 0x8000 ) );
+            VBuffer_DrawString( &x, &y, buff, false ); 
 
+            x = 2, y = 0;
+            sprintf( buff, "X %3d Y %3d", ACC_PERCENTX, ACC_PERCENTY );
+            addr--;
         }
         // CalculateTranformCache( &Cam ); 
         // FPoint16 Position;
@@ -124,7 +151,7 @@ void main( void )
         // //Position.y = 4;
         // //Position.x = 93;
         // //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam ); 
-        LCDDevice__Render();  
+        LCDDevice__Render();
         // _delay_ms( 50 );
     }
 }
@@ -199,11 +226,11 @@ void InitializeDevice()
     LCDDevice__Initialize();
     MCUCR |= mask( SRE );
 
-    // DDRC = 0xff;
-    // PORTC = 0xff;
-    // InitializeTX0SerialOutput();
-    
-    // Timer monitor
+    // Timer 0 initialize 
+    TIMSK |= mask( TOIE1 );
+    TCCR1A = 0b00000000;
+    TCCR1B = 0b00000011; // Div 64
+    TCCR1C = 0b00000000;
     
     sei();
 }
