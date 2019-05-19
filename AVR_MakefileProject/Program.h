@@ -28,12 +28,23 @@ void UpdateInputStatus();
 // INPUT UPDATE LOGICS
 ////////////////////////////////////////////////////////////////
 
-enum { BUTTON_L = 0, BUTTON_R, BUTTON_U, BUTTON_D, BUTTON_A, BUTTON_B, BUTTON_HOME, BUTTON_QUIT };
+enum {
+    BUTTON_L = 6, 
+    BUTTON_R = 3, 
+    BUTTON_U = 4, 
+    BUTTON_D = 5, 
+    BUTTON_A = 2, 
+    BUTTON_B = 1, 
+    BUTTON_HOME = 0, 
+    BUTTON_QUIT 
+};
 
 extern byte ACC_MAX_INTERVAL;
 extern byte ACC_PERCENTX;
 extern byte ACC_PERCENTY; 
 
+#define INPUT_VECTOR (~PINE & 0x7f)
+extern byte gButton_Captured;
 extern byte gButton_Pressed;
 extern byte gButton_Released;
 extern byte gButton_Hold;

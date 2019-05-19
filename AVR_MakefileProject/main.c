@@ -55,7 +55,7 @@ void init_ebi_heap( void )
 // This is the entry point of the program.
 // For now it defines some test code, but on release this code will be excluded, and replaced by gameplay loop.
 /////////////////////////////////////////////////////////////////////
-static bool GOOD_TO_UPDATE = 0;
+volatile static bool GOOD_TO_UPDATE = 0;
 void main( void )
 {
     void InitializeDevice();
@@ -63,7 +63,7 @@ void main( void )
 
     InitializeAnalogDevice();
     InitializeDevice();
-    runTest();
+    // runTest();
 
     // PROGRAM INITIALIZATION 
     gSession.Update = nullfunc;
@@ -76,9 +76,7 @@ void main( void )
     // MAIN PROGRAM LOOP
     while ( 1 )
     {
-        while ( !GOOD_TO_UPDATE );
-        GOOD_TO_UPDATE = false;
-
+        UpdateTimer();
         UpdateInputStatus();
          
         gSession.Update();
@@ -90,7 +88,27 @@ void main( void )
             : RenderingInterval - 1;
 
         LCDDevice__Render();
+
+        while ( !GOOD_TO_UPDATE );
+        GOOD_TO_UPDATE = false; 
     }
+}
+
+
+void InitializeDevice()
+{
+    InitMemory( NULL );
+
+    LCDDevice__Initialize();
+    MCUCR |= mask( SRE );
+
+    // Timer 0 initialize 
+    TIMSK |= mask( TOIE1 );
+    TCCR1A = 0b00000000;
+    TCCR1B = 0b00000011; // Div 64
+    TCCR1C = 0b00000000;
+
+    sei();
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -108,80 +126,80 @@ ISR( TIMER1_OVF_vect )
     if ( IterCnt == ITER_COUNT )
     {
         GOOD_TO_UPDATE = true;
-        IterCnt = ITER_COUNT;
+        IterCnt = 0;
     }
 
+    gButton_Captured |= INPUT_VECTOR;
     UpdateAccel();
 }
 
 /////////////////////////////////////////////////////////////////////
 // Test code which performs rendering operation
 /////////////////////////////////////////////////////////////////////
-void runTest()
-{ 
-    // Setup draw args
-    DECLARE_LINE_VECTOR( Triangle );
-
-    // Setup camera
-    FCameraTransform Cam;
-    Cam.Position.x = 0;
-    Cam.Position.y = 0;
-    Cam.ReadOnly_DirectionRadian = 0;
-    CalculateTranformCache( &Cam ); 
-    
-    uint16 addr = 0x8000;
-    uint32 FRAME = 0;
-    memset( (void*) 0x8000, 0xff, 0x7fff );
-    byte test = 0;
-    while ( 1 )
-    {
-        ++test;  
-        // while ( ~PINE );
-
-        VBuffer_Clear();
-        {
-            if ( GOOD_TO_UPDATE ) {
-                GOOD_TO_UPDATE = false;
-                FRAME++;
-            }
-
-            VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
-            byte x = 0, y = 0;
-            char buff[32];
-            sprintf( buff, "Frame %d", FRAME );
-            VBuffer_DrawString( &x, &y, buff, false );
-
-            x += 2, y = 0;
-            sprintf( buff, "A %x, D %d, V %d", addr, *(uint8*) addr, *(uint8*) ( addr - 0x8000 ) );
-            VBuffer_DrawString( &x, &y, buff, false ); 
-
-            x += 2, y = 0;
-            *(volatile byte*) addr = 0xcc;
-            sprintf( buff, "Put: %x, Get: %x", 0xcc, * (volatile byte*) addr );
-            VBuffer_DrawString( &x, &y, buff, false );
-
-            x += 2, y = 0;
-            sprintf( buff, "X %3d Y %3d", ACC_PERCENTX, ACC_PERCENTY );
-            VBuffer_DrawString( &x, &y, buff, false );
-
-            addr++;
-        }
-        CalculateTranformCache( &Cam ); 
-        FPoint16 Position;
-        Position.x = 25;
-        Position.y = 0;
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        Position.y = 11;
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        Position.y = 4;
-        Position.x = 93;
-        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam ); 
-        LCDDevice__Render();
-        _delay_ms( 50 );
-    }
-}
-#if 0
-    outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
+//void runTest()
+//{ 
+//    // Setup draw args
+//    DECLARE_LINE_VECTOR( Triangle );
+//
+//    // Setup camera
+//    FCameraTransform Cam;
+//    Cam.Position.x = 0;
+//    Cam.Position.y = 0;
+//    Cam.ReadOnly_DirectionRadian = 0;
+//    CalculateTranformCache( &Cam ); 
+//    
+//    uint16 addr = 0x8000;
+//    uint32 FRAME = 0;
+//    memset( (void*) 0x8000, 0xff, 0x7fff );
+//    byte test = 0;
+//    while ( 1 )
+//    {
+//        ++test;  
+//        // while ( ~PINE );
+//
+//        VBuffer_Clear();
+//        {
+//            if ( GOOD_TO_UPDATE ) {
+//                GOOD_TO_UPDATE = false;
+//                FRAME++;
+//            }
+//
+//            VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+//            byte x = 0, y = 0;
+//            char buff[32];
+//            sprintf( buff, "Frame %d", FRAME );
+//            VBuffer_DrawString( &x, &y, buff, false );
+//
+//            x += 2, y = 0;
+//            sprintf( buff, "A %x, D %d, V %d", addr, *(uint8*) addr, *(uint8*) ( addr - 0x8000 ) );
+//            VBuffer_DrawString( &x, &y, buff, false ); 
+//
+//            x += 2, y = 0;
+//            *(volatile byte*) addr = 0xcc;
+//            sprintf( buff, "Put: %x, Get: %x", 0xcc, * (volatile byte*) addr );
+//            VBuffer_DrawString( &x, &y, buff, false );
+//
+//            x += 2, y = 0;
+//            sprintf( buff, "X %3d Y %3d", ACC_PERCENTX, ACC_PERCENTY );
+//            VBuffer_DrawString( &x, &y, buff, false );
+//
+//            addr++;
+//        }
+//        CalculateTranformCache( &Cam ); 
+//        FPoint16 Position;
+//        Position.x = 25;
+//        Position.y = 0;
+//        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+//        Position.y = 11;
+//        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+//        Position.y = 4;
+//        Position.x = 93;
+//        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam ); 
+//        LCDDevice__Render();
+//        _delay_ms( 50 );
+//    }
+//} 
+ /*   outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
     UART0_WaitAnyKey();
     CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
     {
@@ -241,25 +259,7 @@ void runTest()
         UART0_WaitAnyKey();  
 
         while ( 1 );
-    }
-#endif
-
-void InitializeDevice()
-{
-    InitMemory( NULL );
-
-    LCDDevice__Initialize();
-    MCUCR |= mask( SRE );
-
-    // Timer 0 initialize 
-    TIMSK |= mask( TOIE1 );
-    TCCR1A = 0b00000000;
-    TCCR1B = 0b00000011; // Div 64
-    TCCR1C = 0b00000000;
-    
-    sei();
-}
-
+    } */
 /* // Append '/' on front of this comment placeholder to uncommentize this.
 void TestMalloc()
 { 
