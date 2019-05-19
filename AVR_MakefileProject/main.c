@@ -65,11 +65,12 @@ void main( void )
     InitializeDevice();
     runTest();
 
-    // PROGRAM INITIALIZATION
-    gSession.InputHandler = nullfunc;
+    // PROGRAM INITIALIZATION 
     gSession.Update = nullfunc;
     gSession.Draw = nulldraw;
-    gSession.info__ = NULL;
+    gSession.data__ = NULL;
+
+    INITSESSION_MAIN();
 
     byte RenderingInterval = 0;
     // MAIN PROGRAM LOOP
@@ -79,8 +80,7 @@ void main( void )
         GOOD_TO_UPDATE = false;
 
         UpdateInputStatus();
-        
-        gSession.InputHandler();
+         
         gSession.Update();
         gSession.Draw( RenderingInterval == 0 );
 

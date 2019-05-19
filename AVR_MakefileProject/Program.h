@@ -8,14 +8,15 @@ enum {
 
 typedef void( *FSessionEventSignature )( );
 typedef void( *FSessionDrawEventSignature )( bool );
-typedef struct {
-    FSessionEventSignature InputHandler;
+typedef struct { 
     FSessionEventSignature Update;
     FSessionDrawEventSignature Draw;
-    void* info__; // Should be dynamically allocated.
+    void* data__; // Should be dynamically allocated.
 } FSessionState;
 
 extern FSessionState gSession;
+
+void SetSessionData( void* NewData );
 
 // a function which does nothing.
 static void nullfunc() {}
@@ -27,7 +28,7 @@ void UpdateInputStatus();
 // INPUT UPDATE LOGICS
 ////////////////////////////////////////////////////////////////
 
-enum { BUTTON_0 = 0, BUTTON_1, BUTTON_2, BUTTON_3, BUTTON_4, BUTTON_5, BUTTON_6, BUTTON_7 };
+enum { BUTTON_L = 0, BUTTON_R, BUTTON_U, BUTTON_D, BUTTON_A, BUTTON_B, BUTTON_HOME, BUTTON_QUIT };
 
 extern byte ACC_MAX_INTERVAL;
 extern byte ACC_PERCENTX;
@@ -54,4 +55,8 @@ FTimerHandle QueueTimer( void( *TimerDelegate )( ), uint16 Delay );
 void ClearTimer();
 void UpdateTimer();
 void EraseTimer( FTimerHandle* Handle );
-
+ 
+////////////////////////////////////////////////////////////////
+// Main screen session
+////////////////////////////////////////////////////////////////
+void INITSESSION_MAIN();
