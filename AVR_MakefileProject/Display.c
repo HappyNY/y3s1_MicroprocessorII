@@ -82,6 +82,12 @@ static void DATAWR( uint8 data )
     LCDOUTPUT( PutDat );
 }
 
+void LCDDevice__HardReset()
+{
+    COMMAND( LCDCOM_SYSRST );
+}
+
+
 extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
 {
@@ -222,6 +228,24 @@ void VBuffer_DrawString( byte* lpPage, byte* lpColumn, const char* String, bool 
     assertf( lpPage != NULL && lpColumn != NULL, "Input index must not be null!" );
     while ( *String != '\0' )
     {
+        switch ( *String ) {
+        case'\n': {
+                *lpPage += 2;
+                ++String;
+                continue;
+            }
+        case '\r': {
+                *lpColumn = 0;
+                ++String;
+                continue;
+            }
+        case '\t': {
+                *lpColumn = (*lpColumn / 32 + 1) * 32;
+                ++String;
+                continue;
+            }
+        }
+
         VBuffer_DrawChar( *lpPage, *lpColumn, *String, bInversed );
         if ( *lpColumn + ( CGROM_CHARCTER_WIDTH * 2 ) < LCD_NUM_COLUMN )
         {
