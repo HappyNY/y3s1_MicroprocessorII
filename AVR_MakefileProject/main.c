@@ -43,8 +43,8 @@ void init_ebi_heap( void )
     // your code to init the ebi goes here
 
     // set heap start and end
-    // __malloc_heap_start = (char *) 0x8000;
-    // __malloc_heap_end = (char *) 0xffff;
+    __malloc_heap_start = (char *) 0x8000;
+    __malloc_heap_end = (char *) 0xffff;
     
     MCUCR |= mask( SRE );
 }  

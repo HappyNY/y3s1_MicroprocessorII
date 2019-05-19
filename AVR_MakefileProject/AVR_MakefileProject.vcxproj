@@ -227,6 +227,7 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
     <ClInclude Include="__TestMain.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="build_release.bat" />
     <None Include="dump.s" />
     <None Include="output.map" />
