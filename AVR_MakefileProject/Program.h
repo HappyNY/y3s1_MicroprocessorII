@@ -3,14 +3,15 @@
 
 enum {
     TARGET_UPDATE_FPS = 60,
-    TARGET_RENDER_FRAME_PERIOD = 3, // Will render every 3 update frame
+    TARGET_RENDER_FRAME_INTERVAL = 3, // Will render every 3 update frame
 };
 
 typedef void( *FSessionEventSignature )( );
+typedef void( *FSessionDrawEventSignature )( bool );
 typedef struct {
     FSessionEventSignature InputHandler;
     FSessionEventSignature Update;
-    FSessionEventSignature Draw;
+    FSessionDrawEventSignature Draw;
     void* info__; // Should be dynamically allocated.
 } FSessionState;
 
@@ -18,6 +19,8 @@ extern FSessionState gSession;
 
 // a function which does nothing.
 static void nullfunc() {}
+static void nulldraw( bool bInterval ) {}
+
 void UpdateInputStatus();
 
 ////////////////////////////////////////////////////////////////

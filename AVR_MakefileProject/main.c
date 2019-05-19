@@ -60,6 +60,7 @@ void main( void )
 {
     void InitializeDevice();
     void runTest();
+
     InitializeAnalogDevice();
     InitializeDevice();
     runTest();
@@ -67,15 +68,28 @@ void main( void )
     // PROGRAM INITIALIZATION
     gSession.InputHandler = nullfunc;
     gSession.Update = nullfunc;
-    gSession.Draw = nullfunc;
+    gSession.Draw = nulldraw;
+    gSession.info__ = NULL;
 
+    byte RenderingInterval = 0;
     // MAIN PROGRAM LOOP
     while ( 1 )
     {
         while ( !GOOD_TO_UPDATE );
         GOOD_TO_UPDATE = false;
 
+        UpdateInputStatus();
+        
+        gSession.InputHandler();
+        gSession.Update();
+        gSession.Draw( RenderingInterval == 0 );
 
+        RenderingInterval =
+            RenderingInterval == 0
+            ? TARGET_RENDER_FRAME_INTERVAL - 1
+            : RenderingInterval - 1;
+
+        LCDDevice__Render();
     }
 }
 
