@@ -192,6 +192,7 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="analog_device.c" />
     <ClCompile Include="container.c" />
     <ClCompile Include="ArrayTest.cpp" />
     <ClCompile Include="CGROM.c" />
@@ -201,6 +202,7 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
     <ClCompile Include="memory128.c" />
     <ClCompile Include="MemoryTest.cpp" />
     <ClCompile Include="Display.c" />
+    <ClCompile Include="Program.c" />
     <ClCompile Include="RacingGame.c" />
     <ClCompile Include="Serial.c" />
     <ClCompile Include="IMAGES.c" />
@@ -219,8 +221,8 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
     <ClInclude Include="memory128.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Program.h" />
+    <ClInclude Include="analog_device.h" />
     <ClInclude Include="Serial.h" />
-    <ClInclude Include="Session.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="__TestMain.h" />
   </ItemGroup>
