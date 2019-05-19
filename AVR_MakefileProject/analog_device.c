@@ -15,7 +15,7 @@ static byte ACC_YCNT = 0;
 void UpdateAccel()
 {
     ++ACC_INTERVAL_CNT;
-    if ( ACC_INTERVAL_CNT == ACC_MAX_INTERVAL ) {
+    if ( ACC_INTERVAL_CNT >= ACC_MAX_INTERVAL ) {
         ACC_INTERVAL_CNT = ACC_MAX_INTERVAL;
         ACC_PERCENTX = (uint16) ACC_XCNT * 100 / ACC_MAX_INTERVAL;
         ACC_PERCENTY = (uint16) ACC_YCNT * 100 / ACC_MAX_INTERVAL;
