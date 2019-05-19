@@ -39,3 +39,19 @@ extern byte gButton_Hold;
 
 extern byte FSR_A;
 extern byte FSR_B;
+
+////////////////////////////////////////////////////////////////
+// TIMER LOGICS
+////////////////////////////////////////////////////////////////
+typedef struct tagTimerInstanceNode {
+    uint16 TicksLeft;
+    void( *Delegate )( );
+    struct tagTimerInstanceNode* Next;
+    struct tagTimerInstanceNode* Prev;
+} FTimerInstanceNode, *FTimerHandle;
+
+FTimerHandle QueueTimer( void( *TimerDelegate )( ), uint16 Delay );
+void ClearTimer();
+void UpdateTimer();
+void EraseTimer( FTimerHandle* Handle );
+
