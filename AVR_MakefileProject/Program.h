@@ -39,7 +39,7 @@ enum {
     BUTTON_QUIT 
 };
 
-extern uint16 ACC_MAX_INTERVAL;
+extern byte ACC_MAX_INTERVAL;
 extern byte ACC_PERCENTX;
 extern byte ACC_PERCENTY; 
 
