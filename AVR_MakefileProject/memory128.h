@@ -19,7 +19,8 @@ inline size_type GetMemoryOccupation( void* Ptr )
 
 inline void InitMemory( void* InitialLocation ) {}
 
-void* malloc();
+void* malloc(size_t);
+void* memset( void*, int, size_t );
 void free(void *);
 
 inline void* Malloc( uint16 SizeInByte )
