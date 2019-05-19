@@ -86,7 +86,7 @@ extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
 {
 	// Software initialization
-    LCDBuffer = Malloc( LCD_BUFFER_LENGTH );
+    LCDBuffer = (byte*)( 0xffff - LCD_BUFFER_LENGTH );// Malloc( LCD_BUFFER_LENGTH );
 
 	// Hardware associated functionality.
     DDRD = 0XFF; 
@@ -96,9 +96,9 @@ void LCDDevice__Initialize()
 #define INITIALIZATION_DELAY_MS 4
 #define COMMAND_DELAY(VAL) COMMAND( VAL ); _delay_ms( INITIALIZATION_DELAY_MS );
     // LCD Initialization 
-    _delay_ms( 200 );
+    _delay_ms( 1000 );
     COMMAND_DELAY( LCDCOM_SYSRST );
-    _delay_ms( 1200 );
+    _delay_ms( 1000 );
     COMMAND_DELAY( 0x26 );
     COMMAND_DELAY( 0x2d );
     COMMAND_DELAY( 0xea );

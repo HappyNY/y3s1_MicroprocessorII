@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "Display.h"
 #include "analog_device.h"
+#include "Program.h"
 
 /************************************************************
 
@@ -15,8 +16,8 @@
     TIMER ASSIGNMENTS
      
      TIMER0, TIMER2 - Speaker sound frequency control.
-     TIMER1 - Gameplay timer & Acceleration sensor read
-     TIMER2 - 
+     TIMER1 - Gameplay timer & Acceleration sensor read & Step motor controller.
+     TIMER3 - 
 
      
 /************************************************************/
@@ -24,6 +25,7 @@
 // A semaphore to control interrupt state. 
 // If the value of the byte is larger than 0, interrupt will be disabled until it return to 0 by calling RELEASE_INTERRUPT().
 volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
+FSessionState gSession;
 
 /////////////////////////////////////////////////////////////////////
 // EXTERNAL MEMORY INITIALIZATION
@@ -41,8 +43,8 @@ void init_ebi_heap( void )
     // your code to init the ebi goes here
 
     // set heap start and end
-    __malloc_heap_start = (char *) 0x8000;
-    __malloc_heap_end = (char *) 0xffff;
+    // __malloc_heap_start = (char *) 0x8000;
+    // __malloc_heap_end = (char *) 0xffff;
     
     MCUCR |= mask( SRE );
 }  
@@ -62,12 +64,18 @@ void main( void )
     InitializeDevice();
     runTest();
 
+    // PROGRAM INITIALIZATION
+    gSession.InputHandler = nullfunc;
+    gSession.Update = nullfunc;
+    gSession.Draw = nullfunc;
 
     // MAIN PROGRAM LOOP
     while ( 1 )
     {
         while ( !GOOD_TO_UPDATE );
         GOOD_TO_UPDATE = false;
+
+
     }
 }
 
@@ -75,11 +83,11 @@ void main( void )
 // TIMER 1 FOR GAMEPLAY & ACCELERATION SENSOR
 // INTERVAL = 3.3MS
 /////////////////////////////////////////////////////////////////////
-#define TCNT1_SETUP TCNT1 = 0xffff - 849
+#define TCNT1_SETUP TCNT1 = 0xffff - 169
 ISR( TIMER1_OVF_vect )
 {
     TCNT1_SETUP;
-    enum { ITER_COUNT = 10 };
+    enum { ITER_COUNT = 50 };
     static byte IterCnt = 0;
     ++IterCnt;
 
@@ -107,52 +115,55 @@ void runTest()
     Cam.ReadOnly_DirectionRadian = 0;
     CalculateTranformCache( &Cam ); 
     
-    uint16 addr = 0xffff;
+    uint16 addr = 0x8000;
+    uint32 FRAME = 0;
     memset( (void*) 0x8000, 0xff, 0x7fff );
     byte test = 0;
     while ( 1 )
     {
-        ++test;
-        byte ch = ~PINE & 0xf0;
-
-        switch ( ch )
-        {
-        case 0x40:
-            Cam.Position.x += 1; break;
-        case 0x80:
-            Cam.Position.x -= 1; break;
-        case 0x10:
-            // Cam.Position.y -= 1; break;
-            Cam.ReadOnly_DirectionRadian -= fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-        case 0x20:
-            // Cam.Position.y += 1; break;
-            Cam.ReadOnly_DirectionRadian += fixedpt_rconst( LITERAL_PI * 0.01 ); break;
-        }
+        ++test;  
+        // while ( ~PINE );
 
         VBuffer_Clear();
         {
-            byte x = 0, y = 0;
+            if ( GOOD_TO_UPDATE ) {
+                GOOD_TO_UPDATE = false;
+                FRAME++;
+            }
+
             VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+            byte x = 0, y = 0;
             char buff[32];
+            sprintf( buff, "Frame %d", FRAME );
+            VBuffer_DrawString( &x, &y, buff, false );
+
+            x += 2, y = 0;
             sprintf( buff, "A %x, D %d, V %d", addr, *(uint8*) addr, *(uint8*) ( addr - 0x8000 ) );
             VBuffer_DrawString( &x, &y, buff, false ); 
 
-            x = 2, y = 0;
+            x += 2, y = 0;
+            *(volatile byte*) addr = 0xcc;
+            sprintf( buff, "Put: %x, Get: %x", 0xcc, * (volatile byte*) addr );
+            VBuffer_DrawString( &x, &y, buff, false );
+
+            x += 2, y = 0;
             sprintf( buff, "X %3d Y %3d", ACC_PERCENTX, ACC_PERCENTY );
-            addr--;
+            VBuffer_DrawString( &x, &y, buff, false );
+
+            addr++;
         }
-        // CalculateTranformCache( &Cam ); 
-        // FPoint16 Position;
-        // Position.x = 50;
-        // Position.y = 0;
-        // CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        // //Position.y = 11;
-        // //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
-        // //Position.y = 4;
-        // //Position.x = 93;
-        // //CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam ); 
+        CalculateTranformCache( &Cam ); 
+        FPoint16 Position;
+        Position.x = 25;
+        Position.y = 0;
+        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        Position.y = 11;
+        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+        Position.y = 4;
+        Position.x = 93;
+        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam ); 
         LCDDevice__Render();
-        // _delay_ms( 50 );
+        _delay_ms( 50 );
     }
 }
 #if 0
