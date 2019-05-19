@@ -105,7 +105,7 @@ void InitializeDevice()
     // Timer 0 initialize 
     TIMSK |= mask( TOIE1 );
     TCCR1A = 0b00000000;
-    TCCR1B = 0b00000011; // Div 64
+    TCCR1B = 0b00000001; // Div 1
     TCCR1C = 0b00000000;
 
     sei();
@@ -115,12 +115,13 @@ void InitializeDevice()
 // TIMER 1 FOR GAMEPLAY & ACCELERATION SENSOR
 // INTERVAL = 3.3MS
 /////////////////////////////////////////////////////////////////////
-#define TCNT1_SETUP TCNT1 = 0xffff - 169
+#define TCNT1_SETUP TCNT1 = 0xffff - 5279
 ISR( TIMER1_OVF_vect )
 {
     TCNT1_SETUP;
-    enum { ITER_COUNT = 50 };
+    enum { ITER_COUNT = 100 };
     static byte IterCnt = 0;
+
     ++IterCnt;
 
     if ( IterCnt == ITER_COUNT )
