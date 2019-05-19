@@ -35,10 +35,10 @@ void UpdateAccel()
             X += ACC_XARR[i];
             Y += ACC_YARR[i];
         }
-        X >>= SAMPLE_BITS;
-        Y >>= SAMPLE_BITS;
-        ACC_PERCENTX = (uint16) X * 300 / ACC_MAX_INTERVAL;
-        ACC_PERCENTY = (uint16) Y * 300 / ACC_MAX_INTERVAL;
+        X >>= ( SAMPLE_BITS - 2 );
+        Y >>= ( SAMPLE_BITS - 2 );
+        ACC_PERCENTX = (uint16) ( X << 7 ) / ACC_MAX_INTERVAL;
+        ACC_PERCENTY = (uint16) ( Y << 7 ) / ACC_MAX_INTERVAL;
         ACC_XCNT = 0;
         ACC_YCNT = 0;
     }
