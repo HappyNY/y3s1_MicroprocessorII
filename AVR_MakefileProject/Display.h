@@ -24,6 +24,7 @@ extern const char CGROM[2048];
 
 void LCDDevice__Initialize();
 void LCDDevice__Render();
+void LCDDevice__HardReset();
 
 void VBuffer_Clear();
 

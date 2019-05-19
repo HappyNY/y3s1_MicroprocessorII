@@ -34,9 +34,6 @@
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{4d298c14-cf96-445b-b946-f92da2d8f141}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Application\Sessions">
-      <UniqueIdentifier>{5903e211-ef9d-466d-8491-8ef19d791c1c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
