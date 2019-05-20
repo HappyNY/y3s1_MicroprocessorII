@@ -188,17 +188,7 @@ void VBuffer_DrawString( byte* lpPage, byte* lpColumn, const char* String, bool 
         {
             *lpColumn = 0;
             *lpPage += 2;
-        }
-
-        //if ( *lpPage + 1 < LCD_NUM_PAGE )
-        //{
-        //    ++( *lpPage );
-        //}
-        //else
-        //{
-        //    *lpColumn += CGROM_DISPLAY_HEIGHT;
-        //    *lpPage = 0;
-        //}
+        } 
 
         ++String;
     }
