@@ -96,10 +96,10 @@ void UpdateTimer()
 //
 ///////////////////////////////////////////////////////
 static const char* const MainMenuStrings[] = {
-    "Start Game",
-    "Calibrate Sensors",
-    "Program Information",
-    "Quit"
+    " Start Game ",
+    " Calibrate Sensors ",
+    " Program Information ",
+    " Quit "
 };
 typedef struct tagMainScreenInfo {
     byte Cursor;
@@ -224,8 +224,8 @@ static void main_calib_draw( bool v )
     char buff[64];
     sprintf( buff, "\tX acc: %d\r\n\tY acc: %d\r\n", ACC_PERCENTX, ACC_PERCENTY );
     VBuffer_DrawString( &x, &y, buff, false );
-    VBuffer_DrawString( &x, &y, "Interval: ", false );
-    sprintf( buff, "%d, %d", ACC_XPIVOT, ACC_YPIVOT);
+    VBuffer_DrawString( &x, &y, "Pivot: ", false );
+    sprintf( buff, " %d, %d ", ACC_XPIVOT, ACC_YPIVOT);
     VBuffer_DrawString( &x, &y, buff, true);
     VBuffer_DrawString( &x, &y, " us", false );
 }

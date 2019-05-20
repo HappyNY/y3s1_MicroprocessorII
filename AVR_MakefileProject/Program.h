@@ -8,6 +8,7 @@ enum {
 
 typedef void( *FSessionEventSignature )( );
 typedef void( *FSessionDrawEventSignature )( bool );
+
 typedef struct { 
     FSessionEventSignature Update;
     FSessionDrawEventSignature Draw;
