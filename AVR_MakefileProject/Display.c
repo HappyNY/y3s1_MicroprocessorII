@@ -7,12 +7,7 @@
 byte* LCDBuffer; // = (byte*) ( 0x1000 );
 extern inline void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed );
 extern inline void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed );
-
-#define SET_CLOCK
-#define RES_CLOCK
-#define SET_DATA(value_byte) PORTE = (value_byte)
-#define SET_W(w1, w0)
-
+   
 #define LCD_CD 6
 #define LCD_WR1 5
 #define LCD_WR0 4
@@ -113,76 +108,22 @@ void LCDDevice__Initialize()
     COMMAND_DELAY( LCDCOM_MAPCTRL( 0b1001 ) );
     COMMAND_DELAY( 0x40 );
     COMMAND_DELAY( LCDCOM_ADDRCTRL( 0b001 ) ); 
-    COMMAND_DELAY( LCDCOM_DISPEN( true ) );
-/*
-    COMMAND( LCDCOM_DISPEN( true ) );
-    COMMAND( LCDCOM_MUXR_TEMPCOMP( 1, 0b10 ) );
-    COMMAND( LCDCOM_POWERCON( 0b101 ) ); 
-    COMMAND( LCDCOM_BIASRATIO( 0b10 ) );
-    _delay_ms( 4 );
-    COMMAND( LCDCOM_GAIN_POTENTIAL_INIT );
-    _delay_ms( 4 );
-    COMMAND( LCDCOM_GAIN_POTENTIAL_VAL( 0X8B ) );
-    _delay_ms( 4 );
-    COMMAND( LCDCOM_MAPCTRL( 0X08 ) );
-    _delay_ms( 4 );
-    COMMAND( LCDCOM_STARTLINE( 0 ) );
-    _delay_ms( 4 );
-
-    _delay_ms( 2000 );*/
-    // COMMAND( LCDCOM_ALLPXLON( false ) );
+    COMMAND_DELAY( LCDCOM_DISPEN( true ) ); 
 }
 
 void LCDDevice__Render()
-{ 
-        // @todo. Hardware associated functionality.
-    // @. temporary code.
-
-    int i, j;
-    // COMMAND( LCDCOM_COLUMN_HI( 0 ) );
-    // COMMAND( LCDCOM_COLUMN_LO( 0 ) );
+{  
+    byte i, j; 
+    byte const* lpBuff;
     for ( i = 0; i < LCD_NUM_PAGE; ++i )
     {
-        // COMMAND( LCDCOM_PGADDR( 0 ) );
-        for ( j = 0; j < LCD_NUM_COLUMN; ++j )
+        lpBuff = LCDBuffer + i; // X PIVOT
+        for ( j = 0; j < LCD_NUM_COLUMN; ++j, lpBuff += LCD_NUM_PAGE )
         {
-            byte dat = LCDBuffer[j * LCD_NUM_PAGE + i];
-            DATAWR( dat );
-            // DATAWR( dat );
-            // DATAWR( dat );
-            // DATAWR( dat );
+            byte dat = *lpBuff;
+            DATAWR( dat ); 
         }  
-    }
-
-    /* // SERIAL_DEBUG_OUTPUT
-    int i, k, ofst = 0;
-    char buff[LCD_HEIGHT + 3];
-    
-    CSerialSender_QueueOutputString( &UART0Sender, "\033[H" );
-    for ( i = 0; i < LCD_NUM_COLUMN; ++i ) {
-        for ( k = 0; k < LCD_NUM_PAGE; ++k ) {
-#define pew(idx) buff[k * PIXELS_PER_BYTE + idx] = (*( LCDBuffer + ofst + k ) & ( 1 << ((PIXELS_PER_BYTE - 1) - idx) )) ? '@' : '-';
-            pew( 0 );
-            pew( 1 );
-            pew( 2 );
-            pew( 3 );
-            pew( 4 );
-            pew( 5 );
-            pew( 6 );
-            pew( 7 );
-        }
-
-        buff[LCD_HEIGHT+0] = '\n';
-        buff[LCD_HEIGHT+1] = '\r';
-        buff[LCD_HEIGHT+2] = '\0';
-        ofst += LCD_NUM_PAGE;
-        
-        while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) );
-        CSerialSender_QueueOutputString( &UART0Sender, "::" );
-        CSerialSender_QueueOutputString( &UART0Sender, buff );
-    }
-    while ( !CSerialSender_IsQueueEmpty( &UART0Sender ) )
-// */
+    } 
 }
 
 void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
@@ -199,15 +140,7 @@ void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
         LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
         ascii_head -= 3;
         BuffIdx += LCD_NUM_PAGE -1;
-    }
-    /* // Code for horizontal buffer
-    for ( i = 0; i < CGROM_DISPLAY_HEIGHT; ++i )
-    {
-        if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
-        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
-        ++ascii_head;
-        BuffIdx += LCD_NUM_PAGE;
-    }*/
+    } 
 }
 
 void VBuffer_Clear()
