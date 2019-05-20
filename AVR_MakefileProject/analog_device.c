@@ -20,8 +20,67 @@ static byte ACC_YCNT = 0;
 static byte ACC_XARR[SAMPLE_POW2];
 static byte ACC_YARR[SAMPLE_POW2];
 static byte ACC_IDX = 0;
+
+#define ACC_X ((PINF & (mask(PF2))) != 0)
+#define ACC_Y ((PINF & (mask(PF3))) != 0)
 void UpdateAccel()
 {
+    // X
+    static byte xtot = 0;
+    static bool xprv = 0;
+    static byte xidx = 0;
+
+    bool x = ACC_X;
+    if ( x ) {
+        if ( x ^ xprv ) {
+            // ACC_PERCENTX = ACC_XCNT * 100 / xtot;
+            ACC_XARR[xidx++& SAMPLE_MOD] = ACC_XCNT * 100 / xtot;
+            uint16 tot = 0;
+            byte i = SAMPLE_POW2;
+            while ( i-- ) {
+                tot += ACC_XARR[i];
+            }
+            ACC_PERCENTX = tot >> SAMPLE_BITS;
+            ACC_XCNT = 1;
+            xtot = 0;
+        }
+        else {
+            ++ACC_XCNT;
+        }
+    }
+    ++xtot;
+    xprv = x;
+    // Y
+    static byte ytot = 0;
+    static bool yprv = 0;
+    static byte yidx = 0;
+    bool y = ACC_Y;
+    if ( y ) {
+        if ( y ^ yprv ) {
+            // ACC_PERCENTY = ACC_YCNT * 100 / ytot;
+            ACC_YARR[yidx++& SAMPLE_MOD] = ACC_YCNT * 100 / ytot;
+            uint16 tot = 0;
+            byte i = SAMPLE_POW2;
+            while ( i-- ) {
+                tot += ACC_YARR[i];
+            }
+            ACC_PERCENTY = tot >> SAMPLE_BITS;
+            ACC_YCNT = 1;
+            ytot = 0;
+        }
+        else {
+            ++ACC_YCNT;
+        }
+    }
+    ++ytot; 
+    yprv = y;
+}
+
+void UpdateAccel_Deprecated()
+{
+    // @todo. Change measurement method
+    // @ will detect signal's edge, and will calculate ratio based on 
+    //  the high level count over interval count.
     ++ACC_INTERVAL_CNT;
     if ( ACC_INTERVAL_CNT >= ACC_MAX_INTERVAL ) {
         ACC_INTERVAL_CNT = 0;
@@ -43,8 +102,6 @@ void UpdateAccel()
         ACC_YCNT = 0;
     }
  
-#define ACC_X ((PINF & (mask(PF2))) != 0)
-#define ACC_Y ((PINF & (mask(PF3))) != 0)
     ACC_XCNT += ACC_X;
     ACC_YCNT += ACC_Y;
 }
