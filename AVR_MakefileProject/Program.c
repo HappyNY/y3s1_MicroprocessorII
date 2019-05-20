@@ -217,13 +217,13 @@ static void main_calib_draw( bool v )
         "\r\n  Keep your device stable...\r\n",
         false
     );
-    VBuffer_DrawString( &x, &y, "UD smooth LR delicate\r\n ---------------------------\r\n", false );
+    VBuffer_DrawString( &x, &y, " Press A to set pivot.\r\n ---------------------------\r\n", false );
 
     char buff[64];
     sprintf( buff, "\tX acc: %d\r\n\tY acc: %d\r\n", ACC_PERCENTX, ACC_PERCENTY );
     VBuffer_DrawString( &x, &y, buff, false );
     VBuffer_DrawString( &x, &y, "Interval: ", false );
-    sprintf( buff, "%09lu", (int32)ACC_MAX_INTERVAL * 330);
+    sprintf( buff, "%d, %d", ACC_XPIVOT, ACC_YPIVOT);
     VBuffer_DrawString( &x, &y, buff, true);
     VBuffer_DrawString( &x, &y, " us", false );
 }
