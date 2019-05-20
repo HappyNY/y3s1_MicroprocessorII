@@ -42,7 +42,8 @@ enum {
 extern byte ACC_MAX_INTERVAL;
 extern byte ACC_PERCENTX;
 extern byte ACC_PERCENTY; 
-
+extern byte ACC_XPIVOT;
+extern byte ACC_YPIVOT;
 #define INPUT_VECTOR (~PINE & 0x7f)
 extern byte gButton_Captured;
 extern byte gButton_Pressed;
