@@ -6,6 +6,8 @@ byte gButton_Captured;
 byte gButton_Pressed;
 byte gButton_Released;
 byte gButton_Hold;
+byte ACC_XPIVOT;
+byte ACC_YPIVOT;
 
 void UpdateInputStatus()
 {
