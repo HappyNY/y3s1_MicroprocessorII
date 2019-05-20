@@ -115,11 +115,11 @@ void InitializeDevice()
 // TIMER 1 FOR GAMEPLAY & ACCELERATION SENSOR
 // INTERVAL = 3.3MS
 /////////////////////////////////////////////////////////////////////
-#define TCNT1_SETUP TCNT1 = 0xffff - 5279
+#define TCNT1_SETUP TCNT1 = 0xffff - 7999
 ISR( TIMER1_OVF_vect )
 {
     TCNT1_SETUP;
-    enum { ITER_COUNT = 100 };
+    enum { ITER_COUNT = 66 };
     static byte IterCnt = 0;
 
     ++IterCnt;
