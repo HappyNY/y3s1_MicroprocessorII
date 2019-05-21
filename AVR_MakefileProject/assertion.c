@@ -1,37 +1,63 @@
+#include "core.h"
 #include <stdlib.h>
 #include "assertion.h"
+#include "Display.h"
 
+#ifdef _DEBUG
 void internal_assertion_failed( const char* FILE, int LINE, const char* msg )
 {
-	// @todo. output debugging informations
-#ifdef _EXEC
-	printf( msg );
-	printf( "\n" );
-#endif
-	// exit.
-	abort_program(FILE, LINE);
+#ifdef __DUMP_RS232_ON_ABORT__
+    // @todo. dump memory
+#endif // __DUMP_RS232_ON_ABORT__
+    outputmsg_uart0( "\r\nASSERTION::-------->\non file \"" );
+    outputmsg_uart0( FILE );
+    outputmsg_uart0( "\" ... line: " );
+    char buff[32];
+    itoa( LINE, buff, 10 );
+    outputmsg_uart0( buff );
+    outputmsg_uart0( "\r\n" );
+    outputmsg_uart0( msg );
+    outputmsg_uart0( "\r\n<---------::ASSERTION\r\n" );
+    while ( 1 );
 }
 
 
-void internal_logslow( const char* FILE, int LINE, const char * buff )
+void internal_logslow( const char* FILE, int LINE, const char * msg )
 {
 #ifdef _EXEC
 	printf( "[%-12s:%4d:] %s\n", FILE, LINE, buff );
 #endif
+    outputmsg_uart0( "LOG:: " );
+    outputmsg_uart0( msg ); 
+    outputmsg_uart0( " [" );
+    outputmsg_uart0( FILE );
+    outputmsg_uart0( " ... line: " );
+    char buff[32];
+    itoa( LINE, buff, 10 );
+    outputmsg_uart0( buff );
+    outputmsg_uart0( "] \r\n" ); 
 }
+#endif
 
-inline void abort_program(const char* FILE, int LINE)
-{
-#ifdef __DUMP_RS232_ON_ABORT__
-	// @todo. dump memory
-#endif // __DUMP_RS232_ON_ABORT__
+void outputmsg_uart0( const char* msg )
+{ 
+    DISABLE_INTERRUPT;
 
-#ifdef _EXEC
-	printf( "Abort call on file [%s]:%d%:\n", FILE, LINE );
-	system( "pause" );
-	exit( -1 );
-#else
-	while ( 1 ); // Just wait not corrupting memory.
-#endif // _EXEC
+#if USE_SERIAL_COMMUNICATION
+    const char* head = msg;
+    while ( *head != '\0' )
+    {
+        while ( !( UCSR0A & 0x20 ) );
+        UDR0 = *( head++ );
+    }
 
-}
+    while ( !( UCSR0A & 0x20 ) );
+
+#elif 0
+    byte DetectEdge();
+    byte x = 0, y = 0;
+    VBuffer_DrawString( &x, &y, msg, true );
+    while ( DetectEdge() == 0 );
+#endif
+    ENABLE_INTERRUPT;
+} 

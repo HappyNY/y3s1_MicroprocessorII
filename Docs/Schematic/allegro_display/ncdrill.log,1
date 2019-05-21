@@ -1,0 +1,75 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    NC DRILL Log                                                     )
+(                                                                     )
+(    Drawing          : DISPLAY.brd                                   )
+(    Software Version : 16.6-2015S059                                 )
+(    Date/Time        : Sat May 04 16:08:12 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+
+ Processing NC Parameters file 'nc_param.txt' ...
+
+ NC PARAMETERS
+ -------------
+
+ FORMAT   		3.5
+ MACHINE-OFFSET		x:0.00000	y:0.00000   (mm)
+ FEEDRATE		1
+ COORDINATES		ABSOLUTE
+ OUTPUT-UNITS		METRIC
+ TOOL-ORDER		INCREASING
+ REPEAT-CODES		YES
+ SUPPRESS-LEAD-ZEROES	YES
+ SUPPRESS-TRAIL-ZEROES	NO
+ SUPPRESS-EQUAL		YES
+ TOOL-SELECT		YES
+ HEADER			none
+ LEADER			12
+ CODE			ASCII
+ SEPARATE		NO
+ SEPARATE-ROUTING	NO
+ OPTIMIZE_DRILLING	YES
+ ENHANCED_EXCELLON	YES
+ SCALE			1.000000
+
+ WARNING(SPMHMF-368): Cannot find NC Drill tool file 'nc_tools.txt'
+ WARNING(SPMHMF-369): ... will auto-generate tool file 'nc_tools_auto.txt'.
+
+
+     Auto-generating tool file 'nc_tools_auto.txt' ...
+
+           Size  Plating  Tool        + Tolerance  - Tolerance
+
+          0.533  P        T01            0.000000     0.000000
+          0.813  P        T02            0.000000     0.000000
+          0.889  P        T03            0.000000     0.000000
+          0.914  P        T04            0.000000     0.000000
+          1.067  P        T05            0.000000     0.000000
+          3.048  P        T06            0.000000     0.000000
+          3.962  N        T07            0.000000     0.000000
+
+
+Drill files being output to directory 'D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Schematic/allegro_display' ...
+
+
+
+     'DISPLAY-1-2.drl' created for holes connecting TOP and BOTTOM
+     -------------------------------------------------------------
+
+     Tool  Num     Size      +/- Tolerance     Plating   Quantity
+
+     T01    1.   0.5330    0.0000/  0.0000      PLATED         23
+     T02    2.   0.8130    0.0000/  0.0000      PLATED          8
+     T03    3.   0.8890    0.0000/  0.0000      PLATED          7
+     T04    4.   0.9140    0.0000/  0.0000      PLATED          2
+     T05    5.   1.0670    0.0000/  0.0000      PLATED         30
+     T06    6.   3.0480    0.0000/  0.0000      PLATED          4
+     T07    7.   3.9620    0.0000/  0.0000  NON_PLATED          4
+
+     ---- Total holes:                                         78
+
+     ---- Total head travel:              3.93 feet (1.20 meters)
+

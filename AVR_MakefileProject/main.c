@@ -1,247 +1,358 @@
-#include "core.h"
-#include "array.h"
+#include "core.h"  
+#include "math.h"
+#include "Serial.h"
+#include <util/delay.h>
+#include <stdlib.h>
+#include "Display.h"
+#include "analog_device.h"
+#include "Program.h"
 
-#define _DEVELOP 0
+/************************************************************
 
-#ifdef _EXEC // For logic tests ... windoes execution files.
-#include <stdio.h>
-int main( void )
-{
-	void ExecMain__ForTest();
-	ExecMain__ForTest();
-	return 0;
-}
-#else // ~_EXEC, means not test.
-#if _DEVELOP
-// Dev code
+    MAIN FILE DESCRIPTION
+    
+     This file defines the entry point of the program, test codes which will be excluded on actual release, interrupt functions which drive external sensors & devices.
+
+    TIMER ASSIGNMENTS
+     
+     TIMER0, TIMER2 - Speaker sound frequency control.
+     TIMER1 - Gameplay timer & Acceleration sensor read & Step motor controller.
+     TIMER3 - 
+
+     
+/************************************************************/
+
+// A semaphore to control interrupt state. 
+// If the value of the byte is larger than 0, interrupt will be disabled until it return to 0 by calling RELEASE_INTERRUPT().
+volatile char __INTERRUPT_LOCK_MUTEX__ = 0;
+FSessionState gSession;
+
+/////////////////////////////////////////////////////////////////////
+// EXTERNAL MEMORY INITIALIZATION
+// 
+// This code will make the initial address of heap memory as 0x8000, and the size of heap will be 32kB
+/////////////////////////////////////////////////////////////////////
+void init_ebi_heap( void ) __attribute__( ( naked ) ) __attribute__( ( section( ".init5" ) ) );
+
+void init_ebi_heap( void )
+{ 
+    // the malloc heap start and end pointers
+    extern char *__malloc_heap_start;
+    extern char *__malloc_heap_end;
+
+    // your code to init the ebi goes here
+
+    // set heap start and end
+    __malloc_heap_start = (char *) 0x8000;
+    __malloc_heap_end = (char *) 0xffff;
+    
+    MCUCR |= mask( SRE );
+}  
+
+/////////////////////////////////////////////////////////////////////
+//  ENTRY OF PROGRAM
+//
+// This is the entry point of the program.
+// For now it defines some test code, but on release this code will be excluded, and replaced by gameplay loop.
+/////////////////////////////////////////////////////////////////////
+volatile static bool GOOD_TO_UPDATE = 0;
 void main( void )
 {
+    void InitializeDevice();
+    void runTest();
 
+    InitializeAnalogDevice();
+    InitializeDevice();
+    // runTest();
+
+    // PROGRAM INITIALIZATION 
+    gSession.Update = nullfunc;
+    gSession.Draw = nulldraw;
+    gSession.data__ = NULL;
+
+    INITSESSION_MAIN();
+
+    byte RenderingInterval = 0;
+    // MAIN PROGRAM LOOP
+    while ( 1 )
+    {
+        UpdateTimer();
+        UpdateInputStatus();
+         
+        gSession.Update();
+        gSession.Draw( RenderingInterval == 0 );
+
+        RenderingInterval =
+            RenderingInterval == 0
+            ? TARGET_RENDER_FRAME_INTERVAL - 1
+            : RenderingInterval - 1;
+
+        LCDDevice__Render();
+
+        while ( !GOOD_TO_UPDATE );
+        GOOD_TO_UPDATE = false; 
+    }
 }
 
-#else // !_DEVELOP == ON TEST
-#include <avr/interrupt.h>
-#include <util/delay.h>
 
-enum {
-	ESWITCH_MASK_0 = 0x10, 
-	ESWITCH_MASK_1 = 0x20, 
-	ESWITCH_MASK_2 = 0X40, 
-	ESWITCH_MASK_3 = 0X80 
-};
-
-typedef uint8 FActiveSwitchList;
-FActiveSwitchList ReadSwitchInput();
-void UpdateLight();
-
-ISR( TIMER0_COMP_vect )
+void InitializeDevice()
 {
-	// PORTC = ~PORTC; 
+    InitMemory( NULL );
+
+    LCDDevice__Initialize();
+    MCUCR |= mask( SRE );
+
+    // Timer 0 initialize 
+    TIMSK |= mask( TOIE1 );
+    TCCR1A = 0b00000000;
+    TCCR1B = 0b00000001; // Div 1
+    TCCR1C = 0b00000000;
+
+    sei();
 }
 
-void InitializeEnvironment()
+/////////////////////////////////////////////////////////////////////
+// TIMER 1 FOR GAMEPLAY & ACCELERATION SENSOR
+// INTERVAL = 3.3MS
+/////////////////////////////////////////////////////////////////////
+#define TCNT1_SETUP TCNT1 = 0xffff - 7999
+ISR( TIMER1_OVF_vect )
 {
-	// Port RW
-	DDRC = 0xff;
-	DDRE = 0x00;
-	DDRF = 0xf0;
-	DDRB = 0xff;
+    TCNT1_SETUP;
+    enum { ITER_COUNT = 66 };
+    static byte IterCnt = 0;
 
-	// Timer 0
-	ASSR = 0;
-	TCCR0 = mask( CS02, CS01, CS00 );
-	TIMSK &= ~mask( OCIE0, TOIE0 );
-	TIMSK |= mask( OCIE0 );
-	OCR0 = 0x80;
+    ++IterCnt;
 
-	// EXT interrupt 
-	EIMSK = mask( INT4, INT5 );
-	EICRB = mask( 1, 3 );
+    if ( IterCnt == ITER_COUNT )
+    {
+        GOOD_TO_UPDATE = true;
+        IterCnt = 0;
+    }
 
-	// Port init
-	PORTC = mask( 0, 1, 2, 3, 4 );
-
-	// enable interrupt
-	SREG = 0x80;
+    gButton_Captured |= INPUT_VECTOR;
+    UpdateAccel();
 }
 
-int main( void )
-{  
-	InitializeEnvironment();
-	// <code>
+/////////////////////////////////////////////////////////////////////
+// Test code which performs rendering operation
+/////////////////////////////////////////////////////////////////////
+//void runTest()
+//{ 
+//    // Setup draw args
+//    DECLARE_LINE_VECTOR( Triangle );
+//
+//    // Setup camera
+//    FCameraTransform Cam;
+//    Cam.Position.x = 0;
+//    Cam.Position.y = 0;
+//    Cam.ReadOnly_DirectionRadian = 0;
+//    CalculateTranformCache( &Cam ); 
+//    
+//    uint16 addr = 0x8000;
+//    uint32 FRAME = 0;
+//    memset( (void*) 0x8000, 0xff, 0x7fff );
+//    byte test = 0;
+//    while ( 1 )
+//    {
+//        ++test;  
+//        // while ( ~PINE );
+//
+//        VBuffer_Clear();
+//        {
+//            if ( GOOD_TO_UPDATE ) {
+//                GOOD_TO_UPDATE = false;
+//                FRAME++;
+//            }
+//
+//            VBuffer_DrawLine( 0, 0, Cam.Position.x + ( test & 0x0f ), Cam.Position.x + ( test >> 4 ) );
+//            byte x = 0, y = 0;
+//            char buff[32];
+//            sprintf( buff, "Frame %d", FRAME );
+//            VBuffer_DrawString( &x, &y, buff, false );
+//
+//            x += 2, y = 0;
+//            sprintf( buff, "A %x, D %d, V %d", addr, *(uint8*) addr, *(uint8*) ( addr - 0x8000 ) );
+//            VBuffer_DrawString( &x, &y, buff, false ); 
+//
+//            x += 2, y = 0;
+//            *(volatile byte*) addr = 0xcc;
+//            sprintf( buff, "Put: %x, Get: %x", 0xcc, * (volatile byte*) addr );
+//            VBuffer_DrawString( &x, &y, buff, false );
+//
+//            x += 2, y = 0;
+//            sprintf( buff, "X %3d Y %3d", ACC_PERCENTX, ACC_PERCENTY );
+//            VBuffer_DrawString( &x, &y, buff, false );
+//
+//            addr++;
+//        }
+//        CalculateTranformCache( &Cam ); 
+//        FPoint16 Position;
+//        Position.x = 25;
+//        Position.y = 0;
+//        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+//        Position.y = 11;
+//        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam );
+//        Position.y = 4;
+//        Position.x = 93;
+//        CDrawArgs_DrawOnDisplayBufferPerspective( &Triangle, Position, &Cam ); 
+//        LCDDevice__Render();
+//        _delay_ms( 50 );
+//    }
+//} 
+ /*   outputmsg_uart0( "Program start, press any key. \033[H \r\n" );
+    UART0_WaitAnyKey();
+    CSerialSender_QueueOutputString( &UART0Sender, "Begin\r\n" );
+    {
+        VBuffer_Clear(); 
+        byte i = 0, j = 0, cnt = 11;
+        while ( cnt-- )
+        { 
+            VBuffer_DrawLine( i, j, i + 5, j + 7 ); 
+            ++i;
+            ++j;
+            LCDDevice__Render();
+            VBuffer_Clear();
+        }
+        byte xidx = 0, yidx = 0;
+        const char* str[] =
+        { 
+            "Hello, world!"
+            , "good Morning!"
+            , "What's up, my boy?"
+            , "I'm here, with you"
+            , "Oh, no, no!z"
+            , "Pl-ease."
+            , "Heck the wao!"
+        };
+        const char** pp = str;
+        const char** pp_end = str + ARRAYCOUNT( str );
+        while ( 1 )
+        {
+            xidx = yidx = 0;
+            VBuffer_DrawString( &xidx, &yidx, *pp, false );
+            LCDDevice__Render();
+            VBuffer_Clear();
+            ++pp;
+            if ( pp == pp_end ) pp = str;
+            _delay_ms( 500 );
+        }
 
-	while ( 1 )
-	{
-		UpdateLight();
-	}
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
 
-	return 0;
-}
+        VBuffer_Clear();
 
-byte pos = 0;
-byte N1000 = 0, N100 = 0, N10 = 0, N1 = 0;
-bool bUpdate = 0;
+        VBuffer_DrawDot( 0, 0 );
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
 
-ISR( INT4_vect )
+        VBuffer_DrawDot( 5, 5 );
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
+
+        VBuffer_DrawDot( 10, 10 );
+        LCDDevice__Render();
+        UART0_WaitAnyKey();
+
+        VBuffer_DrawDot( 15, 15 );
+        LCDDevice__Render(); 
+        UART0_WaitAnyKey();  
+
+        while ( 1 );
+    } */
+/* // Append '/' on front of this comment placeholder to uncommentize this.
+void TestMalloc()
 { 
-	bUpdate = !bUpdate;
+    while ( 1 )
+    {
+        CSerialSender_QueueOutputString( &UART0Sender, "\n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial0 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial1 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial2 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial3 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial4 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial5 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial6 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        CSerialSender_QueueOutputString( &UART0Sender, "Trial7 ... \n" );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
 
-	/*static bool flag_ff = 0;
-	const int SW1 = mask( PE4 ), SW2 = mask( PE5 );
-	const int inp = ReadSwitchInput();
+        uint16 RECORD1, RECORD2, RECORD3, RECORD4;
+        {
+            byte i;
+            enum { ITER_COUNT = 155, TCCR1B_RUN = 0x3 };
+            void* buff[ITER_COUNT];
+            // @todo. malloc vs Malloc comparison.
+            TCNT1 = 0;
+            TCCR1A = 0;
+            TCCR1B = 0;
+            TCCR1C = 0;
 
-	if ( is_true( inp ) && !flag_ff )
-	{
-		flag_ff = true;
-		if ( SW1 & inp )
-		{
-		}
-		if ( SW2 & inp )
-		{
-			N1000 = N100 = N10 = N1 = 0;
-		}
-	}
-	else if ( !is_true( inp ) )
-	{
-		flag_ff = false;
-	}*/
-} 
+            TCCR1B = TCCR1B_RUN;
 
-ISR( INT5_vect )
-{
-	N1000 = N100 = N10 = N1 = 0;
+            for ( i = 0; i < ITER_COUNT; ++i )
+            {
+                buff[i] = malloc( rand() % 4 + 2 );
+            }
+            for ( i = 0; i < ITER_COUNT / 2; ++i )
+            {
+                free( buff[i] );
+            }
+            for ( i = 0; i < ITER_COUNT / 2; ++i )
+            {
+                buff[i] = malloc( ( rand() % 4 ) + 13 );
+            }
+            TCCR1B = 0;
+            RECORD1 = TCNT1;
+
+            TCNT1 = 0;
+            TCCR1B = TCCR1B_RUN;
+            for ( i = 0; i < ITER_COUNT; ++i )
+            {
+                free( buff[i] );
+            }
+            TCCR1B = 0;
+            RECORD2 = TCNT1;
+
+            TCNT1 = 0;
+            TCCR1B = TCCR1B_RUN;
+            for ( i = 0; i < ITER_COUNT; ++i )
+            {
+                buff[i] = Malloc( rand() % 11 + 2 );
+            }
+            for ( i = 0; i < ITER_COUNT / 2; ++i )
+            {
+                Free( buff[i] );
+            }
+            for ( i = 0; i < ITER_COUNT / 2; ++i )
+            {
+                buff[i] = Malloc( ( rand() % 11 ) + 13 );
+            }
+            TCCR1B = 0;
+            RECORD3 = TCNT1;
+
+            TCNT1 = 0;
+            TCCR1B = TCCR1B_RUN;
+            for ( i = 0; i < ITER_COUNT; ++i )
+            {
+                Free( buff[i] );
+            }
+            TCCR1B = 0;
+            RECORD4 = TCNT1;
+        }
+
+        log_display( "malloc/free: %d / %d", RECORD1, RECORD2 );
+        log_display( "Malloc/Free: %d / %d", RECORD3, RECORD4 );
+        log_display( "Interrupt Count %d. which should be 0", __INTERRUPT_LOCK_MUTEX__ );
+        while ( 1 );
+    }
 }
-
-void UpdateLight()
-{
-	void update( void );
-	void TrigInterrupt( void );
-	static int num = 0;
-	void Seg4_out( int num );
-	void Seg2_out( int );
-
-	while ( 1 )
-	{
-		TrigInterrupt();
-		if ( bUpdate )
-		{
-			update();
-		}
-		num = N1000 * 1000 + N100 * 100 + N10 * 10 + N1;
-		Seg4_out( num );
-	}
-}
-
-void TrigInterrupt( void )
-{
-	const int flg = ReadSwitchInput();
-	EIFR = flg;
-}
-
-// SW1 입력 처리 함수
-void update( void )
-{
-	const bool bCnt10 = N1 == 9;
-	const bool bCnt100 = bCnt10 && N10 == 9;
-	const bool bCnt1000 = bCnt100 && bCnt10 && N100 == 9;
-	if ( bCnt1000 ) N1000 = ( N1000 + 1 ) % 10;
-	if ( bCnt100 ) N100 = ( N100 + 1 ) % 10;   // 100자리 +1
-	if ( bCnt10 ) N10 = ( N10 + 1 ) % 10;     // 10자리 +1
-	N1 = ( N1 + 1 ) % 10;            // 1자리 +1
-}
-
-// SW2 입력 처리 함수
-void sw_key2( void )
-{
-	pos = ( pos + 1 ) % 4;        // 입력 자리 이동
-}
-
-const char seg_pat[16] = { 
-	0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07,
-	0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71 
-};
-
-void Seg4_out( int num )
-{
-
-	int i, buf;
-
-	N1000 = num / 1000;             // 1000자리 추출
-	buf = num % 1000;
-
-	N100 = buf / 100;               // 100자리 추출
-	buf = buf % 100;
-
-	N10 = buf / 10;                 // 10자리 추출
-	N1 = buf % 10;                  // 1자리 추출    
-
-	for ( i = 0; i < 1; i++ ) {
-		PORTF = 0b11100000;         // 맨 우측 7-Segment SEG1 ON (PF4=0)  
-		PORTB = seg_pat[N1];        // 1자리 표시  
-		_delay_ms( 2 );
-
-
-		PORTF = 0b11010000;	        // 7-Segment SEG2 ON (PF5=0)  
-		PORTB = seg_pat[N10];       // 10자리 표시  
-		_delay_ms( 2 );
-
-		PORTF = 0b10110000;	        // 7-Segment SEG3 ON  (PF6=0)  
-		PORTB = seg_pat[N100];      // 100자리 표시  
-		_delay_ms( 3 );
-
-		PORTF = 0b01110000;	        // 7-Segment SEG4 ON (PF7=0)  
-		PORTB = seg_pat[N1000];     // 1000자리 표시  
-		_delay_ms( 3 );
-	}
-}
-/*
-void UpdateLight_1()
-{
-	const int delay = 5;
-	static int iter = 0;
-	PORTF = 0b11100000;
-	PORTB = 0x06;
-	_delay_ms( delay );
-	PORTF = 0b11010000;
-	PORTB = 0x5b;
-	_delay_ms( delay );
-	PORTF = 0b10110000;
-	PORTB = 0x4f;
-	_delay_ms( delay );
-	PORTF = 0b01110000; 
-	PORTB = 0x66;
-	_delay_ms( delay );
-}
-
-void UpdateLight_0()
-{
-	uint8 LightState = 0;
-	int i, Mask = ESWITCH_MASK_0, LightOverlayMask = 0x11;
-	const int NumSwitches = 4;
-
-	// <code>
-	FActiveSwitchList ActiveLight = ReadSwitchInput();
-	for ( i = 0; i < NumSwitches; ++i )
-	{
-		if ( ActiveLight & Mask )
-		{
-			LightState |= LightOverlayMask;
-		}
-		LightOverlayMask <<= 1;
-		Mask <<= 1;
-	}
-
-	PORTC = LightState;
-}
-*/
-FActiveSwitchList ReadSwitchInput()
-{
-	const int SWITCH_PIN_MASK = 0xf0;
-	static uint8 PreviousSwitchState = 0;
-	uint8 CurrentSwitchState = ~PINE & SWITCH_PIN_MASK;
-
-	// <code>
-	return CurrentSwitchState;
-}
-#endif
-#endif
+//*/

@@ -1,5 +1,5 @@
 #pragma once
-#include <stdio.h>
+#include <stdio.h> 
 
 #ifdef _DEBUG
 #ifndef __DUMP_RS232_ON_ABORT__
@@ -11,17 +11,17 @@
 
 #ifndef _DEBUG
 #define assertf(...)
-#define verifyf(expr, ...) if(!is_true(expr)) { abort_program(__FILE__, __LINE__); }
-#define log_slow(...)
+#define verifyf(expr, ...) if(!is_true(expr)) { while(1); }
+#define log_verbose(...)
+#define log_display(...) { char __buff__[256]; sprintf(__buff__, __VA_ARGS__); outputmsg_uart0(__buff__); outputmsg_uart0("\r\n"); }
 #else // defined _DEBUG
-#define TO_CSTR(any) #any 
-
-
-#ifdef _EXEC
-#define log_slow(...) { char __buff__[256]; sprintf(__buff__, __VA_ARGS__); internal_logslow(__FILE__, __LINE__, __buff__); }
+#if LOG_VERBOSE
+#define log_verbose(...) log_display(__VA_ARGS__)
 #else
-#define log_slow(...)
+#define log_verbose(...) 
 #endif
+
+#define log_display(...) { char __buff__[256]; sprintf(__buff__, __VA_ARGS__); internal_logslow(__FILE__, __LINE__, __buff__ );} 
 
 #define verifyf(expr, ...) assertf(expr, __VA_ARGS__)
 #define assertf(expr, ...) if(!is_true(expr)) { char __buff__[256]; sprintf(__buff__, __VA_ARGS__); internal_assertion_failed(__FILE__, __LINE__, __buff__ );}
@@ -32,6 +32,6 @@
 void internal_assertion_failed( const char* file, int line, const char* msg );
 void internal_logslow( const char* file, int line, const char* buff );
 #endif
-
-// dump all memory, selectively.
-void abort_program( const char* file, int line );
+ 
+// Send message synchronously.
+void outputmsg_uart0( const char* msg );

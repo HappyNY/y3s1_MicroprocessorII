@@ -1,0 +1,23 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    CREATE SYMBOL                                                    )
+(                                                                     )
+(    Drawing          : ATMEGA128MCU.dra                              )
+(    Software Version : 16.6-2015S059                                 )
+(    Date/Time        : Fri Apr 26 12:05:43 2019                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Create Symbol of type: PACKAGE
+    Directory = D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Footprints
+    Name      = atmega128mcu.psm
+    User      = Kang
+    Machine   = DESKTOP-7A7JSBA
+
+
+Create symbol started.
+ 
+
+Create symbol completed.
+

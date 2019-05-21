@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{40c88078-7819-44ec-9b53-45714dd18a5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Device">
+      <UniqueIdentifier>{f17d8b72-20cd-4111-a681-30399bbfed4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{4d298c14-cf96-445b-b946-f92da2d8f141}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -51,7 +57,31 @@
     <ClCompile Include="ArrayTest.cpp">
       <Filter>Source Files\Test</Filter>
     </ClCompile>
-    <ClCompile Include="array.c">
+    <ClCompile Include="Display.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CGROM.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="container.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="math.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IMAGES.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RacingGame.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="analog_device.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,11 +110,37 @@
     <ClInclude Include="macros.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="array.h">
+    <ClInclude Include="Display.h">
+      <Filter>Header Files\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="math.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="container.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Intellisense.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="analog_device.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="program.out" />
+    <None Include="output.map" />
+    <None Include="program_device.bat" />
+    <None Include="build_release.bat" />
+    <None Include="dump.s" />
+    <None Include="RacingGame.h">
+      <Filter>Header Files\Application</Filter>
+    </None>
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

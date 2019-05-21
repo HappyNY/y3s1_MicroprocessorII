@@ -1,0 +1,316 @@
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   1  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |                net     pins                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  A8           pins ADDED TO this new net
+                                 IC1.25         U2.47          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  A9           pins ADDED TO this new net
+                                 IC1.24         U2.48          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  A10          pins ADDED TO this new net
+                                 IC1.21         U2.49          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  A11          pins ADDED TO this new net
+                                 IC1.23         U2.50          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  A12          pins ADDED TO this new net
+                                 IC1.2          U2.51          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  A13          pins ADDED TO this new net
+                                 IC1.26         U2.52          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  A14          pins ADDED TO this new net
+                                 IC1.1          U2.53          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  ACCL_X       pins ADDED TO this new net
+                                 U1.10          U2.33          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  ACCL_Y       pins ADDED TO this new net
+                                 U1.9           U2.34          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DA0          pins ADDED TO this new net
+                                 IC1.11         U2.39          U3.2           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DA1          pins ADDED TO this new net
+                                 IC1.12         U2.40          U3.3           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DA2          pins ADDED TO this new net
+                                 IC1.13         U2.41          U3.4           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DA3          pins ADDED TO this new net
+                                 IC1.15         U2.42          U3.5           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DA4          pins ADDED TO this new net
+                                 IC1.16         U2.43          U3.6           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DA5          pins ADDED TO this new net
+                                 IC1.17         U2.44          U3.7           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   2  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |                net     pins                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  DA6          pins ADDED TO this new net
+                                 IC1.18         U2.45          U3.8           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  DA7          pins ADDED TO this new net
+                                 IC1.19         U2.46          U3.9           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  FSR0         pins ADDED TO this new net
+                                 J3.2           U2.31          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  FSR1         pins ADDED TO this new net
+                                 J3.3           U2.32          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  GND          pins ADDED TO this existing net (pins not previously on any net)
+                                 C1.1                           
+                                 C2.2                           
+                                 C3.2                           
+                                 IC1.14                         
+                                 IC1.20                         
+                                 J1.2                           
+                                 J2.10                          
+                                 J3.4                           
+                                 R1.1                           
+                                 U1.4                           
+                                 U1.7                           
+                                 U2.29                          
+                                 U2.30                          
+                                 U2.60                          
+                                 U3.1                           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LCDCD        pins ADDED TO this new net
+                                 J5.7           U2.27          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LCDD0        pins ADDED TO this new net
+                                 J5.1           U2.21          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LCDD1        pins ADDED TO this new net
+                                 J5.2           U2.22          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LCDD2        pins ADDED TO this new net
+                                 J5.3           U2.23          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LCDD3        pins ADDED TO this new net
+                                 J5.4           U2.24          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LCDWR0       pins ADDED TO this new net
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   3  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |                net     pins                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+                                 J5.5           U2.25          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  LCDWR1       pins ADDED TO this new net
+                                 J5.6           U2.26          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06229       pins ADDED TO this new net
+                                 IC1.10         U3.19          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06233       pins ADDED TO this new net
+                                 IC1.9          U3.18          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06239       pins ADDED TO this new net
+                                 IC1.7          U3.16          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06243       pins ADDED TO this new net
+                                 IC1.8          U3.17          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06251       pins ADDED TO this new net
+                                 IC1.3          U3.12          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06255       pins ADDED TO this new net
+                                 IC1.5          U3.14          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06259       pins ADDED TO this new net
+                                 IC1.6          U3.15          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06263       pins ADDED TO this new net
+                                 IC1.4          U3.13          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N06273       pins ADDED TO this new net
+                                 U2.57          U3.11          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N12621       pins ADDED TO this new net
+                                 J2.2           U2.5           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N12677       pins ADDED TO this new net
+                                 J2.3           U2.6           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N12689       pins ADDED TO this new net
+                                 J2.4           U2.7           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N13066       pins ADDED TO this new net
+                                 J2.5           U2.8           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N13078       pins ADDED TO this new net
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   4  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |                net     pins                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+                                 J2.6           U2.9           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N13592       pins ADDED TO this new net
+                                 J2.7           U2.10          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N13604       pins ADDED TO this new net
+                                 J2.8           U2.11          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N13619       pins ADDED TO this new net
+                                 J2.9           U2.12          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N15084       pins ADDED TO this new net
+                                 C2.1           U1.11          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N15088       pins ADDED TO this new net
+                                 C3.1           U1.12          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  N15670       pins ADDED TO this new net
+                                 R1.2           U1.5           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  OE_          pins ADDED TO this new net
+                                 IC1.22         U2.56          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SARVO        pins ADDED TO this new net
+                                 J4.1           U2.19          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPK0         pins ADDED TO this new net
+                                 J4.2           U2.17          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  SPK1         pins ADDED TO this new net
+                                 J4.3           U2.20          
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  VCC          pins ADDED TO this existing net (pins not previously on any net)
+                                 C1.2                           
+                                 IC1.28                         
+                                 J1.1                           
+                                 J2.1                           
+                                 J3.1                           
+                                 U1.13                          
+                                 U1.14                          
+                                 U2.1                           
+                                 U2.2                           
+                                 U2.3                           
+                                 U2.4                           
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   5  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| NET CHANGES                                                                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   net  name |  type of change |                net     pins                  |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+  WR_          pins ADDED TO this new net
+                                 IC1.27         U2.55          
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   6  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENT DEFINITION added to design                                         |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    device type                                                               |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ 74HC573_DIP20_3_74HC573
+ ADXL202_QC14LD_ADXL202
+ ATMEGA128MCU_ATMEGA128MCU_ATMEG
+ CAP NP_CAPCK06_0.01UF
+ CAP_CAP_POL_0.05UF
+ CON10_JUMPER10_CON_RESERVED
+ CON2_CON_DC_CON_POWER
+ CON3_JUMPER3_CON_DEVICE0
+ CON4_JUMPER4_CON4
+ CON7_JUMPER7_CON_LCDDATA
+ IS62C256AL_45ULI_SOIC127P1210X3
+ RESISTOR_RES400_1.25M
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   7  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| COMPONENTS ADDED to design                                                   |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|    ref des        |    device type                                           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C1                  CAP NP_CAPCK06_0.01UF 
+ C2                  CAP_CAP_POL_0.05UF    
+ C3                  CAP_CAP_POL_0.05UF    
+ IC1                 IS62C256AL_45ULI_SOIC127P1210X3 
+ J1                  CON2_CON_DC_CON_POWER 
+ J2                  CON10_JUMPER10_CON_RESERVED 
+ J3                  CON4_JUMPER4_CON4     
+ J4                  CON3_JUMPER3_CON_DEVICE0 
+ J5                  CON7_JUMPER7_CON_LCDDATA 
+ R1                  RESISTOR_RES400_1.25M 
+ U1                  ADXL202_QC14LD_ADXL202 
+ U2                  ATMEGA128MCU_ATMEGA128MCU_ATMEG 
+ U3                  74HC573_DIP20_3_74HC573 
+|------------------------------------------------------------------------------|
+|                                 ECO   REPORT                                 |
+|                                                                    Page   8  |
+|------------------------------------------------------------------------------|
+|  D:.../P190316_MAKEFILEPROJAVRGCC/DOCS/SCHEMATIC/allegro_main/MAIN.brd       |
+|                                                    Sat May 11 11:40:07 2019  |
+|------------------------------------------------------------------------------|
+| SLOT PROPERTIES added to design                                              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+|   slot_id    |   x   |   y   |   property   |             value              |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+ C1.2                           PRIM_FILE      .\pstchip.dat
+ C2.2                           PRIM_FILE      .\pstchip.dat
+ C3.2                           PRIM_FILE      .\pstchip.dat
+ IC1.27                         PRIM_FILE      .\pstchip.dat
+ J1.2                           PRIM_FILE      .\pstchip.dat
+ J2.9                           PRIM_FILE      .\pstchip.dat
+ J3.4                           PRIM_FILE      .\pstchip.dat
+ J4.3                           PRIM_FILE      .\pstchip.dat
+ J5.7                           PRIM_FILE      .\pstchip.dat
+ R1.2                           PRIM_FILE      .\pstchip.dat
+ U1.9                           PRIM_FILE      .\pstchip.dat
+ U2.2                           PRIM_FILE      .\pstchip.dat
+ U3.12                          PRIM_FILE      .\pstchip.dat
+|------------------------------------------------------------------------------|
+|       Nets changed          :     136                                        |
+|       Comp definitions added:      12                                        |
+|       Components added      :      13                                        |
+|       Slot property added   :      13                                        |
+|                                                                              |
+|   Total ECO changes reported:     174                                        |
+|------------------------------------------------------------------------------|

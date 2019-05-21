@@ -1,0 +1,79 @@
+\t (00:00:01) allegro 16.6-2015 S059 (v16-6-112ER) Windows 32
+\t (00:00:01)     Journal start - Sat May 04 15:17:52 2019
+\t (00:00:01)         Host=DESKTOP-7A7JSBA User=Kang Pid=23856 CPUs=8
+\t (00:00:01) CmdLine= D:\Program Files\OrCAD\tools\pcb\bin\allegro.exe -orcad D:\Onedrive\Edu\y3_s1\microprocessor_II\P190316_MakefileProjAvrGcc\Docs\Footprints\GLCD_LG2401283.dra
+\t (00:00:01) 
+\t (00:00:01) Opening existing design...
+\d (00:00:01) Design opened: D:/Onedrive/Edu/y3_s1/microprocessor_II/P190316_MakefileProjAvrGcc/Docs/Footprints/GLCD_LG2401283.dra
+\i (00:00:01) trapsize 598
+\i (00:00:01) trapsize 587
+\i (00:00:01) trapsize 599
+\i (00:00:02) trapsize 599
+\i (00:00:03) generaledit 
+\i (00:00:07) pick grid 1.045 66.610
+\t (00:00:07) last pick:  0.000 66.040
+\i (00:00:08) prepopup 1.404 65.891
+\i (00:00:11) pick grid -2.551 65.052
+\t (00:00:11) last pick:  -2.540 66.040
+\i (00:00:11) pick grid 1.404 68.288
+\t (00:00:11) last pick:  2.540 68.580
+\i (00:00:12) pick grid 1.404 65.292
+\t (00:00:12) last pick:  2.540 66.040
+\i (00:00:13) pick grid 2.244 66.610
+\t (00:00:13) last pick:  2.540 66.040
+\i (00:00:13) pick grid 3.083 67.569
+\t (00:00:13) last pick:  2.540 68.580
+\i (00:00:14) prepopup 3.083 67.569
+\i (00:00:15) pop dyn_option_select @:@Delete 
+\i (00:00:15) delete 
+\i (00:00:15) generaledit 
+\i (00:00:16) pick grid 2.004 66.490
+\t (00:00:16) last pick:  2.540 66.040
+\i (00:00:17) pick grid 2.363 67.929
+\t (00:00:17) last pick:  2.540 68.580
+\i (00:00:17) prepopup 2.363 67.929
+\i (00:00:38) pop dyn_option_select 'Change class/subclass@:@BOARD GEOMETRY@:@WB_GUIDE_LINE' 
+\i (00:00:38) change class 
+\t (00:00:38) No DRC errors detected.
+\t (00:00:38) Changed 1 items out of 1 items found.
+\i (00:00:38) generaledit 
+\i (00:00:39) prepopup 3.442 67.689
+\i (00:01:14) pick grid 33.408 58.939
+\t (00:01:14) last pick:  33.020 58.420
+\i (00:01:15) pick grid 34.367 67.569
+\t (00:01:15) last pick:  35.560 68.580
+\i (00:01:15) prepopup 34.367 67.569
+\i (00:01:18) pop dyn_option_select @:@Delete 
+\i (00:01:18) delete 
+\i (00:01:18) generaledit 
+\i (00:01:19) pick grid 31.850 66.850
+\t (00:01:19) last pick:  33.020 66.040
+\i (00:01:19) pick grid 32.329 66.251
+\t (00:01:19) last pick:  33.020 66.040
+\i (00:01:19) prepopup 32.329 66.251
+\i (00:01:21) pop dyn_option_select @:@Delete 
+\i (00:01:21) delete 
+\i (00:01:21) generaledit 
+\i (00:01:26) pick grid -33.116 72.843
+\t (00:01:26) last pick:  -33.020 73.660
+\i (00:01:27) drag_start grid -32.996 71.764
+\i (00:01:27) move 
+\t (00:01:27) last pick:  -35.560 71.120
+\t (00:01:27) Pick new location for the element(s).
+\i (00:01:28) drag_stop grid -33.715 21.422
+\i (00:01:28) generaledit 
+\i (00:01:28) drag_start grid -33.596 72.364
+\i (00:01:28) move 
+\t (00:01:28) last pick:  -35.560 71.120
+\t (00:01:28) Pick new location for the element(s).
+\i (00:01:30) drag_stop grid -32.277 19.983
+\i (00:01:30) generaledit 
+\i (00:01:30) prepopup -13.938 27.415
+\i (00:01:30) pick grid -20.291 26.696
+\t (00:01:30) last pick:  -20.320 27.940
+\i (00:01:32) save 
+\i (00:01:33) fillin yes 
+\t (00:01:33) Symbol 'glcd_lg2401283.psm' created.
+\i (00:01:34) generaledit 
+\i (00:01:37) exit 
+\t (00:01:38)     Journal end - Sat May 04 15:19:29 2019
