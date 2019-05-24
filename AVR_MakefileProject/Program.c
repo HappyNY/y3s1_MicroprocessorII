@@ -174,6 +174,59 @@ void INITSESSION_RACE_LOAD()
     
 }
 
+typedef struct tagTest3DSession {
+    FCameraTransform Cam;
+    FLineVector Meshes[4];
+    FPoint16 Locations;
+} FTest3DSession;
+static void test_3d_update();
+static void test_3d_draw( bool v );
+DECLARE_LINE_VECTOR( BoxOne );
+void INITSESSION_TEST_3D()
+{
+    FTrackSelectionInfo* lpTrack = memset(
+        Malloc( sizeof( FTest3DSession ) ),
+        0,
+        sizeof( FTest3DSession )
+    );
+
+    gSession.Update = test_3d_update;
+    gSession.Draw = test_3d_draw;
+}
+
+void test_3d_update()
+{
+    FTest3DSession* const lpv = gSession.data__;
+
+    if ( gButton_Hold & mask( BUTTON_U ) ) {
+        lpv->Cam.Position.x += 1;
+    }
+    if ( gButton_Hold & mask( BUTTON_D ) ) {
+        lpv->Cam.Position.x -= 1;
+    }
+    if ( gButton_Hold & mask( BUTTON_L ) ) {
+        lpv->Cam.Position.y -= 1;
+    }
+    if ( gButton_Hold & mask( BUTTON_R ) ) {
+        lpv->Cam.Position.y += 1;
+    }
+
+    if ( gButton_Hold & mask( BUTTON_A ) ) {
+        lpv->Cam.ReadOnly_DirectionRadian -= 0x10;
+    }
+    if ( gButton_Hold & mask( BUTTON_B ) ) {
+        lpv->Cam.ReadOnly_DirectionRadian += 0x10;
+    }
+
+    if ( gButton_Hold & mask( BUTTON_HOME ) ) {
+        INITSESSION_MAIN();
+    }
+}
+
+void test_3d_draw( bool v )
+{
+
+}
 
 static void main_update()
 {
@@ -199,7 +252,10 @@ static void main_update()
                 gSession.Update = main_calib_update;
                 break;
             }
-        case 2: break;
+        case 2: 
+            // @todo. Resolve this code when test is finished
+            INITSESSION_TEST_3D();
+            break;
         case 3: {
                 LCDDevice__HardReset();
                 _delay_ms( 1000 );
