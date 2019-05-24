@@ -43,8 +43,8 @@ void init_ebi_heap( void )
     // your code to init the ebi goes here
 
     // set heap start and end
-    __malloc_heap_start = (char *) 0x8000;
-    __malloc_heap_end = (char *) 0xffff;
+    //__malloc_heap_start = (char *) 0x8000;
+    //__malloc_heap_end = (char *) 0xffff;
     
     MCUCR |= mask( SRE );
 }  
@@ -70,7 +70,7 @@ void main( void )
     gSession.Draw = nulldraw;
     gSession.data__ = NULL;
 
-    INITSESSION_MAIN();
+    INITSESSION_VALIDATE();
 
     byte RenderingInterval = 0;
     // MAIN PROGRAM LOOP
