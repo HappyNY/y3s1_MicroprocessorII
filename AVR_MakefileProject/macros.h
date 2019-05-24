@@ -30,6 +30,7 @@ extern volatile char __INTERRUPT_LOCK_MUTEX__;
 #define LOG_MEMORY 0
 #endif
 
+#define USE_EXTERNAL_HEAP 1
 #define ENABLE_HEAP_CACHE 1
 #define USE_STDLIB_MALLOC 1
 #define USE_SERIAL_COMMUNICATION 0

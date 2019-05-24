@@ -358,9 +358,9 @@ void validate_update()
     byte WarnAddr;
     do {
         volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i );
-        *lpValid = 0xff;
-        NumWarn += ( *lpValid ) != 0xff;
-        WarnAddr = ( *lpValid ) == 0xff ? WarnAddr : lpPrg->ProgressAddr + i;
+        *lpValid = i;
+        NumWarn += ( *lpValid ) != i;
+        WarnAddr = ( *lpValid ) == i? WarnAddr : lpPrg->ProgressAddr + i;
         ++i;
     } while ( i );
 
@@ -378,7 +378,7 @@ void validate_draw( bool cmplx )
 
     byte p = 2, col = 24;
     byte NumPrg = ( lpv->ProgressAddr - 0x8000 ) >> 8;
-    NumPrg >>= 3;
+    NumPrg /= 6;
     
     char buff[32];
     byte i;
@@ -391,7 +391,8 @@ void validate_draw( bool cmplx )
     p += 2;
     col = 24;
     VBuffer_DrawString( &p, &col, buff, true );
-
+    sprintf( buff, "\r\nChecking %x", lpv->ProgressAddr );
+    VBuffer_DrawString( &p, &col, buff, false );
     if ( lpv->Warnings != 0 ) {
         p += 2;
         col = 0;
