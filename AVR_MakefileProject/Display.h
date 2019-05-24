@@ -44,6 +44,6 @@ inline void VBuffer_DrawDot( int16 y, int16 x )
 }
 
 void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed ); 
-void VBuffer_DrawString( byte* xCol, byte* y, const char* String, bool bInversed );
+void VBuffer_DrawString( byte* lpPage, byte* lpColumn, const char* String, bool bInversed );
 
 void VBuffer_DrawLine( int16 xbeg, int16 ybeg, const int16 xend, const int16 yend );
