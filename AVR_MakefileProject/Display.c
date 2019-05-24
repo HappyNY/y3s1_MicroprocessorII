@@ -87,7 +87,7 @@ extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
 {
 	// Software initialization
-    LCDBuffer = (byte*)( 0xffff - LCD_BUFFER_LENGTH );// Malloc( LCD_BUFFER_LENGTH );
+    LCDBuffer = (byte*)( 0xffff - LCD_BUFFER_LENGTH );//*/ Malloc( LCD_BUFFER_LENGTH );
 
 	// Hardware associated functionality.
     DDRD = 0XFF; 

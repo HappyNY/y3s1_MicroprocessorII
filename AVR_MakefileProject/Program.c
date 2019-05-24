@@ -1,6 +1,7 @@
 #include "Program.h"
 #include "memory128.h"
 #include "Display.h"
+#include "RacingGame.h"
 
 byte gButton_Captured;
 byte gButton_Pressed;
@@ -105,11 +106,33 @@ typedef struct tagMainScreenInfo {
     byte Cursor;
 } FMainScreenInfo;
 
+typedef struct tagValidationProgress {
+    uint16 ProgressAddr;
+    uint16 Warnings;
+    uint16 LatestWarningAddr;
+} FValidationProgress;
 
 static void main_update();
-static void main_draw();
-static void main_calib_draw();
+static void main_draw(bool);
+static void main_calib_draw(bool);
 static void main_calib_update();
+static void validate_update();
+static void validate_draw(bool);
+
+void INITSESSION_VALIDATE()
+{
+    FValidationProgress* lpProgrss = memset(
+        Malloc( sizeof( FValidationProgress ) ),
+        0,
+        sizeof( FValidationProgress )
+    );
+    
+    lpProgrss->ProgressAddr = 0x9000;
+    SetSessionData( lpProgrss );
+
+    gSession.Draw = validate_draw;
+    gSession.Update = validate_update;
+}
 
 void INITSESSION_MAIN()
 {
@@ -123,6 +146,32 @@ void INITSESSION_MAIN()
     
     gSession.Draw = main_draw;
     gSession.Update = main_update;
+}
+
+typedef struct tagTrackSelectionInfo {
+    byte Cursor;
+} FTrackSelectionInfo;
+
+static void tracksel_update();
+static void tracksel_draw( bool v );
+void INITSESSION_TRACK_SELECT()
+{
+    FTrackSelectionInfo* lpTrack = memset(
+        Malloc( sizeof( FTrackSelectionInfo ) ),
+        0,
+        sizeof( FTrackSelectionInfo )
+    );
+
+    SetSessionData( lpTrack );
+    gSession.Draw = tracksel_draw;
+    gSession.Update = tracksel_update;
+}
+
+
+static void loadtrack_update();
+void INITSESSION_RACE_LOAD()
+{
+    
 }
 
 
@@ -141,7 +190,10 @@ static void main_update()
     if ( gButton_Pressed & mask( BUTTON_A ) ) {
         switch ( *cursor )
         {
-        case 0: break;
+        case 0: {
+                INITSESSION_TRACK_SELECT();
+                break;
+            }
         case 1: {
                 gSession.Draw = main_calib_draw;
                 gSession.Update = main_calib_update;
@@ -205,6 +257,99 @@ static void main_calib_update()
     {
         --ACC_MAX_INTERVAL;
     }
+}
+
+void validate_update()
+{
+    FValidationProgress* lpPrg = gSession.data__;
+    
+    byte i = 0;
+    byte NumWarn = 0;
+    byte WarnAddr;
+    do {
+        volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i );
+        *lpValid = 0xff;
+        NumWarn += ( *lpValid ) != 0xff;
+        WarnAddr = ( *lpValid ) == 0xff ? WarnAddr : lpPrg->ProgressAddr + i;
+        ++i;
+    } while ( i );
+
+    lpPrg->ProgressAddr += 0x100;
+
+    if ( lpPrg->ProgressAddr > 0xfd00 ) {
+        INITSESSION_MAIN();
+    }
+}
+
+void validate_draw( bool cmplx )
+{
+    VBuffer_Clear();
+    FValidationProgress* lpv = gSession.data__;
+
+    byte p = 2, col = 24;
+    byte NumPrg = ( lpv->ProgressAddr - 0x8000 ) >> 8;
+    NumPrg >>= 3;
+    
+    char buff[32];
+    byte i;
+    for ( i = 0; i < NumPrg; ++i ) {
+        buff[i] = ' ';
+    }
+    buff[i] = 0;
+
+    VBuffer_DrawString( &p, &col, "VALIDATING...", false );
+    p += 2;
+    col = 24;
+    VBuffer_DrawString( &p, &col, buff, true );
+
+    if ( lpv->Warnings != 0 ) {
+        p += 2;
+        col = 0;
+        sprintf( buff, "Warnings: %d\r\n", lpv->Warnings );
+        VBuffer_DrawString( &p, &col, buff, false );
+        sprintf( buff, "At: 0x%x", lpv->LatestWarningAddr );
+        VBuffer_DrawString( &p, &col, buff, true );
+    }
+}
+
+void tracksel_update()
+{
+    FTrackSelectionInfo* lpTrk = gSession.data__;
+    
+    if ( gButton_Pressed & mask( BUTTON_L ) ) {
+        lpTrk->Cursor = lpTrk->Cursor == 0 ? 0 : lpTrk->Cursor - 1;
+    }
+    if ( gButton_Pressed & mask( BUTTON_R ) ) {
+        lpTrk->Cursor = lpTrk->Cursor == NumTracks - 1 ? NumTracks - 1 : lpTrk->Cursor + 1;
+    }
+    if ( gButton_Pressed & mask( BUTTON_B ) ) {
+        INITSESSION_MAIN();
+        return;
+    }
+    if ( gButton_Pressed& mask( BUTTON_A ) ) {
+        // @todo. Load track selected by cursor.
+        // Keep cursor location data to make next session know which track to load.
+    }
+}
+
+void tracksel_draw( bool v )
+{
+    VBuffer_Clear();
+    FTrackSelectionInfo* lpTrk = gSession.data__;
+    FTrackDesc const* TrackOnCursor = &AllTracks[lpTrk->Cursor];
+    
+    byte pg = 7, col = 0;
+
+    VBuffer_DrawString( &pg, &col, "SELECT TRACK", false );
+    ++pg;
+    VBuffer_DrawString( &pg, &col, TrackOnCursor->lpcTrackName, true );
+
+    pg = 14, col = 0;
+    VBuffer_DrawString( &pg, &col, "A: SELECT B: BACK", false );
+}
+
+void loadtrack_update()
+{
 }
 
 static void main_calib_draw( bool v )
