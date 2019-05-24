@@ -251,6 +251,12 @@ void test_3d_draw( bool v )
     gCursorPage = 0;
     gCursorColumn = 0;
     VBuffer_PrintString( "CS{%d, %d} ", lpv->Cam.Position.x, lpv->Cam.Position.y );
+    
+    fixedpt pp = fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
+    pp = fixedpt_mul( pp, fixedpt_rconst( LITERAL_PI/8/10 ) );
+
+    gSlopeValue.Cosv = fixedpt_cos( pp );
+    gSlopeValue.Sinv = fixedpt_sin( pp );
     for ( i = 0
           ; i < ARRAYCOUNT( lpv->Locations )
           ; ++i )
@@ -338,15 +344,9 @@ static void main_calib_update()
         gSession.Update = main_update;
     }
 
-    if ( ( gButton_Hold & mask( BUTTON_U ) )
-         || ( gButton_Pressed & mask( BUTTON_R ) ) )
-    {
-        ++ACC_MAX_INTERVAL;
-    }
-    if ( ( gButton_Hold & mask( BUTTON_D ) )
-        || ( gButton_Pressed & mask( BUTTON_L ) ) )
-    {
-        --ACC_MAX_INTERVAL;
+    if ( gButton_Pressed & mask( BUTTON_A ) ) {
+        ACC_XPIVOT = ACC_PERCENTX;
+        ACC_YPIVOT = ACC_PERCENTY;
     }
 }
 

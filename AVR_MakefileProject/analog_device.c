@@ -1,5 +1,5 @@
 #include "analog_device.h"
-
+extern bool GOOD_TO_UPDATE;
 void InitializeAnalogDevice()
 {
     DDRF = 0b11;
@@ -25,23 +25,34 @@ static byte ACC_IDX = 0;
 #define ACC_Y ((PINF & (mask(PF3))) != 0)
 void UpdateAccel()
 {
+    struct flgref {
+        byte bXAdd : 1;
+        byte bYAdd : 1;
+    } Flags;
     // X
     static byte xtot = 0;
     static bool xprv = 0;
     static byte xidx = 0;
 
     bool x = ACC_X;
+    if ( GOOD_TO_UPDATE ) {
+        Flags.bXAdd = 1;
+        Flags.bYAdd = 1;
+    }
+
     if ( x ) {
         if ( x ^ xprv ) {
+            if ( Flags.bXAdd ) {
             // ACC_PERCENTX = ACC_XCNT * 100 / xtot;
-            ACC_XARR[xidx++& SAMPLE_MOD] = ACC_XCNT * 100 / xtot;
-            uint16 tot = 0;
-            byte i = SAMPLE_POW2;
-            while ( i-- ) {
-                tot += ACC_XARR[i];
+                ACC_XARR[xidx++& SAMPLE_MOD] = ACC_XCNT << 2; // *100 / xtot;
+                uint16 tot = 0;
+                byte i = SAMPLE_POW2;
+                while ( i-- ) {
+                    tot += ACC_XARR[i];
+                }
+                ACC_PERCENTX = tot >> SAMPLE_BITS;
+                ACC_XCNT = 1;
             }
-            ACC_PERCENTX = tot >> SAMPLE_BITS;
-            ACC_XCNT = 1;
             xtot = 0;
         }
         else {
@@ -57,15 +68,17 @@ void UpdateAccel()
     bool y = ACC_Y;
     if ( y ) {
         if ( y ^ yprv ) {
+            if ( Flags.bYAdd ) {
             // ACC_PERCENTY = ACC_YCNT * 100 / ytot;
-            ACC_YARR[yidx++& SAMPLE_MOD] = ACC_YCNT * 100 / ytot;
-            uint16 tot = 0;
-            byte i = SAMPLE_POW2;
-            while ( i-- ) {
-                tot += ACC_YARR[i];
+                ACC_YARR[yidx++& SAMPLE_MOD] = ACC_YCNT << 2;// *100 / ytot;
+                uint16 tot = 0;
+                byte i = SAMPLE_POW2;
+                while ( i-- ) {
+                    tot += ACC_YARR[i];
+                }
+                ACC_PERCENTY = tot >> SAMPLE_BITS;
+                ACC_YCNT = 1;
             }
-            ACC_PERCENTY = tot >> SAMPLE_BITS;
-            ACC_YCNT = 1;
             ytot = 0;
         }
         else {

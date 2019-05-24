@@ -56,7 +56,7 @@ void init_ebi_heap( void )
 // This is the entry point of the program.
 // For now it defines some test code, but on release this code will be excluded, and replaced by gameplay loop.
 /////////////////////////////////////////////////////////////////////
-volatile static bool GOOD_TO_UPDATE = 0;
+volatile bool GOOD_TO_UPDATE = 0;
 void main( void )
 {
     void InitializeDevice();
@@ -116,11 +116,11 @@ void InitializeDevice()
 // TIMER 1 FOR GAMEPLAY & ACCELERATION SENSOR
 // INTERVAL = 3.3MS
 /////////////////////////////////////////////////////////////////////
-#define TCNT1_SETUP TCNT1 = 0xffff - 7999
+#define TCNT1_SETUP TCNT1 = 0xffff - 3999
 ISR( TIMER1_OVF_vect )
 {
     TCNT1_SETUP;
-    enum { ITER_COUNT = 66 };
+    enum { ITER_COUNT = 132 };
     static byte IterCnt = 0;
 
     ++IterCnt;
