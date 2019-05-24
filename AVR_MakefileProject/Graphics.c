@@ -17,13 +17,15 @@ static inline fixedpt dot( FPointFP const* a, FPointFP const* b )
     return fixedpt_mul(a->x, b->x) + fixedpt_mul(a->y,b->y);
 }
 
-static inline fixedpt sz( FPointFP v )
+static inline fixedpt sz( int16 x, int16 y )
 {
     //  return fixedpt_sqrt( dot( a, a ) );//fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
     // int32 val = fixedpt_toint( v.x ) * fixedpt_toint( v.x );
     // val += fixedpt_toint( v.y ) * fixedpt_toint( v.y );
 
-    return fixedpt_pow( dot( &v, &v ), fixedpt_rconst( 0.5 ) );
+    float v = (int32)x * x + (int32)y * y;
+
+    return (int32) ( sqrtf( v ) * (float) 0x10000 );
 }
 
 extern inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTransform* Camera, int8* DegreesWhenVisible, int16* Distance );
@@ -33,12 +35,16 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     fixedpt AngleBetween;
     fixedpt DistanceFromCamera;
     fixedpt Z;
-
-    DirectionVector.x = fixedpt_fromint( Position->x - Camera->Position.x );
-    DirectionVector.y = fixedpt_fromint( Position->y - Camera->Position.y );
+    
+    int16 dirX, dirY;
+    dirX = Position->x - Camera->Position.x;
+    dirY = Position->y - Camera->Position.y;
+    DirectionVector.x = fixedpt_fromint( dirX );
+    DirectionVector.y = fixedpt_fromint( dirY );
     CameraDirectionUnitVector = Camera->CachedDirection;
-     
-    DistanceFromCamera = sz( DirectionVector ); 
+    
+    DistanceFromCamera = sz( dirX, dirY ); 
+    // VBuffer_PrintString( "{sz. %s}", fixedpt_cstr( DistanceFromCamera, -1 ) );
     if ( DistanceFromCamera > fixedpt_rconst( MAXIMUM_VISIBLE_DISTANCE )
          || DistanceFromCamera < fixedpt_rconst( MINIMUM_VISIBLE_DISTANCE ) )
     {
@@ -51,6 +57,8 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
 
     // acos(dot(a,b) / (sz(a)*sz(b))) 
     AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera );
+    AngleBetween = fixedpt_acos_half( AngleBetween );// acos( AngleBetween / (double) FIXEDPT_ONE );
+    VBuffer_PrintString( "{a: %s}", fixedpt_cstr( AngleBetween, -1 ) );
     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
     *Distance = fixedpt_toint( DistanceFromCamera );
@@ -81,7 +89,7 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
     int16 Distance;
     bool bIsVisibleArg;
 #define scale(val) (((int32)(val)*(int32)STANDARD_DISTANCE_IN_UNITS)/Distance)
-#define rotator (((int16)(AngleInDegrees)*LCD_NUM_COLUMN)/((int16)CAMERA_FOV))
+#define rotator (((int16)(AngleInDegrees)*(LCD_NUM_COLUMN))/(CAMERA_FOV))
 
     bIsVisibleArg = CalculateAngleIfVIsible( &MeshPosition, Camera, &AngleInDegrees, &Distance );
     log_verbose( "Cam loc: %d, %d", Camera->Position.x, Camera->Position.y );

@@ -188,24 +188,27 @@ void INITSESSION_TEST_3D()
         0,
         sizeof( FTest3DSession )
     );
+    SetSessionData( lpv );
 
     gSession.Update = test_3d_update;
     gSession.Draw = test_3d_draw;
 
     FPoint16 loc[] = {
-        0, 0,
-        10, 10,
-        10, -10,
-        20, 0,
-        20, 10,
-        20, -10,
-        30, 0,
-        30, 10,
-        30, -10,
-        50, 0
+        50, 0,
+        100, 100,
+        100, -100,
+        200, 0,
+        200, 100,
+        200, -100,
+        300, 0,
+        300,  100,
+        300, -100,
+        500,   0
     };
     
     memcpy( lpv->Locations, loc, sizeof( lpv->Locations ) );
+    lpv->Cam.Position.x = 0;
+    lpv->Cam.Position.y = 0;
 }
 
 void test_3d_update()
@@ -226,10 +229,10 @@ void test_3d_update()
     }
 
     if ( gButton_Hold & mask( BUTTON_A ) ) {
-        lpv->Cam.ReadOnly_DirectionRadian -= 0x10;
+        lpv->Cam.ReadOnly_DirectionRadian -= 0x1000;
     }
     if ( gButton_Hold & mask( BUTTON_B ) ) {
-        lpv->Cam.ReadOnly_DirectionRadian += 0x10;
+        lpv->Cam.ReadOnly_DirectionRadian += 0x1000;
     }
 
     if ( gButton_Hold & mask( BUTTON_HOME ) ) {
@@ -244,7 +247,12 @@ void test_3d_draw( bool v )
     CalculateTranformCache( &lpv->Cam );
     
     byte i;
-    for ( i = 0; i < ARRAYCOUNT( lpv->Locations ); ++i )
+    gCursorPage = 0;
+    gCursorColumn = 0;
+    VBuffer_PrintString( "CS{%d, %d} ", lpv->Cam.Position.x, lpv->Cam.Position.y );
+    for ( i = 0
+          ; i < 2 //ARRAYCOUNT( lpv->Locations )
+          ; ++i )
     {
         CDrawArgs_DrawOnDisplayBufferPerspective(
             &BoxOne,
