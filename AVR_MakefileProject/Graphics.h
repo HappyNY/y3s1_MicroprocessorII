@@ -20,7 +20,7 @@
 #define CAMERA_FOV 75
 #define MAXIMUM_VISIBLE_DISTANCE 5000.0
 #define MINIMUM_VISIBLE_DISTANCE 1.0
-#define STANDARD_DISTANCE_IN_UNITS 55
+#define STANDARD_DISTANCE_IN_UNITS 100
 
 typedef struct FPoint8 {
     int8 x;
@@ -66,6 +66,10 @@ typedef struct FRect16 {
     int16 Top;
     int16 Bottom;
 }FRect16;
+
+extern struct tagSlope {
+    fixedpt Cosv, Sinv;
+} gSlopeValue;
 
 void CalculateTranformCache( FCameraTransform* Camera );
 void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const FPoint16 MeshPosition, const FCameraTransform* Camera );

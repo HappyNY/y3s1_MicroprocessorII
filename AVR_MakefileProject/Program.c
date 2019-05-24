@@ -240,6 +240,7 @@ void test_3d_update()
     }
 }
 
+DECLARE_LINE_VECTOR( Triangle );
 void test_3d_draw( bool v )
 {
     VBuffer_Clear();
@@ -251,11 +252,11 @@ void test_3d_draw( bool v )
     gCursorColumn = 0;
     VBuffer_PrintString( "CS{%d, %d} ", lpv->Cam.Position.x, lpv->Cam.Position.y );
     for ( i = 0
-          ; i < 2 //ARRAYCOUNT( lpv->Locations )
+          ; i < ARRAYCOUNT( lpv->Locations )
           ; ++i )
     {
         CDrawArgs_DrawOnDisplayBufferPerspective(
-            &BoxOne,
+            &Triangle,
             lpv->Locations[i],
             &lpv->Cam
         );

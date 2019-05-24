@@ -1,6 +1,7 @@
 #include "Graphics.h"
 #include "Display.h"
 
+struct tagSlope gSlopeValue;
 void CalculateTranformCache( FCameraTransform* Camera )
 {
     FPointFP r;
@@ -58,7 +59,7 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     // acos(dot(a,b) / (sz(a)*sz(b))) 
     AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera );
     AngleBetween = fixedpt_acos_half( AngleBetween );// acos( AngleBetween / (double) FIXEDPT_ONE );
-    VBuffer_PrintString( "{a: %s}", fixedpt_cstr( AngleBetween, -1 ) );
+    // VBuffer_PrintString( "{a: %s}", fixedpt_cstr( AngleBetween, -1 ) );
     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
     *Distance = fixedpt_toint( DistanceFromCamera );
@@ -115,7 +116,7 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         int16 x0, y0, x1, y1;
         FRect16 LineBound;
 
-        centerX = LCD_NUM_COLUMN / 2 + rotator;
+        centerX = LCD_NUM_COLUMN / 2;
         centerY = LCD_HEIGHT / 2;
 
         log_verbose( "Display center = %d, %d", centerX, centerY );
@@ -123,10 +124,25 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         while ( lpLine != lpLineEnd )
         {
             // Translate.
-            x0 = scale( lpLine->Begin.x ) + centerX;
-            y0 = scale( lpLine->Begin.y ) + centerY;
-            x1 = scale( lpLine->End.x ) + centerX;
-            y1 = scale( lpLine->End.y ) + centerY;
+            int16 absv, rot = rotator;
+            x0 = scale( lpLine->Begin.x ) + rot;
+            y0 = scale( lpLine->Begin.y );
+            absv = ( x0 > 0 ? x0 : -x0 ) >> 3;
+            y0 += y0 > 0 ? absv : -absv;
+            x0 += centerX;
+            y0 += centerY;
+            x1 = scale( lpLine->End.x ) + rot;
+            y1 = scale( lpLine->End.y );
+            absv = ( x1 > 0 ? x1 : -x1 ) >> 3;
+            y1 += y1 > 0 ? absv : -absv;
+            y1 += centerY;
+            x1 += centerX;
+
+            x0 = ( gSlopeValue.Cosv * x0 - gSlopeValue.Sinv * y0 ) >> FIXEDPT_FBITS;
+            y0 = ( gSlopeValue.Sinv * x0 + gSlopeValue.Cosv * y0 ) >> FIXEDPT_FBITS;
+            x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
+            y1 = ( gSlopeValue.Sinv * x1 + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
+
             log_verbose( "Draw args %d, %d to %d, %d", x0, y0, x1, y1 );
             // Draw
             if ( x0 > x1 ) {
