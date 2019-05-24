@@ -220,3 +220,15 @@ void VBuffer_DrawLine( int16 x0, int16 y0, const int16 x1, const int16 y1 )
         }
     }
 } 
+
+byte gCursorPage, gCursorColumn;
+
+void VBuffer_PrintString( const char * Fmt, ... )
+{
+    va_list a;
+    char buff[128];
+    va_start( a, Fmt );
+    vsprintf( buff, Fmt, a );
+    va_end( a );
+    VBuffer_DrawString( &gCursorPage, &gCursorColumn, buff, false );
+} 
