@@ -176,15 +176,14 @@ void INITSESSION_RACE_LOAD()
 
 typedef struct tagTest3DSession {
     FCameraTransform Cam;
-    FLineVector Meshes[4];
-    FPoint16 Locations;
+    FPoint16 Locations[10];
 } FTest3DSession;
 static void test_3d_update();
 static void test_3d_draw( bool v );
 DECLARE_LINE_VECTOR( BoxOne );
 void INITSESSION_TEST_3D()
 {
-    FTrackSelectionInfo* lpTrack = memset(
+    FTest3DSession* lpv = memset(
         Malloc( sizeof( FTest3DSession ) ),
         0,
         sizeof( FTest3DSession )
@@ -192,6 +191,21 @@ void INITSESSION_TEST_3D()
 
     gSession.Update = test_3d_update;
     gSession.Draw = test_3d_draw;
+
+    FPoint16 loc[] = {
+        0, 0,
+        10, 10,
+        10, -10,
+        20, 0,
+        20, 10,
+        20, -10,
+        30, 0,
+        30, 10,
+        30, -10,
+        50, 0
+    };
+    
+    memcpy( lpv->Locations, loc, sizeof( lpv->Locations ) );
 }
 
 void test_3d_update()
@@ -225,7 +239,19 @@ void test_3d_update()
 
 void test_3d_draw( bool v )
 {
-
+    VBuffer_Clear();
+    FTest3DSession* const lpv = gSession.data__;
+    CalculateTranformCache( &lpv->Cam );
+    
+    byte i;
+    for ( i = 0; i < ARRAYCOUNT( lpv->Locations ); ++i )
+    {
+        CDrawArgs_DrawOnDisplayBufferPerspective(
+            &BoxOne,
+            lpv->Locations[i],
+            &lpv->Cam
+        );
+    }
 }
 
 static void main_update()
