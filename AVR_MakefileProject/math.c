@@ -109,9 +109,16 @@ static _acos_table_val acos_table[] = {
 fixedpt fixedpt_acos_half( fixedpt x ) //{ return FIXEDPT_HALF_PI - fixedpt_asin( val ); }
 {
     // uint16 Key = x; //  x & ~FIXEDPT_FMASK ? 0xffff : x & 0xffff;
-    _acos_table_val* found = TryBinarySearch( &x, acos_table, ARRAYCOUNT( acos_table ), (uint8)sizeof( *acos_table ), compare_acos_table );
-     
-    return found->value + ( x < 0 ) * FIXEDPT_HALF_PI;
+   
+    fixedpt put = x > 0 ? x : -x;
+    _acos_table_val* found = TryBinarySearch( &put, acos_table, ARRAYCOUNT( acos_table ), (uint8)sizeof( *acos_table ), compare_acos_table );
+    
+    _acos_table_val* prv = found == acos_table ? found : found - 1;
+    // lerp
+    fixedpt ratio = fixedpt_div( ( put - prv->fractional ), ( found->fractional - prv->fractional ) );
+    fixedpt res = prv->value + fixedpt_mul( found->value - prv->value, ratio );
+    return
+        x > 0 ? res : FIXEDPT_PI - res;
 }
 
 

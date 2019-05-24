@@ -28,20 +28,26 @@ typedef struct FTrackNode {
 
 bool FTrackNode_IsInBound( FTrackNode const* v, FPoint16 Check );
 
-
 /*******************************************
  * Descriptor of an track. Will be stored in the program memory as form of array, 
  *and then will be loaded and parsed into FTrackNode on runtime.
  *******************************************/
-typedef struct FTrackDesc {
+typedef struct tagTrackNode {
     uint8 Width;
     int8 AngleInDegree; // -128 ~ 127¡Æ
     uint16 Length;
+} FTrackNodeDesc;
+
+typedef struct tagTrackDesc {
+    FTrackNodeDesc const* Tracks;
+    uint16 NumNodes;
+    char const* lpcTrackName;
 } FTrackDesc;
 
-
+extern FTrackDesc const * const AllTracks;
+extern const byte NumTracks;
 /*******************************************
- * Runtime track information
+ * Runtime track information    
  *******************************************/
 typedef struct FRuntimeTrackInfo {
     FTrackNode* Head;
@@ -52,7 +58,7 @@ typedef struct FRuntimeTrackInfo {
 } FRuntimeTrackInfo;
 
 void UnloadCurrentTrackInformation( FRuntimeTrackInfo* v );
-void LoadTrackInformation( FRuntimeTrackInfo* v, FTrackDesc* TrackDescs, uint16 NumTrackNodes );
+void LoadTrackInformation( FRuntimeTrackInfo* v, FTrackNodeDesc* TrackDescs, uint16 NumTrackNodes );
 
 
 /*******************************************

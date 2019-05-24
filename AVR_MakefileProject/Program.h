@@ -72,4 +72,10 @@ void EraseTimer( FTimerHandle* Handle );
 ////////////////////////////////////////////////////////////////
 // Main screen session
 ////////////////////////////////////////////////////////////////
+void INITSESSION_VALIDATE();
 void INITSESSION_MAIN();
+void INITSESSION_TRACK_SELECT();
+void INITSESSION_RACE_LOAD();
+
+void INITSESSION_TEST_3D();
+

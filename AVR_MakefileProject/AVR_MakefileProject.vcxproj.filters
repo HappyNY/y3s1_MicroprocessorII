@@ -25,14 +25,14 @@
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{c9ef54b0-7981-4800-bfbd-15ffe015d36b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Common">
-      <UniqueIdentifier>{40c88078-7819-44ec-9b53-45714dd18a5c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Device">
       <UniqueIdentifier>{f17d8b72-20cd-4111-a681-30399bbfed4e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{4d298c14-cf96-445b-b946-f92da2d8f141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{40c88078-7819-44ec-9b53-45714dd18a5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="Program.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tracks.c">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

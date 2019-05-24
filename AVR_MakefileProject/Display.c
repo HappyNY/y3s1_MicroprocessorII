@@ -87,7 +87,7 @@ extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
 {
 	// Software initialization
-    LCDBuffer = (byte*)( 0xffff - LCD_BUFFER_LENGTH );// Malloc( LCD_BUFFER_LENGTH );
+    LCDBuffer = (byte*)( 0xffff - LCD_BUFFER_LENGTH );//*/ Malloc( LCD_BUFFER_LENGTH );
 
 	// Hardware associated functionality.
     DDRD = 0XFF; 
@@ -219,4 +219,16 @@ void VBuffer_DrawLine( int16 x0, int16 y0, const int16 x1, const int16 y1 )
             y0 += sy;
         }
     }
+} 
+
+byte gCursorPage, gCursorColumn;
+
+void VBuffer_PrintString( const char * Fmt, ... )
+{
+    va_list a;
+    char buff[128];
+    va_start( a, Fmt );
+    vsprintf( buff, Fmt, a );
+    va_end( a );
+    VBuffer_DrawString( &gCursorPage, &gCursorColumn, buff, false );
 } 

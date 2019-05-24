@@ -206,6 +206,7 @@ move *.s Intermediate\</NMakeReBuildCommandLine>
     <ClCompile Include="RacingGame.c" />
     <ClCompile Include="Serial.c" />
     <ClCompile Include="IMAGES.c" />
+    <ClCompile Include="Tracks.c" />
     <ClCompile Include="__TestMain.cpp" />
     <ClCompile Include="__TMain.c" />
   </ItemGroup>
