@@ -18,17 +18,6 @@ static inline fixedpt dot( FPointFP const* a, FPointFP const* b )
     return fixedpt_mul(a->x, b->x) + fixedpt_mul(a->y,b->y);
 }
 
-static inline fixedpt sz( int16 x, int16 y )
-{
-    //  return fixedpt_sqrt( dot( a, a ) );//fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
-    // int32 val = fixedpt_toint( v.x ) * fixedpt_toint( v.x );
-    // val += fixedpt_toint( v.y ) * fixedpt_toint( v.y );
-
-    float v = (int32)x * x + (int32)y * y;
-
-    return (int32) ( sqrtf( v ) * (float) 0x10000 );
-}
-
 extern inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTransform* Camera, int8* DegreesWhenVisible, int16* Distance );
 inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTransform* Camera, int8* DegreesWhenVisible, int16* Distance )
 {
@@ -43,9 +32,11 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     DirectionVector.x = fixedpt_fromint( dirX );
     DirectionVector.y = fixedpt_fromint( dirY );
     CameraDirectionUnitVector = Camera->CachedDirection;
-    
-    DistanceFromCamera = sz( dirX, dirY ); 
-    // VBuffer_PrintString( "{sz. %s}", fixedpt_cstr( DistanceFromCamera, -1 ) );
+     
+    DistanceFromCamera = sqrt_int( (int32) dirX* (int32) dirX + (int32) dirY*(int32) dirY );
+    //gCursorColumn = 0;
+    //gCursorPage = 2;
+    //VBuffer_PrintString( "%-31d", DistanceFromCamera );
     if ( DistanceFromCamera > fixedpt_rconst( MAXIMUM_VISIBLE_DISTANCE )
          || DistanceFromCamera < fixedpt_rconst( MINIMUM_VISIBLE_DISTANCE ) )
     {
@@ -56,7 +47,7 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
         return false;
     }
 
-    // acos(dot(a,b) / (sz(a)*sz(b))) 
+    // acos(dot(a,b) / (sqrt_int(a)*sqrt_int(b))) 
     AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera );
     AngleBetween = fixedpt_acos_half( AngleBetween );// acos( AngleBetween / (double) FIXEDPT_ONE );
     // VBuffer_PrintString( "{a: %s}", fixedpt_cstr( AngleBetween, -1 ) );

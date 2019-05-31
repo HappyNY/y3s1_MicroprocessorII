@@ -13,7 +13,7 @@ static byte ACC_INTERVAL_CNT = 0;
 static byte ACC_XCNT = 0;
 static byte ACC_YCNT = 0;
 
-#define SAMPLE_BITS 4
+#define SAMPLE_BITS 5
 #define SAMPLE_POW2 (1 << SAMPLE_BITS)
 #define SAMPLE_MOD (SAMPLE_POW2 - 1)
 

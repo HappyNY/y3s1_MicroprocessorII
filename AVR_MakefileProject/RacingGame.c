@@ -11,7 +11,7 @@ typedef struct tagSessionTrackLoading {
     uint16 NumLoadedNodes;
     uint16 NumMarkersToGen;
     uint16 NumGeneratedMarkers;
-
+    uint16 MarkerGenIndex;
     // Will track current node pivot
     fixedpt CurrentAngle;
     FPoint16 CurrentPivot;
@@ -111,7 +111,11 @@ void SSUPDATE_load_track()
 void SSUPDATE_generate_symbol()
 {
     FSessionTrackLoading* lpv = gSession.data__;
+    
+    
 
+    ;
+    lpv->MarkerGenIndex++;
 }
 
 void SSDRAW_load_track( bool v )

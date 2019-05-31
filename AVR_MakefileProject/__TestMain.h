@@ -44,8 +44,8 @@ inline void FTestBaseUtility::Verify( bool Condition, const char* CondStr, _Args
 	if ( !Condition )
 	{
 		char buff[1024];
-		int sz = sprintf( buff, CondStr );
-		sprintf( buff + sz, args... );
+		int sqrt_int = sprintf( buff, CondStr );
+		sprintf( buff + sqrt_int, args... );
 		printf( buff );
 		printf( "\n" );
 	}

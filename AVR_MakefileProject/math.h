@@ -18,3 +18,15 @@ inline int16 clamp16( int16 val, int16 min, int16 max ) { return math_clamp( val
 fixedpt fixedpt_atan( fixedpt val );
 fixedpt fixedpt_asin( fixedpt val );
 fixedpt fixedpt_acos_half( fixedpt val );
+int32 sqrti32( int32 v );
+fixedpt sqrt_it32( int32 v );
+ 
+static inline fixedpt sqrt_int( int32 v )
+{
+    if ( v < 0x7fff ) {
+        return fixedpt_sqrt( fixedpt_fromint( v ) );
+    }
+    else {
+        return sqrt_it32( v );
+    }
+}

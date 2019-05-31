@@ -138,7 +138,7 @@ void INITSESSION_VALIDATE()
 
     volatile byte* p = (byte*)0x9000;
     for ( p; p < (byte*)0xf000; ++p ) {
-        *p = (uint16) p >> 16;
+        *p = (uint16) p >> 8;
     }
     FValidationProgress* lpProgrss = ALLOC_TYPE_INITZERO( FValidationProgress );
     
@@ -360,7 +360,7 @@ void validate_update()
     byte WarnAddr;
     do {
         volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i ); 
-        uint8 valid = ( (uint32) lpValid ) >> 16;
+        uint8 valid = ( (uint16) lpValid ) >> 8;
         NumWarn += ( *lpValid ) != valid;
         WarnAddr = ( *lpValid ) == valid ? WarnAddr : lpPrg->ProgressAddr + i;
         ++i; 
