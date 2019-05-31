@@ -123,7 +123,7 @@ static void validate_draw(bool);
 
 void INITSESSION_VALIDATE()
 {
-    FValidationProgress* lpProgrss = SESSION_DATA_INIT( FValidationProgress );
+    FValidationProgress* lpProgrss = INIT_TYPE_INITZERO( FValidationProgress );
     
     lpProgrss->ProgressAddr = 0x9000;
     int i;
@@ -143,7 +143,7 @@ void INITSESSION_VALIDATE()
 
 void INITSESSION_MAIN()
 {
-    FMainScreenInfo* lpSessionInfo = SESSION_DATA_INIT( FMainScreenInfo );
+    FMainScreenInfo* lpSessionInfo = INIT_TYPE_INITZERO( FMainScreenInfo );
 
     SetSessionData( lpSessionInfo );
     
@@ -159,7 +159,7 @@ static void tracksel_update();
 static void tracksel_draw( bool v );
 void INITSESSION_TRACK_SELECT()
 {
-    FTrackSelectionInfo* lpTrack = SESSION_DATA_INIT( FTrackSelectionInfo );
+    FTrackSelectionInfo* lpTrack = INIT_TYPE_INITZERO( FTrackSelectionInfo );
 
     SetSessionData( lpTrack );
     gSession.Draw = tracksel_draw;

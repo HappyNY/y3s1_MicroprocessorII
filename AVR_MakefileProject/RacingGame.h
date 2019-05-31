@@ -37,12 +37,12 @@ extern const byte NumTracks;
  *******************************************/ 
 typedef struct tagRuntimeTrackSegment {
     FPoint16 P0, P1, P2, P3;
-    struct tagRuntimeTrackSegment *lpPrev, *lpNext;
 } FRuntimeTrackSegment;
 
 typedef struct tagRuntimeTrackInfo {
-    FRuntimeTrackSegment* Head;
-    FRuntimeTrackSegment* Current;
+    FRuntimeTrackSegment* Segments;
+    uint16 NumSegs;
+    uint16 CurSegIdx;
 
     FPoint16* LeftLineMarkerArray;
     FPoint16* RightLineMarkerArray;

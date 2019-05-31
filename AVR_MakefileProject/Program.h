@@ -54,7 +54,8 @@ extern byte gButton_Hold;
 extern byte FSR_A;
 extern byte FSR_B;
 
-#define SESSION_DATA_INIT(TYPE) memset(Malloc(sizeof(TYPE)), 0, sizeof(TYPE))
+#define INIT_TYPE_INITZERO(TYPE) memset(Malloc(sizeof(TYPE)), 0, sizeof(TYPE))
+#define INIT_DATA_INITZERO(SIZE) memset(Malloc(SIZE), 0, SIZE)
 ////////////////////////////////////////////////////////////////
 // TIMER LOGICS
 ////////////////////////////////////////////////////////////////
