@@ -80,3 +80,21 @@ void fixedpt_AddRadianNormalized( fixedpt* dst, fixedpt add );
 
 bool FRect16_IsOverlap( FRect16 const* a, FRect16 const* b );
 bool FPoint16_IsInBound( FPoint16 const* Triangle, FPoint16 Check );
+
+static inline FPointFP FPoint16_ToFP( FPoint16 const v )
+{
+    FPointFP ret = {
+        fixedpt_fromint( v.x ),
+        fixedpt_fromint( v.y )
+    };
+
+    return ret;
+}
+static inline FPoint16 FPointFP_To16( FPointFP const v )
+{
+    FPoint16 ret = {
+        fixedpt_toint( v.x ),
+        fixedpt_toint( v.y )
+    };
+    return ret;
+}

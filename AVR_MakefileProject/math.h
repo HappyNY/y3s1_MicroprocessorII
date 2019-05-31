@@ -20,7 +20,10 @@ fixedpt fixedpt_asin( fixedpt val );
 fixedpt fixedpt_acos_half( fixedpt val );
 int32 sqrti32( int32 v );
 fixedpt sqrt_it32( int32 v );
- 
+static inline fixedpt fixedpt_lerp( fixedpt src, fixedpt dst, fixedpt key )
+{
+    return src + fixedpt_mul( dst - src, key );
+}
 static inline fixedpt sqrt_int( int32 v )
 {
     if ( v < 0x7fff ) {

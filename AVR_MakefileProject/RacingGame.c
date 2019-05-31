@@ -105,17 +105,51 @@ void SSUPDATE_load_track()
     lpv->CurrentAngle = Angle;
     lpv->CurrentPivot = Pivot;
     
-    lpv->NumMarkersToGen += 1 + ( lpBeg->Length >> 4 );
+    lpv->NumMarkersToGen += 1 + ( lpBeg->Length / TRACK_MARKER_INTERVAL );
+}
+
+static inline FPointFP LerpFP( FPointFP const* a, FPointFP const* b, fixedpt Key )
+{
+    FPointFP ret;
+    ret.x = fixedpt_lerp( a->x, b->x, Key );
+    ret.y = fixedpt_lerp( a->y, b->y, Key );
+    return ret;
 }
 
 void SSUPDATE_generate_symbol()
 {
     FSessionTrackLoading* lpv = gSession.data__;
-    
-    
+    FRuntimeTrackSegment CurSeg = lpv->Track.Track[lpv->MarkerGenIndex];
+    FRuntimeTrackSegment NxtSeg = lpv->Track.Track[lpv->MarkerGenIndex+1];
 
-    ;
-    lpv->MarkerGenIndex++;
+    FPoint16* lpHeadL = lpv->Track.LineMarkersL + lpv->NumGeneratedMarkers;
+    FPoint16* lpHeadR = lpv->Track.LineMarkersR + lpv->NumGeneratedMarkers;
+
+    *lpHeadL++ = CurSeg.PL;
+    *lpHeadR++ = CurSeg.PR;
+
+    int const NumMarkers = lpv->TrackToLoad.TrackNodes[lpv->MarkerGenIndex].Length / TRACK_MARKER_INTERVAL;
+    lpv->NumGeneratedMarkers += NumMarkers + 1/*Beginning marker*/;
+    fixedpt const RatioPerMarker = FIXEDPT_ONE / NumMarkers;
+
+    int i;
+    fixedpt Key = 0;
+    FPointFP
+        begl = FPoint16_ToFP( CurSeg.PL ),
+        begr = FPoint16_ToFP( CurSeg.PR ),
+        endl = FPoint16_ToFP( NxtSeg.PL ),
+        endr = FPoint16_ToFP( NxtSeg.PR );
+
+    for ( i = 1; i <= NumMarkers; ++i )
+    {
+        Key += RatioPerMarker; 
+        *lpHeadL++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
+        *lpHeadR++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
+    }
+    if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 1 )
+    {
+        gSession.Update = nullfunc;
+    }
 }
 
 void SSDRAW_load_track( bool v )

@@ -2,6 +2,7 @@
 #include "core.h"
 #include "Graphics.h"
 
+#define TRACK_MARKER_INTERVAL 16
 /*******************************************
  * Session for racing games
  *******************************************/
