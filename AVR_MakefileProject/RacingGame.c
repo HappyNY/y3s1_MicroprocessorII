@@ -1,6 +1,67 @@
 #include "RacingGame.h"
+#include "Program.h"
 
-void UnloadCurrentTrackInformation( FRuntimeTrackInfo * v )
+const static FTrackNodeDesc INIT_TRACK_NODE = { 32, 0, 100 };
+
+typedef struct tagSessionTrackLoading {
+    FTrackDesc TrackToLoad;
+    FRuntimeTrackInfo* LoadingTrack;
+    
+    uint16 NumNodesToLoad;
+    uint16 NumNodesLoaded;
+} FSessionTrackLoading;
+
+static void SSUPDATE_load_track();
+static void SSDRAW_load_track(bool v); 
+void INITSESSION_RACING_GAME( int TrackIdx )
 {
+    FSessionTrackLoading* lps = SESSION_DATA_INIT( FSessionTrackLoading );
+    SetSessionData( lps );
 
+    lps->TrackToLoad = AllTracks[TrackIdx];
+    
+    gSession.Update = SSUPDATE_load_track;
+    gSession.Draw = SSDRAW_load_track;
+}
+
+void RTI_UnloadCurrentTrackInformation( FRuntimeTrackInfo * v )
+{
+}
+
+void RTI_UpdateCurrentSegByUserLocation( FRuntimeTrackInfo * v, FPoint16 UserLoc )
+{
+}
+
+void RTI_LoadTrackInformation( FRuntimeTrackInfo * v, FTrackDesc * Track )
+{
+}
+
+void LTI_GenerateTrackSeg( FRuntimeTrackInfo * v, FTrackDesc * Track )
+{
+}
+
+void LTI_GenerateLineMarkerArray( FRuntimeTrackInfo * v )
+{
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+/////                                                             //////////////////////////
+/////   SESSION IMPLEMENTATIONS                                   //////////////////////////
+/////                                                             //////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+void SSUPDATE_load_track()
+{
+}
+
+void SSDRAW_load_track( bool v )
+{
 }

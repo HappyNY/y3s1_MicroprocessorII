@@ -2,6 +2,7 @@
 #include "memory128.h"
 #include "Display.h"
 #include "RacingGame.h"
+#include <stdlib.h>
 
 byte gButton_Captured;
 byte gButton_Pressed;
@@ -110,6 +111,7 @@ typedef struct tagValidationProgress {
     uint16 ProgressAddr;
     uint16 Warnings;
     uint16 LatestWarningAddr;
+    uint16 AddressLineVerification;
 } FValidationProgress;
 
 static void main_update();
@@ -121,13 +123,18 @@ static void validate_draw(bool);
 
 void INITSESSION_VALIDATE()
 {
-    FValidationProgress* lpProgrss = memset(
-        Malloc( sizeof( FValidationProgress ) ),
-        0,
-        sizeof( FValidationProgress )
-    );
+    FValidationProgress* lpProgrss = SESSION_DATA_INIT( FValidationProgress );
     
     lpProgrss->ProgressAddr = 0x9000;
+    int i;
+    for ( i = 0; i < 15; ++i )
+    {
+        volatile byte* BaseAddr = (byte*)0x9000;
+        *BaseAddr = i;
+        *( BaseAddr + mask( i ) ) = i;
+
+        lpProgrss->AddressLineVerification |= ( ( *BaseAddr ) != *( BaseAddr + mask( i ) ) ) << i;
+    }
     SetSessionData( lpProgrss );
 
     gSession.Draw = validate_draw;
@@ -136,11 +143,7 @@ void INITSESSION_VALIDATE()
 
 void INITSESSION_MAIN()
 {
-    FMainScreenInfo* lpSessionInfo = memset( 
-        Malloc( sizeof( FMainScreenInfo ) ), 
-        0, 
-        sizeof( FMainScreenInfo ) 
-    );
+    FMainScreenInfo* lpSessionInfo = SESSION_DATA_INIT( FMainScreenInfo );
 
     SetSessionData( lpSessionInfo );
     
@@ -156,22 +159,11 @@ static void tracksel_update();
 static void tracksel_draw( bool v );
 void INITSESSION_TRACK_SELECT()
 {
-    FTrackSelectionInfo* lpTrack = memset(
-        Malloc( sizeof( FTrackSelectionInfo ) ),
-        0,
-        sizeof( FTrackSelectionInfo )
-    );
+    FTrackSelectionInfo* lpTrack = SESSION_DATA_INIT( FTrackSelectionInfo );
 
     SetSessionData( lpTrack );
     gSession.Draw = tracksel_draw;
     gSession.Update = tracksel_update;
-}
-
-
-static void loadtrack_update();
-void INITSESSION_RACE_LOAD()
-{
-    
 }
 
 typedef struct tagTest3DSession {
@@ -359,10 +351,11 @@ void validate_update()
     byte WarnAddr;
     do {
         volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i );
-        *lpValid = i;
-        NumWarn += ( *lpValid ) != i;
-        WarnAddr = ( *lpValid ) == i? WarnAddr : lpPrg->ProgressAddr + i;
-        ++i;
+        volatile byte valid = rand();
+        *lpValid = valid;
+        NumWarn += ( *lpValid ) != valid;
+        WarnAddr = ( *lpValid ) == valid ? WarnAddr : lpPrg->ProgressAddr + i;
+        ++i; 
     } while ( i );
 
     lpPrg->ProgressAddr += 0x100;
@@ -392,8 +385,14 @@ void validate_draw( bool cmplx )
     p += 2;
     col = 24;
     VBuffer_DrawString( &p, &col, buff, true );
-    sprintf( buff, "\r\nChecking %x", lpv->ProgressAddr );
+    sprintf( buff, "\r\nChecking %x\r\nADLINE: ", lpv->ProgressAddr );
     VBuffer_DrawString( &p, &col, buff, false );
+    
+    for ( i = 0; i < 15; ++i ) {
+        buff[14 - i] = ( lpv->AddressLineVerification &mask( i ) ? 'x' : 'o' );
+    }
+    buff[15] = 0;
+    VBuffer_DrawString( &p, &col, buff, true );
     if ( lpv->Warnings != 0 ) {
         p += 2;
         col = 0;
@@ -414,13 +413,16 @@ void tracksel_update()
     if ( gButton_Pressed & mask( BUTTON_R ) ) {
         lpTrk->Cursor = lpTrk->Cursor == NumTracks - 1 ? NumTracks - 1 : lpTrk->Cursor + 1;
     }
-    if ( gButton_Pressed & mask( BUTTON_B ) ) {
+
+    if ( gButton_Pressed & mask( BUTTON_B | BUTTON_HOME ) ) {
         INITSESSION_MAIN();
         return;
     }
     if ( gButton_Pressed& mask( BUTTON_A ) ) {
         // @todo. Load track selected by cursor.
         // Keep cursor location data to make next session know which track to load.
+        INITSESSION_RACING_GAME( lpTrk->Cursor );
+        return;
     }
 }
 

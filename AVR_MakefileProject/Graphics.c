@@ -127,17 +127,19 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
             int16 absv, rot = rotator;
             x0 = scale( lpLine->Begin.x ) + rot;
             y0 = scale( lpLine->Begin.y );
-            absv = ( x0 > 0 ? x0 : -x0 ) >> 3;
-            y0 += y0 > 0 ? absv : -absv;
             x1 = scale( lpLine->End.x ) + rot;
             y1 = scale( lpLine->End.y );
-            absv = ( x1 > 0 ? x1 : -x1 ) >> 3;
-            y1 += y1 > 0 ? absv : -absv;
+
 
             x0 = ( gSlopeValue.Cosv * x0 - gSlopeValue.Sinv * y0 ) >> FIXEDPT_FBITS;
             y0 = ( gSlopeValue.Sinv * x0 + gSlopeValue.Cosv * y0 ) >> FIXEDPT_FBITS;
             x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
             y1 = ( gSlopeValue.Sinv * x1 + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
+
+            //absv = ( x0 > 0 ? x0 : -x0 ) >> 3;
+            //y0 += y0 > 0 ? absv : -absv;
+            //absv = ( x1 > 0 ? x1 : -x1 ) >> 3;
+            //y1 += y1 > 0 ? absv : -absv;
 
             x0 += centerX;
             y0 += centerY;

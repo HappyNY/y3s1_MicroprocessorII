@@ -3,32 +3,13 @@
 #include "Graphics.h"
 
 /*******************************************
- * Defines a turning point of a track.
- * This will be generated on runtime, which is the result of track loading.
- * A track segment will be represented as quadrangle mesh.
+ * Session for racing games
  *******************************************/
-typedef struct FTrackNode {
-    struct FTrackNode* Next;
-    struct FTrackNode* Prev;
-
-    // Four points of generated track quadrangle
-    // lu ---- ru
-    //  /       \
-    // /         \
-    //ld -------- rd
-    // lu-ld, ru-rd will represent the track boundary.
-    // l, r, u, d are symbolic name, therefore they do not indicate absolute direction.
-    FPoint16 lu;
-    FPoint16 ru;
-    FPoint16 ld;
-    FPoint16 rd;
-
-    FLineVector SignObjectMesh;
-} FTrackNode;
-
-bool FTrackNode_IsInBound( FTrackNode const* v, FPoint16 Check );
-
-/*******************************************
+void INITSESSION_RACING_GAME( int TrackIdx );
+void INTERNAL_INITSESSION_LOAD_RACING();
+void INTERNAL_INITSESSION_RACING();
+void INTERNAL_INITSESSION_RACING_FINISH();
+ /*******************************************
  * Descriptor of an track. Will be stored in the program memory as form of array, 
  *and then will be loaded and parsed into FTrackNode on runtime.
  *******************************************/
@@ -48,18 +29,33 @@ extern FTrackDesc const * const AllTracks;
 extern const byte NumTracks;
 /*******************************************
  * Runtime track information    
- *******************************************/
-typedef struct FRuntimeTrackInfo {
-    FTrackNode* Head;
-    FTrackNode* Current;
+ *******************************************/ 
+/*******************************************
+ * Defines a turning point of a track.
+ * This will be generated on runtime, which is the result of track loading.
+ * A track segment will be represented as quadrangle mesh.
+ *******************************************/ 
+typedef struct tagRuntimeTrackSegment {
+    FPoint16 P0, P1, P2, P3;
+    struct tagRuntimeTrackSegment *lpPrev, *lpNext;
+} FRuntimeTrackSegment;
 
-    FPoint16* LeftSignPointArray;
-    FPoint16* RightSignPointArray;
+typedef struct tagRuntimeTrackInfo {
+    FRuntimeTrackSegment* Head;
+    FRuntimeTrackSegment* Current;
+
+    FPoint16* LeftLineMarkerArray;
+    FPoint16* RightLineMarkerArray;
+    uint16 CurrentLineMarkerIndex;
+    uint16 NumLineMarkers;
+    FLineVector LineMarkerSymbol;
 } FRuntimeTrackInfo;
 
-void UnloadCurrentTrackInformation( FRuntimeTrackInfo* v );
-void LoadTrackInformation( FRuntimeTrackInfo* v, FTrackNodeDesc* TrackDescs, uint16 NumTrackNodes );
-
+void RTI_UnloadCurrentTrackInformation( FRuntimeTrackInfo* v );
+void RTI_UpdateCurrentSegByUserLocation( FRuntimeTrackInfo* v, FPoint16 UserLoc );
+void RTI_LoadTrackInformation( FRuntimeTrackInfo* v, FTrackDesc* Track );
+void LTI_GenerateTrackSeg( FRuntimeTrackInfo* v, FTrackDesc* Track );
+void LTI_GenerateLineMarkerArray( FRuntimeTrackInfo* v );
 
 /*******************************************
  * Car control logics

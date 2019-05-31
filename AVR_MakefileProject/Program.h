@@ -54,6 +54,7 @@ extern byte gButton_Hold;
 extern byte FSR_A;
 extern byte FSR_B;
 
+#define SESSION_DATA_INIT(TYPE) memset(Malloc(sizeof(TYPE)), 0, sizeof(TYPE))
 ////////////////////////////////////////////////////////////////
 // TIMER LOGICS
 ////////////////////////////////////////////////////////////////
@@ -75,7 +76,5 @@ void EraseTimer( FTimerHandle* Handle );
 void INITSESSION_VALIDATE();
 void INITSESSION_MAIN();
 void INITSESSION_TRACK_SELECT();
-void INITSESSION_RACE_LOAD();
-
 void INITSESSION_TEST_3D();
 
