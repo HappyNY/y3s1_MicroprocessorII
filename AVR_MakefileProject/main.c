@@ -69,6 +69,7 @@ void main( void )
     // PROGRAM INITIALIZATION 
     gSession.Update = nullfunc;
     gSession.Draw = nulldraw;
+    gSession.data_finalizer__ = nullfunc;
     gSession.data__ = NULL;
 
     INITSESSION_VALIDATE();

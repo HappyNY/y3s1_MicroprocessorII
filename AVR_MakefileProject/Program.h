@@ -13,6 +13,7 @@ typedef struct {
     FSessionEventSignature Update;
     FSessionDrawEventSignature Draw;
     void* data__; // Should be dynamically allocated.
+    FSessionEventSignature data_finalizer__;
 } FSessionState;
 
 extern FSessionState gSession;
@@ -54,8 +55,8 @@ extern byte gButton_Hold;
 extern byte FSR_A;
 extern byte FSR_B;
 
-#define INIT_TYPE_INITZERO(TYPE) memset(Malloc(sizeof(TYPE)), 0, sizeof(TYPE))
-#define INIT_DATA_INITZERO(SIZE) memset(Malloc(SIZE), 0, SIZE)
+#define ALLOC_TYPE_INITZERO(TYPE) memset(Malloc(sizeof(TYPE)), 0, sizeof(TYPE))
+#define ALLOC_DATA_INITZERO(SIZE) memset(Malloc(SIZE), 0, SIZE)
 ////////////////////////////////////////////////////////////////
 // TIMER LOGICS
 ////////////////////////////////////////////////////////////////

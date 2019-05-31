@@ -23,11 +23,13 @@ void UpdateInputStatus()
     gButton_Captured = 0;
 }
 
-void SetSessionData( void* NewData )
+void SetSessionData( void* NewData, FSessionEventSignature Finalizer )
 {
     if ( gSession.data__ ) {
+        gSession.data_finalizer__();
         Free( gSession.data__ );
     }
+    gSession.data_finalizer__ = Finalizer;
     gSession.data__ = NewData;
 }
 
@@ -123,7 +125,7 @@ static void validate_draw(bool);
 
 void INITSESSION_VALIDATE()
 {
-    FValidationProgress* lpProgrss = INIT_TYPE_INITZERO( FValidationProgress );
+    FValidationProgress* lpProgrss = ALLOC_TYPE_INITZERO( FValidationProgress );
     
     lpProgrss->ProgressAddr = 0x9000;
     int i;
@@ -135,7 +137,7 @@ void INITSESSION_VALIDATE()
 
         lpProgrss->AddressLineVerification |= ( ( *BaseAddr ) != *( BaseAddr + mask( i ) ) ) << i;
     }
-    SetSessionData( lpProgrss );
+    SetSessionData( lpProgrss, nullfunc );
 
     gSession.Draw = validate_draw;
     gSession.Update = validate_update;
@@ -143,9 +145,9 @@ void INITSESSION_VALIDATE()
 
 void INITSESSION_MAIN()
 {
-    FMainScreenInfo* lpSessionInfo = INIT_TYPE_INITZERO( FMainScreenInfo );
+    FMainScreenInfo* lpSessionInfo = ALLOC_TYPE_INITZERO( FMainScreenInfo );
 
-    SetSessionData( lpSessionInfo );
+    SetSessionData( lpSessionInfo, nullfunc );
     
     gSession.Draw = main_draw;
     gSession.Update = main_update;
@@ -159,9 +161,9 @@ static void tracksel_update();
 static void tracksel_draw( bool v );
 void INITSESSION_TRACK_SELECT()
 {
-    FTrackSelectionInfo* lpTrack = INIT_TYPE_INITZERO( FTrackSelectionInfo );
+    FTrackSelectionInfo* lpTrack = ALLOC_TYPE_INITZERO( FTrackSelectionInfo );
 
-    SetSessionData( lpTrack );
+    SetSessionData( lpTrack, nullfunc );
     gSession.Draw = tracksel_draw;
     gSession.Update = tracksel_update;
 }
@@ -180,7 +182,7 @@ void INITSESSION_TEST_3D()
         0,
         sizeof( FTest3DSession )
     );
-    SetSessionData( lpv );
+    SetSessionData( lpv, nullfunc );
 
     gSession.Update = test_3d_update;
     gSession.Draw = test_3d_draw;
