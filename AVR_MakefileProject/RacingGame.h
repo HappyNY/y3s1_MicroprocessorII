@@ -6,7 +6,6 @@
  * Session for racing games
  *******************************************/
 void INITSESSION_RACING_GAME( int TrackIdx );
-void INTERNAL_INITSESSION_LOAD_RACING();
 void INTERNAL_INITSESSION_RACING();
 void INTERNAL_INITSESSION_RACING_FINISH();
  /*******************************************
@@ -20,9 +19,10 @@ typedef struct tagTrackNode {
 } FTrackNodeDesc;
 
 typedef struct tagTrackDesc {
-    FTrackNodeDesc const* Tracks;
+    FTrackNodeDesc const* TrackNodes;
     uint16 NumNodes;
     char const* lpcTrackName;
+    FLineVector const* LineMarkerSymbol;
 } FTrackDesc;
 
 extern FTrackDesc const * const AllTracks;
@@ -36,26 +36,23 @@ extern const byte NumTracks;
  * A track segment will be represented as quadrangle mesh.
  *******************************************/ 
 typedef struct tagRuntimeTrackSegment {
-    FPoint16 P0, P1, P2, P3;
+    FPoint16 PL;
+    FPoint16 PR;
 } FRuntimeTrackSegment;
 
 typedef struct tagRuntimeTrackInfo {
-    FRuntimeTrackSegment* Segments;
+    FRuntimeTrackSegment* Track;
     uint16 NumSegs;
     uint16 CurSegIdx;
 
-    FPoint16* LeftLineMarkerArray;
-    FPoint16* RightLineMarkerArray;
+    FPoint16* LineMarkersL;
+    FPoint16* LineMarkersR;
     uint16 CurrentLineMarkerIndex;
     uint16 NumLineMarkers;
     FLineVector LineMarkerSymbol;
 } FRuntimeTrackInfo;
-
-void RTI_UnloadCurrentTrackInformation( FRuntimeTrackInfo* v );
-void RTI_UpdateCurrentSegByUserLocation( FRuntimeTrackInfo* v, FPoint16 UserLoc );
-void RTI_LoadTrackInformation( FRuntimeTrackInfo* v, FTrackDesc* Track );
-void LTI_GenerateTrackSeg( FRuntimeTrackInfo* v, FTrackDesc* Track );
-void LTI_GenerateLineMarkerArray( FRuntimeTrackInfo* v );
+ 
+void RTI_UpdateCurrentSegByUserLocation( FRuntimeTrackInfo* v, FPoint16 UserLoc ); 
 
 /*******************************************
  * Car control logics

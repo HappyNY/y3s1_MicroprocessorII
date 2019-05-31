@@ -124,7 +124,8 @@ typedef	__uint128_t fixedptud;
 #define FIXEDPT_TWO_PI	fixedpt_rconst(2 * LITERAL_PI)
 #define FIXEDPT_HALF_PI	fixedpt_rconst(LITERAL_PI / 2)
 #define FIXEDPT_E	fixedpt_rconst(2.7182818284590452354)
-
+#define FIXEDPT_RADTODEG (fixedpt_xmul(fixedpt_rconst(180.0),fixedpt_rconst(1/LITERAL_PI)))
+#define FIXEDPT_DEGTORAD (fixedpt_xmul(FIXEDPT_PI,fixedpt_rconst(1/180.0)))
 #define fixedpt_abs(A) ((A) < 0 ? -(A) : (A))
 
 /* fixedpt is meant to be usable in environments without floating point support

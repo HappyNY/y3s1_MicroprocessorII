@@ -125,18 +125,25 @@ static void validate_draw(bool);
 
 void INITSESSION_VALIDATE()
 {
-    FValidationProgress* lpProgrss = ALLOC_TYPE_INITZERO( FValidationProgress );
-    
-    lpProgrss->ProgressAddr = 0x9000;
+    uint16 AddressLineVerification = 0;
     int i;
     for ( i = 0; i < 15; ++i )
     {
-        volatile byte* BaseAddr = (byte*)0x9000;
+        volatile byte* BaseAddr = (byte*) 0x9000;
         *BaseAddr = i;
         *( BaseAddr + mask( i ) ) = i;
 
-        lpProgrss->AddressLineVerification |= ( ( *BaseAddr ) != *( BaseAddr + mask( i ) ) ) << i;
+        AddressLineVerification |= ( ( *BaseAddr ) != *( BaseAddr + mask( i ) ) ) << i;
     }
+
+    volatile byte* p = (byte*)0x9000;
+    for ( p; p < (byte*)0xf000; ++p ) {
+        *p = (uint16) p >> 16;
+    }
+    FValidationProgress* lpProgrss = ALLOC_TYPE_INITZERO( FValidationProgress );
+    
+    lpProgrss->ProgressAddr = 0x9000;
+    lpProgrss->AddressLineVerification = AddressLineVerification;
     SetSessionData( lpProgrss, nullfunc );
 
     gSession.Draw = validate_draw;
@@ -216,10 +223,10 @@ void test_3d_update()
         lpv->Cam.Position.x -= 1;
     }
     if ( gButton_Hold & mask( BUTTON_L ) ) {
-        lpv->Cam.Position.y -= 1;
+        lpv->Cam.Position.y += 1;
     }
     if ( gButton_Hold & mask( BUTTON_R ) ) {
-        lpv->Cam.Position.y += 1;
+        lpv->Cam.Position.y -= 1;
     }
 
     if ( gButton_Hold & mask( BUTTON_A ) ) {
@@ -352,9 +359,8 @@ void validate_update()
     byte NumWarn = 0;
     byte WarnAddr;
     do {
-        volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i );
-        volatile byte valid = rand();
-        *lpValid = valid;
+        volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i ); 
+        uint8 valid = ( (uint32) lpValid ) >> 16;
         NumWarn += ( *lpValid ) != valid;
         WarnAddr = ( *lpValid ) == valid ? WarnAddr : lpPrg->ProgressAddr + i;
         ++i; 

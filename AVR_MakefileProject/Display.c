@@ -235,4 +235,14 @@ void VBuffer_PrintString( const char * Fmt, ... )
     vsprintf( buff, Fmt, a );
     va_end( a );
     VBuffer_DrawString( &gCursorPage, &gCursorColumn, buff, false );
-} 
+}
+
+void VBuffer_DrawStringDirect( bool bInverse, const char * Fmt, ... )
+{
+    va_list a;
+    char buff[128];
+    va_start( a, Fmt );
+    vsprintf( buff, Fmt, a );
+    va_end( a );
+    VBuffer_DrawString( &gCursorPage, &gCursorColumn, buff, bInverse );
+}

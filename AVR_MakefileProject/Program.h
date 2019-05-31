@@ -18,7 +18,7 @@ typedef struct {
 
 extern FSessionState gSession;
 
-void SetSessionData( void* NewData );
+void SetSessionData( void* NewData, FSessionEventSignature Finalizer );
 
 // a function which does nothing.
 static void nullfunc() {}
