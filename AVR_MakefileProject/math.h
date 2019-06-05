@@ -1,10 +1,7 @@
 #pragma once
 #include "types.h" 
 #include "fixed/fixedptc.h"
-#undef fixedpt_xmul
-#define fixedpt_xmul fixedpt_mul
-#undef fixedpt_xdiv
-#define fixedpt_xdiv fixedpt_div
+
 #define math_abs(a) (a) > 0 ? (a) : -(a);
 #define math_max(a, b) (a) > (b) ? (a) : (b);
 #define math_min(a, b) (a) < (b) ? (a) : (b);

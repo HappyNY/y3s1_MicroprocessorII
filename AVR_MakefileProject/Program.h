@@ -55,8 +55,14 @@ extern byte gButton_Hold;
 extern byte FSR_A;
 extern byte FSR_B;
 
-#define ALLOC_TYPE_INITZERO(TYPE) memset(Malloc(sizeof(TYPE)), 0, sizeof(TYPE))
-#define ALLOC_DATA_INITZERO(SIZE) memset(Malloc(SIZE), 0, SIZE)
+static inline void* __ALLOC_SIZE_ZERO( uint16 sz )
+{
+    void* lpm = Malloc( sz );
+    memset( lpm, 0, sz );
+    return lpm;
+}
+#define ALLOC_TYPE_INITZERO(TYPE) __ALLOC_SIZE_ZERO(sizeof(TYPE))
+#define ALLOC_DATA_INITZERO(SIZE) __ALLOC_SIZE_ZERO(SIZE)
 ////////////////////////////////////////////////////////////////
 // TIMER LOGICS
 ////////////////////////////////////////////////////////////////

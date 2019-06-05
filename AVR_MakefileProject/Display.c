@@ -83,7 +83,6 @@ void LCDDevice__HardReset()
 }
 
 
-extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
 {
 	// Software initialization
@@ -149,6 +148,9 @@ void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
 
 void VBuffer_Clear()
 {
+    gCursorColumn = 0;
+    gCursorPage = 0;
+
     byte* pHead = LCDBuffer;
     const byte* pEnd = LCDBuffer + LCD_BUFFER_LENGTH;
 

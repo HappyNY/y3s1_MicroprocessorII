@@ -15,7 +15,7 @@
 #define log_verbose(...)
 #define log_display(...) { char __buff__[256]; sprintf(__buff__, __VA_ARGS__); outputmsg_uart0(__buff__); outputmsg_uart0("\r\n"); }
 #else // defined _DEBUG
-#if LOG_VERBOSE
+#if LOG_LEVEL >= LOG_VERBOSE
 #define log_verbose(...) log_display(__VA_ARGS__)
 #else
 #define log_verbose(...) 
@@ -35,3 +35,9 @@ void internal_logslow( const char* file, int line, const char* buff );
  
 // Send message synchronously.
 void outputmsg_uart0( const char* msg );
+
+#if LOG_NORMAL
+void breakpoint( const char* fmt, ... );
+#else
+#define breakpoint()
+#endif

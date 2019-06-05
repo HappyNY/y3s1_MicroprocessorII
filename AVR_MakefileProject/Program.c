@@ -53,10 +53,13 @@ void EraseTimer( FTimerHandle* Handle )
     FTimerHandle h = *Handle;
 
     if ( h->Prev ) {
-        h->Prev = h->Next;
+        h->Prev->Next = h->Next;
     }
     if ( h->Next ) {
-        h->Next = h->Prev;
+        h->Next->Prev = h->Prev;
+    }
+    if ( h->Prev == NULL && h->Next == NULL ) {
+        lpHead = NULL;
     }
 
     Free( h );
@@ -223,10 +226,10 @@ void test_3d_update()
         lpv->Cam.Position.x -= 1;
     }
     if ( gButton_Hold & mask( BUTTON_L ) ) {
-        lpv->Cam.Position.y += 1;
+        lpv->Cam.Position.y -= 1;
     }
     if ( gButton_Hold & mask( BUTTON_R ) ) {
-        lpv->Cam.Position.y -= 1;
+        lpv->Cam.Position.y += 1;
     }
 
     if ( gButton_Hold & mask( BUTTON_A ) ) {

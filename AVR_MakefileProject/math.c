@@ -3,6 +3,10 @@
 #include "container.h"
 #include "math.h"
 
+#undef fixedpt_xmul
+#define fixedpt_xmul fixedpt_mul
+#undef fixedpt_xdiv
+#define fixedpt_xdiv fixedpt_div
 
 // approximation
 fixedpt fixedpt_atan( fixedpt rad )

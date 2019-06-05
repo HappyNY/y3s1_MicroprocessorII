@@ -2,6 +2,13 @@
 
 #define DEFINE_LINE_VECTOR(Identifier, SourceLineInfo) const FLineVector Identifier = { SourceLineInfo,ARRAYCOUNT( SourceLineInfo ) };
 
+const static FLineInfo src_cone[] = {
+    -1, -3, 0, 3,
+    0, 3, 1, -3
+};
+
+DEFINE_LINE_VECTOR( ShapeCone, src_cone );
+
 const static FLineInfo src_triangle[] = {
     -3, -3, 0, 3, /**/ 0, 3, 3, -3, /**/ 3, -3, -3, -3
 };
@@ -19,11 +26,11 @@ const static FLineInfo src_box_one[] = {
 DEFINE_LINE_VECTOR( ShapeBoxOne, src_box_one );
 
 const static FLineInfo src_car_frame[] = {
-    -110, -20, -85, 110,
-    -93, 110, -118, -20,
+    -110, -50, -85, 110,
+    -93, 110, -118, -53,
 
-    109, -20, 84, 110,
-    92, 110, 117, -20,
+    109, -50, 84, 110,
+    92, 110, 117, -53,
 
     -126, -64, -110, -54,
     -110, -54, 110, -54,

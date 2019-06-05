@@ -30,20 +30,19 @@ extern volatile char __INTERRUPT_LOCK_MUTEX__;
 #define LOG_MEMORY 0
 #endif
 
-#define USE_EXTERNAL_HEAP 0
+#define USE_EXTERNAL_HEAP 1
 #define LCD_USE_ABSOLUTE_OFFSET 1
 #define ENABLE_HEAP_CACHE 1
 #define USE_STDLIB_MALLOC 1
 #define USE_SERIAL_COMMUNICATION 0
 
-#define DEBUG_NONE 0
-#define DEBUG_CRITICAL 1
-#define DEBUG_WARNING 2
-#define DEBUG_NORMAL 3
-#define DEBUG_VERBOSE 4
-#define DEBUG_ALL 5
+#define LOG_LEVEL 3
 
-#define DEBUG_LEVEL DEBUG_NORMAL
+#define LOG_CRITICAL (LOG_LEVEL >= 1)
+#define LOG_WARNING  (LOG_LEVEL >= 2)
+#define LOG_NORMAL   (LOG_LEVEL >= 3)
+#define LOG_VERBOSE  (LOG_LEVEL >= 4)
+#define LOG_ALL      (LOG_LEVEL >= 5)
 
 #if ENABLE_DEBUG
 #ifndef _DEBUG

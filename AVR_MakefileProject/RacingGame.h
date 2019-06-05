@@ -1,8 +1,7 @@
 #pragma once
 #include "core.h"
 #include "Graphics.h"
-
-#define TRACK_MARKER_INTERVAL 16
+ 
 /*******************************************
  * Session for racing games
  *******************************************/
@@ -43,14 +42,14 @@ typedef struct tagRuntimeTrackSegment {
 
 typedef struct tagRuntimeTrackInfo {
     FRuntimeTrackSegment* Track;
-    uint16 NumSegs;
-    uint16 CurSegIdx;
+    int16 NumSegs;
+    int16 CurSegIdx;
 
     FPoint16* LineMarkersL;
     FPoint16* LineMarkersR;
-    uint16 CurrentLineMarkerBeginIndex;
-    uint16 CurrentLineMarkerEndIndex;
-    uint16 NumLineMarkers;
+    int16 CurrentLineMarkerBeginIndex;
+    int16 CurrentLineMarkerEndIndex;
+    int16 NumLineMarkers;
     FLineVector LineMarkerSymbol;
 } URuntimeTrackInfo;
  
@@ -58,9 +57,11 @@ void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPoint16 UserLoc 
 
 enum ERuntimeRacingConstants
 {
-    MAX_MARKER_VISIBLE_DISTANCE = 500,
+    MAX_MARKER_VISIBLE_DISTANCE = 250,
+    TRACK_MARKER_INTERVAL = 5
 };
-static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR = (int32) MAX_MARKER_VISIBLE_DISTANCE * MAX_MARKER_VISIBLE_DISTANCE;
+static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR 
+= (int32) MAX_MARKER_VISIBLE_DISTANCE * MAX_MARKER_VISIBLE_DISTANCE;
 
 /*******************************************
  * Car control logics

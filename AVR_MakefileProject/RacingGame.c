@@ -36,6 +36,7 @@ void INITSESSION_RACING_GAME( int TrackIdx )
     lps->Track.Track = ALLOC_DATA_INITZERO(
         sizeof( FRuntimeTrackSegment )*lps->Track.NumSegs
     );
+    breakpoint( "allocated memory: 0x%x", sizeof( FRuntimeTrackSegment )*lps->Track.NumSegs );
     lps->Track.LineMarkerSymbol = *lps->TrackToLoad.LineMarkerSymbol;
 }
 
@@ -116,8 +117,17 @@ void SSUPDATE_load_track()
     {
         // all seq done.
         // initiate game.
-        lpv->Track.LineMarkersL = ALLOC_DATA_INITZERO( sizeof( FPoint16 )*lpv->NumMarkersToGen );
-        lpv->Track.LineMarkersR = ALLOC_DATA_INITZERO( sizeof( FPoint16 )*lpv->NumMarkersToGen );
+        const uint16 SizeToAllocate = sizeof( FPoint16 )*lpv->NumMarkersToGen;
+        lpv->Track.LineMarkersL = ALLOC_DATA_INITZERO( SizeToAllocate );
+        lpv->Track.LineMarkersR = ALLOC_DATA_INITZERO( SizeToAllocate );
+        void* d = Malloc( SizeToAllocate );
+        breakpoint(
+            "\r\nPTR A: %p, B: %p\r\nsz:%x",
+            lpv->Track.LineMarkersR,
+            d, // lpv->Track.LineMarkersR
+            SizeToAllocate
+        );
+        Free( d );
         gSession.Update = SSUPDATE_generate_symbol;
     }
 
@@ -149,9 +159,10 @@ void SSUPDATE_generate_symbol()
 
     *lpHeadL++ = CurSeg.PL;
     *lpHeadR++ = CurSeg.PR;
+    lpv->NumGeneratedMarkers++;
 
     int const NumMarkers = lpv->TrackToLoad.TrackNodes[lpv->MarkerGenIndex].Length / TRACK_MARKER_INTERVAL;
-    lpv->NumGeneratedMarkers += NumMarkers + 1/*Beginning marker*/;
+    // lpv->NumGeneratedMarkers += NumMarkers + 1/*Beginning marker*/;
     fixedpt const RatioPerMarker = FIXEDPT_ONE / NumMarkers;
 
     int i;
@@ -162,11 +173,12 @@ void SSUPDATE_generate_symbol()
         endl = FPoint16_ToFP( NxtSeg.PL ),
         endr = FPoint16_ToFP( NxtSeg.PR );
 
-    for ( i = 1; i <= NumMarkers; ++i )
+    for ( i = 1; i < NumMarkers; ++i )
     {
         Key += RatioPerMarker; 
         *lpHeadL++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
         *lpHeadR++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
+        lpv->NumGeneratedMarkers++;
     }
     if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 1 )
     {
@@ -193,9 +205,14 @@ void SSDRAW_load_track( bool v )
 
     VBuffer_DrawStringDirect(
         false,
-        "Loading ... %d \t / %d\n",
+        "Loading ... %d \t / %d\n\r",
         lpv->NumLoadedNodes+1,
         lpv->NumNodesToLoad
+    );
+    VBuffer_DrawStringDirect(
+        false,
+        "ptr_lpv: %p\n\r",
+        lpv
     );
 
     if ( lpv->NumLoadedNodes == lpv->NumNodesToLoad - 1 )
@@ -212,10 +229,36 @@ void SSDRAW_load_track( bool v )
 
 void SSFINAL_racing()
 {
+    FSessionRacing* const lps = gSession.data__;
+    Free( lps->Track.LineMarkersL );
+    Free( lps->Track.LineMarkersR );
+    Free( lps->Track.Track ); 
 }
 
 void SSUPDATE_racing()
 {
+    FSessionRacing* const lps = gSession.data__;
+    URuntimeTrackInfo* const lptrk = &lps->Track;
+    CCarInfo* const lpcar = &lps->Car;
+
+    // Temporary code
+    
+    if ( gButton_Hold & mask( BUTTON_U ) ) {
+        lpcar->Location.x += FIXEDPT_ONE;
+    }
+    if ( gButton_Hold & mask( BUTTON_D ) ) {
+        lpcar->Location.x -= FIXEDPT_ONE;
+    }
+    if ( gButton_Hold & mask( BUTTON_L ) ) {
+        lpcar->Location.y -= FIXEDPT_ONE;
+    }
+    if ( gButton_Hold & mask( BUTTON_R ) ) {
+        lpcar->Location.y += FIXEDPT_ONE;
+    }
+
+    if ( gButton_Hold & mask( BUTTON_HOME ) ) {
+        INITSESSION_MAIN();
+    }
 }
 
 DECLARE_LINE_VECTOR( ShapeCarFrame );
@@ -225,11 +268,11 @@ void SSDRAW_racing( bool v )
     FSessionRacing* const lps = gSession.data__;
     URuntimeTrackInfo* const lptrk = &lps->Track;
     CCarInfo* const lpcar = &lps->Car;
-     
+
     VBuffer_Clear();
     // Update global slope value
     {
-        fixedpt pp = -fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
+        fixedpt pp = fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
         pp = fixedpt_mul( pp, fixedpt_rconst( LITERAL_PI / 8 / 10 ) );
 
         gSlopeValue.Cosv = fixedpt_cos( pp );
@@ -250,7 +293,7 @@ void SSDRAW_racing( bool v )
         FPoint16 CarLocation;
         CarLocation.x = fixedpt_toint( lpcar->Location.x );
         CarLocation.y = fixedpt_toint( lpcar->Location.y );
-        
+        lps->Cam.Position = CarLocation;
         const uint16 MaxLineMarker = lptrk->NumLineMarkers;
         while ( Stage < STAGE_DONE )
         {
@@ -314,6 +357,10 @@ void SSDRAW_racing( bool v )
     {
         uint16 idx, end;
         FLineVector const*const lpShape = &lptrk->LineMarkerSymbol;
+        lps->Cam.ReadOnly_DirectionRadian 
+            = fixedpt_mul( lpcar->RotationInDegrees, FIXEDPT_DEGTORAD );
+        CalculateTranformCache( &lps->Cam );
+
         for ( idx = lptrk->CurrentLineMarkerBeginIndex,
               end = lptrk->CurrentLineMarkerEndIndex + 1
               ; idx < end
@@ -347,7 +394,22 @@ void SSDRAW_racing( bool v )
 
 
     // DEBUG TEXT
-#if DEBUG_LEVEL >= DEBUG_VERBOSE
-
+#if LOG_NORMAL
+    gCursorColumn = 0;
+    gCursorPage = 0;
+    VBuffer_PrintString(
+        "curmemaddr %p\n\r",
+        lps
+    );
+    VBuffer_PrintString(
+        "marker_beg: %d\r\nmarker_end: %d\n\r",
+        lptrk->CurrentLineMarkerBeginIndex,
+        lptrk->CurrentLineMarkerEndIndex
+    );
+    VBuffer_PrintString(
+        "location: %d, %d\r\n",
+        lps->Cam.Position.x,
+        lps->Cam.Position.y
+    );
 #endif
 }

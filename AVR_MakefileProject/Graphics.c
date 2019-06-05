@@ -140,6 +140,9 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
             x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
             y1 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
 
+            y0 = -y0;
+            y1 = -y1;
+
             x0 += centerX;
             y0 += centerY;
             x1 += centerX;
@@ -195,6 +198,9 @@ void CDrawArgs_DrawOnDisplayBufferDirect( const FLineVector * Vector, const FPoi
         tmp = x1;
         x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
         y1 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
+        
+        y0 = -y0;
+        y1 = -y1;
 
         x0 += LCD_NUM_COLUMN / 2;
         x1 += LCD_NUM_COLUMN / 2;

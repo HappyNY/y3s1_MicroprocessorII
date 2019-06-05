@@ -57,6 +57,11 @@ void init_ebi_heap( void )
 // For now it defines some test code, but on release this code will be excluded, and replaced by gameplay loop.
 /////////////////////////////////////////////////////////////////////
 volatile bool GOOD_TO_UPDATE = 0;
+void UpdatePivot()
+{
+    ACC_XPIVOT = ACC_PERCENTX;
+    ACC_YPIVOT = ACC_PERCENTY;
+}
 void main( void )
 {
     void InitializeDevice();
@@ -72,7 +77,9 @@ void main( void )
     gSession.data_finalizer__ = nullfunc;
     gSession.data__ = NULL;
 
-    INITSESSION_VALIDATE();
+    // Initail sensor calibration
+    INITSESSION_MAIN(); //_VALIDATE();
+    QueueTimer( UpdatePivot, 10 );
 
     byte RenderingInterval = 0;
     // MAIN PROGRAM LOOP

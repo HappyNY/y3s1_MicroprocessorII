@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "assertion.h"
 #include "Display.h"
+#include "Program.h"
 
 #ifdef _DEBUG
 void internal_assertion_failed( const char* FILE, int LINE, const char* msg )
@@ -60,4 +61,17 @@ void outputmsg_uart0( const char* msg )
     while ( DetectEdge() == 0 );
 #endif
     ENABLE_INTERRUPT;
-} 
+}
+
+void breakpoint( const char * fmt, ... )
+{
+    va_list vp;
+    va_start( vp, fmt );
+    char buff[96];
+    vsprintf( buff, fmt, vp );
+    VBuffer_Clear();
+    VBuffer_PrintString( buff );
+    LCDDevice__Render();
+    while ( PINE & mask( BUTTON_D ) );
+    va_end( vp );
+}
