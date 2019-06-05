@@ -27,12 +27,12 @@ static const FTrackNodeDesc NODES_SEOUL[] = {
     { 24, 9, 120 }
 };
 
-DECLARE_LINE_VECTOR( Triangle );
+DECLARE_LINE_VECTOR( ShapeTriangle );
 static FTrackDesc const TrackNodes[] = {
-    { NODES_MOLDIVA, ARRAYCOUNT( NODES_MOLDIVA ), "Moldiva",  &Triangle  },
-    { NODES_NEWYORK, ARRAYCOUNT( NODES_NEWYORK ), "New York", &Triangle  },
-    { NODES_TOKYO, ARRAYCOUNT( NODES_TOKYO ), "Tokyo",        &Triangle  },
-    { NODES_NEWYORK, ARRAYCOUNT( NODES_NEWYORK ), "Seoul",    &Triangle },
+    { NODES_MOLDIVA, ARRAYCOUNT( NODES_MOLDIVA ), "Moldiva",  &ShapeTriangle  },
+    { NODES_NEWYORK, ARRAYCOUNT( NODES_NEWYORK ), "New York", &ShapeTriangle  },
+    { NODES_TOKYO, ARRAYCOUNT( NODES_TOKYO ), "Tokyo",        &ShapeTriangle  },
+    { NODES_NEWYORK, ARRAYCOUNT( NODES_NEWYORK ), "Seoul",    &ShapeTriangle },
 };
 
 const byte NumTracks = ARRAYCOUNT(TrackNodes);

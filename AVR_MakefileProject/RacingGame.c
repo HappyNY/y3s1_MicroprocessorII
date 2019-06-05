@@ -57,6 +57,9 @@ void INTERNAL_INITSESSION_RACING()
     gSession.Update = SSUPDATE_racing;
     gSession.Draw = SSDRAW_racing;
 
+    URuntimeTrackInfo* lpTrk = &lps->Track;
+    lpTrk->CurrentLineMarkerIndex = 0;
+
     CCarInfo* lpCar = &lps->Car;
 
 }
@@ -215,4 +218,12 @@ void SSUPDATE_racing()
 
 void SSDRAW_racing( bool v )
 {
+    URuntimeTrackInfo* const lptrk = gSession.data__;
+    
+    int16 i;
+
+    VBuffer_Clear();
+
+    // Erase invisible ones
+
 }

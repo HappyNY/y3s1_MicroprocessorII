@@ -181,7 +181,7 @@ typedef struct tagTest3DSession {
 } FTest3DSession;
 static void test_3d_update();
 static void test_3d_draw( bool v );
-DECLARE_LINE_VECTOR( BoxOne );
+DECLARE_LINE_VECTOR( ShapeBoxOne );
 void INITSESSION_TEST_3D()
 {
     FTest3DSession* lpv = memset(
@@ -241,7 +241,7 @@ void test_3d_update()
     }
 }
 
-DECLARE_LINE_VECTOR( Triangle );
+DECLARE_LINE_VECTOR( ShapeTriangle );
 void test_3d_draw( bool v )
 {
     VBuffer_Clear();
@@ -263,7 +263,7 @@ void test_3d_draw( bool v )
           ; ++i )
     {
         CDrawArgs_DrawOnDisplayBufferPerspective(
-            &Triangle,
+            &ShapeTriangle,
             lpv->Locations[i],
             &lpv->Cam
         );

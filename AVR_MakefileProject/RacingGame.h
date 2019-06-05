@@ -55,6 +55,12 @@ typedef struct tagRuntimeTrackInfo {
  
 void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPoint16 UserLoc ); 
 
+enum ERuntimeRacingConstants
+{
+    NUM_MAX_VISIBLE_MARKERS_PER_LINE = 10,
+    MAX_MARKER_VISIBLE_DISTANCE = 1500
+};
+
 /*******************************************
  * Car control logics
  *******************************************/
