@@ -51,10 +51,14 @@ static void SSUPDATE_racing();
 static void SSDRAW_racing(bool);
 void INTERNAL_INITSESSION_RACING()
 {
+    // @todo. Memory leak occurs here, or SSDRAW_racing, maybe.
+    // @todo. In the process of generating symbol and releasing its memory after use, 
+    //       corrupted heap memory header data is used and causes crash.
+    //        Should watch if there's any corruption during symbol generation
     FSessionRacing* lps = ALLOC_TYPE_INITZERO( FSessionRacing );
-    lps->Track = ( (FSessionTrackLoading*) gSession.data__ )->Track;
+    memcpy( &lps->Track, &( (FSessionTrackLoading*) gSession.data__ )->Track, sizeof( lps->Track ) );
 
-    SetSessionData( lps, SSFINAL_racing );
+    SetSessionData( lps, &SSFINAL_racing );
     
     gSession.Update = SSUPDATE_racing;
     gSession.Draw = SSDRAW_racing;
@@ -158,11 +162,10 @@ void SSUPDATE_generate_symbol()
     FPoint16* lpHeadR = lpv->Track.LineMarkersR + lpv->NumGeneratedMarkers;
 
     *lpHeadL++ = CurSeg.PL;
-    *lpHeadR++ = CurSeg.PR;
-    lpv->NumGeneratedMarkers++;
+    *lpHeadR++ = CurSeg.PR; 
 
     int const NumMarkers = lpv->TrackToLoad.TrackNodes[lpv->MarkerGenIndex].Length / TRACK_MARKER_INTERVAL;
-    // lpv->NumGeneratedMarkers += NumMarkers + 1/*Beginning marker*/;
+    lpv->NumGeneratedMarkers += NumMarkers + 1/*Beginning marker*/;
     fixedpt const RatioPerMarker = FIXEDPT_ONE / NumMarkers;
 
     int i;
@@ -173,15 +176,16 @@ void SSUPDATE_generate_symbol()
         endl = FPoint16_ToFP( NxtSeg.PL ),
         endr = FPoint16_ToFP( NxtSeg.PR );
 
-    for ( i = 1; i < NumMarkers; ++i )
+    for ( i = 1; i <= NumMarkers; ++i )
     {
-        Key += RatioPerMarker; 
+        Key += RatioPerMarker;
         *lpHeadL++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
         *lpHeadR++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
-        lpv->NumGeneratedMarkers++;
     }
     if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 1 )
     {
+        // gSession.Update = nullfunc;
+        //INITSESSION_MAIN();
         INTERNAL_INITSESSION_RACING();
     }
 }
