@@ -6,7 +6,7 @@ const static FTrackNodeDesc INIT_TRACK_NODE = { 32, 0, 100 };
 
 typedef struct tagSessionTrackLoading {
     FTrackDesc TrackToLoad;
-    FRuntimeTrackInfo Track;
+    URuntimeTrackInfo Track;
     uint16 NumNodesToLoad;
     uint16 NumLoadedNodes;
     uint16 NumMarkersToGen;
@@ -39,12 +39,29 @@ void INITSESSION_RACING_GAME( int TrackIdx )
     lps->Track.LineMarkerSymbol = *lps->TrackToLoad.LineMarkerSymbol;
 }
 
+typedef struct tagSessionRacing
+{
+    URuntimeTrackInfo Track;
+    CCarInfo Car;
+} FSessionRacing;
+static void SSFINAL_racing();
+static void SSUPDATE_racing();
+static void SSDRAW_racing(bool);
 void INTERNAL_INITSESSION_RACING()
 {
-    gSession.Update = nullfunc;
+    FSessionRacing* lps = ALLOC_TYPE_INITZERO( FSessionRacing );
+    lps->Track = ( (FSessionTrackLoading*) gSession.data__ )->Track;
+
+    SetSessionData( lps, SSFINAL_racing );
+    
+    gSession.Update = SSUPDATE_racing;
+    gSession.Draw = SSDRAW_racing;
+
+    CCarInfo* lpCar = &lps->Car;
+
 }
  
-void RTI_UpdateCurrentSegByUserLocation( FRuntimeTrackInfo * v, FPoint16 UserLoc )
+void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPoint16 UserLoc )
 {
 
 }  
@@ -148,7 +165,7 @@ void SSUPDATE_generate_symbol()
     }
     if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 1 )
     {
-        gSession.Update = nullfunc;
+        INTERNAL_INITSESSION_RACING();
     }
 }
 
@@ -186,4 +203,16 @@ void SSDRAW_load_track( bool v )
             lpv->NumMarkersToGen
         );
     }
+}
+
+void SSFINAL_racing()
+{
+}
+
+void SSUPDATE_racing()
+{
+}
+
+void SSDRAW_racing( bool v )
+{
 }

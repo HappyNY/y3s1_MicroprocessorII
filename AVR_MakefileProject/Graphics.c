@@ -153,13 +153,14 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
                 LineBound.Left = x0;
                 LineBound.Right = x1;
             }
+
             if ( y0 > y1 ) {
-                LineBound.Top = x1;
-                LineBound.Bottom = x0;
+                LineBound.Top = y1;
+                LineBound.Bottom = y0;
             }
             else {
-                LineBound.Top = x0;
-                LineBound.Bottom = x1;
+                LineBound.Top = y0;
+                LineBound.Bottom = y1;
             } 
 
             // Cull line before draw using rectangle.
@@ -171,16 +172,43 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
             ++lpLine;
         }
     }
-} 
+}
+void CDrawArgs_DrawOnDisplayBufferDirect( const FLineVector * Vector, const FPoint16 ofst )
+{
+    FLineInfo const* lpHead = Vector->Lines;
+    FLineInfo const* lpEnd = Vector->Lines + Vector->NumLines;
+    int16 x0, y0, x1, y1;
+
+    while ( lpHead != lpEnd )
+    {
+        x0 = lpHead->Begin.x;
+        x1 = lpHead->End.x;
+        y0 = lpHead->Begin.y;
+        y1 = lpHead->End.y;
+         
+        int16 tmp = x0;
+        x0 = ( gSlopeValue.Cosv * x0 - gSlopeValue.Sinv * y0 ) >> FIXEDPT_FBITS;
+        y0 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y0 ) >> FIXEDPT_FBITS;
+
+        tmp = x1;
+        x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
+        y1 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
+
+        VBuffer_DrawLine( x0, y0, x1, y1 );
+
+        ++lpHead;
+    }
+}
+
 
 bool FRect16_IsOverlap( FRect16 const * a, FRect16 const * b )
 {
     bool bXOverlap 
-        = b->Left <= a->Left && a->Left <= b->Right 
-        || b->Left <= a->Right && a->Right <= b->Right;
+        = ( b->Left <= a->Left && a->Left <= b->Right )
+        || ( b->Left <= a->Right && a->Right <= b->Right );
     bool bYOverlap
-        = b->Top <= a->Top && a->Top <= b->Bottom
-        || b->Top <= a->Bottom && a->Bottom <= b->Bottom;
+        = ( b->Top <= a->Top && a->Top <= b->Bottom )
+        || ( b->Top <= a->Bottom && a->Bottom <= b->Bottom );
 
-    return bXOverlap && bYOverlap;
+    return /*bXOverlap && */bYOverlap;
 }

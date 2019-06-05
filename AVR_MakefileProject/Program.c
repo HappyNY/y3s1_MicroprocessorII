@@ -253,7 +253,7 @@ void test_3d_draw( bool v )
     gCursorColumn = 0;
     VBuffer_PrintString( "CS{%d, %d} ", lpv->Cam.Position.x, lpv->Cam.Position.y );
     
-    fixedpt pp = fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
+    fixedpt pp = -fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
     pp = fixedpt_mul( pp, fixedpt_rconst( LITERAL_PI/8/10 ) );
 
     gSlopeValue.Cosv = fixedpt_cos( pp );
@@ -338,16 +338,12 @@ static void main_draw( bool complxDraw )
 }
 
 static void main_calib_update()
-{
-    if ( gButton_Pressed & mask( BUTTON_B ) )
-    {
-        gSession.Draw = main_draw;
-        gSession.Update = main_update;
-    }
-
+{ 
     if ( gButton_Pressed & mask( BUTTON_A ) ) {
         ACC_XPIVOT = ACC_PERCENTX;
         ACC_YPIVOT = ACC_PERCENTY;
+        gSession.Draw = main_draw;
+        gSession.Update = main_update;
     }
 }
 
@@ -369,7 +365,7 @@ void validate_update()
     lpPrg->ProgressAddr += 0x100;
 
     if ( lpPrg->ProgressAddr > 0xfd00 ) {
-        INITSESSION_MAIN();
+        INITSESSION_MAIN(); 
     }
 }
 

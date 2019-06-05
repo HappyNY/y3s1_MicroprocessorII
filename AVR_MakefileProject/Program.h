@@ -31,10 +31,10 @@ void UpdateInputStatus();
 ////////////////////////////////////////////////////////////////
 
 enum {
-    BUTTON_L = 6, 
-    BUTTON_R = 3, 
-    BUTTON_U = 4, 
-    BUTTON_D = 5, 
+    BUTTON_D = 6, 
+    BUTTON_U = 3, 
+    BUTTON_L = 4, 
+    BUTTON_R = 5, 
     BUTTON_A = 2, 
     BUTTON_B = 1, 
     BUTTON_HOME = 0, 

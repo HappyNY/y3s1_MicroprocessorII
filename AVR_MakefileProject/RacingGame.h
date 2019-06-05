@@ -51,16 +51,16 @@ typedef struct tagRuntimeTrackInfo {
     uint16 CurrentLineMarkerIndex;
     uint16 NumLineMarkers;
     FLineVector LineMarkerSymbol;
-} FRuntimeTrackInfo;
+} URuntimeTrackInfo;
  
-void RTI_UpdateCurrentSegByUserLocation( FRuntimeTrackInfo* v, FPoint16 UserLoc ); 
+void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPoint16 UserLoc ); 
 
 /*******************************************
  * Car control logics
  *******************************************/
 typedef struct FCarControlInformation {
     // Status
-    FPoint16 Location;
+    FPointFP Location;
     fixedpt RotationInDegrees;
     uint16 RPM;  
     // 0 is neutral.
@@ -69,7 +69,9 @@ typedef struct FCarControlInformation {
 
     // Car characteristics.
     uint8 Const_Handling;
-    uint8* Const_GearConstantArray;
+    uint8 const* Const_GearConstantArray;
     uint16 Const_MaxRPM;
     uint8 Const_NumMaxGear;
 } CCarInfo;
+
+void Car_UpdateCar( uint16 AccelerateFrac, uint16 BrakeFrac );

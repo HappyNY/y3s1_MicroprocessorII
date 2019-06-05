@@ -73,7 +73,7 @@ extern struct tagSlope {
 
 void CalculateTranformCache( FCameraTransform* Camera );
 void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const FPoint16 MeshPosition, const FCameraTransform* Camera );
-void CDrawArgs_DrawOnDisplayBufferDirect( const CDrawArgs* Vector, const FPoint16* ofst );
+void CDrawArgs_DrawOnDisplayBufferDirect( const FLineVector* Vector, const FPoint16 ofst );
 
 void fixedpt_AddDegreesNormalized( fixedpt* dst, int8 degrees );
 void fixedpt_AddRadianNormalized( fixedpt* dst, fixedpt add );
