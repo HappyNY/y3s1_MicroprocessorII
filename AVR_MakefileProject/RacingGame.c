@@ -43,6 +43,7 @@ typedef struct tagSessionRacing
 {
     URuntimeTrackInfo Track;
     CCarInfo Car;
+    FCameraTransform Cam;
 } FSessionRacing;
 static void SSFINAL_racing();
 static void SSUPDATE_racing();
@@ -58,7 +59,8 @@ void INTERNAL_INITSESSION_RACING()
     gSession.Draw = SSDRAW_racing;
 
     URuntimeTrackInfo* lpTrk = &lps->Track;
-    lpTrk->CurrentLineMarkerIndex = 0;
+    lpTrk->CurrentLineMarkerBeginIndex = 0;
+    lpTrk->CurrentLineMarkerEndIndex = 0;
 
     CCarInfo* lpCar = &lps->Car;
 
@@ -216,14 +218,136 @@ void SSUPDATE_racing()
 {
 }
 
+DECLARE_LINE_VECTOR( ShapeCarFrame );
+
 void SSDRAW_racing( bool v )
 {
-    URuntimeTrackInfo* const lptrk = gSession.data__;
-    
-    int16 i;
-
+    FSessionRacing* const lps = gSession.data__;
+    URuntimeTrackInfo* const lptrk = &lps->Track;
+    CCarInfo* const lpcar = &lps->Car;
+     
     VBuffer_Clear();
+    // Update global slope value
+    {
+        fixedpt pp = -fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
+        pp = fixedpt_mul( pp, fixedpt_rconst( LITERAL_PI / 8 / 10 ) );
 
-    // Erase invisible ones
+        gSlopeValue.Cosv = fixedpt_cos( pp );
+        gSlopeValue.Sinv = fixedpt_sin( pp );
+    }
+    // Update marker indices
+    {
+        int16 i = lptrk->CurrentLineMarkerBeginIndex;
+        bool bHappend = false;
+        enum {
+            EXTEND_BACKWARD = 0,
+            SHRINK_BACKWARD,
+            EXTEND_FORWARD,
+            SHRINK_FORWARD,
+            STAGE_DONE
+        };
+        byte Stage = EXTEND_BACKWARD;
+        FPoint16 CarLocation;
+        CarLocation.x = fixedpt_toint( lpcar->Location.x );
+        CarLocation.y = fixedpt_toint( lpcar->Location.y );
+        
+        const uint16 MaxLineMarker = lptrk->NumLineMarkers;
+        while ( Stage < STAGE_DONE )
+        {
+            // Does not matter which side of marker is used
+            FPoint16 loc = lptrk->LineMarkersL[i];
 
+            loc.x -= CarLocation.x;
+            loc.y -= CarLocation.y;
+
+            int32 dist = (int32) loc.x * loc.x + (int32) loc.y * loc.y;
+            const bool bInDistance = dist < MAX_MARKER_VISIBLE_DISTANCE_SQR;
+            switch ( Stage )
+            {
+            case EXTEND_BACKWARD:
+                if ( bInDistance && lptrk->CurrentLineMarkerBeginIndex > 0 ) {
+                    i = --lptrk->CurrentLineMarkerBeginIndex;
+                    bHappend = true;
+                }
+                else {
+                    Stage = bHappend ? EXTEND_FORWARD : SHRINK_BACKWARD;
+                    bHappend = false;
+                }
+                break;
+            case SHRINK_BACKWARD:
+                if ( !bInDistance 
+                     && lptrk->CurrentLineMarkerBeginIndex < MaxLineMarker - 1 ) 
+                {
+                    i = ++lptrk->CurrentLineMarkerBeginIndex;
+                }
+                else {
+                    Stage = EXTEND_FORWARD;
+                    i = lptrk->CurrentLineMarkerEndIndex = lptrk->CurrentLineMarkerBeginIndex;
+                }
+                break;
+            case EXTEND_FORWARD:
+                if ( bInDistance
+                     && lptrk->CurrentLineMarkerEndIndex < MaxLineMarker - 1)
+                {
+                    i = ++lptrk->CurrentLineMarkerEndIndex;
+                    bHappend = true;
+                }
+                else {
+                    Stage = bHappend ? STAGE_DONE : SHRINK_FORWARD;
+                }
+                break;
+            case SHRINK_FORWARD:
+                if ( !bInDistance
+                     && lptrk->CurrentLineMarkerEndIndex > lptrk->CurrentLineMarkerBeginIndex )
+                {
+                    i = --lptrk->CurrentLineMarkerEndIndex;
+                }
+                else {
+                    Stage = STAGE_DONE;
+                }
+                break;
+            }
+        } // ~Stage
+    }
+
+    // Render markers
+    {
+        uint16 idx, end;
+        FLineVector const*const lpShape = &lptrk->LineMarkerSymbol;
+        for ( idx = lptrk->CurrentLineMarkerBeginIndex,
+              end = lptrk->CurrentLineMarkerEndIndex + 1
+              ; idx < end
+              ; ++idx )
+        {
+            // Draw L
+            CDrawArgs_DrawOnDisplayBufferPerspective(
+                lpShape,
+                lptrk->LineMarkersL[idx],
+                &lps->Cam
+            );
+            // Draw R
+            CDrawArgs_DrawOnDisplayBufferPerspective(
+                lpShape,
+                lptrk->LineMarkersR[idx],
+                &lps->Cam
+            );
+        }
+    }
+
+    // Draw fixed car frame
+    {
+        const FPoint16 Pivot = { 0,0 };
+        CDrawArgs_DrawOnDisplayBufferDirect(
+            &ShapeCarFrame,
+            Pivot
+        );
+    }
+
+    // Render status text (Gear level, speed, progress, etc ...)
+
+
+    // DEBUG TEXT
+#if DEBUG_LEVEL >= DEBUG_VERBOSE
+
+#endif
 }

@@ -103,13 +103,15 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         FLineInfo const 
             *lpLine = Vector->Lines,
             *lpLineEnd = Vector->Lines + Vector->NumLines;
-        int16 centerX, centerY;
+        // int16 centerX, centerY;
         int16 x0, y0, x1, y1;
         int16 rotX, rotY;
         FRect16 LineBound;
 
-        centerX = LCD_NUM_COLUMN / 2;
-        centerY = LCD_HEIGHT / 2;
+        enum {
+            centerX = LCD_NUM_COLUMN / 2,
+            centerY = LCD_HEIGHT / 2,
+        };
 
         log_verbose( "Display center = %d, %d", centerX, centerY );
 
@@ -181,11 +183,11 @@ void CDrawArgs_DrawOnDisplayBufferDirect( const FLineVector * Vector, const FPoi
 
     while ( lpHead != lpEnd )
     {
-        x0 = lpHead->Begin.x;
-        x1 = lpHead->End.x;
-        y0 = lpHead->Begin.y;
-        y1 = lpHead->End.y;
-         
+        x0 = lpHead->Begin.x + ofst.x;
+        x1 = lpHead->End.x + ofst.x;
+        y0 = lpHead->Begin.y + ofst.y;
+        y1 = lpHead->End.y + ofst.y; 
+
         int16 tmp = x0;
         x0 = ( gSlopeValue.Cosv * x0 - gSlopeValue.Sinv * y0 ) >> FIXEDPT_FBITS;
         y0 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y0 ) >> FIXEDPT_FBITS;
@@ -193,6 +195,11 @@ void CDrawArgs_DrawOnDisplayBufferDirect( const FLineVector * Vector, const FPoi
         tmp = x1;
         x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
         y1 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
+
+        x0 += LCD_NUM_COLUMN / 2;
+        x1 += LCD_NUM_COLUMN / 2;
+        y0 += LCD_HEIGHT / 2;
+        y1 += LCD_HEIGHT / 2;
 
         VBuffer_DrawLine( x0, y0, x1, y1 );
 

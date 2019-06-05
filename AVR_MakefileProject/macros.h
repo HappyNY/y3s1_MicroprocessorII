@@ -36,6 +36,15 @@ extern volatile char __INTERRUPT_LOCK_MUTEX__;
 #define USE_STDLIB_MALLOC 1
 #define USE_SERIAL_COMMUNICATION 0
 
+#define DEBUG_NONE 0
+#define DEBUG_CRITICAL 1
+#define DEBUG_WARNING 2
+#define DEBUG_NORMAL 3
+#define DEBUG_VERBOSE 4
+#define DEBUG_ALL 5
+
+#define DEBUG_LEVEL DEBUG_NORMAL
+
 #if ENABLE_DEBUG
 #ifndef _DEBUG
 #define _DEBUG
