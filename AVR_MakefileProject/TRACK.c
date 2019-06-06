@@ -3,14 +3,14 @@
 
 
 static const FTrackNodeDesc NODES_MOLDIVA[] = {
-    { 9, 8, 55 }, 
-    { 8, 13, 55 },
+    { 9, 8, 55   }, 
+    { 8, 13, 55  },
     { 12, 14, 55 },
     { 21, -3, 55 },
-    { 11, 0, 55 },
+    { 11, 0, 55  },
     { 9, -15, 55 },
     { 21, 11, 55 },
-    { 25, 0, 55 },
+    { 25, 0, 55  },
 };
 static const FTrackNodeDesc NODES_NEWYORK[] = {
     { 24, 9, 120 },

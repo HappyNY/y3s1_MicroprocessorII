@@ -58,7 +58,7 @@ void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPoint16 UserLoc 
 enum ERuntimeRacingConstants
 {
     MAX_MARKER_VISIBLE_DISTANCE = 64,
-    TRACK_MARKER_INTERVAL = 12
+    TRACK_MARKER_INTERVAL = 10
 };
 static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR 
 = (int32) MAX_MARKER_VISIBLE_DISTANCE * MAX_MARKER_VISIBLE_DISTANCE;
@@ -69,17 +69,13 @@ static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR
 typedef struct FCarControlInformation {
     // Status
     FPointFP Location;
+    fixedpt Handling;
     fixedpt RotationInDegrees;
     uint16 RPM;  
     // 0 is neutral.
     uint8 GearIndex;
-    uint8 Speed; // Units per frame, determined by sqrt(RPM) * GearConstantArray[GearIndex]
-
-    // Car characteristics.
-    uint8 Const_Handling;
-    uint8 const* Const_GearConstantArray;
-    uint16 Const_MaxRPM;
-    uint8 Const_NumMaxGear;
+    uint8 Speed; // Units per frame, determined by sqrt(RPM) * GearConstantArray[GearIndex] 
 } CCarInfo;
 
 void Car_UpdateCar( uint16 AccelerateFrac, uint16 BrakeFrac );
+FPointFP FPointFP_GetDirectionVector( fixedpt val );

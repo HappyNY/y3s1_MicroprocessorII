@@ -78,7 +78,16 @@ void INTERNAL_INITSESSION_RACING()
 void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPoint16 UserLoc )
 {
 
-}  
+}
+
+void Car_UpdateCar( uint16 AccelerateFrac, uint16 BrakeFrac )
+{
+}
+
+FPointFP FPointFP_GetDirectionVector( fixedpt val )
+{
+
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,8 +129,8 @@ void SSUPDATE_load_track()
     fixedpt Sin = fixedpt_sin( Angle );
 
     uint16 lx, ly;
-    ly = Cos * lpBeg->Width >> FIXEDPT_FBITS;
-    lx = Sin * lpBeg->Width >> FIXEDPT_FBITS;
+    lx = Cos * lpBeg->Width >> FIXEDPT_FBITS;
+    ly = Sin * lpBeg->Width >> FIXEDPT_FBITS;
     
     lpv->Track.Track[idx].PR.x = lx + Pivot.x;
     lpv->Track.Track[idx].PR.y = ly + Pivot.y;
@@ -132,13 +141,13 @@ void SSUPDATE_load_track()
     Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
     Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
 
-    breakpoint(
-        "Track seg on \r\n[%d, %d]->[%d,%d]",
-        lpv->Track.Track[idx].PR.x,
-        lpv->Track.Track[idx].PR.y,
-        lpv->Track.Track[idx].PL.x,
-        lpv->Track.Track[idx].PL.y
-    );
+    //breakpoint(
+    //    "Track seg on \r\n[%d, %d]->[%d,%d]",
+    //    lpv->Track.Track[idx].PR.x,
+    //    lpv->Track.Track[idx].PR.y,
+    //    lpv->Track.Track[idx].PL.x,
+    //    lpv->Track.Track[idx].PL.y
+    //);
     
     if ( lpv->LoadingNodeIndex + 1 == lpv->NumNodesToLoad - 1 )
     {
@@ -210,13 +219,13 @@ void SSUPDATE_generate_symbol()
         *lpHeadL++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
         *lpHeadR++ = FPointFP_To16( LerpFP( &begr, &endr, Key ) );
 
-        breakpoint(
-            "Symbol L[%d, %d] R[%d, %d]",
-            ( lpHeadL - 1 )->x,
-            ( lpHeadL - 1 )->y,
-            ( lpHeadR - 1 )->x,
-            ( lpHeadR - 1 )->y
-        );
+        //breakpoint(
+        //    "Symbol L[%d, %d] R[%d, %d]",
+        //    ( lpHeadL - 1 )->x,
+        //    ( lpHeadL - 1 )->y,
+        //    ( lpHeadR - 1 )->x,
+        //    ( lpHeadR - 1 )->y
+        //);
     }
     if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 2 )
     {
@@ -254,6 +263,7 @@ void SSDRAW_load_track( bool v )
         "ptr_lpv: %p\n\r",
         lpv
     );
+    
 
     if ( lpv->LoadingNodeIndex == lpv->NumNodesToLoad - 1 )
     {
@@ -308,12 +318,12 @@ void SSDRAW_racing( bool v )
     FSessionRacing* const lps = gSession.data__;
     URuntimeTrackInfo* const lptrk = &lps->Track;
     CCarInfo* const lpcar = &lps->Car;
-
+     
     VBuffer_Clear();
     // Update global slope value
     {
         fixedpt pp = fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
-        pp = fixedpt_mul( pp, fixedpt_rconst( LITERAL_PI / 8 / 10 ) );
+        pp = fixedpt_mul( pp, fixedpt_rconst( LITERAL_PI / 8 / 9 ) );
 
         gSlopeValue.Cosv = fixedpt_cos( pp );
         gSlopeValue.Sinv = fixedpt_sin( pp );
@@ -431,7 +441,6 @@ void SSDRAW_racing( bool v )
     }
 
     // Render status text (Gear level, speed, progress, etc ...)
-
 
     // DEBUG TEXT
 #if LOG_NORMAL
