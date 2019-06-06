@@ -57,7 +57,7 @@ void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPoint16 UserLoc 
 
 enum ERuntimeRacingConstants
 {
-    MAX_MARKER_VISIBLE_DISTANCE = 250,
+    MAX_MARKER_VISIBLE_DISTANCE = 100,
     TRACK_MARKER_INTERVAL = 5
 };
 static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR 

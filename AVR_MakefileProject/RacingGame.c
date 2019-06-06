@@ -35,8 +35,7 @@ void INITSESSION_RACING_GAME( int TrackIdx )
     lps->Track.NumSegs = lps->NumNodesToLoad;
     lps->Track.Track = ALLOC_DATA_INITZERO(
         sizeof( FRuntimeTrackSegment )*lps->Track.NumSegs
-    );
-    breakpoint( "allocated memory: 0x%x", sizeof( FRuntimeTrackSegment )*lps->Track.NumSegs );
+    ); 
     lps->Track.LineMarkerSymbol = *lps->TrackToLoad.LineMarkerSymbol;
 }
 
@@ -68,7 +67,7 @@ void INTERNAL_INITSESSION_RACING()
     lpTrk->CurrentLineMarkerEndIndex = 0;
 
     CCarInfo* lpCar = &lps->Car;
-
+     
 }
  
 void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPoint16 UserLoc )
@@ -89,6 +88,10 @@ void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPoint16 UserLoc
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
+int CalcNumMarkersToGen( FPoint16 a, FPoint16 b )
+{
+    
+}
 
 // Loads and appends one track per update
 void SSUPDATE_generate_symbol();
@@ -117,6 +120,8 @@ void SSUPDATE_load_track()
     lpv->Track.Track[idx].PL.x =-lx + Pivot.x;
     lpv->Track.Track[idx].PL.y =-ly + Pivot.y;
 
+    lpv->NumMarkersToGen += 1 + ( lpBeg->Length / TRACK_MARKER_INTERVAL );
+
     if ( lpv->NumLoadedNodes == lpv->NumNodesToLoad - 1 )
     {
         // all seq done.
@@ -124,14 +129,14 @@ void SSUPDATE_load_track()
         const uint16 SizeToAllocate = sizeof( FPoint16 )*lpv->NumMarkersToGen;
         lpv->Track.LineMarkersL = ALLOC_DATA_INITZERO( SizeToAllocate );
         lpv->Track.LineMarkersR = ALLOC_DATA_INITZERO( SizeToAllocate );
-        void* d = Malloc( SizeToAllocate );
         breakpoint(
-            "\r\nPTR A: %p, B: %p\r\nsz:%x",
-            lpv->Track.LineMarkersR,
-            d, // lpv->Track.LineMarkersR
-            SizeToAllocate
+            "\r\nPTR A: %p, B: %p\r\nsz:%x\r\nszA: %x, szB: %x",
+            lpv->Track.LineMarkersL,
+            lpv->Track.LineMarkersR, // lpv->Track.LineMarkersR
+            SizeToAllocate,
+            GetMemoryOccupation(lpv->Track.LineMarkersL),
+            GetMemoryOccupation(lpv->Track.LineMarkersR)
         );
-        Free( d );
         gSession.Update = SSUPDATE_generate_symbol;
     }
 
@@ -139,9 +144,7 @@ void SSUPDATE_load_track()
     Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
     Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
     lpv->CurrentAngle = Angle;
-    lpv->CurrentPivot = Pivot;
-    
-    lpv->NumMarkersToGen += 1 + ( lpBeg->Length / TRACK_MARKER_INTERVAL );
+    lpv->CurrentPivot = Pivot; 
 }
 
 static inline FPointFP LerpFP( FPointFP const* a, FPointFP const* b, fixedpt Key )
@@ -161,6 +164,9 @@ void SSUPDATE_generate_symbol()
     FPoint16* lpHeadL = lpv->Track.LineMarkersL + lpv->NumGeneratedMarkers;
     FPoint16* lpHeadR = lpv->Track.LineMarkersR + lpv->NumGeneratedMarkers;
 
+    FPoint16 const* lpEndL = lpv->Track.LineMarkersL + lpv->NumMarkersToGen;
+    FPoint16 const* lpEndR = lpv->Track.LineMarkersR + lpv->NumMarkersToGen;
+
     *lpHeadL++ = CurSeg.PL;
     *lpHeadR++ = CurSeg.PR; 
 
@@ -169,16 +175,27 @@ void SSUPDATE_generate_symbol()
     fixedpt const RatioPerMarker = FIXEDPT_ONE / NumMarkers;
 
     int i;
-    fixedpt Key = 0;
+    fixedpt Key = RatioPerMarker;
     FPointFP
         begl = FPoint16_ToFP( CurSeg.PL ),
         begr = FPoint16_ToFP( CurSeg.PR ),
         endl = FPoint16_ToFP( NxtSeg.PL ),
         endr = FPoint16_ToFP( NxtSeg.PR );
 
-    for ( i = 1; i <= NumMarkers; ++i )
+    for ( i = 1; i < NumMarkers; ++i )
     {
         Key += RatioPerMarker;
+        checkf( lpHeadL < lpEndL,
+                "Access violation\r\nToGen:%d, Gen:%d",
+                lpv->NumMarkersToGen,
+                lpv->NumGeneratedMarkers
+        );
+        checkf( lpHeadR < lpEndR,
+                "Access violation\r\nToGen:%d, Gen:%d, i:%d, mks:%d",
+                lpv->NumMarkersToGen,
+                lpv->NumGeneratedMarkers,
+                i, NumMarkers
+        );
         *lpHeadL++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
         *lpHeadR++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
     }

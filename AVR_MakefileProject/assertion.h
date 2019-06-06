@@ -1,13 +1,18 @@
 #pragma once
 #include <stdio.h> 
-
+#include "macros.h"
 #ifdef _DEBUG
 #ifndef __DUMP_RS232_ON_ABORT__
 #define __DUMP_RS232_ON_ABORT__
 #endif
 #endif
 
-
+#if LOG_NORMAL
+#define checkf(expr, ...) if((expr) == 0) { internal_check(__FUNCTION__, __LINE__, #expr, __VA_ARGS__);}
+void internal_check( const char* file, int line, const char* expr, const char* fmt, ... );
+#else
+#define checkf(...)
+#endif
 
 #ifndef _DEBUG
 #define assertf(...)

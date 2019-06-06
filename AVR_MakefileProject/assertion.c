@@ -40,6 +40,27 @@ void internal_logslow( const char* FILE, int LINE, const char * msg )
 }
 #endif
 
+#if LOG_NORMAL
+void internal_check( const char * file, int line, const char * expr, const char * fmt, ... )
+{
+    char buff[128];
+
+    int16 idx = sprintf( buff, "%s[%d]\r\n(%s) == false\r\n", file, line, expr );
+    
+    va_list vp;
+    va_start( vp, fmt );
+    vsprintf( buff + idx, fmt, vp );
+    va_end( vp );
+
+    VBuffer_Clear();
+    byte col = 0, pg = 0;
+    VBuffer_DrawString( &col, &pg, buff, false );
+    LCDDevice__Render();
+
+    while ( 1 );
+}
+#endif
+
 void outputmsg_uart0( const char* msg )
 { 
     DISABLE_INTERRUPT;
@@ -70,6 +91,7 @@ void breakpoint( const char * fmt, ... )
     char buff[96];
     vsprintf( buff, fmt, vp );
     VBuffer_Clear();
+    VBuffer_PrintString( "Breakpoint hit!\r\n" );
     VBuffer_PrintString( buff );
     LCDDevice__Render();
     while ( PINE & mask( BUTTON_D ) );
