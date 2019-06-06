@@ -3,8 +3,9 @@
 #define DEFINE_LINE_VECTOR(Identifier, SourceLineInfo) const FLineVector Identifier = { SourceLineInfo,ARRAYCOUNT( SourceLineInfo ) };
 
 const static FLineInfo src_cone[] = {
-    -1, -3, 0, 3,
-    0, 3, 1, -3
+    -1, 8, 0, 0,
+    0, 0, 0, -8,
+    0, 0, 1, 8
 };
 
 DEFINE_LINE_VECTOR( ShapeCone, src_cone );

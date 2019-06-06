@@ -8,13 +8,14 @@ typedef struct tagSessionTrackLoading {
     FTrackDesc TrackToLoad;
     URuntimeTrackInfo Track;
     uint16 NumNodesToLoad;
-    uint16 NumLoadedNodes;
+    uint16 LoadingNodeIndex;
     uint16 NumMarkersToGen;
     uint16 NumGeneratedMarkers;
     uint16 MarkerGenIndex;
     // Will track current node pivot
     fixedpt CurrentAngle;
     FPoint16 CurrentPivot;
+    uint8* MarkerGenNumberArray;
 } FSessionTrackLoading;
 
 static void SSUPDATE_load_track();
@@ -36,6 +37,9 @@ void INITSESSION_RACING_GAME( int TrackIdx )
     lps->Track.Track = ALLOC_DATA_INITZERO(
         sizeof( FRuntimeTrackSegment )*lps->Track.NumSegs
     ); 
+    lps->MarkerGenNumberArray = ALLOC_DATA_INITZERO(
+        sizeof( uint8 )*lps->Track.NumSegs
+    );
     lps->Track.LineMarkerSymbol = *lps->TrackToLoad.LineMarkerSymbol;
 }
 
@@ -56,6 +60,7 @@ void INTERNAL_INITSESSION_RACING()
     //        Should watch if there's any corruption during symbol generation
     FSessionRacing* lps = ALLOC_TYPE_INITZERO( FSessionRacing );
     memcpy( &lps->Track, &( (FSessionTrackLoading*) gSession.data__ )->Track, sizeof( lps->Track ) );
+    Free( ( (FSessionTrackLoading*) gSession.data__ )->MarkerGenNumberArray );
 
     SetSessionData( lps, &SSFINAL_racing );
     
@@ -90,7 +95,10 @@ void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPoint16 UserLoc
 ////////////////////////////////////////////////////////////////////////////////////////////
 int CalcNumMarkersToGen( FPoint16 a, FPoint16 b )
 {
-    
+    int32 xd = a.x - b.x;
+    int32 yd = a.y - b.y;
+    int32 dist = xd * xd + yd * yd; 
+    return sqrti32(dist)/TRACK_MARKER_INTERVAL;
 }
 
 // Loads and appends one track per update
@@ -100,10 +108,10 @@ void SSUPDATE_load_track()
     FSessionTrackLoading* lpv = gSession.data__;
     
     // Parse one node into runtime track node
-    uint16 idx = lpv->NumLoadedNodes;
+    uint16 idx = lpv->LoadingNodeIndex;
     
-    FTrackNodeDesc const* lpBeg = &lpv->TrackToLoad.TrackNodes[lpv->NumLoadedNodes++];
-    FTrackNodeDesc const* lpEnd = &lpv->TrackToLoad.TrackNodes[lpv->NumLoadedNodes];
+    FTrackNodeDesc const* lpBeg = &lpv->TrackToLoad.TrackNodes[lpv->LoadingNodeIndex];
+    FTrackNodeDesc const* lpEnd = &lpv->TrackToLoad.TrackNodes[lpv->LoadingNodeIndex + 1];
 
     fixedpt Angle = lpv->CurrentAngle;
     FPoint16 Pivot = lpv->CurrentPivot;
@@ -120,31 +128,34 @@ void SSUPDATE_load_track()
     lpv->Track.Track[idx].PL.x =-lx + Pivot.x;
     lpv->Track.Track[idx].PL.y =-ly + Pivot.y;
 
-    lpv->NumMarkersToGen += 1 + ( lpBeg->Length / TRACK_MARKER_INTERVAL );
+    Angle += fixedpt_mul( FIXEDPT_DEGTORAD, fixedpt_fromint( lpBeg->AngleInDegree ) );
+    Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
+    Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
 
-    if ( lpv->NumLoadedNodes == lpv->NumNodesToLoad - 1 )
+    breakpoint(
+        "Track seg on \r\n[%d, %d]->[%d,%d]",
+        lpv->Track.Track[idx].PR.x,
+        lpv->Track.Track[idx].PR.y,
+        lpv->Track.Track[idx].PL.x,
+        lpv->Track.Track[idx].PL.y
+    );
+    
+    if ( lpv->LoadingNodeIndex + 1 == lpv->NumNodesToLoad - 1 )
     {
         // all seq done.
         // initiate game.
         const uint16 SizeToAllocate = sizeof( FPoint16 )*lpv->NumMarkersToGen;
         lpv->Track.LineMarkersL = ALLOC_DATA_INITZERO( SizeToAllocate );
-        lpv->Track.LineMarkersR = ALLOC_DATA_INITZERO( SizeToAllocate );
-        breakpoint(
-            "\r\nPTR A: %p, B: %p\r\nsz:%x\r\nszA: %x, szB: %x",
-            lpv->Track.LineMarkersL,
-            lpv->Track.LineMarkersR, // lpv->Track.LineMarkersR
-            SizeToAllocate,
-            GetMemoryOccupation(lpv->Track.LineMarkersL),
-            GetMemoryOccupation(lpv->Track.LineMarkersR)
-        );
+        lpv->Track.LineMarkersR = ALLOC_DATA_INITZERO( SizeToAllocate ); 
         gSession.Update = SSUPDATE_generate_symbol;
     }
 
-    Angle += fixedpt_mul( FIXEDPT_DEGTORAD, fixedpt_fromint( lpBeg->AngleInDegree ) );
-    Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
-    Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
+    int NumMarkers = 1 + CalcNumMarkersToGen( lpv->CurrentPivot, Pivot );
+    lpv->NumMarkersToGen += NumMarkers;
+    lpv->MarkerGenNumberArray[lpv->LoadingNodeIndex++] = NumMarkers;
+
     lpv->CurrentAngle = Angle;
-    lpv->CurrentPivot = Pivot; 
+    lpv->CurrentPivot = Pivot;
 }
 
 static inline FPointFP LerpFP( FPointFP const* a, FPointFP const* b, fixedpt Key )
@@ -170,8 +181,8 @@ void SSUPDATE_generate_symbol()
     *lpHeadL++ = CurSeg.PL;
     *lpHeadR++ = CurSeg.PR; 
 
-    int const NumMarkers = lpv->TrackToLoad.TrackNodes[lpv->MarkerGenIndex].Length / TRACK_MARKER_INTERVAL;
-    lpv->NumGeneratedMarkers += NumMarkers + 1/*Beginning marker*/;
+    int const NumMarkers = lpv->MarkerGenNumberArray[lpv->MarkerGenIndex];
+    lpv->NumGeneratedMarkers += NumMarkers/*Beginning marker*/;
     fixedpt const RatioPerMarker = FIXEDPT_ONE / NumMarkers;
 
     int i;
@@ -197,9 +208,17 @@ void SSUPDATE_generate_symbol()
                 i, NumMarkers
         );
         *lpHeadL++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
-        *lpHeadR++ = FPointFP_To16( LerpFP( &begl, &endl, Key ) );
+        *lpHeadR++ = FPointFP_To16( LerpFP( &begr, &endr, Key ) );
+
+        breakpoint(
+            "Symbol L[%d, %d] R[%d, %d]",
+            ( lpHeadL - 1 )->x,
+            ( lpHeadL - 1 )->y,
+            ( lpHeadR - 1 )->x,
+            ( lpHeadR - 1 )->y
+        );
     }
-    if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 1 )
+    if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 2 )
     {
         // gSession.Update = nullfunc;
         //INITSESSION_MAIN();
@@ -227,7 +246,7 @@ void SSDRAW_load_track( bool v )
     VBuffer_DrawStringDirect(
         false,
         "Loading ... %d \t / %d\n\r",
-        lpv->NumLoadedNodes+1,
+        lpv->LoadingNodeIndex+1,
         lpv->NumNodesToLoad
     );
     VBuffer_DrawStringDirect(
@@ -236,7 +255,7 @@ void SSDRAW_load_track( bool v )
         lpv
     );
 
-    if ( lpv->NumLoadedNodes == lpv->NumNodesToLoad - 1 )
+    if ( lpv->LoadingNodeIndex == lpv->NumNodesToLoad - 1 )
     {
         gCursorColumn = LEFT_OFST;
         VBuffer_DrawStringDirect(
@@ -417,11 +436,7 @@ void SSDRAW_racing( bool v )
     // DEBUG TEXT
 #if LOG_NORMAL
     gCursorColumn = 0;
-    gCursorPage = 0;
-    VBuffer_PrintString(
-        "curmemaddr %p\n\r",
-        lps
-    );
+    gCursorPage = 0; 
     VBuffer_PrintString(
         "marker_beg: %d\r\nmarker_end: %d\n\r",
         lptrk->CurrentLineMarkerBeginIndex,

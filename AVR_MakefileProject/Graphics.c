@@ -32,20 +32,14 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     DirectionVector.x = fixedpt_fromint( dirX );
     DirectionVector.y = fixedpt_fromint( dirY );
     CameraDirectionUnitVector = Camera->CachedDirection;
-     
-    DistanceFromCamera = sqrt_int( (int32) dirX* (int32) dirX + (int32) dirY*(int32) dirY );
-    //gCursorColumn = 0;
-    //gCursorPage = 2;
-    //VBuffer_PrintString( "%-31d", DistanceFromCamera );
-    if ( DistanceFromCamera > fixedpt_rconst( MAXIMUM_VISIBLE_DISTANCE )
-         || DistanceFromCamera < fixedpt_rconst( MINIMUM_VISIBLE_DISTANCE ) )
+    
+    int32 dist_sq = (int32) dirX* (int32) dirX + (int32) dirY*(int32) dirY;
+    if ( dist_sq > (int32)MAXIMUM_VISIBLE_DISTANCE*MAXIMUM_VISIBLE_DISTANCE
+         || dist_sq < MINIMUM_VISIBLE_DISTANCE*MINIMUM_VISIBLE_DISTANCE )
     {
-#if LOG_VERBOSE
-        // Return distance only when it need to be loged.
-        *Distance = fixedpt_toint( DistanceFromCamera );
-#endif
         return false;
-    }
+    } 
+    DistanceFromCamera = sqrt_int( dist_sq ); 
 
     // acos(dot(a,b) / (sqrt_int(a)*sqrt_int(b))) 
     AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera );

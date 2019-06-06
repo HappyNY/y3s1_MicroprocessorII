@@ -94,6 +94,10 @@ void breakpoint( const char * fmt, ... )
     VBuffer_PrintString( "Breakpoint hit!\r\n" );
     VBuffer_PrintString( buff );
     LCDDevice__Render();
+    
     while ( PINE & mask( BUTTON_D ) );
+    _delay_ms( 100 );
+    while ( ( PINE&mask( BUTTON_D ) ) == 0 );
+    _delay_ms( 100 );
     va_end( vp );
 }
