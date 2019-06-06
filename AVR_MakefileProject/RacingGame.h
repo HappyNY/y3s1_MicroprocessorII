@@ -58,7 +58,7 @@ void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPoint16 UserLoc 
 enum ERuntimeRacingConstants
 {
     MAX_MARKER_VISIBLE_DISTANCE = 64,
-    TRACK_MARKER_INTERVAL = 10
+    TRACK_MARKER_INTERVAL = 8
 };
 static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR 
 = (int32) MAX_MARKER_VISIBLE_DISTANCE * MAX_MARKER_VISIBLE_DISTANCE;
@@ -79,3 +79,18 @@ typedef struct FCarControlInformation {
 
 void Car_UpdateCar( uint16 AccelerateFrac, uint16 BrakeFrac );
 FPointFP FPointFP_GetDirectionVector( fixedpt val );
+
+enum {
+    MAX_RPM = 9000
+};
+
+static const fixedpt GEAR_CONSTANT[] =
+{
+    fixedpt_rconst(0),
+    fixedpt_rconst(300),
+    fixedpt_rconst(1100),
+    fixedpt_rconst(1700),
+    fixedpt_rconst(3100),
+    fixedpt_rconst(6500),
+    fixedpt_rconst(8300),
+};

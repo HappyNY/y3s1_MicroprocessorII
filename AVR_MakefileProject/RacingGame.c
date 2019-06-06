@@ -82,11 +82,21 @@ void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPoint16 UserLoc
 
 void Car_UpdateCar( uint16 AccelerateFrac, uint16 BrakeFrac )
 {
+    // Increase or decrease speed by {RPM COEFF} * {ACCELERATION/BRAKE FRAC}
+
+    // Update {RPM} by {CAR SPEED}
+
+    // Update car direction by {HANDLING}
+
+    // Update car {HANDLING} by {SPEED} and {DEVICE INCLINATION}
 }
 
 FPointFP FPointFP_GetDirectionVector( fixedpt val )
 {
-
+    fixedpt x = fixedpt_sin( val );
+    fixedpt y = fixedpt_cos( val );
+    FPointFP res = { x, y };
+    return res;
 }
 
 
@@ -129,8 +139,8 @@ void SSUPDATE_load_track()
     fixedpt Sin = fixedpt_sin( Angle );
 
     uint16 lx, ly;
-    lx = Cos * lpBeg->Width >> FIXEDPT_FBITS;
-    ly = Sin * lpBeg->Width >> FIXEDPT_FBITS;
+    ly = Cos * lpBeg->Width >> FIXEDPT_FBITS;
+    lx = Sin * lpBeg->Width >> FIXEDPT_FBITS;
     
     lpv->Track.Track[idx].PR.x = lx + Pivot.x;
     lpv->Track.Track[idx].PR.y = ly + Pivot.y;
