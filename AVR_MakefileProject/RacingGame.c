@@ -1,7 +1,7 @@
 #include "RacingGame.h"
 #include "Program.h"
 #include "Display.h"
-
+#include "analog_device.h"
 const static FTrackNodeDesc INIT_TRACK_NODE = { 32, 0, 100 };
 
 typedef struct tagSessionTrackLoading {
@@ -72,7 +72,10 @@ void INTERNAL_INITSESSION_RACING()
     lpTrk->CurrentLineMarkerEndIndex = 0;
 
     CCarInfo* lpCar = &lps->Car;
-     
+    lpCar->RPM = 1000;
+    lpCar->GearIndex = 0;
+
+    ELAPSED_MS = 0;
 }
  
 bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPointFP UserLoc )
@@ -85,15 +88,88 @@ void Square_IsInBound( FPoint16 const * a, FPoint16 const * b, FPoint16 const * 
 
 }
 
-void Car_UpdateCar( uint16 AccelerateFrac, uint16 BrakeFrac )
+void Car_UpdateCar()
 {
-    // Increase or decrease speed by {RPM COEFF} * {ACCELERATION/BRAKE FRAC}
+#define MAX_FSR_VAL_MASK  ((1 << 9) - 1)
+#define FSR_BITS 9
+#define FSR_TOFPT(val) (val << (16 - FSR_BITS)) 
+    FSessionRacing* const lps = gSession.data__;
+    CCarInfo* const lpcar = &lps->Car;
 
-    // Update {RPM} by {CAR SPEED}
+    int16 accel = FSR_A - FSR_APIVOT;
+    int16 brake = FSR_B - FSR_BPIVOT;
+    accel = ( accel > ACC_THRESHOLD ) * ( accel & MAX_FSR_VAL_MASK );
+    brake = ( brake > ACC_THRESHOLD ) * ( brake & MAX_FSR_VAL_MASK ); 
 
-    // Update car direction by {HANDLING}
+    const fixedpt GearCoeff = GEAR_CONSTANT[lpcar->GearIndex + 1];
 
-    // Update car {HANDLING} by {SPEED} and {DEVICE INCLINATION}
+    // Validate RPM by current gear level
+    if ( lpcar->GearIndex != 0 )
+    {
+        fixedpt Speed = fixedpt_fromint( lpcar->Speed ); 
+        fixedpt RPM = fixedpt_div( Speed, GearCoeff );
+        if ( RPM < 0 ) // If applies gear which is reverse current direction ...
+        {
+            lpcar->GearIndex = 0;
+        }
+        else 
+        {
+            RPM = fixedpt_toint( RPM );
+            if ( RPM < fixedpt_rconst( 800 ) && lpcar->GearIndex != 1 )
+            {
+                lpcar->GearIndex = 0;
+            }
+            else
+            {
+                lpcar->RPM = RPM;
+            }
+        }
+    } 
+
+    // Adjust RPM by acceleration 
+    int16 RpmCoeff = ( accel == 0 ? -lpcar->RPM : MAX_RPM - lpcar->RPM ) >> 5; /* ~= /30 */
+    fixedpt RpmDelta = (int32) accel*RpmCoeff >> FSR_BITS;
+    
+    // Apply speed constraint to RPM
+    fixedpt NewRPM, Speed;
+    if ( lpcar->GearIndex != 0 )
+    {
+        const fixedpt SpeedConstraint = fixedpt_div( fixedpt_fromint( MAX_SPEED - lpcar->Speed ), fixedpt_rconst( MAX_SPEED ) );
+        if ( RpmDelta > 0 )
+        {
+            RpmDelta *= SpeedConstraint;
+        } 
+
+        // Calc speed by RPM 
+        NewRPM = fixedpt_fromint( lpcar->RPM ) + RpmDelta;
+        Speed = NewRPM * GearCoeff;
+    }
+    else
+    {
+        NewRPM = fixedpt_fromint( lpcar->RPM ) + RpmDelta;
+        Speed = fixedpt_fromint( lpcar->Speed );
+    }
+
+    // Adjust speed by brake 
+    // Brake decreases speed linearly
+    fixedpt BrakeDecrement = -fixedpt_rconst( MAX_SPEED * 0.033/* Assumes 30 fps */ );
+    BrakeDecrement *= FSR_TOFPT( brake );
+    fixedpt NewSpeed = Speed + ( Speed > 0 ? BrakeDecrement : -BrakeDecrement );
+    if ( ( NewSpeed^Speed ) & mask( 31 ) ) // If speed direction has changed ...
+    {
+        // Invalidate. Brake does not accelerates
+        NewSpeed = 0;
+    }
+
+    // Calc RPM by speed
+    if ( lpcar->GearIndex != 0 )
+    {
+        NewRPM = fixedpt_div( NewSpeed, GearCoeff );
+    }
+    
+    // Apply
+    lpcar->Speed = NewSpeed;
+    lpcar->RPM = max16( fixedpt_toint( NewRPM ), 800 );
 }
 
 FPointFP FPointFP_GetDirectionVector( fixedpt val )
@@ -307,14 +383,21 @@ void SSUPDATE_racing()
     URuntimeTrackInfo* const lptrk = &lps->Track;
     CCarInfo* const lpcar = &lps->Car;
 
+    // Proceed input
+    if ( gButton_Pressed & mask( BUTTON_B ) )
+    {
+        lpcar->GearIndex = --lpcar->GearIndex >= -1 ? lpcar->GearIndex : -1;
+    }
+    if ( gButton_Pressed & mask( BUTTON_A ) )
+    {
+        lpcar->GearIndex = ++lpcar->GearIndex <= 6 ? lpcar->GearIndex : 6;
+    }
+
     // Calculate car next location
     int16 PrevSegIdx = lptrk->CurSegIdx;
-    Car_UpdateCar(  //*
-        ( gButton_Hold&mask( BUTTON_B ) ) ? 0xffff : 0x0000,
-        ( gButton_Hold&mask( BUTTON_A ) ) ? 0xffff : 0x0000 /*///
-        (uint16) FSR_A << 8, (uint16) FSR_B << 8 ) //*/
-    );
+    Car_UpdateCar();
 
+    SetSpeakerFreq( lpcar->RPM >> 6 );
     // Validate car next location
     if ( !RTI_UpdateCurrentSegByUserLocation( lptrk, lpcar->Location ) )
     {
@@ -326,20 +409,10 @@ void SSUPDATE_racing()
     // If the car has arrived final segment, finish game and record its lap time.
 
     // Temporary code
-    //if ( gButton_Hold & mask( BUTTON_U ) ) {
-    //    lpcar->Location.x += FIXEDPT_ONE;
-    //}
-    //if ( gButton_Hold & mask( BUTTON_D ) ) {
-    //    lpcar->Location.x -= FIXEDPT_ONE;
-    //}
-    //if ( gButton_Hold & mask( BUTTON_L ) ) {
-    //    lpcar->Location.y -= FIXEDPT_ONE;
-    //}
-    //if ( gButton_Hold & mask( BUTTON_R ) ) {
-    //    lpcar->Location.y += FIXEDPT_ONE;
-    //}
 
     if ( gButton_Hold & mask( BUTTON_HOME ) ) {
+        // Temporary ...
+        // change to opening quit menu.
         INITSESSION_MAIN();
     }
 }
@@ -480,14 +553,10 @@ void SSDRAW_racing( bool v )
     gCursorColumn = 0;
     gCursorPage = 0; 
     VBuffer_PrintString(
-        "marker_beg: %d\r\nmarker_end: %d\n\r",
-        lptrk->CurrentLineMarkerBeginIndex,
-        lptrk->CurrentLineMarkerEndIndex
-    );
-    VBuffer_PrintString(
-        "location: %d, %d\r\n",
-        lps->Cam.Position.x,
-        lps->Cam.Position.y
-    );
+        "GEAR: %d\r\nRPM:%d, SPEED: %d\r\n",
+        lpcar->GearIndex,
+        lpcar->RPM,
+        lpcar->Speed
+    ); 
 #endif
 }

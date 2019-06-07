@@ -1,7 +1,7 @@
 #pragma once
 #include <util/atomic.h>
 #include "Intellisense.h"
-#define _MASK(num) (0x01 <<(num))
+#define _MASK(num) (0x01ll <<(num))
 #define _MASK_SETBIT0(_a) (_MASK(_a))
 #define _MASK_SETBIT1(_a, _b) (_MASK(_a)|_MASK(_b))
 #define _MASK_SETBIT2(_a, _b, _c) (_MASK(_a)|_MASK(_b)|_MASK(_c))

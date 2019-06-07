@@ -57,6 +57,8 @@ extern int16 FSR_B;
 extern int16 FSR_APIVOT;
 extern int16 FSR_BPIVOT;
 
+extern uint32 ELAPSED_MS;
+
 static inline void* __ALLOC_SIZE_ZERO( uint16 sz )
 {
     void* lpm = Malloc( sz );

@@ -80,25 +80,28 @@ typedef struct FCarControlInformation {
     fixedpt Handling;
     fixedpt RotationInDegrees;
     uint16 RPM;  
-    // 0 is neutral.
-    uint8 GearIndex;
-    uint8 Speed; // Units per frame, determined by sqrt(RPM) * GearConstantArray[GearIndex] 
+    // 0 is neutral, -1 is  
+    int8 GearIndex;
+    int16 Speed; // Units per second, determined by sqrt(RPM) * GearConstantArray[GearIndex] 
 } CCarInfo;
 
-void Car_UpdateCar( uint16 AccelerateFrac, uint16 BrakeFrac );
+void Car_UpdateCar();
 FPointFP FPointFP_GetDirectionVector( fixedpt val );
 
 enum {
-    MAX_RPM = 9000
+    MAX_RPM = 9000,
+    ACC_THRESHOLD = 100,
+    MAX_SPEED = 14000
 };
 
 static const fixedpt GEAR_CONSTANT[] =
 {
+    fixedpt_rconst(-0.112),
     fixedpt_rconst(0),
-    fixedpt_rconst(300),
-    fixedpt_rconst(1100),
-    fixedpt_rconst(1700),
-    fixedpt_rconst(3100),
-    fixedpt_rconst(6500),
-    fixedpt_rconst(8300),
+    fixedpt_rconst(0.213),
+    fixedpt_rconst(0.334),
+    fixedpt_rconst(0.544),
+    fixedpt_rconst(0.916),
+    fixedpt_rconst(1.213),
+    fixedpt_rconst(1.614),
 };

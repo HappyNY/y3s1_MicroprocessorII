@@ -132,6 +132,7 @@ void InitializeDevice()
 // INTERVAL = 3.3MS
 /////////////////////////////////////////////////////////////////////
 #define TCNT3_SETUP TCNT3 = 0xffff - 3999
+uint32 ELAPSED_MS = 0;
 ISR( TIMER3_OVF_vect )
 {
     TCNT3_SETUP;
@@ -169,6 +170,12 @@ ISR( TIMER3_OVF_vect )
         FSR_A = fsr_a;
         FSR_B = fsr_b;
         break;  
+    }
+
+    if ( ( IterCnt & 0x3 ) == 0 )
+    {
+        // Per 1 microseconds ...
+        ++ELAPSED_MS;
     }
 
     gButton_Captured |= INPUT_VECTOR;

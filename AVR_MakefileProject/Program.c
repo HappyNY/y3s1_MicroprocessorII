@@ -11,6 +11,18 @@ byte gButton_Hold;
 byte ACC_XPIVOT;
 byte ACC_YPIVOT;
 
+
+void volume_zero()
+{
+    SetSpeakerFreq( 0 );
+}
+
+void Beep()
+{ 
+    SetSpeakerFreq( 410 );
+    QueueTimer( volume_zero, 2 );
+}
+
 void UpdateInputStatus()
 {
     static byte Previous;
@@ -161,6 +173,8 @@ void INITSESSION_MAIN()
     
     gSession.Draw = main_draw;
     gSession.Update = main_update;
+
+    Beep();
 }
 
 typedef struct tagTrackSelectionInfo {
@@ -271,21 +285,24 @@ void test_3d_draw( bool v )
             &lpv->Cam
         );
     }
-}
+} 
 
 static void main_update()
 {
     byte* cursor = &( (FMainScreenInfo*) gSession.data__ )->Cursor;
-    if ( gButton_Pressed & mask( BUTTON_D, BUTTON_R ) )
+    if ( gButton_Pressed & mask( BUTTON_D ) )
     {
         *cursor = ++( *cursor ) == ARRAYCOUNT( MainMenuStrings ) ? 0 : *cursor;
+        Beep();
     }
-    if ( gButton_Pressed & mask( BUTTON_U, BUTTON_L ) )
+    if ( gButton_Pressed & mask( BUTTON_U ) )
     {
         *cursor = ( *cursor )-- == 0 ? ARRAYCOUNT( MainMenuStrings ) - 1 : *cursor;
+        Beep();
     }
 
     if ( gButton_Pressed & mask( BUTTON_A ) ) {
+        Beep();
         switch ( *cursor )
         {
         case 0: {
@@ -343,12 +360,14 @@ static void main_draw( bool complxDraw )
 static void main_calib_update()
 { 
     if ( gButton_Pressed & mask( BUTTON_A ) ) {
+        Beep();
         ACC_XPIVOT = ACC_PERCENTX;
         ACC_YPIVOT = ACC_PERCENTY;
         FSR_APIVOT = FSR_A;
         FSR_BPIVOT = FSR_B;
     }
     if ( gButton_Pressed & mask( BUTTON_B, BUTTON_HOME ) ) {
+        Beep();
         gSession.Draw = main_draw;
         gSession.Update = main_update;
     }
@@ -420,18 +439,22 @@ void tracksel_update()
     
     if ( gButton_Pressed & mask( BUTTON_L ) ) {
         lpTrk->Cursor = lpTrk->Cursor == 0 ? 0 : lpTrk->Cursor - 1;
+        Beep();
     }
     if ( gButton_Pressed & mask( BUTTON_R ) ) {
         lpTrk->Cursor = lpTrk->Cursor == NumTracks - 1 ? NumTracks - 1 : lpTrk->Cursor + 1;
+        Beep();
     }
 
     if ( gButton_Pressed & mask( BUTTON_B | BUTTON_HOME ) ) {
+        Beep();
         INITSESSION_MAIN();
         return;
     }
     if ( gButton_Pressed& mask( BUTTON_A ) ) {
         // @todo. Load track selected by cursor.
         // Keep cursor location data to make next session know which track to load.
+        Beep();
         INITSESSION_RACING_GAME( lpTrk->Cursor );
         return;
     }

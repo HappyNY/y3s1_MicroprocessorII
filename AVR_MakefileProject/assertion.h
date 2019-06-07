@@ -7,7 +7,7 @@
 #endif
 #endif
 
-#if LOG_NORMAL
+#if LOG_CRITICAL
 #define checkf(expr, ...) if((expr) == 0) { internal_check(__FUNCTION__, __LINE__, #expr, __VA_ARGS__);}
 void internal_check( const char* file, int line, const char* expr, const char* fmt, ... );
 #else

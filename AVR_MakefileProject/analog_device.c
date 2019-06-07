@@ -108,6 +108,10 @@ void SetSpeakerFreq( uint16 Hz )
 {
     // N Hz = 1 / T = 1 / (PRESCALE * 1/16E-6) / X
     // X = 1 / (PRESCALE * 1/16E-6) / N
+    if ( Hz == 0 ) {
+        OCR1A = 0;
+        return;
+    }
     uint16 X = ( CLOCK_DEFAULT / PRESCALER_VAL ) / Hz;
     // TCNT1 = 0;
     OCR1A = X;
