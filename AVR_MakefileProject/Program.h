@@ -52,8 +52,10 @@ extern byte gButton_Pressed;
 extern byte gButton_Released;
 extern byte gButton_Hold;
 
-extern byte FSR_A;
-extern byte FSR_B;
+extern int16 FSR_A;
+extern int16 FSR_B;
+extern int16 FSR_APIVOT;
+extern int16 FSR_BPIVOT;
 
 static inline void* __ALLOC_SIZE_ZERO( uint16 sz )
 {

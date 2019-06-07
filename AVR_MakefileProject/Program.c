@@ -3,7 +3,7 @@
 #include "Display.h"
 #include "RacingGame.h"
 #include <stdlib.h>
-
+#include "analog_device.h"
 byte gButton_Captured;
 byte gButton_Pressed;
 byte gButton_Released;
@@ -345,6 +345,10 @@ static void main_calib_update()
     if ( gButton_Pressed & mask( BUTTON_A ) ) {
         ACC_XPIVOT = ACC_PERCENTX;
         ACC_YPIVOT = ACC_PERCENTY;
+        FSR_APIVOT = FSR_A;
+        FSR_BPIVOT = FSR_B;
+    }
+    if ( gButton_Pressed & mask( BUTTON_B, BUTTON_HOME ) ) {
         gSession.Draw = main_draw;
         gSession.Update = main_update;
     }
@@ -461,11 +465,10 @@ static void main_calib_draw( bool v )
     byte x = 0, y = 0;
     VBuffer_DrawString(
         &x, &y,
-        "Calibration sequence...\r\n\tPress B to finish."
-        "\r\n  Keep your device stable...\r\n",
+        "Calibration sequence...\r\n",
         false
     );
-    VBuffer_DrawString( &x, &y, " Press A to set pivot.\r\n ---------------------------\r\n", false );
+    VBuffer_DrawString( &x, &y, " ---------------------------\r\n", false );
 
     char buff[64];
     sprintf( buff, "\tX acc: %d\r\n\tY acc: %d\r\n", ACC_PERCENTX, ACC_PERCENTY );
@@ -473,5 +476,9 @@ static void main_calib_draw( bool v )
     VBuffer_DrawString( &x, &y, "Pivot: ", false );
     sprintf( buff, " %d, %d ", ACC_XPIVOT, ACC_YPIVOT);
     VBuffer_DrawString( &x, &y, buff, true);
-    VBuffer_DrawString( &x, &y, " us", false );
+    VBuffer_DrawString( &x, &y, " us\r\n", false );
+    gCursorColumn = y;
+    gCursorPage = x;
+    VBuffer_PrintString( "Pressure:\r\n\tA: %4d, B: %4d", FSR_A - FSR_APIVOT, FSR_B - FSR_BPIVOT );
+    SetSpeakerFreq( FSR_A - FSR_APIVOT );
 }

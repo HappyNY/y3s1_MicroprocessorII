@@ -75,7 +75,12 @@ void INTERNAL_INITSESSION_RACING()
      
 }
  
-void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPoint16 UserLoc )
+bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPointFP UserLoc )
+{
+
+}
+
+void Square_IsInBound( FPoint16 const * a, FPoint16 const * b, FPoint16 const * c, FPoint16 const * d, FPointFP const * tp )
 {
 
 }
@@ -130,7 +135,6 @@ void SSUPDATE_load_track()
     uint16 idx = lpv->LoadingNodeIndex;
     
     FTrackNodeDesc const* lpBeg = &lpv->TrackToLoad.TrackNodes[lpv->LoadingNodeIndex];
-    FTrackNodeDesc const* lpEnd = &lpv->TrackToLoad.TrackNodes[lpv->LoadingNodeIndex + 1];
 
     fixedpt Angle = lpv->CurrentAngle;
     FPoint16 Pivot = lpv->CurrentPivot;
@@ -149,7 +153,6 @@ void SSUPDATE_load_track()
 
     Angle += fixedpt_mul( FIXEDPT_DEGTORAD, fixedpt_fromint( lpBeg->AngleInDegree ) );
     Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
-    Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
 
     //breakpoint(
     //    "Track seg on \r\n[%d, %d]->[%d,%d]",
@@ -159,7 +162,7 @@ void SSUPDATE_load_track()
     //    lpv->Track.Track[idx].PL.y
     //);
     
-    if ( lpv->LoadingNodeIndex + 1 == lpv->NumNodesToLoad - 1 )
+    if ( lpv->LoadingNodeIndex == lpv->NumNodesToLoad - 1 )
     {
         // all seq done.
         // initiate game.
@@ -168,6 +171,9 @@ void SSUPDATE_load_track()
         lpv->Track.LineMarkersR = ALLOC_DATA_INITZERO( SizeToAllocate ); 
         gSession.Update = SSUPDATE_generate_symbol;
     }
+
+    FTrackNodeDesc const* lpEnd = &lpv->TrackToLoad.TrackNodes[lpv->LoadingNodeIndex + 1];
+    Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
 
     int NumMarkers = 1 + CalcNumMarkersToGen( lpv->CurrentPivot, Pivot );
     lpv->NumMarkersToGen += NumMarkers;
@@ -237,7 +243,7 @@ void SSUPDATE_generate_symbol()
         //    ( lpHeadR - 1 )->y
         //);
     }
-    if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 2 )
+    if ( ++lpv->MarkerGenIndex == lpv->NumNodesToLoad - 1 )
     {
         // gSession.Update = nullfunc;
         //INITSESSION_MAIN();
@@ -301,20 +307,37 @@ void SSUPDATE_racing()
     URuntimeTrackInfo* const lptrk = &lps->Track;
     CCarInfo* const lpcar = &lps->Car;
 
-    // Temporary code
+    // Calculate car next location
+    int16 PrevSegIdx = lptrk->CurSegIdx;
+    Car_UpdateCar(  //*
+        ( gButton_Hold&mask( BUTTON_B ) ) ? 0xffff : 0x0000,
+        ( gButton_Hold&mask( BUTTON_A ) ) ? 0xffff : 0x0000 /*///
+        (uint16) FSR_A << 8, (uint16) FSR_B << 8 ) //*/
+    );
+
+    // Validate car next location
+    if ( !RTI_UpdateCurrentSegByUserLocation( lptrk, lpcar->Location ) )
+    {
+        // The car get out of the track boundary.
+        // Roll back its location to previous location and make its speed to zero.
+    }
+    // Accumulate lap time. Time calculation is accurately performed by using Timer3
     
-    if ( gButton_Hold & mask( BUTTON_U ) ) {
-        lpcar->Location.x += FIXEDPT_ONE;
-    }
-    if ( gButton_Hold & mask( BUTTON_D ) ) {
-        lpcar->Location.x -= FIXEDPT_ONE;
-    }
-    if ( gButton_Hold & mask( BUTTON_L ) ) {
-        lpcar->Location.y -= FIXEDPT_ONE;
-    }
-    if ( gButton_Hold & mask( BUTTON_R ) ) {
-        lpcar->Location.y += FIXEDPT_ONE;
-    }
+    // If the car has arrived final segment, finish game and record its lap time.
+
+    // Temporary code
+    //if ( gButton_Hold & mask( BUTTON_U ) ) {
+    //    lpcar->Location.x += FIXEDPT_ONE;
+    //}
+    //if ( gButton_Hold & mask( BUTTON_D ) ) {
+    //    lpcar->Location.x -= FIXEDPT_ONE;
+    //}
+    //if ( gButton_Hold & mask( BUTTON_L ) ) {
+    //    lpcar->Location.y -= FIXEDPT_ONE;
+    //}
+    //if ( gButton_Hold & mask( BUTTON_R ) ) {
+    //    lpcar->Location.y += FIXEDPT_ONE;
+    //}
 
     if ( gButton_Hold & mask( BUTTON_HOME ) ) {
         INITSESSION_MAIN();

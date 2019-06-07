@@ -51,10 +51,18 @@ typedef struct tagRuntimeTrackInfo {
     int16 CurrentLineMarkerEndIndex;
     int16 NumLineMarkers;
     FLineVector LineMarkerSymbol;
+
+    fixedpt LapTime;
 } URuntimeTrackInfo;
  
-void RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPoint16 UserLoc ); 
-
+bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPointFP UserLoc ); 
+void Square_IsInBound(
+    FPoint16 const * a,
+    FPoint16 const * b,
+    FPoint16 const * c,
+    FPoint16 const * d,
+    FPointFP const * tp
+);
 enum ERuntimeRacingConstants
 {
     MAX_MARKER_VISIBLE_DISTANCE = 64,

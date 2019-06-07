@@ -12,6 +12,9 @@ byte ACC_MAX_INTERVAL = 100;
 static byte ACC_INTERVAL_CNT = 0;
 static byte ACC_XCNT = 0;
 static byte ACC_YCNT = 0;
+int16 FSR_A, FSR_B; 
+int16 FSR_APIVOT;
+int16 FSR_BPIVOT;
 
 #define SAMPLE_BITS 5
 #define SAMPLE_POW2 (1 << SAMPLE_BITS)
@@ -87,6 +90,28 @@ void UpdateAccel()
     }
     ++ytot; 
     yprv = y;
+}
+
+#define PRESCALER_VAL 64
+#define CLOCK_DEFAULT ((uint32)16000000) 
+
+void InitSpeaker()
+{
+    TCCR1A = mask( WGM11, WGM10, COM1B1, COM1B0 );
+    TCCR1B = mask( WGM13, WGM12, CS11, CS10 );
+    TCCR1C = 0;
+    OCR1A = 0;
+    DDRB = 0b11110000;
+}
+
+void SetSpeakerFreq( uint16 Hz )
+{
+    // N Hz = 1 / T = 1 / (PRESCALE * 1/16E-6) / X
+    // X = 1 / (PRESCALE * 1/16E-6) / N
+    uint16 X = ( CLOCK_DEFAULT / PRESCALER_VAL ) / Hz;
+    // TCNT1 = 0;
+    OCR1A = X;
+    OCR1B = X >> 1;
 }
 
 void UpdateAccel_Deprecated()
