@@ -91,7 +91,9 @@ FPointFP FPointFP_GetDirectionVector( fixedpt val );
 enum {
     MAX_RPM = 9000,
     ACC_THRESHOLD = 100,
-    MAX_SPEED = 14000
+    MAX_SPEED = 290,
+    MAX_REVERSE_SPEED = 40,
+    DEFAULT_ACCEL_PER_SEC = 80
 };
 
 static const fixedpt GEAR_CONSTANT[] =

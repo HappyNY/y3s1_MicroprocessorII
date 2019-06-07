@@ -92,90 +92,53 @@ void Car_UpdateCar()
 {
 #define MAX_FSR_VAL_MASK  ((1 << 9) - 1)
 #define FSR_BITS 9
-#define FSR_TOFPT(val) (val << (16 - FSR_BITS)) 
+#define FSR_TOFPT(val) ((fixedpt)(val) << (FIXEDPT_FBITS - FSR_BITS)) 
     FSessionRacing* const lps = gSession.data__;
     CCarInfo* const lpcar = &lps->Car;
 
     int16 accel = FSR_A - FSR_APIVOT;
     int16 brake = FSR_B - FSR_BPIVOT;
-    accel = ( accel > ACC_THRESHOLD ) * ( accel & MAX_FSR_VAL_MASK );
-    brake = ( brake > ACC_THRESHOLD ) * ( brake & MAX_FSR_VAL_MASK ); 
+    accel = ( accel > ACC_THRESHOLD ) * ( max16( accel, MAX_FSR_VAL_MASK ) );
+    brake = ( brake > ACC_THRESHOLD ) * ( max16( brake, MAX_FSR_VAL_MASK ) );
 
-    const fixedpt GearCoeff = GEAR_CONSTANT[lpcar->GearIndex + 1];
+    fixedpt Accel = ( FSR_TOFPT( accel - brake ) * DEFAULT_ACCEL_PER_SEC ) ;
 
-    // Validate RPM by current gear level
-    if ( lpcar->GearIndex != 0 )
-    {
-        fixedpt Speed = fixedpt_fromint( lpcar->Speed ); 
-        fixedpt RPM = fixedpt_div( Speed, GearCoeff );
-        if ( RPM < 0 ) // If applies gear which is reverse current direction ...
-        {
-            lpcar->GearIndex = 0;
-        }
-        else 
-        {
-            RPM = fixedpt_toint( RPM );
-            if ( RPM < fixedpt_rconst( 800 ) && lpcar->GearIndex != 1 )
-            {
-                lpcar->GearIndex = 0;
-            }
-            else
-            {
-                lpcar->RPM = RPM;
-            }
-        }
-    } 
-
-    // Adjust RPM by acceleration 
-    int16 RpmCoeff = ( accel == 0 ? -lpcar->RPM : MAX_RPM - lpcar->RPM ) >> 5; /* ~= /30 */
-    fixedpt RpmDelta = (int32) accel*RpmCoeff >> FSR_BITS;
+    fixedpt Speed = fixedpt_fromint( lpcar->Speed );
     
-    // Apply speed constraint to RPM
-    fixedpt NewRPM, Speed;
-    if ( lpcar->GearIndex != 0 )
-    {
-        const fixedpt SpeedConstraint = fixedpt_div( fixedpt_fromint( MAX_SPEED - lpcar->Speed ), fixedpt_rconst( MAX_SPEED ) );
-        if ( RpmDelta > 0 )
-        {
-            RpmDelta *= SpeedConstraint;
-        } 
+    // Natural constraint
+    Speed = fixedpt_mul( Speed, fixedpt_rconst( 0.98 ) );
 
-        // Calc speed by RPM 
-        NewRPM = fixedpt_fromint( lpcar->RPM ) + RpmDelta;
-        Speed = NewRPM * GearCoeff;
-    }
-    else
-    {
-        NewRPM = fixedpt_fromint( lpcar->RPM ) + RpmDelta;
-        Speed = fixedpt_fromint( lpcar->Speed );
-    }
+    fixedpt Delta =
+        Accel >= 0
+        ? fixedpt_div( fixedpt_rconst( MAX_SPEED ) - Speed, fixedpt_rconst( MAX_SPEED ) )
+        : fixedpt_div( fixedpt_rconst( MAX_REVERSE_SPEED ) + Speed, fixedpt_rconst( MAX_REVERSE_SPEED ) );
 
-    // Adjust speed by brake 
-    // Brake decreases speed linearly
-    fixedpt BrakeDecrement = -fixedpt_rconst( MAX_SPEED * 0.033/* Assumes 30 fps */ );
-    BrakeDecrement *= FSR_TOFPT( brake );
-    fixedpt NewSpeed = Speed + ( Speed > 0 ? BrakeDecrement : -BrakeDecrement );
-    if ( ( NewSpeed^Speed ) & mask( 31 ) ) // If speed direction has changed ...
-    {
-        // Invalidate. Brake does not accelerates
-        NewSpeed = 0;
-    }
+    Delta = fixedpt_mul( Delta, Accel ) >> 3/*div ~30*/;
+    Speed += Delta;
 
-    // Calc RPM by speed
-    if ( lpcar->GearIndex != 0 )
-    {
-        NewRPM = fixedpt_div( NewSpeed, GearCoeff );
-    }
-    
-    // Apply
-    lpcar->Speed = NewSpeed;
-    lpcar->RPM = max16( fixedpt_toint( NewRPM ), 800 );
+    lpcar->Speed = fixedpt_toint( Speed );
+    // @todo. Calc gear index & RPM by using speed. (decorative)
+
+    // @todo. Update car handling / direction
+
+    // Update car location
+    FPointFP Direction 
+        = FPointFP_GetDirectionVector( 
+            fixedpt_mul( 
+                lpcar->RotationInDegrees, 
+                FIXEDPT_DEGTORAD
+            ) 
+        );
+    Direction.x = fixedpt_mul( fixedpt_mul( Direction.x, Speed ), fixedpt_rconst( 0.033 ) );
+    Direction.y = fixedpt_mul( fixedpt_mul( Direction.y, Speed ), fixedpt_rconst( 0.033 ) );
+    lpcar->Location.x += Direction.x;
+    lpcar->Location.y += Direction.y;
 }
 
 FPointFP FPointFP_GetDirectionVector( fixedpt val )
 {
-    fixedpt x = fixedpt_sin( val );
-    fixedpt y = fixedpt_cos( val );
+    fixedpt y = fixedpt_sin( val );
+    fixedpt x = fixedpt_cos( val );
     FPointFP res = { x, y };
     return res;
 }
@@ -381,17 +344,7 @@ void SSUPDATE_racing()
 {
     FSessionRacing* const lps = gSession.data__;
     URuntimeTrackInfo* const lptrk = &lps->Track;
-    CCarInfo* const lpcar = &lps->Car;
-
-    // Proceed input
-    if ( gButton_Pressed & mask( BUTTON_B ) )
-    {
-        lpcar->GearIndex = --lpcar->GearIndex >= -1 ? lpcar->GearIndex : -1;
-    }
-    if ( gButton_Pressed & mask( BUTTON_A ) )
-    {
-        lpcar->GearIndex = ++lpcar->GearIndex <= 6 ? lpcar->GearIndex : 6;
-    }
+    CCarInfo* const lpcar = &lps->Car; 
 
     // Calculate car next location
     int16 PrevSegIdx = lptrk->CurSegIdx;
