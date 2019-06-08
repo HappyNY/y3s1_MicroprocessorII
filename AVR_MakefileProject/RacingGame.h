@@ -15,7 +15,7 @@ void INTERNAL_INITSESSION_RACING_FINISH();
 typedef struct tagTrackNode {
     uint8 Width;
     int8 AngleInDegree; // -128 ~ 127¡Æ
-    uint16 Length;
+    int16 Length;
 } FTrackNodeDesc;
 
 typedef struct tagTrackDesc {

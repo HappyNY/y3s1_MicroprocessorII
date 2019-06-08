@@ -3,32 +3,58 @@
 
 
 static const FTrackNodeDesc NODES_MOLDIVA[] = {
-    { 9, 8, 55   }, 
-    { 8, 13, 55  },
-    { 12, 14, 55 },
-    { 21, -3, 55 },
-    { 11, 0, 55  },
-    { 9, -15, 55 },
-    { 21, 11, 55 },
-    { 25, 0, 55  },
+    { 9, 21, 64   },  
+    { 9, 21, 64   },  
+    { 9, 21, 64   },  
+    { 9, 21, 64   },  
+    { 9, 21, 64   },  
+    { 9, 21, 64   },  
+    { 9, 21, 64   },  
+    { 9, 21, 64   },  
+    { 9, 21, 64   },   
+    { 16, 0, 31  },
 };
 static const FTrackNodeDesc NODES_NEWYORK[] = {
-    { 24, 9, 120 },
-    { 24, 9, 120 }
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 9, 8, 64   },
+    { 16, 0, 31  },
 };
 static const FTrackNodeDesc NODES_TOKYO[] = {
-    { 24, 9, 120 },
-    { 24, 9, 120 }
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 9, 13, 64   },
+    { 16, 0, 31  },
 };
 static const FTrackNodeDesc NODES_SEOUL[] = {
-    { 24, 9, 120 },
-    { 24, 9, 120 }
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 9, 12, 24   },
+    { 16, 0, 31  },
 };
 
 DECLARE_LINE_VECTOR( ShapeTriangle );
 DECLARE_LINE_VECTOR( ShapeCone );
 static FTrackDesc const TrackNodes[] = {
-    { NODES_MOLDIVA, ARRAYCOUNT( NODES_MOLDIVA ), "Moldiva",  &ShapeCone  },
+    { NODES_MOLDIVA, ARRAYCOUNT( NODES_MOLDIVA ), "Mola Mola",  &ShapeCone  },
     { NODES_NEWYORK, ARRAYCOUNT( NODES_NEWYORK ), "New York", &ShapeTriangle  },
     { NODES_TOKYO, ARRAYCOUNT( NODES_TOKYO ), "Tokyo",        &ShapeTriangle  },
     { NODES_NEWYORK, ARRAYCOUNT( NODES_NEWYORK ), "Seoul",    &ShapeTriangle },

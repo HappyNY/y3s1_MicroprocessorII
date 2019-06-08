@@ -81,8 +81,36 @@ void INTERNAL_INITSESSION_RACING()
 bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPointFP UserLoc )
 {
     FPoint16 Polygon[4];
+    FPoint16 User = FPointFP_To16( UserLoc );
+    FRuntimeTrackSegment const* Seg = v->Track + v->CurSegIdx;
+    FRuntimeTrackSegment const* const End = v->Track + v->NumSegs - 1;
 
+    // Step 1. Check if in current
+    {
+        byte SegShiftBack = 5;
+        while ( SegShiftBack-- && Seg > v->Track)
+        {
+            --Seg;
+        }
+    }
 
+    byte MaxCheckCount = 10;
+    while ( MaxCheckCount-- && Seg < End)
+    {
+        Polygon[0] = Seg[0].PL;
+        Polygon[1] = Seg[0].PR;
+        Polygon[2] = Seg[1].PR;
+        Polygon[3] = Seg[1].PL;
+
+        if ( Polygon_IsInBound( Polygon, 4, &User ) )
+        {
+            v->CurSegIdx = Seg - v->Track;
+            return true;
+        }
+        ++Seg;
+    }
+
+    return false;
 }
 
 bool Polygon_IsInBound( FPoint16 const * v, byte const cnt, FPoint16 const * tp )
@@ -99,7 +127,7 @@ bool Polygon_IsInBound( FPoint16 const * v, byte const cnt, FPoint16 const * tp 
     {
         byte nxt = idx + 1 == cnt ? 0 : idx + 1;
         FPoint16 const* a = &v[idx];
-        FPoint16 const* b = &v[idx + 1];
+        FPoint16 const* b = &v[nxt];
 
         fixedpt xx = fixedpt_fromint( b->x - a->x );
         fixedpt yy = fixedpt_fromint( b->y - a->y );
@@ -224,9 +252,9 @@ void SSUPDATE_load_track()
     fixedpt Cos = fixedpt_cos( Angle );
     fixedpt Sin = fixedpt_sin( Angle );
 
-    uint16 lx, ly;
+    int16 lx, ly;
     ly = Cos * lpBeg->Width >> FIXEDPT_FBITS;
-    lx = Sin * lpBeg->Width >> FIXEDPT_FBITS;
+    lx = -Sin * lpBeg->Width >> FIXEDPT_FBITS;
     
     lpv->Track.Track[idx].PR.x = lx + Pivot.x;
     lpv->Track.Track[idx].PR.y = ly + Pivot.y;
@@ -234,15 +262,15 @@ void SSUPDATE_load_track()
     lpv->Track.Track[idx].PL.y =-ly + Pivot.y;
 
     Angle += fixedpt_mul( FIXEDPT_DEGTORAD, fixedpt_fromint( lpBeg->AngleInDegree ) );
-    Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
 
-    //breakpoint(
-    //    "Track seg on \r\n[%d, %d]->[%d,%d]",
-    //    lpv->Track.Track[idx].PR.x,
-    //    lpv->Track.Track[idx].PR.y,
-    //    lpv->Track.Track[idx].PL.x,
-    //    lpv->Track.Track[idx].PL.y
-    //);
+    /*
+    breakpoint(
+        "Track seg on \r\n[%d, %d]->[%d,%d]",
+        lpv->Track.Track[idx].PR.x,
+        lpv->Track.Track[idx].PR.y,
+        lpv->Track.Track[idx].PL.x,
+        lpv->Track.Track[idx].PL.y
+    );//*/
     
     if ( lpv->LoadingNodeIndex == lpv->NumNodesToLoad - 1 )
     {
@@ -255,6 +283,7 @@ void SSUPDATE_load_track()
     }
 
     FTrackNodeDesc const* lpEnd = &lpv->TrackToLoad.TrackNodes[lpv->LoadingNodeIndex + 1];
+    Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
     Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
 
     int NumMarkers = 1 + CalcNumMarkersToGen( lpv->CurrentPivot, Pivot );
@@ -390,7 +419,7 @@ void SSUPDATE_racing()
     CCarInfo* const lpcar = &lps->Car; 
 
     // Calculate car next location
-    int16 PrevSegIdx = lptrk->CurSegIdx;
+    FPointFP PrevLoc = lpcar->Location;
     Car_UpdateCar();
 
     SetSpeakerFreq( lpcar->RPM >> 6 );
@@ -400,6 +429,8 @@ void SSUPDATE_racing()
     {
         // The car get out of the track boundary.
         // Roll back its location to previous location and make its speed to zero.
+        lpcar->Location = PrevLoc;
+        lpcar->Speed = 0;
     }
     // Accumulate lap time. Time calculation is accurately performed by using Timer3
     
@@ -549,11 +580,13 @@ void SSDRAW_racing( bool v )
 #if LOG_NORMAL
     gCursorColumn = 0;
     gCursorPage = 0; 
+
     VBuffer_PrintString(
-        "GEAR: %d\r\nRPM:%d, SPEED: %d\r\n",
+        "GEAR: %d\r\nRPM:%d, SPEED: %d\r\nOn Seg: %d",
         lpcar->GearIndex,
         lpcar->RPM,
-        lpcar->Speed
+        lpcar->Speed,
+        lptrk->CurSegIdx
     ); 
 #endif
 }
