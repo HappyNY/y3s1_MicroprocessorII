@@ -283,10 +283,9 @@ void SSUPDATE_load_track()
         lpv->Track.LineMarkersR = ALLOC_DATA_INITZERO( SizeToAllocate ); 
         gSession.Update = SSUPDATE_generate_symbol;
     }
-
-    FTrackNodeDesc const* lpEnd = &lpv->TrackToLoad.TrackNodes[lpv->LoadingNodeIndex + 1];
+     
     Pivot.x += lpBeg->Length * Cos >> FIXEDPT_FBITS;
-    Pivot.y += lpEnd->Length * Sin >> FIXEDPT_FBITS;
+    Pivot.y += lpBeg->Length * Sin >> FIXEDPT_FBITS; 
 
     int NumMarkers = 1 + CalcNumMarkersToGen( lpv->CurrentPivot, Pivot );
     lpv->NumMarkersToGen += NumMarkers;
@@ -294,6 +293,7 @@ void SSUPDATE_load_track()
 
     lpv->CurrentAngle = Angle;
     lpv->CurrentPivot = Pivot;
+
 }
 
 static inline FPointFP LerpFP( FPointFP const* a, FPointFP const* b, fixedpt Key )
@@ -384,7 +384,7 @@ void SSDRAW_load_track( bool v )
     VBuffer_DrawStringDirect(
         false,
         "Loading ... %d \t / %d\n\r",
-        lpv->LoadingNodeIndex+1,
+        lpv->LoadingNodeIndex,
         lpv->NumNodesToLoad
     );
     VBuffer_DrawStringDirect(
@@ -394,7 +394,7 @@ void SSDRAW_load_track( bool v )
     );
     
 
-    if ( lpv->LoadingNodeIndex == lpv->NumNodesToLoad - 1 )
+    if ( lpv->LoadingNodeIndex >= lpv->NumNodesToLoad - 2 )
     {
         gCursorColumn = LEFT_OFST;
         VBuffer_DrawStringDirect(
@@ -594,8 +594,16 @@ void SSDRAW_racing( bool v )
     byte pg = 14, col = 0;
     VBuffer_DrawString( &pg, &col, buff, false );
     
+    uint32 Time = ELAPSED_MS;
+    uint16 MS = Time % 1000;
+    uint16 SEC = Time / 1000;
+    uint16 MIN = SEC / 60;
+    SEC %= 60;
+    gCursorColumn = 0;
+    gCursorPage = 0;
+    VBuffer_PrintString( "  %0d:%02d:%04d", MIN, SEC, MS );
     // DEBUG TEXT
-#if LOG_NORMAL
+#if LOG_VERBOSE
     gCursorColumn = 0;
     gCursorPage = 0; 
 
