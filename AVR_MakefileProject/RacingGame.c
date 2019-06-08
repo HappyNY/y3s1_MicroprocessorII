@@ -2,8 +2,9 @@
 #include "Program.h"
 #include "Display.h"
 #include "analog_device.h"
+#include <avr/eeprom.h>
 const static FTrackNodeDesc INIT_TRACK_NODE = { 32, 0, 100 };
-
+static byte CurTrackIdx = 0;
 typedef struct tagSessionTrackLoading {
     FTrackDesc TrackToLoad;
     URuntimeTrackInfo Track;
@@ -24,6 +25,8 @@ void INITSESSION_RACING_GAME( int TrackIdx )
 {
     FSessionTrackLoading* lps = ALLOC_TYPE_INITZERO( FSessionTrackLoading );
     SetSessionData( lps, nullfunc );
+
+    CurTrackIdx = TrackIdx;
 
     lps->TrackToLoad = AllTracks[TrackIdx];
 
@@ -76,6 +79,34 @@ void INTERNAL_INITSESSION_RACING()
     lpCar->GearIndex = 0;
 
     ELAPSED_MS = 0;
+}
+
+typedef struct tagSessionFinish {
+    uint32 ElapsedMS;
+    uint32 InRecord;
+    char Name[5];
+    byte Cursor;
+} FSessionFinish;
+static void SSUPDATE_racing_finish();
+static void SSDRAW_racing_finish();
+void INTERNAL_INITSESSION_RACING_FINISH()
+{
+    void Beep();
+    Beep();
+    FSessionRacing* lpprv = gSession.data__;
+
+    FSessionFinish* lps = ALLOC_TYPE_INITZERO( FSessionFinish );
+    SetSessionData( lps, nullfunc );
+
+    lps->ElapsedMS = ELAPSED_MS;
+    lps->InRecord = eeprom_read_dword( (const uint32_t*) ( CurTrackIdx * RACING_RECORD_EEPROM_OFST_PER_TRACK ) );
+    if ( lps->InRecord == 0 ) 
+    {
+        lps->InRecord = (uint32) -1;
+    }
+    memset( lps->Name, 'A', 4 );
+    gSession.Update = SSUPDATE_racing_finish;
+    gSession.Draw = SSDRAW_racing_finish;
 }
  
 bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPointFP UserLoc )
@@ -434,15 +465,14 @@ void SSUPDATE_racing()
         lpcar->Location = PrevLoc;
         lpcar->Speed = 0;
     }
-    // Accumulate lap time. Time calculation is accurately performed by using Timer3
-    
     // If the car has arrived final segment, finish game and record its lap time.
+    if ( lptrk->CurSegIdx == lptrk->NumSegs - 2 )
+    {
+        INTERNAL_INITSESSION_RACING_FINISH();
+        return;
+    }
 
-    // Temporary code
-
-    if ( gButton_Hold & mask( BUTTON_HOME ) ) {
-        // Temporary ...
-        // change to opening quit menu.
+    if ( gButton_Hold & mask( BUTTON_HOME ) ) { 
         INITSESSION_MAIN();
     }
 }
@@ -615,4 +645,80 @@ void SSDRAW_racing( bool v )
         lptrk->CurSegIdx
     ); 
 #endif
+}
+
+void Beep();
+void SSUPDATE_racing_finish()
+{
+    FSessionFinish* const lps = gSession.data__;
+    if ( gButton_Pressed & mask( BUTTON_R ) )
+    {
+        Beep();
+        lps->Cursor = ++lps->Cursor == 5 ? 0 : lps->Cursor;
+    }
+    if ( gButton_Pressed & mask( BUTTON_L ) )
+    {
+        Beep();
+        lps->Cursor = lps->Cursor == 0 ? 4 : lps->Cursor - 1;
+    }
+    char* lpch = &lps->Name[lps->Cursor];
+    if ( gButton_Pressed & mask( BUTTON_U ) )
+    {
+        Beep();
+        *lpch = *lpch == 'Z' ? 'A' : *lpch + 1;
+    }
+    if ( gButton_Pressed & mask( BUTTON_D ) )
+    {
+        Beep();
+        *lpch = *lpch == 'A' ? 'Z' : *lpch - 1;
+    }
+
+    if ( gButton_Pressed & mask( BUTTON_A ) )
+    {
+        uint32_t * pp = (uint32_t *) ( RACING_RECORD_EEPROM_OFST_PER_TRACK * CurTrackIdx );
+        eeprom_update_dword( pp, lps->ElapsedMS );
+        eeprom_update_dword( ++pp, *(uint32_t*)lps->Name );
+        INITSESSION_TRACK_SELECT();
+    }
+}
+
+void SSDRAW_racing_finish()
+{
+    FSessionFinish* const lps = gSession.data__;
+    VBuffer_Clear();
+
+    gCursorColumn = 0;
+    gCursorPage = 0;
+    VBuffer_PrintString( "RACE FINISHED\r\n" );
+    uint16 ms = lps->ElapsedMS % 1000;
+    uint16 sec = lps->ElapsedMS / 1000;
+    uint16 min = min16( sec / 1000, 99 );
+    sec %= 60;
+
+    VBuffer_PrintString(
+        "\tLAP TIME: %02d:%02d:%04d\r\n",
+        min, sec, ms
+    );
+
+    ms = lps->InRecord % 1000;
+    sec = lps->InRecord / 1000;
+    min = min16( sec / 1000, 99 );
+    sec %= 60;
+
+    VBuffer_PrintString( "In Record: %02d:%02d:%04d\r\n\n", min, sec, ms );
+    if ( lps->ElapsedMS < lps->InRecord )
+    {
+        VBuffer_PrintString( "New Record!! Enter your name:\r\n\t\t" );
+        VBuffer_DrawStringDirect( true, lps->Name );
+        char buff[5];
+        buff[5] = 0;
+        memset( buff, ' ', 4 );
+        byte i = 0;
+        while ( i != lps->Cursor )
+        {
+            ++i;
+        }
+        buff[i] = '^';
+        VBuffer_PrintString( "\r\n\t\t%s", buff );
+    } 
 }

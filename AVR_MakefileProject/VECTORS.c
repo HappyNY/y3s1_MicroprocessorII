@@ -10,7 +10,7 @@ const static FLineInfo src_cone[] = {
 DEFINE_LINE_VECTOR( ShapeCone, src_cone );
 
 const static FLineInfo src_triangle[] = {
-    -3, -3, 0, 3, /**/ 0, 3, 3, -3, /**/ 3, -3, -3, -3
+    -1, -1, 0, 1, /**/ 0, 1, 1, -1, /**/ 1, -1, -1, -1
 };
 
 DEFINE_LINE_VECTOR( ShapeTriangle, src_triangle );
@@ -24,6 +24,31 @@ const static FLineInfo src_box_one[] = {
 };
 
 DEFINE_LINE_VECTOR( ShapeBoxOne, src_box_one );
+const static FLineInfo src_tree[] = {
+    -4, 12, 4, 8,
+    4, 12, -4, 8,
+    0, 10, 0, -2
+};
+
+DEFINE_LINE_VECTOR( ShapeTree, src_tree );
+
+const static FLineInfo src_grass[] = {
+    -2, 2, 2, -2,
+    2, 2, -2, -2,
+    -2 - 1, 2,  2 - 1, -2,
+     2 - 1, 2, -2 - 1, -2,
+    -2 + 1, 2,  2 + 1, -2,
+     2 + 1, 2, -2 + 1, -2,
+};
+DEFINE_LINE_VECTOR( ShapeGrass, src_grass );
+
+const static FLineInfo src_diamond[] = {
+    0, 0, -3, 3,
+    -3, 3, 0, 6,
+    0, 6, 3, 3,
+    3, 3, 0, 0
+};
+DEFINE_LINE_VECTOR( ShapeDiamond, src_diamond );
 
 const static FLineInfo src_car_frame[] = {
     -110, -50, -85, 110,

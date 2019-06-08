@@ -4,6 +4,7 @@
 #include "RacingGame.h"
 #include <stdlib.h>
 #include "analog_device.h"
+#include <avr/eeprom.h>
 byte gButton_Captured;
 byte gButton_Pressed;
 byte gButton_Released;
@@ -179,8 +180,11 @@ void INITSESSION_MAIN()
 
 typedef struct tagTrackSelectionInfo {
     byte Cursor;
+    uint32 BestLap;
+    char BestName[5];
 } FTrackSelectionInfo;
 
+void tracksel_update_info();
 static void tracksel_update();
 static void tracksel_draw( bool v );
 void INITSESSION_TRACK_SELECT()
@@ -190,6 +194,8 @@ void INITSESSION_TRACK_SELECT()
     SetSessionData( lpTrack, nullfunc );
     gSession.Draw = tracksel_draw;
     gSession.Update = tracksel_update;
+
+    tracksel_update_info();
 }
 
 typedef struct tagTest3DSession {
@@ -433,16 +439,26 @@ void validate_draw( bool cmplx )
     }
 }
 
+void tracksel_update_info()
+{
+    FTrackSelectionInfo* lpTrk = gSession.data__;
+    uint32_t* pp = (uint32_t*) ( lpTrk->Cursor*RACING_RECORD_EEPROM_OFST_PER_TRACK );
+    lpTrk->BestLap = eeprom_read_dword( pp );
+    *(uint32_t*) lpTrk->BestName = eeprom_read_dword( pp + 1 );
+}
+
 void tracksel_update()
 {
     FTrackSelectionInfo* lpTrk = gSession.data__;
     
     if ( gButton_Pressed & mask( BUTTON_L ) ) {
         lpTrk->Cursor = lpTrk->Cursor == 0 ? 0 : lpTrk->Cursor - 1;
+        tracksel_update_info();
         Beep();
     }
     if ( gButton_Pressed & mask( BUTTON_R ) ) {
         lpTrk->Cursor = lpTrk->Cursor == NumTracks - 1 ? NumTracks - 1 : lpTrk->Cursor + 1;
+        tracksel_update_info();
         Beep();
     }
 
@@ -474,6 +490,25 @@ void tracksel_draw( bool v )
 
     pg = 14, col = 0;
     VBuffer_DrawString( &pg, &col, "A: SELECT B: BACK", false );
+
+    
+    pg = 0, col = 0;
+    if ( lpTrk->BestLap == (uint32)-1 )
+    {
+        VBuffer_DrawString( &pg, &col, " -- NO RECORD -- ", false );
+    }
+    else 
+    {
+        uint16 ms = lpTrk->BestLap % 1000;
+        uint16 sec = lpTrk->BestLap / 1000;
+        uint16 min = min16( sec / 60, 99 );
+        sec %= 60;
+        VBuffer_DrawString( &pg, &col, "BEST: ", false );
+        gCursorColumn = col;
+        gCursorPage = pg;
+        VBuffer_PrintString( "By %s\r\n", lpTrk->BestName );
+        VBuffer_PrintString( "  %02d:%02d:%04d", min, sec, ms );
+    }
 }
 
 void loadtrack_update()
