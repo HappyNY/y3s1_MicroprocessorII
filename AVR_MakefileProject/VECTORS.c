@@ -33,20 +33,17 @@ const static FLineInfo src_tree[] = {
 DEFINE_LINE_VECTOR( ShapeTree, src_tree );
 
 const static FLineInfo src_grass[] = {
-    -2, 2, 2, -2,
-    2, 2, -2, -2,
-    -2 - 1, 2,  2 - 1, -2,
-     2 - 1, 2, -2 - 1, -2,
-    -2 + 1, 2,  2 + 1, -2,
-     2 + 1, 2, -2 + 1, -2,
+    -1, 1, 1, -1,
+    1, 1, -1, -1,
+    0, 2, 0, -1
 };
 DEFINE_LINE_VECTOR( ShapeGrass, src_grass );
 
 const static FLineInfo src_diamond[] = {
-    0, 0, -3, 3,
-    -3, 3, 0, 6,
-    0, 6, 3, 3,
-    3, 3, 0, 0
+    0, -1, -3, 2,
+    -3, 2, 0, 5,
+    0, 5, 3, 2,
+    3, 2, 0, -1
 };
 DEFINE_LINE_VECTOR( ShapeDiamond, src_diamond );
 

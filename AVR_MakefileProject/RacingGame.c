@@ -203,7 +203,7 @@ void Car_UpdateCar()
     fixedpt SpdCoeff =
         Accel >= 0
         ? FwdCoeff
-        : fixedpt_rconst( 0.77 );
+        : fixedpt_rconst( 1.23 );
 
     fixedpt Delta = fixedpt_mul( SpdCoeff, Accel ) >> 5/*div ~30*/;
     Speed = Speed + Delta;
@@ -705,7 +705,7 @@ void SSDRAW_racing_finish()
     min = min16( sec / 1000, 99 );
     sec %= 60;
 
-    VBuffer_PrintString( "In Record: %02d:%02d:%04d\r\n\n", min, sec, ms );
+    VBuffer_PrintString( "Best: %02d:%02d:%04d\r\n\n", min, sec, ms );
     if ( lps->ElapsedMS < lps->InRecord )
     {
         VBuffer_PrintString( "New Record!! Enter your name:\r\n\t\t" );

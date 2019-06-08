@@ -36,7 +36,7 @@ extern volatile char __INTERRUPT_LOCK_MUTEX__;
 #define USE_STDLIB_MALLOC 1
 #define USE_SERIAL_COMMUNICATION 0
 
-#define LOG_LEVEL 3
+#define LOG_LEVEL 0
 
 #define LOG_CRITICAL (LOG_LEVEL >= 1)
 #define LOG_WARNING  (LOG_LEVEL >= 2)
