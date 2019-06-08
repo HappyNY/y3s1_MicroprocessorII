@@ -3,6 +3,15 @@
 #include "Graphics.h"
  
 /*******************************************
+ * RECORDINGS
+ *******************************************/
+enum RACING_RECORD_EEPROM_OFST {
+    RACING_RECORD_EEPROM_OFST_PER_TRACK = 4
+};
+uint32 Track_ReadRecord( int TrackIndex );
+bool Track_TryRecord( int TrackIdx, int32 Record );
+
+/*******************************************
  * Session for racing games
  *******************************************/
 void INITSESSION_RACING_GAME( int TrackIdx );

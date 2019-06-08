@@ -40,7 +40,7 @@ void internal_logslow( const char* FILE, int LINE, const char * msg )
 }
 #endif
 
-#if LOG_NORMAL
+#if LOG_CRITICAL
 void internal_check( const char * file, int line, const char * expr, const char * fmt, ... )
 {
     char buff[128];
@@ -84,6 +84,7 @@ void outputmsg_uart0( const char* msg )
     ENABLE_INTERRUPT;
 }
 
+#if LOG_NORMAL
 void breakpoint( const char * fmt, ... )
 {
     va_list vp;
@@ -101,3 +102,4 @@ void breakpoint( const char * fmt, ... )
     _delay_ms( 100 );
     va_end( vp );
 }
+#endif

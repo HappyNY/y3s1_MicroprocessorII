@@ -179,12 +179,14 @@ void Car_UpdateCar()
     Speed = Speed > fixedpt_rconst( -MAX_REVERSE_SPEED ) ? Speed : fixedpt_rconst( -MAX_REVERSE_SPEED );
 
     lpcar->Speed = fixedpt_toint( Speed );
-    // @todo. Calc gear index & RPM by using speed. (decorative)
-    int16 Mod = lpcar->Speed % 64 + 1;
-    fixedpt BASE_RPM = fixedpt_mul( fixedpt_fromint( MAX_RPM ), FwdCoeff ); // Base RPM
-    fixedpt MUL_RPM = fixedpt_fromint( MAX_RPM ) - BASE_RPM;
-    MUL_RPM = ( MUL_RPM * Mod ) / 64;
-    lpcar->RPM = fixedpt_toint( fixedpt_rconst( MAX_RPM + 1000 ) - ( BASE_RPM - MUL_RPM ) );
+    // Calc gear index & RPM by using speed. (decorative)
+    enum { DIVIDER = 32 };
+    int16 Mod = lpcar->Speed % DIVIDER + 1;
+    lpcar->GearIndex = lpcar->Speed == 0 ? 0 : lpcar->Speed < 0 ? -1 : lpcar->Speed / DIVIDER + 1;
+    fixedpt BASE_RPM = fixedpt_mul( fixedpt_fromint( MAX_RPM ), FIXEDPT_ONE - FwdCoeff ); // Base RPM
+    fixedpt MUL_RPM = fixedpt_fromint( MAX_RPM ) -BASE_RPM;
+    MUL_RPM = Mod * ( MUL_RPM / DIVIDER );
+    lpcar->RPM = fixedpt_toint( fixedpt_rconst( 1000 ) + BASE_RPM + MUL_RPM );
     lpcar->RPM = max16( lpcar->RPM, 800 );
 
     // @todo. Update car handling
@@ -575,7 +577,23 @@ void SSDRAW_racing( bool v )
     }
 
     // Render status text (Gear level, speed, progress, etc ...)
-
+    char buff[32];
+    int buffidx;
+    buffidx = sprintf( 
+        buff, 
+        " %c %-4d ", 
+        lpcar->GearIndex == -1 ? 'R' : lpcar->GearIndex == 0 ? 'N' : lpcar->GearIndex + '0', 
+        lpcar->Speed 
+    );
+    int RPMCNT = lpcar->RPM >> 9; /* div 512 */
+    while ( RPMCNT-- )
+    {
+        buff[buffidx++] = '|';
+    }
+    buff[buffidx] = '\0';
+    byte pg = 14, col = 0;
+    VBuffer_DrawString( &pg, &col, buff, false );
+    
     // DEBUG TEXT
 #if LOG_NORMAL
     gCursorColumn = 0;

@@ -138,9 +138,9 @@ void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
     for ( i = 0; i < CGROM_CHARCTER_WIDTH ; ++i )
     {
         if ( BuffIdx >= LCD_BUFFER_LENGTH ) { break; }
-        LCDBuffer[BuffIdx] = bInversed ? ~( *ascii_head ) : *( ascii_head );
+        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
         ++ascii_head; ++BuffIdx;
-        LCDBuffer[BuffIdx] = bInversed ? ~( *ascii_head ) : *( ascii_head );
+        LCDBuffer[BuffIdx] |= bInversed ? ~( *ascii_head ) : *( ascii_head );
         ascii_head -= 3;
         BuffIdx += LCD_NUM_PAGE -1;
     } 
