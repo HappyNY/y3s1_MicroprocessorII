@@ -61,6 +61,8 @@ void UpdatePivot()
 {
     ACC_XPIVOT = ACC_PERCENTX;
     ACC_YPIVOT = ACC_PERCENTY;
+    FSR_APIVOT = FSR_A;
+    FSR_BPIVOT = FSR_B;
 }
 void main( void )
 {

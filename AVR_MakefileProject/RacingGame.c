@@ -80,13 +80,45 @@ void INTERNAL_INITSESSION_RACING()
  
 bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo * v, FPointFP UserLoc )
 {
+    FPoint16 Polygon[4];
+
 
 }
 
-void Square_IsInBound( FPoint16 const * a, FPoint16 const * b, FPoint16 const * c, FPoint16 const * d, FPointFP const * tp )
+bool Polygon_IsInBound( FPoint16 const * v, byte const cnt, FPoint16 const * tp )
 {
+    byte idx = 0, loop = cnt;
+    enum {
+        LEFT = -1,
+        NONE = 0,
+        RIGHT = 1
+    };
+    int8 Align = NONE;
 
+    while ( loop-- )
+    {
+        byte nxt = idx + 1 == cnt ? 0 : idx + 1;
+        FPoint16 const* a = &v[idx];
+        FPoint16 const* b = &v[idx + 1];
+
+        fixedpt xx = fixedpt_fromint( b->x - a->x );
+        fixedpt yy = fixedpt_fromint( b->y - a->y );
+        fixedpt cx = fixedpt_fromint( tp->x - a->x );
+        fixedpt cy = fixedpt_fromint( tp->y - a->y );
+
+        fixedpt cz = fixedpt_mul( xx, cy ) - fixedpt_mul( yy, cx );
+
+        int8 align = cz > 0 ? RIGHT : cz < 0 ? LEFT : NONE;
+        if ( Align * align < 0 )
+        {
+            return false;
+        }
+        Align = align;
+        idx = nxt;
+    }
+    return true;
 }
+ 
 
 void Car_UpdateCar()
 {
@@ -106,29 +138,40 @@ void Car_UpdateCar()
     fixedpt Speed = fixedpt_fromint( lpcar->Speed );
     
     // Natural constraint
-    Speed = fixedpt_mul( Speed, fixedpt_rconst( 0.98 ) );
+    Speed = Accel == 0 ? fixedpt_mul( Speed, fixedpt_rconst( 0.99 ) ) : Speed;
 
-    fixedpt Delta =
+    fixedpt FwdCoeff = fixedpt_div( fixedpt_rconst( MAX_SPEED ) - Speed, fixedpt_rconst( MAX_SPEED ) );
+    fixedpt SpdCoeff =
         Accel >= 0
-        ? fixedpt_div( fixedpt_rconst( MAX_SPEED ) - Speed, fixedpt_rconst( MAX_SPEED ) )
-        : fixedpt_div( fixedpt_rconst( MAX_REVERSE_SPEED ) + Speed, fixedpt_rconst( MAX_REVERSE_SPEED ) );
+        ? FwdCoeff
+        : fixedpt_rconst( 0.77 );
 
-    Delta = fixedpt_mul( Delta, Accel ) >> 3/*div ~30*/;
-    Speed += Delta;
+    fixedpt Delta = fixedpt_mul( SpdCoeff, Accel ) >> 5/*div ~30*/;
+    Speed = Speed + Delta;
+    Speed = Speed > fixedpt_rconst( -MAX_REVERSE_SPEED ) ? Speed : fixedpt_rconst( -MAX_REVERSE_SPEED );
 
     lpcar->Speed = fixedpt_toint( Speed );
     // @todo. Calc gear index & RPM by using speed. (decorative)
+    int16 Mod = lpcar->Speed % 64 + 1;
+    fixedpt BASE_RPM = fixedpt_mul( fixedpt_fromint( MAX_RPM ), FwdCoeff ); // Base RPM
+    fixedpt MUL_RPM = fixedpt_fromint( MAX_RPM ) - BASE_RPM;
+    MUL_RPM = ( MUL_RPM * Mod ) / 64;
+    lpcar->RPM = fixedpt_toint( fixedpt_rconst( MAX_RPM + 1000 ) - ( BASE_RPM - MUL_RPM ) );
+    lpcar->RPM = max16( lpcar->RPM, 800 );
 
-    // @todo. Update car handling / direction
+    // @todo. Update car handling
+    // Shift 4 bits to normalize Slope value (maximum : 16)
+    int8 Slope = -( ACC_PERCENTY - ACC_YPIVOT ); 
+    fixedpt Handling = DELTA_HANDLING_PER_SEC * Slope >> 4/*div ~30*/;
+    lpcar->RotationInDegrees += ( Handling >> 4 ) * ( fixedpt_abs( Speed ) > fixedpt_rconst( 5 ) );
 
-    // Update car location
-    FPointFP Direction 
-        = FPointFP_GetDirectionVector( 
-            fixedpt_mul( 
-                lpcar->RotationInDegrees, 
-                FIXEDPT_DEGTORAD
-            ) 
-        );
+    // Update car location & rotation
+    FPointFP Direction = FPointFP_GetDirectionVector( 
+        fixedpt_mul(
+            lpcar->RotationInDegrees,
+            FIXEDPT_DEGTORAD
+        )
+    );
     Direction.x = fixedpt_mul( fixedpt_mul( Direction.x, Speed ), fixedpt_rconst( 0.033 ) );
     Direction.y = fixedpt_mul( fixedpt_mul( Direction.y, Speed ), fixedpt_rconst( 0.033 ) );
     lpcar->Location.x += Direction.x;
@@ -351,6 +394,7 @@ void SSUPDATE_racing()
     Car_UpdateCar();
 
     SetSpeakerFreq( lpcar->RPM >> 6 );
+
     // Validate car next location
     if ( !RTI_UpdateCurrentSegByUserLocation( lptrk, lpcar->Location ) )
     {

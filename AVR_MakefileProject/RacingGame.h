@@ -56,12 +56,10 @@ typedef struct tagRuntimeTrackInfo {
 } URuntimeTrackInfo;
  
 bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPointFP UserLoc ); 
-void Square_IsInBound(
-    FPoint16 const * a,
-    FPoint16 const * b,
-    FPoint16 const * c,
-    FPoint16 const * d,
-    FPointFP const * tp
+bool Polygon_IsInBound(
+    FPoint16 const * v,
+    byte const cnt,
+    FPoint16 const * tp
 );
 enum ERuntimeRacingConstants
 {
@@ -77,7 +75,7 @@ static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR
 typedef struct FCarControlInformation {
     // Status
     FPointFP Location;
-    fixedpt Handling;
+    fixedpt HandlingInDegrees;
     fixedpt RotationInDegrees;
     uint16 RPM;  
     // 0 is neutral, -1 is  
@@ -93,8 +91,10 @@ enum {
     ACC_THRESHOLD = 100,
     MAX_SPEED = 290,
     MAX_REVERSE_SPEED = 40,
-    DEFAULT_ACCEL_PER_SEC = 80
+    DEFAULT_ACCEL_PER_SEC = 80,
 };
+
+static const fixedpt DELTA_HANDLING_PER_SEC = fixedpt_rconst( 55.0 );
 
 static const fixedpt GEAR_CONSTANT[] =
 {
