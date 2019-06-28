@@ -1,7 +1,12 @@
 #include "fixed/fixedptc.h"
 #include "types.h"
 #include "container.h"
+#include "math.h"
 
+#undef fixedpt_xmul
+#define fixedpt_xmul fixedpt_mul
+#undef fixedpt_xdiv
+#define fixedpt_xdiv fixedpt_div
 
 // approximation
 fixedpt fixedpt_atan( fixedpt rad )
@@ -119,6 +124,71 @@ fixedpt fixedpt_acos_half( fixedpt x ) //{ return FIXEDPT_HALF_PI - fixedpt_asin
     fixedpt res = prv->value + fixedpt_mul( found->value - prv->value, ratio );
     return
         x > 0 ? res : FIXEDPT_PI - res;
+}
+
+
+fixedpt sqrt_it32( int32 A )
+{
+    // Base cases 
+    uint64 x = ( ( (int64) A | 1 ) << 32 );
+    if ( A == 0 || A == 1 )
+        return fixedpt_fromint( A );
+
+     // Do Binary Search for floor(sqrt(x)) 
+    uint64 start = 1, end = x, ans;
+    while ( start <= end )
+    {
+        uint64 mid = ( start + end ) / 2;
+
+        // If x is a perfect square 
+        if ( mid*mid == x )
+            return mid;
+
+        // Since we need floor, we update answer when mid*mid is  
+        // smaller than x, and move closer to sqrt(x) 
+        if ( mid*mid < x )
+        {
+            start = mid + 1;
+            ans = mid;
+        }
+        else // If mid*mid is greater than x 
+        {
+            end = mid - 1;
+        }
+    }
+    return ans;
+}
+
+
+int32 sqrti32( int32 x )
+{
+    // Base cases 
+    if ( x == 0 || x == 1 )
+        return x;
+
+     // Do Binary Search for floor(sqrt(x)) 
+    int32 start = 1, end = x, ans;
+    while ( start <= end )
+    {
+        int32 mid = ( start + end ) / 2;
+
+        // If x is a perfect square 
+        if ( mid*mid == x )
+            return mid;
+
+        // Since we need floor, we update answer when mid*mid is  
+        // smaller than x, and move closer to sqrt(x) 
+        if ( mid*mid < x )
+        {
+            start = mid + 1;
+            ans = mid;
+        }
+        else // If mid*mid is greater than x 
+        {
+            end = mid - 1;
+        }
+    }
+    return ans;
 }
 
 
@@ -298,5 +368,34 @@ fixedpt_str( fixedpt A, char *str, int max_dec )
 fixedpt
 fixedpt_sqrt( fixedpt A )
 {
-    fixedpt_pow( A, fixedpt_rconst( 0.5 ) );
+    int invert = 0;
+    int iter = FIXEDPT_FBITS;
+    int32 l, i;
+
+    if ( A < 0 )
+        return ( -1 );
+    if ( A == 0 || A == FIXEDPT_ONE )
+        return ( A );
+    if ( A < FIXEDPT_ONE && A > 6 ) {
+        invert = 1;
+        A = fixedpt_div( FIXEDPT_ONE, A );
+    }
+    if ( A > FIXEDPT_ONE ) {
+        int32 s = A;
+
+        iter = 0;
+        while ( s > 0 ) {
+            s >>= 2;
+            iter++;
+        }
+    }
+
+    /* Newton's iterations */
+    l = ( A >> 1 ) + 1;
+    for ( i = 0; i < iter; i++ )
+        l = ( l + fixedpt_div( A, l ) ) >> 1;
+    if ( invert )
+        return ( fixedpt_div( FIXEDPT_ONE, l ) );
+    return ( l );
 }
+

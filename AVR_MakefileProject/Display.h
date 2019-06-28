@@ -49,3 +49,4 @@ void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed );
 void VBuffer_DrawString( byte* lpPage, byte* lpColumn, const char* String, bool bInversed );
 void VBuffer_PrintString( const char* Fmt, ... );
 void VBuffer_DrawLine( int16 xbeg, int16 ybeg, const int16 xend, const int16 yend );
+void VBuffer_DrawStringDirect( bool bInverse, const char * Fmt, ... );

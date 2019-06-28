@@ -1,81 +1,116 @@
 #pragma once
 #include "core.h"
 #include "Graphics.h"
-
+ 
 /*******************************************
- * Defines a turning point of a track.
- * This will be generated on runtime, which is the result of track loading.
- * A track segment will be represented as quadrangle mesh.
+ * RECORDINGS
  *******************************************/
-typedef struct FTrackNode {
-    struct FTrackNode* Next;
-    struct FTrackNode* Prev;
-
-    // Four points of generated track quadrangle
-    // lu ---- ru
-    //  /       \
-    // /         \
-    //ld -------- rd
-    // lu-ld, ru-rd will represent the track boundary.
-    // l, r, u, d are symbolic name, therefore they do not indicate absolute direction.
-    FPoint16 lu;
-    FPoint16 ru;
-    FPoint16 ld;
-    FPoint16 rd;
-
-    FLineVector SignObjectMesh;
-} FTrackNode;
-
-bool FTrackNode_IsInBound( FTrackNode const* v, FPoint16 Check );
+enum RACING_RECORD_EEPROM_OFST {
+    RACING_RECORD_EEPROM_OFST_PER_TRACK = 8
+};
 
 /*******************************************
+ * Session for racing games
+ *******************************************/
+void INITSESSION_RACING_GAME( int TrackIdx );
+void INTERNAL_INITSESSION_RACING();
+void INTERNAL_INITSESSION_RACING_FINISH();
+ /*******************************************
  * Descriptor of an track. Will be stored in the program memory as form of array, 
  *and then will be loaded and parsed into FTrackNode on runtime.
  *******************************************/
 typedef struct tagTrackNode {
     uint8 Width;
     int8 AngleInDegree; // -128 ~ 127¡Æ
-    uint16 Length;
+    int16 Length;
 } FTrackNodeDesc;
 
 typedef struct tagTrackDesc {
-    FTrackNodeDesc const* Tracks;
+    FTrackNodeDesc const* TrackNodes;
     uint16 NumNodes;
     char const* lpcTrackName;
+    FLineVector const* LineMarkerSymbol;
 } FTrackDesc;
 
 extern FTrackDesc const * const AllTracks;
 extern const byte NumTracks;
 /*******************************************
  * Runtime track information    
- *******************************************/
-typedef struct FRuntimeTrackInfo {
-    FTrackNode* Head;
-    FTrackNode* Current;
+ *******************************************/ 
+/*******************************************
+ * Defines a turning point of a track.
+ * This will be generated on runtime, which is the result of track loading.
+ * A track segment will be represented as quadrangle mesh.
+ *******************************************/ 
+typedef struct tagRuntimeTrackSegment {
+    FPoint16 PL;
+    FPoint16 PR;
+} FRuntimeTrackSegment;
 
-    FPoint16* LeftSignPointArray;
-    FPoint16* RightSignPointArray;
-} FRuntimeTrackInfo;
+typedef struct tagRuntimeTrackInfo {
+    FRuntimeTrackSegment* Track;
+    int16 NumSegs;
+    int16 CurSegIdx;
 
-void UnloadCurrentTrackInformation( FRuntimeTrackInfo* v );
-void LoadTrackInformation( FRuntimeTrackInfo* v, FTrackNodeDesc* TrackDescs, uint16 NumTrackNodes );
+    FPoint16* LineMarkersL;
+    FPoint16* LineMarkersR;
+    int16 CurrentLineMarkerBeginIndex;
+    int16 CurrentLineMarkerEndIndex;
+    int16 NumLineMarkers;
+    FLineVector LineMarkerSymbol;
 
+    fixedpt LapTime;
+} URuntimeTrackInfo;
+ 
+bool RTI_UpdateCurrentSegByUserLocation( URuntimeTrackInfo* v, FPointFP UserLoc ); 
+bool Polygon_IsInBound(
+    FPoint16 const * v,
+    byte const cnt,
+    FPoint16 const * tp
+);
+enum ERuntimeRacingConstants
+{
+    MAX_MARKER_VISIBLE_DISTANCE = 64,
+    TRACK_MARKER_INTERVAL = 8
+};
+static const int32 MAX_MARKER_VISIBLE_DISTANCE_SQR 
+= (int32) MAX_MARKER_VISIBLE_DISTANCE * MAX_MARKER_VISIBLE_DISTANCE;
 
 /*******************************************
  * Car control logics
  *******************************************/
 typedef struct FCarControlInformation {
     // Status
-    FPoint16 Location;
+    FPointFP Location;
+    fixedpt HandlingInDegrees;
     fixedpt RotationInDegrees;
     uint16 RPM;  
-    // 0 is neutral.
-    uint8 GearIndex;
-    uint8 Speed; // Units per frame, determined by sqrt(RPM) * GearConstantArray[GearIndex]
-
-    // Car characteristics.
-    uint8 Const_Handling;
-    uint8* Const_GearConstantArray;
-    uint16 Const_MaxRPM;
-    uint8 Const_NumMaxGear;
+    // 0 is neutral, -1 is  
+    int8 GearIndex;
+    int16 Speed; // Units per second, determined by sqrt(RPM) * GearConstantArray[GearIndex] 
 } CCarInfo;
+
+void Car_UpdateCar();
+FPointFP FPointFP_GetDirectionVector( fixedpt val );
+
+enum {
+    MAX_RPM = 9000,
+    ACC_THRESHOLD = 100,
+    MAX_SPEED = 290,
+    MAX_REVERSE_SPEED = 40,
+    DEFAULT_ACCEL_PER_SEC = 80,
+};
+
+static const fixedpt DELTA_HANDLING_PER_SEC = fixedpt_rconst( 55.0 );
+
+static const fixedpt GEAR_CONSTANT[] =
+{
+    fixedpt_rconst(-0.112),
+    fixedpt_rconst(0),
+    fixedpt_rconst(0.213),
+    fixedpt_rconst(0.334),
+    fixedpt_rconst(0.544),
+    fixedpt_rconst(0.916),
+    fixedpt_rconst(1.213),
+    fixedpt_rconst(1.614),
+};

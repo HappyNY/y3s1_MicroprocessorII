@@ -83,12 +83,15 @@ void LCDDevice__HardReset()
 }
 
 
-extern inline void* Malloc( size_type );
 void LCDDevice__Initialize()
 {
 	// Software initialization
-    LCDBuffer = (byte*)( 0xffff - LCD_BUFFER_LENGTH );//*/ Malloc( LCD_BUFFER_LENGTH );
-
+    LCDBuffer =
+#if !LCD_USE_ABSOLUTE_OFFSET && USE_EXTERNAL_HEAP
+        Malloc( LCD_BUFFER_LENGTH );
+#else 
+        (byte*)( 0xffff - LCD_BUFFER_LENGTH );
+#endif
 	// Hardware associated functionality.
     DDRD = 0XFF; 
     REFRESH(); 
@@ -145,6 +148,9 @@ void VBuffer_DrawChar( byte xCol, byte y, char ASCII_IDX, bool bInversed )
 
 void VBuffer_Clear()
 {
+    gCursorColumn = 0;
+    gCursorPage = 0;
+
     byte* pHead = LCDBuffer;
     const byte* pEnd = LCDBuffer + LCD_BUFFER_LENGTH;
 
@@ -231,4 +237,14 @@ void VBuffer_PrintString( const char * Fmt, ... )
     vsprintf( buff, Fmt, a );
     va_end( a );
     VBuffer_DrawString( &gCursorPage, &gCursorColumn, buff, false );
-} 
+}
+
+void VBuffer_DrawStringDirect( bool bInverse, const char * Fmt, ... )
+{
+    va_list a;
+    char buff[128];
+    va_start( a, Fmt );
+    vsprintf( buff, Fmt, a );
+    va_end( a );
+    VBuffer_DrawString( &gCursorPage, &gCursorColumn, buff, bInverse );
+}

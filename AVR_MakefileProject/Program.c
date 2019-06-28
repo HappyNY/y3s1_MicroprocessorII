@@ -2,13 +2,27 @@
 #include "memory128.h"
 #include "Display.h"
 #include "RacingGame.h"
-
+#include <stdlib.h>
+#include "analog_device.h"
+#include <avr/eeprom.h>
 byte gButton_Captured;
 byte gButton_Pressed;
 byte gButton_Released;
 byte gButton_Hold;
 byte ACC_XPIVOT;
 byte ACC_YPIVOT;
+
+
+void volume_zero()
+{
+    SetSpeakerFreq( 0 );
+}
+
+void Beep()
+{ 
+    SetSpeakerFreq( 410 );
+    QueueTimer( volume_zero, 2 );
+}
 
 void UpdateInputStatus()
 {
@@ -22,11 +36,13 @@ void UpdateInputStatus()
     gButton_Captured = 0;
 }
 
-void SetSessionData( void* NewData )
+void SetSessionData( void* NewData, FSessionEventSignature Finalizer )
 {
     if ( gSession.data__ ) {
+        gSession.data_finalizer__();
         Free( gSession.data__ );
     }
+    gSession.data_finalizer__ = Finalizer;
     gSession.data__ = NewData;
 }
 
@@ -50,10 +66,13 @@ void EraseTimer( FTimerHandle* Handle )
     FTimerHandle h = *Handle;
 
     if ( h->Prev ) {
-        h->Prev = h->Next;
+        h->Prev->Next = h->Next;
     }
     if ( h->Next ) {
-        h->Next = h->Prev;
+        h->Next->Prev = h->Prev;
+    }
+    if ( h->Prev == NULL && h->Next == NULL ) {
+        lpHead = NULL;
     }
 
     Free( h );
@@ -110,6 +129,7 @@ typedef struct tagValidationProgress {
     uint16 ProgressAddr;
     uint16 Warnings;
     uint16 LatestWarningAddr;
+    uint16 AddressLineVerification;
 } FValidationProgress;
 
 static void main_update();
@@ -121,14 +141,26 @@ static void validate_draw(bool);
 
 void INITSESSION_VALIDATE()
 {
-    FValidationProgress* lpProgrss = memset(
-        Malloc( sizeof( FValidationProgress ) ),
-        0,
-        sizeof( FValidationProgress )
-    );
+    uint16 AddressLineVerification = 0;
+    int i;
+    for ( i = 0; i < 15; ++i )
+    {
+        volatile byte* BaseAddr = (byte*) 0x9000;
+        *BaseAddr = i;
+        *( BaseAddr + mask( i ) ) = i;
+
+        AddressLineVerification |= ( ( *BaseAddr ) != *( BaseAddr + mask( i ) ) ) << i;
+    }
+
+    volatile byte* p = (byte*)0x9000;
+    for ( p; p < (byte*)0xf000; ++p ) {
+        *p = (uint16) p >> 8;
+    }
+    FValidationProgress* lpProgrss = ALLOC_TYPE_INITZERO( FValidationProgress );
     
     lpProgrss->ProgressAddr = 0x9000;
-    SetSessionData( lpProgrss );
+    lpProgrss->AddressLineVerification = AddressLineVerification;
+    SetSessionData( lpProgrss, nullfunc );
 
     gSession.Draw = validate_draw;
     gSession.Update = validate_update;
@@ -136,42 +168,34 @@ void INITSESSION_VALIDATE()
 
 void INITSESSION_MAIN()
 {
-    FMainScreenInfo* lpSessionInfo = memset( 
-        Malloc( sizeof( FMainScreenInfo ) ), 
-        0, 
-        sizeof( FMainScreenInfo ) 
-    );
+    FMainScreenInfo* lpSessionInfo = ALLOC_TYPE_INITZERO( FMainScreenInfo );
 
-    SetSessionData( lpSessionInfo );
+    SetSessionData( lpSessionInfo, nullfunc );
     
     gSession.Draw = main_draw;
     gSession.Update = main_update;
+
+    Beep();
 }
 
 typedef struct tagTrackSelectionInfo {
     byte Cursor;
+    uint32 BestLap;
+    char BestName[5];
 } FTrackSelectionInfo;
 
+void tracksel_update_info();
 static void tracksel_update();
 static void tracksel_draw( bool v );
 void INITSESSION_TRACK_SELECT()
 {
-    FTrackSelectionInfo* lpTrack = memset(
-        Malloc( sizeof( FTrackSelectionInfo ) ),
-        0,
-        sizeof( FTrackSelectionInfo )
-    );
+    FTrackSelectionInfo* lpTrack = ALLOC_TYPE_INITZERO( FTrackSelectionInfo );
 
-    SetSessionData( lpTrack );
+    SetSessionData( lpTrack, nullfunc );
     gSession.Draw = tracksel_draw;
     gSession.Update = tracksel_update;
-}
 
-
-static void loadtrack_update();
-void INITSESSION_RACE_LOAD()
-{
-    
+    tracksel_update_info();
 }
 
 typedef struct tagTest3DSession {
@@ -180,7 +204,7 @@ typedef struct tagTest3DSession {
 } FTest3DSession;
 static void test_3d_update();
 static void test_3d_draw( bool v );
-DECLARE_LINE_VECTOR( BoxOne );
+DECLARE_LINE_VECTOR( ShapeBoxOne );
 void INITSESSION_TEST_3D()
 {
     FTest3DSession* lpv = memset(
@@ -188,7 +212,7 @@ void INITSESSION_TEST_3D()
         0,
         sizeof( FTest3DSession )
     );
-    SetSessionData( lpv );
+    SetSessionData( lpv, nullfunc );
 
     gSession.Update = test_3d_update;
     gSession.Draw = test_3d_draw;
@@ -240,6 +264,7 @@ void test_3d_update()
     }
 }
 
+DECLARE_LINE_VECTOR( ShapeTriangle );
 void test_3d_draw( bool v )
 {
     VBuffer_Clear();
@@ -250,31 +275,40 @@ void test_3d_draw( bool v )
     gCursorPage = 0;
     gCursorColumn = 0;
     VBuffer_PrintString( "CS{%d, %d} ", lpv->Cam.Position.x, lpv->Cam.Position.y );
+    
+    fixedpt pp = -fixedpt_fromint( ACC_YPIVOT - (int) ACC_PERCENTY );
+    pp = fixedpt_mul( pp, fixedpt_rconst( LITERAL_PI/8/10 ) );
+
+    gSlopeValue.Cosv = fixedpt_cos( pp );
+    gSlopeValue.Sinv = fixedpt_sin( pp );
     for ( i = 0
-          ; i < 2 //ARRAYCOUNT( lpv->Locations )
+          ; i < ARRAYCOUNT( lpv->Locations )
           ; ++i )
     {
         CDrawArgs_DrawOnDisplayBufferPerspective(
-            &BoxOne,
+            &ShapeTriangle,
             lpv->Locations[i],
             &lpv->Cam
         );
     }
-}
+} 
 
 static void main_update()
 {
     byte* cursor = &( (FMainScreenInfo*) gSession.data__ )->Cursor;
-    if ( gButton_Pressed & mask( BUTTON_D, BUTTON_R ) )
+    if ( gButton_Pressed & mask( BUTTON_D ) )
     {
         *cursor = ++( *cursor ) == ARRAYCOUNT( MainMenuStrings ) ? 0 : *cursor;
+        Beep();
     }
-    if ( gButton_Pressed & mask( BUTTON_U, BUTTON_L ) )
+    if ( gButton_Pressed & mask( BUTTON_U ) )
     {
         *cursor = ( *cursor )-- == 0 ? ARRAYCOUNT( MainMenuStrings ) - 1 : *cursor;
+        Beep();
     }
 
     if ( gButton_Pressed & mask( BUTTON_A ) ) {
+        Beep();
         switch ( *cursor )
         {
         case 0: {
@@ -330,22 +364,18 @@ static void main_draw( bool complxDraw )
 }
 
 static void main_calib_update()
-{
-    if ( gButton_Pressed & mask( BUTTON_B ) )
-    {
+{ 
+    if ( gButton_Pressed & mask( BUTTON_A ) ) {
+        Beep();
+        ACC_XPIVOT = ACC_PERCENTX;
+        ACC_YPIVOT = ACC_PERCENTY;
+        FSR_APIVOT = FSR_A;
+        FSR_BPIVOT = FSR_B;
+    }
+    if ( gButton_Pressed & mask( BUTTON_B, BUTTON_HOME ) ) {
+        Beep();
         gSession.Draw = main_draw;
         gSession.Update = main_update;
-    }
-
-    if ( ( gButton_Hold & mask( BUTTON_U ) )
-         || ( gButton_Pressed & mask( BUTTON_R ) ) )
-    {
-        ++ACC_MAX_INTERVAL;
-    }
-    if ( ( gButton_Hold & mask( BUTTON_D ) )
-        || ( gButton_Pressed & mask( BUTTON_L ) ) )
-    {
-        --ACC_MAX_INTERVAL;
     }
 }
 
@@ -357,17 +387,17 @@ void validate_update()
     byte NumWarn = 0;
     byte WarnAddr;
     do {
-        volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i );
-        *lpValid = 0xff;
-        NumWarn += ( *lpValid ) != 0xff;
-        WarnAddr = ( *lpValid ) == 0xff ? WarnAddr : lpPrg->ProgressAddr + i;
-        ++i;
+        volatile byte* lpValid = (byte*) ( lpPrg->ProgressAddr + i ); 
+        uint8 valid = ( (uint16) lpValid ) >> 8;
+        NumWarn += ( *lpValid ) != valid;
+        WarnAddr = ( *lpValid ) == valid ? WarnAddr : lpPrg->ProgressAddr + i;
+        ++i; 
     } while ( i );
 
     lpPrg->ProgressAddr += 0x100;
 
     if ( lpPrg->ProgressAddr > 0xfd00 ) {
-        INITSESSION_MAIN();
+        INITSESSION_MAIN(); 
     }
 }
 
@@ -378,7 +408,7 @@ void validate_draw( bool cmplx )
 
     byte p = 2, col = 24;
     byte NumPrg = ( lpv->ProgressAddr - 0x8000 ) >> 8;
-    NumPrg >>= 3;
+    NumPrg /= 6;
     
     char buff[32];
     byte i;
@@ -391,7 +421,14 @@ void validate_draw( bool cmplx )
     p += 2;
     col = 24;
     VBuffer_DrawString( &p, &col, buff, true );
-
+    sprintf( buff, "\r\nChecking %x\r\nADLINE: ", lpv->ProgressAddr );
+    VBuffer_DrawString( &p, &col, buff, false );
+    
+    for ( i = 0; i < 15; ++i ) {
+        buff[14 - i] = ( lpv->AddressLineVerification &mask( i ) ? 'x' : 'o' );
+    }
+    buff[15] = 0;
+    VBuffer_DrawString( &p, &col, buff, true );
     if ( lpv->Warnings != 0 ) {
         p += 2;
         col = 0;
@@ -402,23 +439,40 @@ void validate_draw( bool cmplx )
     }
 }
 
+void tracksel_update_info()
+{
+    FTrackSelectionInfo* lpTrk = gSession.data__;
+    uint32_t* pp = (uint32_t*) ( lpTrk->Cursor*RACING_RECORD_EEPROM_OFST_PER_TRACK );
+    lpTrk->BestLap = eeprom_read_dword( pp );
+    *(uint32_t*) lpTrk->BestName = eeprom_read_dword( pp + 1 );
+}
+
 void tracksel_update()
 {
     FTrackSelectionInfo* lpTrk = gSession.data__;
     
     if ( gButton_Pressed & mask( BUTTON_L ) ) {
         lpTrk->Cursor = lpTrk->Cursor == 0 ? 0 : lpTrk->Cursor - 1;
+        tracksel_update_info();
+        Beep();
     }
     if ( gButton_Pressed & mask( BUTTON_R ) ) {
         lpTrk->Cursor = lpTrk->Cursor == NumTracks - 1 ? NumTracks - 1 : lpTrk->Cursor + 1;
+        tracksel_update_info();
+        Beep();
     }
-    if ( gButton_Pressed & mask( BUTTON_B ) ) {
+
+    if ( gButton_Pressed & mask( BUTTON_B | BUTTON_HOME ) ) {
+        Beep();
         INITSESSION_MAIN();
         return;
     }
     if ( gButton_Pressed& mask( BUTTON_A ) ) {
         // @todo. Load track selected by cursor.
         // Keep cursor location data to make next session know which track to load.
+        Beep();
+        INITSESSION_RACING_GAME( lpTrk->Cursor );
+        return;
     }
 }
 
@@ -436,6 +490,25 @@ void tracksel_draw( bool v )
 
     pg = 14, col = 0;
     VBuffer_DrawString( &pg, &col, "A: SELECT B: BACK", false );
+
+    
+    pg = 0, col = 0;
+    if ( lpTrk->BestLap == (uint32)-1 )
+    {
+        VBuffer_DrawString( &pg, &col, " -- NO RECORD -- ", false );
+    }
+    else 
+    {
+        uint16 ms = lpTrk->BestLap % 1000;
+        uint16 sec = lpTrk->BestLap / 1000;
+        uint16 min = min16( sec / 60, 99 );
+        sec %= 60;
+        VBuffer_DrawString( &pg, &col, "BEST: ", false );
+        gCursorColumn = col;
+        gCursorPage = pg;
+        VBuffer_PrintString( "By %s\r\n", lpTrk->BestName );
+        VBuffer_PrintString( "  %02d:%02d:%04d", min, sec, ms );
+    }
 }
 
 void loadtrack_update()
@@ -450,11 +523,10 @@ static void main_calib_draw( bool v )
     byte x = 0, y = 0;
     VBuffer_DrawString(
         &x, &y,
-        "Calibration sequence...\r\n\tPress B to finish."
-        "\r\n  Keep your device stable...\r\n",
+        "Calibration sequence...\r\n",
         false
     );
-    VBuffer_DrawString( &x, &y, " Press A to set pivot.\r\n ---------------------------\r\n", false );
+    VBuffer_DrawString( &x, &y, " ---------------------------\r\n", false );
 
     char buff[64];
     sprintf( buff, "\tX acc: %d\r\n\tY acc: %d\r\n", ACC_PERCENTX, ACC_PERCENTY );
@@ -462,5 +534,9 @@ static void main_calib_draw( bool v )
     VBuffer_DrawString( &x, &y, "Pivot: ", false );
     sprintf( buff, " %d, %d ", ACC_XPIVOT, ACC_YPIVOT);
     VBuffer_DrawString( &x, &y, buff, true);
-    VBuffer_DrawString( &x, &y, " us", false );
+    VBuffer_DrawString( &x, &y, " us\r\n", false );
+    gCursorColumn = y;
+    gCursorPage = x;
+    VBuffer_PrintString( "Pressure:\r\n\tA: %4d, B: %4d", FSR_A - FSR_APIVOT, FSR_B - FSR_BPIVOT );
+    SetSpeakerFreq( FSR_A - FSR_APIVOT );
 }

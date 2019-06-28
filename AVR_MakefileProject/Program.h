@@ -13,11 +13,12 @@ typedef struct {
     FSessionEventSignature Update;
     FSessionDrawEventSignature Draw;
     void* data__; // Should be dynamically allocated.
+    FSessionEventSignature data_finalizer__;
 } FSessionState;
 
 extern FSessionState gSession;
 
-void SetSessionData( void* NewData );
+void SetSessionData( void* NewData, FSessionEventSignature Finalizer );
 
 // a function which does nothing.
 static void nullfunc() {}
@@ -30,10 +31,10 @@ void UpdateInputStatus();
 ////////////////////////////////////////////////////////////////
 
 enum {
-    BUTTON_L = 6, 
-    BUTTON_R = 3, 
-    BUTTON_U = 4, 
-    BUTTON_D = 5, 
+    BUTTON_D = 6, 
+    BUTTON_U = 3, 
+    BUTTON_L = 4, 
+    BUTTON_R = 5, 
     BUTTON_A = 2, 
     BUTTON_B = 1, 
     BUTTON_HOME = 0, 
@@ -51,9 +52,21 @@ extern byte gButton_Pressed;
 extern byte gButton_Released;
 extern byte gButton_Hold;
 
-extern byte FSR_A;
-extern byte FSR_B;
+extern int16 FSR_A;
+extern int16 FSR_B;
+extern int16 FSR_APIVOT;
+extern int16 FSR_BPIVOT;
 
+extern uint32 ELAPSED_MS;
+
+static inline void* __ALLOC_SIZE_ZERO( uint16 sz )
+{
+    void* lpm = Malloc( sz );
+    memset( lpm, 0, sz );
+    return lpm;
+}
+#define ALLOC_TYPE_INITZERO(TYPE) __ALLOC_SIZE_ZERO(sizeof(TYPE))
+#define ALLOC_DATA_INITZERO(SIZE) __ALLOC_SIZE_ZERO(SIZE)
 ////////////////////////////////////////////////////////////////
 // TIMER LOGICS
 ////////////////////////////////////////////////////////////////
@@ -75,7 +88,5 @@ void EraseTimer( FTimerHandle* Handle );
 void INITSESSION_VALIDATE();
 void INITSESSION_MAIN();
 void INITSESSION_TRACK_SELECT();
-void INITSESSION_RACE_LOAD();
-
 void INITSESSION_TEST_3D();
 

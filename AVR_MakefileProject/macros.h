@@ -1,7 +1,7 @@
 #pragma once
 #include <util/atomic.h>
 #include "Intellisense.h"
-#define _MASK(num) (0x01 <<(num))
+#define _MASK(num) (0x01ll <<(num))
 #define _MASK_SETBIT0(_a) (_MASK(_a))
 #define _MASK_SETBIT1(_a, _b) (_MASK(_a)|_MASK(_b))
 #define _MASK_SETBIT2(_a, _b, _c) (_MASK(_a)|_MASK(_b)|_MASK(_c))
@@ -30,9 +30,19 @@ extern volatile char __INTERRUPT_LOCK_MUTEX__;
 #define LOG_MEMORY 0
 #endif
 
+#define USE_EXTERNAL_HEAP 1
+#define LCD_USE_ABSOLUTE_OFFSET 1
 #define ENABLE_HEAP_CACHE 1
 #define USE_STDLIB_MALLOC 1
 #define USE_SERIAL_COMMUNICATION 0
+
+#define LOG_LEVEL 0
+
+#define LOG_CRITICAL (LOG_LEVEL >= 1)
+#define LOG_WARNING  (LOG_LEVEL >= 2)
+#define LOG_NORMAL   (LOG_LEVEL >= 3)
+#define LOG_VERBOSE  (LOG_LEVEL >= 4)
+#define LOG_ALL      (LOG_LEVEL >= 5)
 
 #if ENABLE_DEBUG
 #ifndef _DEBUG

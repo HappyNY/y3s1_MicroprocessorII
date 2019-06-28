@@ -61,3 +61,4 @@ void Free( void* Ptr );
 size_type GetMemoryOccupation( void* Ptr );
 void* GetMemoryBound( void* Ptr );
 #endif
+

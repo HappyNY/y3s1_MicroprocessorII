@@ -72,9 +72,6 @@
     <ClCompile Include="math.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IMAGES.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="RacingGame.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -84,7 +81,10 @@
     <ClCompile Include="Program.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tracks.c">
+    <ClCompile Include="TRACK.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VECTORS.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -132,6 +132,9 @@
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="analog_device.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="fixed\fixedptc.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>

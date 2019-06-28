@@ -18,9 +18,9 @@
 #define DECLARE_LINE_VECTOR(Identifier) extern const FLineVector Identifier;
 
 #define CAMERA_FOV 75
-#define MAXIMUM_VISIBLE_DISTANCE 5000.0
+#define MAXIMUM_VISIBLE_DISTANCE 1000
 #define MINIMUM_VISIBLE_DISTANCE 1.0
-#define STANDARD_DISTANCE_IN_UNITS 55
+#define STANDARD_DISTANCE_IN_UNITS 100
 
 typedef struct FPoint8 {
     int8 x;
@@ -67,12 +67,34 @@ typedef struct FRect16 {
     int16 Bottom;
 }FRect16;
 
+extern struct tagSlope {
+    fixedpt Cosv, Sinv;
+} gSlopeValue;
+
 void CalculateTranformCache( FCameraTransform* Camera );
 void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const FPoint16 MeshPosition, const FCameraTransform* Camera );
-void CDrawArgs_DrawOnDisplayBufferDirect( const CDrawArgs* Vector, const FPoint16* ofst );
+void CDrawArgs_DrawOnDisplayBufferDirect( const FLineVector* Vector, const FPoint16 ofst );
 
 void fixedpt_AddDegreesNormalized( fixedpt* dst, int8 degrees );
 void fixedpt_AddRadianNormalized( fixedpt* dst, fixedpt add );
 
 bool FRect16_IsOverlap( FRect16 const* a, FRect16 const* b );
 bool FPoint16_IsInBound( FPoint16 const* Triangle, FPoint16 Check );
+
+static inline FPointFP FPoint16_ToFP( FPoint16 const v )
+{
+    FPointFP ret = {
+        fixedpt_fromint( v.x ),
+        fixedpt_fromint( v.y )
+    };
+
+    return ret;
+}
+static inline FPoint16 FPointFP_To16( FPointFP const v )
+{
+    FPoint16 ret = {
+        fixedpt_toint( v.x ),
+        fixedpt_toint( v.y )
+    };
+    return ret;
+}

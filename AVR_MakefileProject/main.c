@@ -43,9 +43,10 @@ void init_ebi_heap( void )
     // your code to init the ebi goes here
 
     // set heap start and end
-    //__malloc_heap_start = (char *) 0x8000;
-    //__malloc_heap_end = (char *) 0xffff;
-    
+#if USE_EXTERNAL_HEAP
+    __malloc_heap_start = (char *) 0x8000;
+    __malloc_heap_end = (char *) 0xf000;
+#endif 
     MCUCR |= mask( SRE );
 }  
 
@@ -55,7 +56,14 @@ void init_ebi_heap( void )
 // This is the entry point of the program.
 // For now it defines some test code, but on release this code will be excluded, and replaced by gameplay loop.
 /////////////////////////////////////////////////////////////////////
-volatile static bool GOOD_TO_UPDATE = 0;
+volatile bool GOOD_TO_UPDATE = 0;
+void UpdatePivot()
+{
+    ACC_XPIVOT = ACC_PERCENTX;
+    ACC_YPIVOT = ACC_PERCENTY;
+    FSR_APIVOT = FSR_A;
+    FSR_BPIVOT = FSR_B;
+}
 void main( void )
 {
     void InitializeDevice();
@@ -68,9 +76,12 @@ void main( void )
     // PROGRAM INITIALIZATION 
     gSession.Update = nullfunc;
     gSession.Draw = nulldraw;
+    gSession.data_finalizer__ = nullfunc;
     gSession.data__ = NULL;
 
-    INITSESSION_VALIDATE();
+    // Initail sensor calibration
+    INITSESSION_MAIN(); //_VALIDATE();
+    QueueTimer( UpdatePivot, 10 );
 
     byte RenderingInterval = 0;
     // MAIN PROGRAM LOOP
@@ -103,11 +114,18 @@ void InitializeDevice()
     MCUCR |= mask( SRE );
 
     // Timer 0 initialize 
-    TIMSK |= mask( TOIE1 );
-    TCCR1A = 0b00000000;
-    TCCR1B = 0b00000001; // Div 1
-    TCCR1C = 0b00000000;
+    ETIMSK |= mask( TOIE3 );
+    TCCR3A = 0b00000000;
+    TCCR3B = 0b00000001; // Div 1
+    TCCR3C = 0b00000000;
 
+    // SPK initialize
+    InitSpeaker();
+
+    // Initialize ADC
+    ADCSRA = mask( ADEN );
+    DDRF = 0;
+    PORTF = 0xff;
     sei();
 }
 
@@ -115,19 +133,51 @@ void InitializeDevice()
 // TIMER 1 FOR GAMEPLAY & ACCELERATION SENSOR
 // INTERVAL = 3.3MS
 /////////////////////////////////////////////////////////////////////
-#define TCNT1_SETUP TCNT1 = 0xffff - 7999
-ISR( TIMER1_OVF_vect )
+#define TCNT3_SETUP TCNT3 = 0xffff - 3999
+uint32 ELAPSED_MS = 0;
+ISR( TIMER3_OVF_vect )
 {
-    TCNT1_SETUP;
-    enum { ITER_COUNT = 66 };
+    TCNT3_SETUP;
+    enum { ITER_COUNT = 132 };
     static byte IterCnt = 0;
+    static uint16 fsr_a;
+    static uint16 fsr_b;
 
     ++IterCnt;
 
-    if ( IterCnt == ITER_COUNT )
+    switch ( IterCnt )
     {
+        // FSR UPDATE
+    case ITER_COUNT - 24: 
+        fsr_a = 0;
+        fsr_b = 0;
+        ADMUX = 0;
+        break;
+    case ITER_COUNT - 23:
+        ADCSRA |= mask( ADSC, ADPS2, ADPS0 );
+        break;
+    case ITER_COUNT - 16: 
+        fsr_a = ADC;
+        ADMUX = mask( MUX0 );
+        break;
+    case ITER_COUNT - 15: 
+        ADCSRA |= mask( ADSC, ADPS2, ADPS0 );
+        break;
+    case ITER_COUNT - 8: 
+        fsr_b = ADC;
+        break;
+    case ITER_COUNT: 
         GOOD_TO_UPDATE = true;
         IterCnt = 0;
+        FSR_A = fsr_a;
+        FSR_B = fsr_b;
+        break;  
+    }
+
+    if ( ( IterCnt & 0x3 ) == 0 )
+    {
+        // Per 1 microseconds ...
+        ++ELAPSED_MS;
     }
 
     gButton_Captured |= INPUT_VECTOR;

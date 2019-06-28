@@ -1,6 +1,7 @@
 #include "Graphics.h"
 #include "Display.h"
 
+struct tagSlope gSlopeValue;
 void CalculateTranformCache( FCameraTransform* Camera )
 {
     FPointFP r;
@@ -15,17 +16,6 @@ void CalculateTranformCache( FCameraTransform* Camera )
 static inline fixedpt dot( FPointFP const* a, FPointFP const* b )
 {
     return fixedpt_mul(a->x, b->x) + fixedpt_mul(a->y,b->y);
-}
-
-static inline fixedpt sz( int16 x, int16 y )
-{
-    //  return fixedpt_sqrt( dot( a, a ) );//fixedpt_pow( dot( a, a ), fixedpt_rconst(0.5) );
-    // int32 val = fixedpt_toint( v.x ) * fixedpt_toint( v.x );
-    // val += fixedpt_toint( v.y ) * fixedpt_toint( v.y );
-
-    float v = (int32)x * x + (int32)y * y;
-
-    return (int32) ( sqrtf( v ) * (float) 0x10000 );
 }
 
 extern inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTransform* Camera, int8* DegreesWhenVisible, int16* Distance );
@@ -43,22 +33,18 @@ inline bool CalculateAngleIfVIsible( const FPoint16* Position, const FCameraTran
     DirectionVector.y = fixedpt_fromint( dirY );
     CameraDirectionUnitVector = Camera->CachedDirection;
     
-    DistanceFromCamera = sz( dirX, dirY ); 
-    // VBuffer_PrintString( "{sz. %s}", fixedpt_cstr( DistanceFromCamera, -1 ) );
-    if ( DistanceFromCamera > fixedpt_rconst( MAXIMUM_VISIBLE_DISTANCE )
-         || DistanceFromCamera < fixedpt_rconst( MINIMUM_VISIBLE_DISTANCE ) )
+    int32 dist_sq = (int32) dirX* (int32) dirX + (int32) dirY*(int32) dirY;
+    if ( dist_sq > (int32)MAXIMUM_VISIBLE_DISTANCE*MAXIMUM_VISIBLE_DISTANCE
+         || dist_sq < MINIMUM_VISIBLE_DISTANCE*MINIMUM_VISIBLE_DISTANCE )
     {
-#if LOG_VERBOSE
-        // Return distance only when it need to be loged.
-        *Distance = fixedpt_toint( DistanceFromCamera );
-#endif
         return false;
-    }
+    } 
+    DistanceFromCamera = sqrt_int( dist_sq ); 
 
-    // acos(dot(a,b) / (sz(a)*sz(b))) 
+    // acos(dot(a,b) / (sqrt_int(a)*sqrt_int(b))) 
     AngleBetween = fixedpt_div( dot( &DirectionVector, &CameraDirectionUnitVector ), DistanceFromCamera );
     AngleBetween = fixedpt_acos_half( AngleBetween );// acos( AngleBetween / (double) FIXEDPT_ONE );
-    VBuffer_PrintString( "{a: %s}", fixedpt_cstr( AngleBetween, -1 ) );
+    // VBuffer_PrintString( "{a: %s}", fixedpt_cstr( AngleBetween, -1 ) );
     Z = fixedpt_mul( CameraDirectionUnitVector.x, DirectionVector.y ) - fixedpt_mul( CameraDirectionUnitVector.y, DirectionVector.x );
     *DegreesWhenVisible = fixedpt_toint( fixedpt_div( fixedpt_mul( Z > 0 ? AngleBetween : -AngleBetween, fixedpt_rconst( 180.0 ) ), FIXEDPT_PI ) );
     *Distance = fixedpt_toint( DistanceFromCamera );
@@ -111,22 +97,51 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
         FLineInfo const 
             *lpLine = Vector->Lines,
             *lpLineEnd = Vector->Lines + Vector->NumLines;
-        int16 centerX, centerY;
+        // int16 centerX, centerY;
         int16 x0, y0, x1, y1;
+        int16 rotX, rotY;
         FRect16 LineBound;
 
-        centerX = LCD_NUM_COLUMN / 2 + rotator;
-        centerY = LCD_HEIGHT / 2;
+        enum {
+            centerX = LCD_NUM_COLUMN / 2,
+            centerY = LCD_HEIGHT / 2,
+        };
 
         log_verbose( "Display center = %d, %d", centerX, centerY );
+
+        // rotX = scale( 0 );
+        // rotY = rotX;
 
         while ( lpLine != lpLineEnd )
         {
             // Translate.
-            x0 = scale( lpLine->Begin.x ) + centerX;
-            y0 = scale( lpLine->Begin.y ) + centerY;
-            x1 = scale( lpLine->End.x ) + centerX;
-            y1 = scale( lpLine->End.y ) + centerY;
+            int16 absv, rot = rotator;
+            x0 = scale( lpLine->Begin.x ) + rot;
+            y0 = scale( lpLine->Begin.y );
+            x1 = scale( lpLine->End.x ) + rot;
+            y1 = scale( lpLine->End.y );
+             
+            //absv = ( x0 > 0 ? x0 : -x0 ) >> 3;
+            //y0 += y0 > 0 ? absv : -absv;
+            //absv = ( x1 > 0 ? x1 : -x1 ) >> 3;
+            //y1 += y1 > 0 ? absv : -absv;
+
+            int16 tmp = x0;
+            x0 = ( gSlopeValue.Cosv * x0 - gSlopeValue.Sinv * y0 ) >> FIXEDPT_FBITS;
+            y0 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y0 ) >> FIXEDPT_FBITS;
+
+            tmp = x1;
+            x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
+            y1 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
+
+            y0 = -y0;
+            y1 = -y1;
+
+            x0 += centerX;
+            y0 += centerY;
+            x1 += centerX;
+            y1 += centerY;
+
             log_verbose( "Draw args %d, %d to %d, %d", x0, y0, x1, y1 );
             // Draw
             if ( x0 > x1 ) {
@@ -137,13 +152,14 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
                 LineBound.Left = x0;
                 LineBound.Right = x1;
             }
+
             if ( y0 > y1 ) {
-                LineBound.Top = x1;
-                LineBound.Bottom = x0;
+                LineBound.Top = y1;
+                LineBound.Bottom = y0;
             }
             else {
-                LineBound.Top = x0;
-                LineBound.Bottom = x1;
+                LineBound.Top = y0;
+                LineBound.Bottom = y1;
             } 
 
             // Cull line before draw using rectangle.
@@ -155,16 +171,51 @@ void CDrawArgs_DrawOnDisplayBufferPerspective( const FLineVector* Vector, const 
             ++lpLine;
         }
     }
-} 
+}
+void CDrawArgs_DrawOnDisplayBufferDirect( const FLineVector * Vector, const FPoint16 ofst )
+{
+    FLineInfo const* lpHead = Vector->Lines;
+    FLineInfo const* lpEnd = Vector->Lines + Vector->NumLines;
+    int16 x0, y0, x1, y1;
+
+    while ( lpHead != lpEnd )
+    {
+        x0 = lpHead->Begin.x + ofst.x;
+        x1 = lpHead->End.x + ofst.x;
+        y0 = lpHead->Begin.y + ofst.y;
+        y1 = lpHead->End.y + ofst.y; 
+
+        int16 tmp = x0;
+        x0 = ( gSlopeValue.Cosv * x0 - gSlopeValue.Sinv * y0 ) >> FIXEDPT_FBITS;
+        y0 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y0 ) >> FIXEDPT_FBITS;
+
+        tmp = x1;
+        x1 = ( gSlopeValue.Cosv * x1 - gSlopeValue.Sinv * y1 ) >> FIXEDPT_FBITS;
+        y1 = ( gSlopeValue.Sinv * tmp + gSlopeValue.Cosv * y1 ) >> FIXEDPT_FBITS;
+        
+        y0 = -y0;
+        y1 = -y1;
+
+        x0 += LCD_NUM_COLUMN / 2;
+        x1 += LCD_NUM_COLUMN / 2;
+        y0 += LCD_HEIGHT / 2;
+        y1 += LCD_HEIGHT / 2;
+
+        VBuffer_DrawLine( x0, y0, x1, y1 );
+
+        ++lpHead;
+    }
+}
+
 
 bool FRect16_IsOverlap( FRect16 const * a, FRect16 const * b )
 {
     bool bXOverlap 
-        = b->Left <= a->Left && a->Left <= b->Right 
-        || b->Left <= a->Right && a->Right <= b->Right;
+        = ( b->Left <= a->Left && a->Left <= b->Right )
+        || ( b->Left <= a->Right && a->Right <= b->Right );
     bool bYOverlap
-        = b->Top <= a->Top && a->Top <= b->Bottom
-        || b->Top <= a->Bottom && a->Bottom <= b->Bottom;
+        = ( b->Top <= a->Top && a->Top <= b->Bottom )
+        || ( b->Top <= a->Bottom && a->Bottom <= b->Bottom );
 
-    return bXOverlap && bYOverlap;
+    return /*bXOverlap && */bYOverlap;
 }
